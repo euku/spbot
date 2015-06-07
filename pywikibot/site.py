@@ -4962,6 +4962,8 @@ class APISite(BaseSite):
             'duplicate': "Uploaded file is a duplicate of %(msg)s.",
             'badfilename': "Target filename is invalid.",
             'filetype-unwanted-type': "File %(msg)s type is unwanted type.",
+            'exists-normalized': 'File exists with different extension as '
+                                 '"%(msg)s".',
         }
 
         # check for required user right
