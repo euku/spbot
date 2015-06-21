@@ -99,7 +99,7 @@ class SelflinkBot(Bot):
             choice = pywikibot.input_choice(
                 u'\nWhat shall be done with this selflink?\n',
                 [('unlink', 'u'), ('make bold', 'b'), ('skip', 's'),
-                 ('edit', 'e'), ('more context', 'm'), ('unlink all')], 'u')
+                 ('edit', 'e'), ('more context', 'm'), ('unlink all', 'a')], 'u')
             pywikibot.output(u'')
 
             if choice == 's':
