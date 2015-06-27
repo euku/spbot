@@ -72,7 +72,7 @@ class UnlinkBot(Bot):
         self.linkR = re.compile(r'\[\[(?P<title>[^\]\|#]*)(?P<section>#[^\]\|]*)?(\|(?P<label>[^\]]*))?\]\](?P<linktrail>%s)'
                                 % linktrail)
         self.comment = i18n.twtranslate(self.pageToUnlink.site, 'unlink-unlinking',
-                                        self.pageToUnlink.title())
+                                        {'title': self.pageToUnlink.title()})
 
     def handleNextLink(self, text, match, context=100):
         """
