@@ -795,12 +795,14 @@ class BasePage(UnicodeMixin, ComparableMixin):
                         for index in regex.findall(content):
                             indexes.add(first_upper(index))
                         self.site._indextemplates = indexes
-                else:
+                elif self.site.has_mediawiki_message('disambiguationspage'):
                     message = self.site.mediawiki_message(
                         'disambiguationspage').split(':', 1)[1]
                     # add the default template(s) for default mw message
                     # only
                     disambigs = set([first_upper(message)]) | default
+                else:
+                    disambigs = default
                 self.site._disambigtemplates = disambigs
             else:
                 # Normalize template capitalization
