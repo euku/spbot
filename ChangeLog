@@ -1,6 +1,47 @@
+Release 2.0rc2 (9 July 2015)
+============================
+
+Bugfixes (scripts)
+------------------
+8d76870 replace.py: remove line endings when reading from file
+bfe60b0 archive.py: Don't ignore "DoNotArchiveUntil" timestamps
+0df272b redirect.py: Don't break the script for hidden pages.
+9806a7a upload.py: allow all formats allowed by commons
+1dcbfd8, 0592360 replace.py: fix handling of addedCat
+
+Small new features (scripts)
+----------------------------
+a47c0d7 clean_sandbox.py: Use pagegenerators
+288b9ce replace.py: Inform about missing user-fixes.py
+
+Configuration updates
+---------------------
+d721249 Changing the sandbox content template on Fa WP
+
+Family file updates
+-------------------
+21d6a8d Remove broken wikis from battlestarwiki family
+3c2bcc5 Adding euskara and sicilianu languages to Vikidia family
+a3a3d53 WOW Wiki subdomains hr, ro & sr deleted
+474c786 Add new Wikipedia languages gom and lrc
+
+Bugfixes (core)
+---------------
+c7a12b5 fix UnicodeDecodeError on api error
+ea00683 pwb.py now correctly passes arguments to generate_family_file
+3685a24 Fix Win32 config.editor detection
+3333251 open_compressed: Wrap BZ2File in Py 2.7
+f2309e5 Skip RC entries without a title
+ab9fdfb PatrolEntry: Allow cur/prev id to be str
+156bdd0, 0b6fda9 Updates to i18n changes
+49fc65f Do not use ParamInfo during action=login
+796f273 Let pydot encode labels for Python 3 support
+3488a4b Fix and test interwiki_graph
+ba6b671 textlib: replaceExcept: Handle empty matches
+
 
 Release 2.0rc1 (25 May 2015)
-
+============================
 Major improvements include:
 - Sphinx documentation at https://doc.wikimedia.org/pywikibot/
 - Initial ProofreadPage support
