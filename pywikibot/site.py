@@ -4552,7 +4552,7 @@ class APISite(BaseSite):
         @type reason: basestring
 
         """
-        token = self.tokens['undelete']
+        token = self.tokens['delete']
         self.lock_page(page)
 
         if revisions is None:
