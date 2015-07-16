@@ -25,7 +25,6 @@ httplib2>=0.9.0
 pydot
 
 # core pagegenerators
-pYsearch
 google >= 1.7
 
 # scripts/script_wui.py:

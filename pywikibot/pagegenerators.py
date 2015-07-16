@@ -2072,7 +2072,6 @@ class YahooSearchPageGenerator:
     To use this generator, install pYsearch
     """
 
-    # values larger than 100 fail
     def __init__(self, query=None, count=100, site=None):
         """
         Constructor.
@@ -2080,6 +2079,10 @@ class YahooSearchPageGenerator:
         @param site: Site for generator results.
         @type site: L{pywikibot.site.BaseSite}
         """
+        raise RuntimeError(
+            'pagegenerator YahooSearchPageGenerator is not functional.\n'
+            'See https://phabricator.wikimedia.org/T106085')
+
         self.query = query or pywikibot.input(u'Please enter the search query:')
         self.count = count
         if site is None:
