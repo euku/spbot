@@ -1,7 +1,7 @@
 [submodule "i18n"]
 	path = scripts/i18n
 	url = https://gerrit.wikimedia.org/r/p/pywikibot/i18n.git
-	branch = .
+	branch = master
 	ignore = all
 
 [submodule "externals/httplib2"]
