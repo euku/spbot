@@ -4445,6 +4445,7 @@ class APISite(BaseSite):
         "alreadyrolled": "Page [[%(title)s]] already rolled back; action aborted.",
     }  # other errors shouldn't arise because we check for those errors
 
+    @must_be('user')
     def rollbackpage(self, page, **kwargs):
         """Roll back page to version before last user's edits.
 
@@ -4463,7 +4464,8 @@ class APISite(BaseSite):
                 % page.title(asLink=True))
         last_rev = page.latest_revision
         last_user = last_rev.user
-        for rev in sorted(list(page._revisions.keys()), reverse=True):
+        for rev in sorted(page._revisions.values(), reverse=True,
+                          key=lambda r: r.timestamp):
             # start with most recent revision first
             if rev.user != last_user:
                 break
