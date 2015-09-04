@@ -92,6 +92,7 @@ script_test_modules = [
 
 disabled_test_modules = [
     'tests',  # tests of the tests package
+    'l10n',
 ]
 if not i18n.messages_available():
     disabled_test_modules.append('l10n')
