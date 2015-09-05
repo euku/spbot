@@ -797,6 +797,7 @@ class ParamInfo(Container):
                     if self[mod][attribute])
 
     @property
+    @deprecated('parameter()')
     def query_modules_with_limits(self):
         """Set of all query modules which have limits."""
         if not self._with_limits:
@@ -2059,10 +2060,11 @@ class QueryGenerator(object):
             kwargs['continue'] = True
         self.request = Request(**kwargs)
 
-        # This forces all paraminfo for all query modules to be bulk loaded.
-        limited_modules = (
-            set(self.modules) & self.site._paraminfo.query_modules_with_limits
-        )
+        self.site._paraminfo.fetch('query+' + mod for mod in self.modules)
+
+        limited_modules = set(
+            mod for mod in self.modules
+            if self.site._paraminfo.parameter('query+' + mod, 'limit'))
 
         if not limited_modules:
             self.limited_module = None
@@ -2073,7 +2075,7 @@ class QueryGenerator(object):
             # Query will continue as needed until limit (if any) for this module
             # is reached.
             for module in self.modules:
-                if module in self.site._paraminfo.query_modules_with_limits:
+                if module in limited_modules:
                     self.limited_module = module
                     limited_modules.remove(module)
                     break
