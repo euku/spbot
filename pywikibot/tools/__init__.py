@@ -322,7 +322,7 @@ class MediaWikiVersion(Version):
     Any other suffixes are considered invalid.
     """
 
-    MEDIAWIKI_VERSION = re.compile(r'^(\d+(?:\.\d+)+)(wmf(\d+)|alpha|beta(\d+)|-?rc\.?(\d+))?$')
+    MEDIAWIKI_VERSION = re.compile(r'^(\d+(?:\.\d+)+)(-?wmf\.?(\d+)|alpha|beta(\d+)|-?rc\.?(\d+))?$')
 
     def parse(self, vstring):
         """Parse version string."""
