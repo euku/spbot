@@ -7,7 +7,7 @@
 #
 from __future__ import unicode_literals
 
-__release__ = '2.0rc2'
+__release__ = '2.0rc3'
 __version__ = '$Id$'
 
 import datetime

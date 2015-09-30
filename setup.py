@@ -133,7 +133,7 @@ else:
 from setuptools import setup, find_packages
 
 name = 'pywikibot'
-version = '2.0rc2'
+version = '2.0rc3'
 github_url = 'https://github.com/wikimedia/pywikibot-core'
 
 setup(

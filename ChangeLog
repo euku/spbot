@@ -1,3 +1,13 @@
+Release 2.0rc3 (30 September 2015)
+============================
+
+Bugfixes (core)
+---------------
+6406479 New Wikipedia site: azb
+b503a1e Indexes in str.format
+d1854f5 MediaWikiVersion: Accept new wmf style
+718e4a1 i18n: always follow master
+
 Release 2.0rc2 (9 July 2015)
 ============================
 
