@@ -3175,7 +3175,7 @@ class APISite(BaseSite):
                     excluded_namespaces.add(14)
 
                 if namespaces:
-                    if excluded_namespaces.intersect(namespaces):
+                    if excluded_namespaces.intersection(namespaces):
                         raise ValueError(
                             'incompatible namespaces %r and member_type %r'
                             % (namespaces, member_type))
