@@ -19,7 +19,9 @@ import pywikibot.textlib as textlib
 from pywikibot import config
 from pywikibot.tools import OrderedDict
 
-from tests.aspects import unittest, TestCase, DefaultDrySiteTestCase
+from tests.aspects import (
+    unittest, TestCase, DefaultDrySiteTestCase, SiteAttributeTestCase,
+)
 
 files = {}
 dirname = os.path.join(os.path.dirname(__file__), "pages")
@@ -539,6 +541,41 @@ class TestReplaceExcept(DefaultDrySiteTestCase):
         self.assertEqual(textlib.replaceExcept(r'\g<bar>', r'^(?P<foo>.*)$',
                                                r'X\g<foo>X', [], site=self.site),
                          r'X\g<bar>X')
+
+
+class TestGetLanguageLinks(SiteAttributeTestCase):
+
+    """Test L{textlib.getLanguageLinks} function."""
+
+    sites = {
+        'enwp': {
+            'family': 'wikipedia',
+            'code': 'en',
+        },
+        'dewp': {
+            'family': 'wikipedia',
+            'code': 'de',
+        },
+        'commons': {
+            'family': 'commons',
+            'code': 'commons',
+        },
+    }
+
+    example_text = '[[en:Site]] [[de:Site|Piped]] [[commons:Site]] [[baden:Site]]'
+
+    @classmethod
+    def setUpClass(cls):
+        """Define set of valid targets for the example text."""
+        super(TestGetLanguageLinks, cls).setUpClass()
+        cls.sites_set = set([cls.enwp, cls.dewp])
+
+    def test_getLanguageLinks(self, key):
+        """Test if the function returns the correct titles and sites."""
+        lang_links = textlib.getLanguageLinks(self.example_text, self.site)
+        self.assertEqual(set(page.title() for page in lang_links.values()),
+                         set(['Site']))
+        self.assertEqual(set(lang_links), self.sites_set - set([self.site]))
 
 
 if __name__ == '__main__':

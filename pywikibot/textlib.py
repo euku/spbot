@@ -482,7 +482,8 @@ def getLanguageLinks(text, insite=None, pageLink="[[]]",
     """
     Return a dict of inter-language links found in text.
 
-    The returned dict uses language codes as keys and Page objects as values.
+    The returned dict uses the site as keys and Page objects as values. It does
+    not contain its own site.
 
     Do not call this routine directly, use Page.interwiki() method
     instead.
@@ -524,6 +525,9 @@ def getLanguageLinks(text, insite=None, pageLink="[[]]",
                 pagetitle = pagetitle[:pagetitle.index('|')]
             # we want the actual page objects rather than the titles
             site = pywikibot.Site(code=lang, fam=fam)
+            # skip language links to its own site
+            if site == insite:
+                continue
             try:
                 result[site] = pywikibot.Page(site, pagetitle, insite=insite)
             except pywikibot.InvalidTitle:
