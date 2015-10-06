@@ -1372,6 +1372,17 @@ class SiteUserTestCase2(DefaultSiteTestCase):
             self.assertTrue(user["name"]
                             in ["Jimbo Wales", "Brion VIBBER", "Tim Starling"])
 
+
+class PatrolTestCase(TestCase):
+
+    """Test patrol method."""
+
+    family = 'test'
+    code = 'test'
+
+    user = True
+    write = True
+
     def testPatrol(self):
         """Test the site.patrol() method."""
         mysite = self.get_site()
