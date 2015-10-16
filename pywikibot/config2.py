@@ -60,9 +60,9 @@ if sys.platform == 'win32':
 # names and some magic variables (like __name__)
 _imports = frozenset(name for name in globals() if not name.startswith('_'))
 
-_no_user_config = os.environ.get('PYWIKIBOT2_NO_USER_CONFIG')
-if _no_user_config == '0':
-    _no_user_config = None
+__no_user_config = os.environ.get('PYWIKIBOT2_NO_USER_CONFIG')
+if __no_user_config == '0':
+    __no_user_config = None
 
 
 class _ConfigurationDeprecationWarning(UserWarning):
@@ -297,8 +297,8 @@ def get_base_dir(test_directory=None):
     # check if user-config.py is in base_dir
     if not exists(base_dir):
         exc_text = "No user-config.py found in directory '%s'.\n" % base_dir
-        if _no_user_config:
-            if _no_user_config != '2':
+        if __no_user_config:
+            if __no_user_config != '2':
                 print(exc_text)
         else:
             exc_text += "  Please check that user-config.py is stored in the correct location.\n"
@@ -905,8 +905,8 @@ for _key, _val in _glv.items():
 
 # Get the user files
 _thislevel = 0
-if _no_user_config:
-    if _no_user_config != '2':
+if __no_user_config:
+    if __no_user_config != '2':
         print("WARNING: Skipping loading of user-config.py.")
     _fns = []
 else:
@@ -1004,7 +1004,7 @@ if sys.platform == 'win32' and editor:
 
 
 # Fix up default site
-if family == 'wikipedia' and mylang == 'language' and _no_user_config != '2':
+if family == 'wikipedia' and mylang == 'language' and __no_user_config != '2':
     print("WARNING: family and mylang are not set.\n"
           "Defaulting to family='test' and mylang='test'.")
     family = mylang = 'test'
