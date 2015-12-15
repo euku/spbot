@@ -1,5 +1,48 @@
+Release 2.0rc4 (15 December 2015)
+=================================
+
+Bugfixes (core)
+---------------
+e42891d Remove dependency on pYsearch
+ecc39ce Require google>=0.7
+fa431a4 Desupport Python 2.6 for Pywikibot 2.0 release branch
+b1f6f39 config: Don't crash on later get_base_dir calls
+0925c51 cosmetic_changes: merge similar regexes
+4bf39f3 Update revId upon claim change
+ea11626 Update WOW hostnames
+2a5a4fa Mark site.patrol() as a user write action
+4f568c5 Fix interwikiFormat support for Link
+7cb6962 Changes are wrongly detected in the last langlink
+5c5d658 getLanguageLinks: Skip own site
+7ee8ec2 fix intersection of sets of namespaces
+94b0c43 Import textlib.TimeStripper
+584d7c1 Change "PyWikiBot" to "Pywikibot"
+1f8d57e Stop crashing item loads due to support of units
+c19dcfa __all__ items must be bytes on Python 2
+e6aa6ca Omit includeredirects parameter for allpages generator
+687ec9e Performance fix for sites using interwiki_putfirst option
+28db3d2 Fix Persian Wikipedia configuration
+3944f5e rollback: Use Revision instance properly
+860af34 Add must_be to DataSite write actions
+f8af8e0 Remove unneeded site argument to AutoFamily
+bf49a7d Fix ComparableMixin
+1d36e45 Deprecate ParamInfo.query_modules_with_limits
+e83c6a3 be-x-old is renamed to be-tarask
+19bbe7e Correctly identify qualifier from JSON
+
+Bugfixes (scripts)
+------------------
+4e78c27 checkimages: Expect NoPage exception
+fbb6266 interwiki: Optimize/remove unneeded calls to Page.isEmpty()
+428420a interwiki: Allow Subject.originPage to be updated
+a305d7b interwiki: Allow titletranslate.translate page to be None
+a786226 interwiki: '-ignore' parameter throws exception
+ab7abf5 interwiki: check for category before emptiness
+0db2e87 interwiki: do not automatically log in
+47ed5d5 nowcommons: Query at most one users
+
 Release 2.0rc3 (30 September 2015)
-============================
+==================================
 
 Bugfixes (core)
 ---------------
