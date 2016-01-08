@@ -907,7 +907,7 @@ class TestCase(TestTimerMixin, TestLoggingMixin, TestCaseBase):
                 return self._mainpage
 
         mainpage = pywikibot.Page(site, site.siteinfo['mainpage'])
-        if mainpage.isRedirectPage():
+        if not isinstance(site, DrySite) and mainpage.isRedirectPage():
             mainpage = mainpage.getRedirectTarget()
 
         self._mainpage = mainpage

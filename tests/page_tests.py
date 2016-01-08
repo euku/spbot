@@ -17,8 +17,8 @@ import pywikibot.page
 
 from tests.aspects import (
     unittest, TestCase, DefaultSiteTestCase, SiteAttributeTestCase,
+    DefaultDrySiteTestCase,
 )
-from tests.utils import expected_failure_if
 
 if sys.version_info[0] > 2:
     basestring = (str, )
@@ -507,11 +507,31 @@ class TestPageObject(DefaultSiteTestCase):
         self.assertTrue(page_copy.isRedirectPage())
 
 
-class TestPageRepr(DefaultSiteTestCase):
+class TestPageBaseUnicode(DefaultDrySiteTestCase):
 
-    """Test Page representation."""
+    """Base class for tests requring a page using a unicode title."""
 
-    cached = True
+    @classmethod
+    def setUpClass(cls):
+        """Initialize page instance."""
+        super(TestPageBaseUnicode, cls).setUpClass()
+        cls.page = pywikibot.Page(cls.site, 'Ō')
+
+
+class TestPageRepr(TestPageBaseUnicode):
+
+    """Test for Page's repr implementation."""
+
+    def setUp(self):
+        """Force the console encoding to UTF-8."""
+        super(TestPageRepr, self).setUp()
+        self._old_encoding = config.console_encoding
+        config.console_encoding = 'utf8'
+
+    def tearDown(self):
+        """Restore the original console encoding."""
+        config.console_encoding = self._old_encoding
+        super(TestPageRepr, self).tearDown()
 
     def test_mainpage_type(self):
         u"""Test the return type of repr(Page(<main page>)) is str."""
@@ -523,7 +543,7 @@ class TestPageRepr(DefaultSiteTestCase):
         page = pywikibot.Page(self.get_site(), u'Ō')
         self.assertIsInstance(repr(page), str)
 
-    @expected_failure_if(sys.version_info[0] > 2)
+    @unittest.skipIf(sys.version_info[0] > 2, 'Python 2 specific test')
     def test_unicode_value(self):
         """Test repr(Page(u'<non-ascii>')) is represented simply as utf8."""
         page = pywikibot.Page(self.get_site(), u'Ō')
@@ -539,10 +559,30 @@ class TestPageRepr(DefaultSiteTestCase):
     @unittest.skipIf(sys.version_info[0] < 3, 'Python 3+ specific test')
     def test_unicode_value_py3(self):
         """Test to capture actual Python 3 result pre unicode_literals."""
-        page = pywikibot.Page(self.get_site(), u'Ō')
-        self.assertEqual(repr(page), "Page(b'\\xc5\\x8c')")
-        self.assertEqual(u'%r' % page, "Page(b'\\xc5\\x8c')")
-        self.assertEqual(u'{0!r}'.format(page), "Page(b'\\xc5\\x8c')")
+        self.assertEqual(repr(self.page), "Page('Ō')")
+        self.assertEqual('%r' % self.page, "Page('Ō')")
+        self.assertEqual('{0!r}'.format(self.page), "Page('Ō')")
+
+
+class TestPageReprASCII(TestPageBaseUnicode):
+
+    """Test for Page's repr implementation when using ASCII encoding."""
+
+    def setUp(self):
+        """Patch the current console encoding to ASCII."""
+        super(TestPageReprASCII, self).setUp()
+        self._old_encoding = config.console_encoding
+        config.console_encoding = 'ascii'
+
+    def tearDown(self):
+        """Restore the original console encoding."""
+        config.console_encoding = self._old_encoding
+        super(TestPageReprASCII, self).tearDown()
+
+    @unittest.skipIf(sys.version_info[0] > 2, 'Python 2 specific test')
+    def test_incapable_encoding(self):
+        """Test that repr still works even if the console encoding does not."""
+        self.assertEqual(repr(self.page), b'Page(\\u014c)')
 
 
 class TestPageBotMayEdit(TestCase):
