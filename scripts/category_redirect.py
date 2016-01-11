@@ -17,7 +17,9 @@ are taken into account.
                   moves all images, pages and categories in redirect categories
                   to the target category.
 
-Usage: category_redirect.py [options]
+Usage:
+
+    python pwb.py category_redirect [options]
 
 """
 #
@@ -29,11 +31,14 @@ from __future__ import unicode_literals
 
 __version__ = '$Id$'
 #
-import sys
 import re
+import sys
 import time
+
 from datetime import timedelta
+
 import pywikibot
+
 from pywikibot import i18n, pagegenerators, config
 
 if sys.version_info[0] > 2:
@@ -82,6 +87,7 @@ class CategoryRedirectBot(pywikibot.Bot):
             'pl': "Kategoria:Przekierowania kategorii",
             'pt': "Categoria:!Redirecionamentos de categorias",
             'ru': "Категория:Википедия:Категории-дубликаты",
+            'sco': "Category:Wikipaedia soft redirectit categories",
             'simple': "Category:Category redirects",
             'sh': u"Kategorija:Preusmjerene kategorije Wikipedije",
             'vi': u"Thể loại:Thể loại đổi hướng",
