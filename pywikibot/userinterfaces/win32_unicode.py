@@ -22,6 +22,7 @@
 from __future__ import print_function, unicode_literals
 from io import UnsupportedOperation
 import sys
+
 stdin = sys.stdin
 stdout = sys.stdout
 stderr = sys.stderr
@@ -35,13 +36,65 @@ else:
 
 if sys.platform == "win32":
     import codecs
-    from ctypes import WINFUNCTYPE, windll, POINTER
-    from ctypes import byref, c_int, create_unicode_buffer
-    from ctypes.wintypes import BOOL, HANDLE, DWORD, LPWSTR, LPCWSTR
+    from ctypes import WINFUNCTYPE, windll, POINTER, WinError
+    from ctypes import Structure, byref, c_int, create_unicode_buffer, sizeof
+    from ctypes.wintypes import (BOOL, DWORD, HANDLE, LPCWSTR, LPWSTR,
+                                 SHORT, ULONG, UINT, WCHAR)
     try:
         from ctypes.wintypes import LPVOID
     except ImportError:
         from ctypes import c_void_p as LPVOID
+
+    def force_truetype_console(h_stdout):
+        """Force the console to use a TrueType font (Vista+)."""
+        TMPF_TRUETYPE = 0x04
+        LF_FACESIZE = 32
+
+        class COORD(Structure):
+            _fields_ = [('X', SHORT),
+                        ('Y', SHORT)]
+
+        class CONSOLE_FONT_INFOEX(Structure):
+            _fields_ = [('cbSize', ULONG),
+                        ('nFont', DWORD),
+                        ('dwFontSize', COORD),
+                        ('FontFamily', UINT),
+                        ('FontWeight', UINT),
+                        ('FaceName', WCHAR * LF_FACESIZE)]
+
+        try:
+            GetCurrentConsoleFontEx = WINFUNCTYPE(
+                BOOL,
+                HANDLE,  # hConsoleOutput
+                BOOL,    # bMaximumWindow
+                POINTER(CONSOLE_FONT_INFOEX),  # lpConsoleCurrentFontEx
+            )(("GetCurrentConsoleFontEx", windll.kernel32))
+
+            SetCurrentConsoleFontEx = WINFUNCTYPE(
+                BOOL,
+                HANDLE,  # hConsoleOutput
+                BOOL,    # bMaximumWindow
+                POINTER(CONSOLE_FONT_INFOEX),  # lpConsoleCurrentFontEx
+            )(("SetCurrentConsoleFontEx", windll.kernel32))
+        except AttributeError:
+            # pre Windows Vista. Return without doing anything.
+            return
+
+        current_font = CONSOLE_FONT_INFOEX()
+        current_font.cbSize = sizeof(CONSOLE_FONT_INFOEX)
+
+        if not GetCurrentConsoleFontEx(h_stdout, True, byref(current_font)):
+            WinError()
+
+        truetype_font = (current_font.FontFamily & TMPF_TRUETYPE)
+
+        if not truetype_font:
+            new_font = CONSOLE_FONT_INFOEX()
+            new_font.cbSize = sizeof(CONSOLE_FONT_INFOEX)
+            new_font.FaceName = u'Lucida Console'
+
+            if not SetCurrentConsoleFontEx(h_stdout, True, byref(new_font)):
+                WinError()
 
     original_stderr = sys.stderr
 
@@ -115,11 +168,13 @@ if sys.platform == "win32":
 
         if real_stdout:
             hStdout = GetStdHandle(STD_OUTPUT_HANDLE)
+            force_truetype_console(hStdout)
             if not_a_console(hStdout):
                 real_stdout = False
 
         if real_stderr:
             hStderr = GetStdHandle(STD_ERROR_HANDLE)
+            force_truetype_console(hStderr)
             if not_a_console(hStderr):
                 real_stderr = False
 

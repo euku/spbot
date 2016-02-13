@@ -373,7 +373,7 @@ except:
 #    transliteration_target = console_encoding
 # After emitting the warning, this last option will be set.
 
-transliteration_target = 'not set'
+transliteration_target = None
 
 # The encoding in which textfiles are stored, which contain lists of page
 # titles. The most used is: 'utf-8'. 'utf-8-sig' recognizes BOM but it is
@@ -973,19 +973,6 @@ if console_encoding is None:
         console_encoding = 'cp850'
     else:
         console_encoding = 'iso-8859-1'
-
-# Fix up transliteration_target
-if transliteration_target == 'not set':
-    if sys.platform == 'win32':
-        transliteration_target = console_encoding
-        print("WARNING: Running on Windows and transliteration_target is not "
-              "set.")
-        print("Please see "
-              "https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Pywikibot/Windows")
-    else:
-        transliteration_target = None
-elif transliteration_target in ('None', 'none'):
-    transliteration_target = None
 
 
 if sys.platform == 'win32' and editor is None:
