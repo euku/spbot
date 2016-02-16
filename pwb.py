@@ -64,9 +64,10 @@ def tryimport_pwb():
     try:
         import pywikibot  # noqa
         pwb = pywikibot
-    except RuntimeError:
-        pwb = lambda: None
-        pwb.argvu = []
+    except RuntimeError:  # no user-config.py provided
+        os.environ['PYWIKIBOT2_NO_USER_CONFIG'] = '2'
+        import pywikibot  # noqa
+        pwb = pywikibot
 
 
 def run_python_file(filename, argv, argvu, package=None):
@@ -206,11 +207,13 @@ try:
 except RuntimeError as err:
     # user-config.py to be created
     print("NOTE: 'user-config.py' was not found!")
-    if filename is not None and not filename.startswith('generate_'):
+    if not filename.startswith('generate_'):
         print("Please follow the prompts to create it:")
         run_python_file('generate_user_files.py',
                         ['generate_user_files.py'],
-                        [])
+                        [u'generate_user_files.py'])
+        # because we have loaded pywikibot without user-config.py loaded, we need to re-start
+        # the entire process. Ask the user to do so.
         sys.exit(1)
 
 
