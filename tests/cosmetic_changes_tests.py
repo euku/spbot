@@ -1,7 +1,7 @@
 # -*- coding: utf-8  -*-
 """Test cosmetic_changes module."""
 #
-# (C) Pywikibot team, 2015
+# (C) Pywikibot team, 2015-2016
 #
 # Distributed under the terms of the MIT license.
 #
@@ -45,11 +45,11 @@ class TestCosmeticChanges(TestCase):
     def test_translateMagicWords(self):
         """Test translateMagicWords method."""
         self.assertEqual(
-            '[[File:Foo.bar|mini]]',
+            '[[File:Foo.bar|miniatur]]',
             self.cct.translateMagicWords('[[File:Foo.bar|thumb]]'))
         self.assertEqual(
-            '[[File:Foo.bar|mini]]',
-            self.cct.translateMagicWords('[[File:Foo.bar|miniatur]]'))
+            '[[File:Foo.bar|miniatur]]',
+            self.cct.translateMagicWords('[[File:Foo.bar|mini]]'))
 
     def test_cleanUpLinks_pipes(self):
         """Test cleanUpLinks method."""
