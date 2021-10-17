@@ -253,8 +253,8 @@ class Throttle:
 
         Announce the delay if it exceeds a preset limit.
         """
-        if seconds <= 0:
-            return
+        # never wait
+        return
 
         message = 'Sleeping for {seconds:.1f} seconds, {now}' \
                   .format_map({
