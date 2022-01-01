@@ -240,7 +240,7 @@ authenticate = {}  # type: Dict[str, Tuple[str, ...]]
 # use them. In this case, the password file should contain a BotPassword object
 # in the following format:
 # (username, BotPassword(botname, botpassword))
-password_file = None
+password_file = '.passwd'
 
 # edit summary to use if not supplied by bot script
 # WARNING: this should NEVER be used in practice, ALWAYS supply a more
