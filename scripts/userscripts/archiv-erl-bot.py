@@ -665,15 +665,15 @@ class WikiDocument:
                         else:
                            pageTo.put(self.substErledigt(bot.headTemplate + "\n\n" + content, bot), targetEditComment, None, self.minorEdit, True)
                            doNotSave = False
-                    except pywikibot.EditConflict:
+                    except pywikibot.exceptions.EditConflictError:
                         pywikibot.output("Bearbeitungskonflikt, Seite wird nicht gespeichert")
                         doNotSave = True
-                    except pywikibot.LockedPage:
+                    except pywikibot.exceptions.LockedPageError:
                         pywikibot.output("Seite evenutell blockiert!")
                         doNotSave = True
-                    except pywikibot.exceptions.InvalidTitle:
+                    except pywikibot.exceptions.InvalidTitleError:
                         # don't care, some bug in the title
-                        pywikibot.output("Page skipped because of pywikibot.exceptions.InvalidTitle")
+                        pywikibot.output("Page skipped because of pywikibot.exceptions.InvalidTitleError")
                         doNotSave = True
                     except:
                         # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
@@ -718,7 +718,7 @@ class WikiDocument:
                 except pywikibot.exceptions.NoPageError:
                     pageTo.put(self.modifiedText, originEditComment, None, self.minorEdit)
                     pass
-                except pywikibot.EditConflict:
+                except pywikibot.exceptions.EditConflictError:
                     pywikibot.output('Skipping %s because of edit conflict' % (self.name))
 
 
