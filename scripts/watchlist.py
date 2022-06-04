@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Allows access to the bot account's watchlist.
 
@@ -20,7 +20,7 @@ Command line options:
              user-config.py
 """
 #
-# (C) Pywikibot team, 2005-2021
+# (C) Pywikibot team, 2005-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -41,7 +41,7 @@ def get(site=None):
     return watchlist
 
 
-def count_watchlist(site=None):
+def count_watchlist(site=None) -> None:
     """Count only the total number of page(s) in watchlist for this wiki."""
     if site is None:
         site = pywikibot.Site()
@@ -50,7 +50,7 @@ def count_watchlist(site=None):
                      .format(watchlist_count))
 
 
-def count_watchlist_all():
+def count_watchlist_all() -> None:
     """Count only the total number of page(s) in watchlist for all wikis."""
     wl_count_all = 0
     pywikibot.output('Counting pages in watchlists of all wikis...')
@@ -62,7 +62,7 @@ def count_watchlist_all():
                      'for all wikis.'.format(wl_count_all))
 
 
-def isWatched(pageName, site=None):  # noqa N802, N803
+def isWatched(pageName, site=None):  # noqa: N802, N803
     """Check whether a page is being watched."""
     watchlist = get(site)
     return pageName in watchlist
@@ -74,7 +74,7 @@ def refresh(site):
     return list(site.watched_pages(force=True))
 
 
-def refresh_all():
+def refresh_all() -> None:
     """Reload watchlists for all wikis where a watchlist is already present."""
     cache_path = CachedRequest._get_cache_dir()
     files = os.scandir(cache_path)
@@ -89,7 +89,7 @@ def refresh_all():
             seen.add(entry.site)
 
 
-def refresh_new():
+def refresh_new() -> None:
     """Load watchlists of all wikis for accounts set in user-config.py."""
     pywikibot.output(
         'Downloading all watchlists for your accounts in user-config.py')
@@ -135,8 +135,8 @@ def main(*args: str) -> None:
         for page in watchlist:
             try:
                 pywikibot.stdout(page.title())
-            except InvalidTitleError:
-                pywikibot.exception()
+            except InvalidTitleError as e:
+                pywikibot.error(e)
 
 
 if __name__ == '__main__':

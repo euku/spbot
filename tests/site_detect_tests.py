@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Test for site detection."""
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -114,13 +115,6 @@ class Pre119SiteTestCase(SiteDetectionTestCase):
         """Test detection of MediaWiki sites for www.wikifon.org."""
         self.assertNoSite('http://www.wikifon.org/$1')  # v1.11.0
 
-    def test_ecoreality(self):
-        """Test detection of MediaWiki sites for www.ecoreality.org.
-
-        api.php is not available. Anyway the wiki is outdated.
-        """
-        self.assertNoSite('http://www.ecoreality.org/wiki/$1')  # v1.16.2
-
 
 class PreAPISiteTestCase(SiteDetectionTestCase):
 
@@ -155,14 +149,6 @@ class APIHiddenTestCase(SiteDetectionTestCase):
         """
         self.assertNoSite('http://wikisophia.org/index.php?title=$1')
 
-    def test_ecoreality(self):
-        """Test detection of MediaWiki sites for www.EcoReality.org.
-
-        api.php is not available. HTML looks like it has an API, but redirect
-        rules prevent access.
-        """
-        self.assertNoSite('http://www.EcoReality.org/wiki/$1')
-
 
 class FailingSiteTestCase(SiteDetectionTestCase):
 
@@ -174,15 +160,6 @@ class FailingSiteTestCase(SiteDetectionTestCase):
         SSL certificate verification fails.
         """
         self.assertNoSite('http://wiki.animutationportal.com/index.php/$1')
-
-
-class APIDisabledTestCase(SiteDetectionTestCase):
-
-    """Test MediaWiki sites without an enabled API."""
-
-    def test_linuxquestions(self):
-        """Test detection of MediaWiki sites for wiki.linuxquestions.org."""
-        self.assertNoSite('http://wiki.linuxquestions.org/wiki/$1')
 
 
 class NoSiteTestCase(SiteDetectionTestCase):
@@ -290,7 +267,7 @@ class PrivateWikiTestCase(PatchingTestCase):
         self.assertEqual(parsed_url.netloc, self.NETLOC)
         self.assertIn(parsed_url.path, self._responses)
 
-        return type(str('Response'),
+        return type('Response',
                     (object,),
                     {'status_code': HTTPStatus.OK.value,
                      'text': self._responses[parsed_url.path],

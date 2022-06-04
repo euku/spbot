@@ -1,6 +1,6 @@
 """Family module for Wiktionary."""
 #
-# (C) Pywikibot team, 2005-2021
+# (C) Pywikibot team, 2005-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -16,32 +16,32 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     name = 'wiktionary'
 
     closed_wikis = [
-        # See https://noc.wikimedia.org/conf/highlight.php?file=dblists/closed.dblist  # noqa
+        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/closed.dblist
         'aa', 'ab', 'ak', 'as', 'av', 'bh', 'bi', 'bm', 'bo', 'ch', 'cr', 'dz',
         'ik', 'mh', 'pi', 'rm', 'rn', 'sc', 'sn', 'to', 'tw', 'xh', 'yo', 'za',
     ]
 
     removed_wikis = [
-        # See https://noc.wikimedia.org/conf/highlight.php?file=dblists/deleted.dblist  # noqa
-        'als', 'ba', 'dk', 'tlh', 'tokipona',
+        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/deleted.dblist
+        'als', 'ba', 'dk', 'mo', 'tlh', 'tokipona',
     ]
 
     languages_by_size = [
-        'en', 'fr', 'mg', 'ru', 'zh', 'de', 'sh', 'es', 'sv', 'el', 'nl', 'pl',
-        'ku', 'lt', 'it', 'ca', 'fi', 'hu', 'ta', 'tr', 'io', 'hy', 'ko', 'ja',
+        'en', 'fr', 'mg', 'zh', 'ru', 'de', 'es', 'sh', 'sv', 'nl', 'el', 'pl',
+        'ku', 'lt', 'it', 'ca', 'fi', 'ta', 'hu', 'tr', 'io', 'hy', 'ko', 'ja',
         'pt', 'kn', 'vi', 'sr', 'th', 'hi', 'ro', 'no', 'et', 'id', 'cs', 'ml',
-        'my', 'uz', 'li', 'or', 'te', 'eo', 'fa', 'ar', 'gl', 'jv', 'oc', 'az',
-        'eu', 'uk', 'br', 'ast', 'da', 'skr', 'lo', 'simple', 'bn', 'is', 'hr',
-        'la', 'fj', 'tg', 'ky', 'sk', 'bg', 'wa', 'ur', 'ps', 'cy', 'vo', 'sl',
-        'shn', 'he', 'af', 'zh-min-nan', 'scn', 'om', 'tl', 'pa', 'sw', 'fy',
-        'nn', 'ka', 'lv', 'sq', 'min', 'nds', 'co', 'mn', 'pnb', 'ms', 'lb',
-        'bs', 'nah', 'yue', 'sa', 'kk', 'mnw', 'km', 'diq', 'vec', 'be', 'tk',
-        'mk', 'sm', 'hsb', 'shy', 'nia', 'gd', 'ga', 'an', 'wo', 'mni', 'gom',
-        'ks', 'mr', 'su', 'ia', 'ang', 'fo', 'tt', 'mt', 'sd', 'gn', 'ie',
-        'so', 'csb', 'ug', 'bcl', 'st', 'si', 'roa-rup', 'hif', 'zu', 'kl',
-        'mi', 'ay', 'jbo', 'ln', 'yi', 'gu', 'na', 'gv', 'kw', 'tpi', 'ha',
-        'ne', 'rw', 'ts', 'qu', 'ss', 'chr', 'iu', 'am', 'dv', 'sg', 'ti',
-        'tn',
+        'my', 'uz', 'li', 'or', 'eo', 'te', 'fa', 'gl', 'ar', 'skr', 'oc',
+        'jv', 'az', 'eu', 'uk', 'br', 'ast', 'da', 'lo', 'is', 'simple', 'bn',
+        'la', 'hr', 'fj', 'tg', 'sk', 'ky', 'wa', 'bg', 'ur', 'sg', 'shn',
+        'ps', 'cy', 'vo', 'sl', 'om', 'he', 'af', 'zh-min-nan', 'mnw', 'scn',
+        'tl', 'pa', 'sw', 'fy', 'lmo', 'nn', 'ka', 'lv', 'ms', 'min', 'sq',
+        'nds', 'co', 'mn', 'pnb', 'lb', 'bs', 'nah', 'yue', 'sa', 'kk', 'km',
+        'diq', 'vec', 'be', 'tk', 'mk', 'sm', 'nia', 'hsb', 'shy', 'ks', 'su',
+        'gd', 'ga', 'bcl', 'mr', 'gom', 'an', 'wo', 'mni', 'ia', 'ang', 'mt',
+        'fo', 'sd', 'tt', 'gn', 'ie', 'so', 'csb', 'ug', 'si', 'st', 'roa-rup',
+        'hif', 'tpi', 'kl', 'zu', 'ha', 'mi', 'ay', 'jbo', 'yi', 'ln', 'gu',
+        'na', 'gv', 'kw', 'am', 'ne', 'rw', 'ts', 'qu', 'ss', 'iu', 'chr',
+        'dv', 'ti', 'tn',
     ]
 
     category_redirect_templates = {

@@ -22,7 +22,7 @@ If required you can use your own Session object passing it to the
 :py:obj:`flush()` can be called to close the session object.
 """
 #
-# (C) Pywikibot team, 2007-2021
+# (C) Pywikibot team, 2007-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -48,12 +48,7 @@ from pywikibot.exceptions import (
     Server504Error,
 )
 from pywikibot.logging import critical, debug, error, log, warning
-from pywikibot.tools import (
-    deprecated,
-    deprecated_args,
-    file_mode_checker,
-    issue_deprecation_warning,
-)
+from pywikibot.tools import file_mode_checker
 
 
 try:
@@ -66,24 +61,22 @@ except ImportError as e:
 # 'certificate verify failed' is a commonly detectable string
 SSL_CERT_VERIFY_FAILED_MSG = 'certificate verify failed'
 
-_logger = 'comms.http'
-
 cookie_file_path = config.datafilepath('pywikibot.lwp')
 file_mode_checker(cookie_file_path, create=True)
 cookie_jar = cookiejar.LWPCookieJar(cookie_file_path)
 try:
     cookie_jar.load(ignore_discard=True)
 except cookiejar.LoadError:
-    debug('Loading cookies failed.', _logger)
+    debug('Loading cookies failed.')
 else:
-    debug('Loaded cookies from file.', _logger)
+    debug('Loaded cookies from file.')
 
 session = requests.Session()
 session.cookies = cookie_jar
 
 
 # Prepare flush on quit
-def flush():
+def flush() -> None:  # pragma: no cover
     """Close the session object. This is called when the module terminates."""
     log('Closing network session.')
     session.close()
@@ -196,22 +189,6 @@ def user_agent(site=None, format_string: str = None) -> str:
     return formatted
 
 
-@deprecated('pywikibot.comms.http.fake_user_agent', since='20161205')
-def get_fake_user_agent():
-    """
-    Return a fake user agent depending on `fake_user_agent` option in config.
-
-    Deprecated, use fake_user_agent() instead.
-
-    :rtype: str
-    """
-    if isinstance(config.fake_user_agent, str):
-        return config.fake_user_agent
-    if config.fake_user_agent is False:
-        return user_agent()
-    return fake_user_agent()
-
-
 def fake_user_agent() -> str:
     """Return a fake user agent."""
     try:
@@ -222,7 +199,6 @@ def fake_user_agent() -> str:
     return UserAgent().random
 
 
-@deprecated_args(body='data')
 def request(site,
             uri: Optional[str] = None,
             headers: Optional[dict] = None,
@@ -245,13 +221,6 @@ def request(site,
     :return: The received data Response
     """
     kwargs.setdefault('verify', site.verify_SSL_certificate())
-    old_validation = kwargs.pop('disable_ssl_certificate_validation', None)
-    if old_validation is not None:
-        issue_deprecation_warning('disable_ssl_certificate_validation',
-                                  instead='verify',
-                                  since='20201220')
-        kwargs.update(verify=not old_validation)
-
     if not headers:
         headers = {}
         format_string = None
@@ -297,9 +266,15 @@ def error_handling_callback(response):
     :type response: :py:obj:`requests.Response`
     """
     # TODO: do some error correcting stuff
-    if isinstance(response, requests.exceptions.SSLError):
-        if SSL_CERT_VERIFY_FAILED_MSG in str(response):
-            raise FatalServerError(str(response))
+    if isinstance(response, requests.exceptions.SSLError) \
+       and SSL_CERT_VERIFY_FAILED_MSG in str(response):
+        raise FatalServerError(str(response))
+
+    if isinstance(response, requests.ConnectionError):
+        msg = str(response)
+        if 'NewConnectionError' in msg \
+           and re.search(r'\[Errno (-2|8|11001)\]', msg):
+            raise ConnectionError(response)
 
     if isinstance(response, Exception):
         with suppress(Exception):
@@ -323,7 +298,6 @@ def error_handling_callback(response):
         warning('Http response status {}'.format(response.status_code))
 
 
-@deprecated_args(body='data')
 def fetch(uri: str, method: str = 'GET', headers: Optional[dict] = None,
           default_error_handling: bool = True,
           use_fake_user_agent: Union[bool, str] = False, **kwargs):
@@ -402,12 +376,6 @@ def fetch(uri: str, method: str = 'GET', headers: Optional[dict] = None,
             auth = requests_oauthlib.OAuth1(*auth)
 
     timeout = config.socket_timeout
-    old_validation = kwargs.pop('disable_ssl_certificate_validation', None)
-    if old_validation is not None:
-        issue_deprecation_warning('disable_ssl_certificate_validation',
-                                  instead='verify',
-                                  since='20201220')
-        kwargs.update(verify=not old_validation)
 
     try:
         # Note that the connections are pooled which mean that a future
@@ -427,6 +395,36 @@ def fetch(uri: str, method: str = 'GET', headers: Optional[dict] = None,
     return response
 
 
+# Extract charset (from content-type header)
+CHARSET_RE = re.compile(
+    r'charset\s*=\s*(?P<q>[\'"]?)(?P<charset>[^\'",;>/]+)(?P=q)',
+    flags=re.I,
+)
+
+
+def get_charset_from_content_type(content_type: str) -> Optional[str]:
+    """Get charset from the content-type header.
+
+    .. versionadded:: 7.3
+    """
+    m = CHARSET_RE.search(content_type)
+    if not m:
+        return None
+    charset = m.group('charset').strip('"\' ').lower()
+    # Convert to python correct encoding names
+    if re.sub(r'[ _\-]', '', charset) == 'xeucjp':
+        charset = 'euc_jp'
+    else:
+        # fix cp encodings (T304830, T307760)
+        # remove delimiter in front of the code number
+        # replace win/windows with cp
+        # remove language code in font of win/windows
+        charset = re.sub(
+            r'\A(?:cp[ _\-]|(?:[a-z]+[_\-]?)?win(?:dows[_\-]?)?)(\d{3,4})',
+            r'cp\1', charset)
+    return charset
+
+
 def _get_encoding_from_response_headers(response) -> Optional[str]:
     """Return charset given by the response header."""
     content_type = response.headers.get('content-type')
@@ -434,9 +432,9 @@ def _get_encoding_from_response_headers(response) -> Optional[str]:
     if not content_type:
         return None
 
-    m = re.search('charset=(?P<charset>.*?$)', content_type)
-    if m:
-        header_encoding = m.group('charset')
+    charset = get_charset_from_content_type(content_type)
+    if charset:
+        header_encoding = charset
     elif 'json' in content_type:
         # application/json | application/sparql-results+json
         header_encoding = 'utf-8'

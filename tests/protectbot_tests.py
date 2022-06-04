@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for scripts/protect.py."""
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -8,7 +9,6 @@ import unittest
 from contextlib import suppress
 
 import pywikibot
-import pywikibot.page
 from scripts import protect
 from tests.aspects import ScriptMainTestCase
 
@@ -20,7 +20,7 @@ class TestProtectionBot(ScriptMainTestCase):
     family = 'wikipedia'
     code = 'test'
 
-    sysop = True
+    rights = 'protect'
     write = True
 
     def test_protect(self):

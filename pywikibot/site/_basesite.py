@@ -1,15 +1,17 @@
 """Objects with site methods independent of the communication interface."""
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import functools
 import re
 import threading
+from typing import Optional
 from warnings import warn
 
 import pywikibot
+from pywikibot.backports import Pattern
 from pywikibot.exceptions import (
     Error,
     FamilyMaintenanceWarning,
@@ -20,12 +22,11 @@ from pywikibot.exceptions import (
 from pywikibot.site._namespace import Namespace, NamespacesDict
 from pywikibot.throttle import Throttle
 from pywikibot.tools import (
+    cached,
     ComparableMixin,
     SelfCallString,
-    deprecated,
     first_upper,
     normalize_username,
-    remove_last_args,
 )
 
 
@@ -33,7 +34,6 @@ class BaseSite(ComparableMixin):
 
     """Site methods that are independent of the communication interface."""
 
-    @remove_last_args(['sysop'])
     def __init__(self, code: str, fam=None, user=None) -> None:
         """
         Initializer.
@@ -99,11 +99,10 @@ class BaseSite(ComparableMixin):
         self._locked_pages = set()
 
     @property
+    @cached
     def throttle(self):
         """Return this Site's throttle. Initialize a new one if needed."""
-        if not hasattr(self, '_throttle'):
-            self._throttle = Throttle(self)
-        return self._throttle
+        return Throttle(self)
 
     @property
     def family(self):
@@ -129,36 +128,31 @@ class BaseSite(ComparableMixin):
         return self.__code
 
     @property
-    def doc_subpage(self):
-        """
-        Return the documentation subpage for this Site.
+    @cached
+    def doc_subpage(self) -> tuple:
+        """Return the documentation subpage for this Site."""
+        try:
+            doc, codes = self.family.doc_subpages.get('_default', ((), []))
+            if self.code not in codes:
+                try:
+                    doc = self.family.doc_subpages[self.code]
+                # Language not defined in doc_subpages in x_family.py file
+                # It will use default for the family.
+                # should it just raise an Exception and fail?
+                # this will help to check the dictionary ...
+                except KeyError:
+                    warn('Site {} has no language defined in '
+                         'doc_subpages dict in {}_family.py file'
+                         .format(self, self.family.name),
+                         FamilyMaintenanceWarning, 2)
+        # doc_subpages not defined in x_family.py file
+        except AttributeError:
+            doc = ()  # default
+            warn('Site {} has no doc_subpages dict in {}_family.py file'
+                 .format(self, self.family.name),
+                 FamilyMaintenanceWarning, 2)
 
-        :rtype: tuple
-        """
-        if not hasattr(self, '_doc_subpage'):
-            try:
-                doc, codes = self.family.doc_subpages.get('_default', ((), []))
-                if self.code not in codes:
-                    try:
-                        doc = self.family.doc_subpages[self.code]
-                    # Language not defined in doc_subpages in x_family.py file
-                    # It will use default for the family.
-                    # should it just raise an Exception and fail?
-                    # this will help to check the dictionary ...
-                    except KeyError:
-                        warn('Site {} has no language defined in '
-                             'doc_subpages dict in {}_family.py file'
-                             .format(self, self.family.name),
-                             FamilyMaintenanceWarning, 2)
-            # doc_subpages not defined in x_family.py file
-            except AttributeError:
-                doc = ()  # default
-                warn('Site {} has no doc_subpages dict in {}_family.py file'
-                     .format(self, self.family.name),
-                     FamilyMaintenanceWarning, 2)
-            self._doc_subpage = doc
-
-        return self._doc_subpage
+        return doc
 
     def _cmpkey(self):
         """Perform equality and inequality tests on Site objects."""
@@ -175,19 +169,18 @@ class BaseSite(ComparableMixin):
             del new['_iw_sites']
         return new
 
-    def __setstate__(self, attrs):
+    def __setstate__(self, attrs) -> None:
         """Restore things removed in __getstate__."""
         self.__dict__.update(attrs)
         self._pagemutex = threading.Condition()
 
-    def user(self):
+    def user(self) -> Optional[str]:
         """Return the currently-logged in bot username, or None."""
         if self.logged_in():
             return self.username()
         return None
 
-    @remove_last_args(['sysop'])
-    def username(self):
+    def username(self) -> Optional[str]:
         """Return the username used for the site."""
         return self._username
 
@@ -207,7 +200,7 @@ class BaseSite(ComparableMixin):
             raise AttributeError("{} instance has no attribute '{}'"
                                  .format(self.__class__.__name__, attr))
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return string representing this Site's name and code."""
         return self.family.name + ':' + self.code
 
@@ -216,7 +209,7 @@ class BaseSite(ComparableMixin):
         """String representing this Site's name and code."""
         return SelfCallString(self.__str__())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return internal representation."""
         return '{}("{}", "{}")'.format(
             self.__class__.__name__, self.code, self.family)
@@ -234,24 +227,23 @@ class BaseSite(ComparableMixin):
         return [lang for lang in self.languages()
                 if self.namespaces.lookup_normalized_name(lang) is None]
 
-    def _interwiki_urls(self, only_article_suffixes=False):
+    def _interwiki_urls(self, only_article_suffixes: bool = False):
         base_path = self.path()
         if not only_article_suffixes:
-            yield base_path
-        yield base_path + '/'
-        yield base_path + '?title='
-        yield self.article_path
+            yield base_path + '{}'
+        yield base_path + '/{}'
+        yield base_path + '?title={}'
+        yield self.articlepath
 
     def _build_namespaces(self):
         """Create default namespaces."""
         return Namespace.builtin_namespaces()
 
     @property
+    @cached
     def namespaces(self):
         """Return dict of valid namespaces on this wiki."""
-        if not hasattr(self, '_namespaces'):
-            self._namespaces = NamespacesDict(self._build_namespaces())
-        return self._namespaces
+        return NamespacesDict(self._build_namespaces())
 
     def ns_normalize(self, value):
         """
@@ -264,22 +256,19 @@ class BaseSite(ComparableMixin):
         index = self.namespaces.lookup_name(value)
         return self.namespace(index)
 
-    @remove_last_args(('default', ))
     def redirect(self):
         """Return list of localized redirect tags for the site."""
         return ['REDIRECT']
 
-    @remove_last_args(('default', ))
     def pagenamecodes(self):
         """Return list of localized PAGENAME tags for the site."""
         return ['PAGENAME']
 
-    @remove_last_args(('default', ))
     def pagename2codes(self):
         """Return list of localized PAGENAMEE tags for the site."""
         return ['PAGENAMEE']
 
-    def lock_page(self, page, block=True):
+    def lock_page(self, page, block: bool = True):
         """
         Lock page for writing. Must be called before writing any page.
 
@@ -300,7 +289,7 @@ class BaseSite(ComparableMixin):
                 self._pagemutex.wait()
             self._locked_pages.add(title)
 
-    def unlock_page(self, page):
+    def unlock_page(self, page) -> None:
         """
         Unlock page. Call as soon as a write operation has completed.
 
@@ -354,7 +343,10 @@ class BaseSite(ComparableMixin):
         linkfam, linkcode = pywikibot.Link(text, self).parse_site()
         return linkfam != self.family.name or linkcode != self.code
 
-    def redirectRegex(self, pattern=None):  # noqa: N802
+    def redirectRegex(  # noqa: N802
+        self,
+        pattern: Optional[str] = None
+    ) -> Pattern[str]:
         """Return a compiled regular expression matching on redirect pages.
 
         Group 1 in the regex match object will be the target title.
@@ -384,10 +376,14 @@ class BaseSite(ComparableMixin):
                 return default_ns, title
             return ns, name
 
-        # Replace underscores with spaces and multiple combinations of them
-        # with only one space
-        title1 = re.sub(r'[_ ]+', ' ', title1)
-        title2 = re.sub(r'[_ ]+', ' ', title2)
+        # Replace alias characters like underscores with title
+        # delimiters like spaces and multiple combinations of them with
+        # only one delimiter
+        sep = self.family.title_delimiter_and_aliases[0]
+        pattern = re.compile('[{}]+'
+                             .format(self.family.title_delimiter_and_aliases))
+        title1 = pattern.sub(sep, title1)
+        title2 = pattern.sub(sep, title2)
         if title1 == title2:
             return True
 
@@ -407,33 +403,6 @@ class BaseSite(ComparableMixin):
             name1 = first_upper(name1)
             name2 = first_upper(name2)
         return name1 == name2
-
-    # namespace shortcuts for backwards-compatibility
-
-    @deprecated('namespaces.SPECIAL.custom_name', since='20160407')
-    def special_namespace(self):
-        """Return local name for the Special: namespace."""
-        return self.namespace(-1)
-
-    @deprecated('namespaces.FILE.custom_name', since='20160407')
-    def image_namespace(self):
-        """Return local name for the File namespace."""
-        return self.namespace(6)
-
-    @deprecated('namespaces.MEDIAWIKI.custom_name', since='20160407')
-    def mediawiki_namespace(self):
-        """Return local name for the MediaWiki namespace."""
-        return self.namespace(8)
-
-    @deprecated('namespaces.TEMPLATE.custom_name', since='20160407')
-    def template_namespace(self):
-        """Return local name for the Template namespace."""
-        return self.namespace(10)
-
-    @deprecated('namespaces.CATEGORY.custom_name', since='20160407')
-    def category_namespace(self):
-        """Return local name for the Category namespace."""
-        return self.namespace(14)
 
     # site-specific formatting preferences
 

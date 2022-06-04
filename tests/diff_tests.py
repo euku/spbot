@@ -1,13 +1,14 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Test diff module."""
 #
-# (C) Pywikibot team, 2016-2021
+# (C) Pywikibot team, 2016-2022
 #
 # Distributed under the terms of the MIT license.
 from contextlib import suppress
+from unittest.mock import patch
 
 from pywikibot.diff import PatchManager, cherry_pick, html_comparator
-from tests import join_html_data_path, patch
+from tests import join_html_data_path
 from tests.aspects import TestCase, require_modules, unittest
 
 
@@ -200,17 +201,17 @@ class TestCherryPick(TestCase):
     newtext = 'new'
 
     # output messages expected during testing
-    diff_message = ('\x03{lightred}- old\n\x03{default}\x03{lightgreen}+ '
-                    'new\n\x03{default}')
-    none_message = '\x03{{lightpurple}}{0: ^50}\x03{{default}}'.format('None.')
-    header_base = '\n\x03{{lightpurple}}{0:*^50}\x03{{default}}\n'
+    diff_message = ('<<lightred>>- old\n<<default>><<lightgreen>>+ '
+                    'new\n<<default>>')
+    none_message = '<<lightpurple>>{0: ^50}<<default>>'.format('None.')
+    header_base = '\n<<lightpurple>>{0:*^50}<<default>>\n'
     headers = ['  ALL CHANGES  ', '  REVIEW CHANGES  ', '  APPROVED CHANGES  ']
-    diff_by_letter_message = ('\x03{lightred}- o\n\x03{default}'
-                              '\x03{lightred}- l\n\x03{default}'
-                              '\x03{lightred}- d\n\x03{default}'
-                              '\x03{lightgreen}+ n\n\x03{default}'
-                              '\x03{lightgreen}+ e\n\x03{default}'
-                              '\x03{lightgreen}+ w\n\x03{default}')
+    diff_by_letter_message = ('<<lightred>>- o\n<<default>>'
+                              '<<lightred>>- l\n<<default>>'
+                              '<<lightred>>- d\n<<default>>'
+                              '<<lightgreen>>+ n\n<<default>>'
+                              '<<lightgreen>>+ e\n<<default>>'
+                              '<<lightgreen>>+ w\n<<default>>')
 
     def check_headers(self, mock):
         """Check if all headers were added to output."""

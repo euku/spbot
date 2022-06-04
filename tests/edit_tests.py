@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for editing pages."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -76,7 +77,7 @@ class TestSiteMergeHistory(TestCase):
     code = 'test'
 
     write = True
-    sysop = True
+    rights = 'mergehistory'
 
     def setup_test_pages(self):
         """Helper function to set up pages that we will use in these tests."""

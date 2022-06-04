@@ -1,28 +1,27 @@
+#!/usr/bin/python3
 """API test module."""
 #
-# (C) Pywikibot team, 2007-2021
+# (C) Pywikibot team, 2007-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import datetime
 import types
+import unittest
 from collections import defaultdict
 from contextlib import suppress
+from unittest.mock import patch
 
 import pywikibot.family
-import pywikibot.login
-import pywikibot.page
 import pywikibot.site
 from pywikibot.data import api
 from pywikibot.exceptions import APIError, NoUsernameError
 from pywikibot.throttle import Throttle
 from pywikibot.tools import suppress_warnings
-from tests import patch
 from tests.aspects import (
     DefaultDrySiteTestCase,
     DefaultSiteTestCase,
     TestCase,
-    unittest,
 )
 from tests.utils import FakeLoginManager
 
@@ -97,20 +96,8 @@ class TestParamInfo(DefaultSiteTestCase):
 
     def test_init_query_first(self):
         """Test init where it first adds query and then main."""
-        def patched_generate_submodules(modules):
-            # Change the query such that query is handled before main
-            modules = set(modules)
-            if 'main' in modules:
-                assert 'query' in modules
-                modules.discard('main')
-                modules = list(modules) + ['main']
-            else:
-                assert 'query' not in modules
-            original_generate_submodules(modules)
         pi = api.ParamInfo(self.site, {'query', 'main'})
         self.assertIsEmpty(pi)
-        original_generate_submodules = pi._generate_submodules
-        pi._generate_submodules = patched_generate_submodules
         pi._init()
         self.assertIn('main', pi._paraminfo)
         self.assertIn('query', pi._paraminfo)
@@ -842,7 +829,7 @@ class TestLazyLoginBase(TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up steward Family."""
-        super(TestLazyLoginBase, cls).setUpClass()
+        super().setUpClass()
         fam = pywikibot.family.AutoFamily(
             'steward', 'https://steward.wikimedia.org/w/api.php')
         cls.site = pywikibot.site.APISite('steward', fam)
@@ -909,25 +896,6 @@ class TestLazyLoginNoUsername(TestLazyLoginBase):
             'You need read permission to use this module.')
         error.assert_called_with(
             'You have no API read permissions. Seems you are not logged in.')
-
-
-class TestBadTokenRecovery(TestCase):
-
-    """Test that the request recovers from bad tokens."""
-
-    family = 'wikipedia'
-    code = 'test'
-
-    write = True
-
-    def test_bad_token(self):
-        """Test the bad token recovery by corrupting the cache."""
-        site = self.get_site()
-        site.tokens._tokens.setdefault(site.user(), {})['edit'] = 'INVALID'
-        page = pywikibot.Page(site, 'Pywikibot bad token test')
-        page.text = ('This page is testing whether pywikibot rerequests '
-                     'a token when a badtoken error was received.')
-        page.save(summary='Bad token test')
 
 
 class TestUrlEncoding(TestCase):
@@ -1018,7 +986,7 @@ class TestLagpattern(DefaultSiteTestCase):
             pywikibot.warning(
                 'Wrong api.lagpattern regex, cannot retrieve lag value')
             raise e
-        self.assertIsInstance(mythrottle._lagvalue, int)
+        self.assertIsInstance(mythrottle._lagvalue, (int, float))
         self.assertGreaterEqual(mythrottle._lagvalue, 0)
         self.assertIsInstance(mythrottle.retry_after, int)
         self.assertGreaterEqual(mythrottle.retry_after, 0)

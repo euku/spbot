@@ -1,6 +1,6 @@
 """Objects representing MediaWiki families."""
 #
-# (C) Pywikibot team, 2004-2021
+# (C) Pywikibot team, 2004-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -19,14 +19,9 @@ from typing import Optional
 
 import pywikibot
 from pywikibot import config
-from pywikibot.backports import Dict, List, Tuple
+from pywikibot.backports import Dict, List, Set, Tuple  # skipcq: PY-W2000
 from pywikibot.exceptions import FamilyMaintenanceWarning, UnknownFamilyError
-from pywikibot.tools import (
-    ModuleDeprecationWrapper,
-    classproperty,
-    deprecated,
-    deprecated_args,
-)
+from pywikibot.tools import classproperty, deprecated, remove_last_args
 
 
 logger = logging.getLogger('pywiki.wiki.family')
@@ -34,7 +29,7 @@ logger = logging.getLogger('pywiki.wiki.family')
 # Legal characters for Family.name and Family.langs keys
 NAME_CHARACTERS = string.ascii_letters + string.digits
 # nds_nl code alias requires "_"n
-# dash must be the last char to be reused as regex in update_linktrails
+# dash must be the last char to be reused as regex
 CODE_CHARACTERS = string.ascii_lowercase + string.digits + '_-'
 
 
@@ -94,37 +89,37 @@ class Family:
         'ary', 'pdc', 'de', 'dv', 'nv', 'dsb', 'dty', 'dz', 'mh', 'et', 'el',
         'eml', 'en', 'myv', 'es', 'eo', 'ext', 'eu', 'ee', 'fa', 'hif', 'fo',
         'fr', 'fy', 'ff', 'fur', 'ga', 'gv', 'gag', 'gd', 'gl', 'gan', 'ki',
-        'glk', 'gu', 'gor', 'got', 'hak', 'xal', 'ko', 'ha', 'haw', 'hy', 'hi',
-        'ho', 'hsb', 'hr', 'hyw', 'io', 'ig', 'ilo', 'inh', 'bpy', 'id', 'ia',
-        'ie', 'iu', 'ik', 'os', 'xh', 'zu', 'is', 'it', 'he', 'jv', 'kbp',
-        'kl', 'kn', 'kr', 'pam', 'krc', 'ka', 'ks', 'csb', 'kk', 'kw', 'rw',
-        'rn', 'sw', 'kv', 'kg', 'gom', 'avk', 'ht', 'gcr', 'ku', 'kj', 'ky',
-        'mrj', 'lld', 'lad', 'lbe', 'lo', 'ltg', 'la', 'lv', 'lb', 'lez',
+        'glk', 'guw', 'gu', 'gor', 'got', 'hak', 'xal', 'ko', 'ha', 'haw',
+        'hy', 'hi', 'ho', 'hsb', 'hr', 'hyw', 'io', 'ig', 'ilo', 'inh', 'bpy',
+        'id', 'ia', 'ie', 'iu', 'ik', 'os', 'xh', 'zu', 'is', 'it', 'he', 'jv',
+        'kbp', 'kl', 'kn', 'kr', 'pam', 'krc', 'ka', 'ks', 'csb', 'kk', 'kw',
+        'rw', 'rn', 'sw', 'kv', 'kg', 'gom', 'avk', 'ht', 'gcr', 'ku', 'kj',
+        'ky', 'mrj', 'lld', 'lad', 'lbe', 'lo', 'ltg', 'la', 'lv', 'lb', 'lez',
         'lfn', 'lt', 'lij', 'li', 'ln', 'olo', 'jbo', 'lg', 'lmo', 'lrc',
         'mad', 'hu', 'mai', 'mk', 'mg', 'ml', 'mt', 'mi', 'mr', 'xmf', 'arz',
         'mzn', 'mni', 'ms', 'min', 'cdo', 'mwl', 'mdf', 'mo', 'mn', 'mus',
         'my', 'nah', 'na', 'fj', 'nl', 'nds-nl', 'cr', 'ne', 'new', 'nia',
         'ja', 'nqo', 'nap', 'ce', 'frr', 'pih', 'no', 'nb', 'nn', 'nrm', 'nov',
         'ii', 'oc', 'mhr', 'or', 'om', 'ng', 'hz', 'uz', 'pa', 'pi', 'pfl',
-        'pag', 'pnb', 'pap', 'ps', 'jam', 'koi', 'km', 'pcd', 'pms', 'tpi',
-        'nds', 'pl', 'pnt', 'pt', 'aa', 'kaa', 'crh', 'ty', 'ksh', 'ro', 'rmy',
-        'rm', 'qu', 'rue', 'ru', 'sah', 'szy', 'se', 'sm', 'sa', 'sg', 'sat',
-        'skr', 'sc', 'sco', 'trv', 'stq', 'st', 'nso', 'tn', 'sq', 'scn', 'si',
-        'simple', 'sd', 'ss', 'sk', 'sl', 'cu', 'szl', 'so', 'ckb', 'srn',
-        'sr', 'sh', 'su', 'fi', 'sv', 'shi', 'tl', 'shn', 'ta', 'kab',
-        'roa-tara', 'tt', 'tay', 'te', 'tet', 'th', 'ti', 'tg', 'to', 'chr',
-        'chy', 've', 'tcy', 'tr', 'azb', 'tk', 'tw', 'tyv', 'din', 'udm',
-        'bug', 'uk', 'ur', 'ug', 'za', 'vec', 'vep', 'vi', 'vo', 'fiu-vro',
-        'wa', 'zh-classical', 'vls', 'war', 'wo', 'wuu', 'ts', 'yi', 'yo',
-        'zh-yue', 'diq', 'zea', 'bat-smg', 'zh', 'zh-tw', 'zh-cn',
+        'pag', 'ami', 'pnb', 'pap', 'ps', 'jam', 'koi', 'km', 'pcd', 'pms',
+        'pwn', 'tpi', 'nds', 'pl', 'pnt', 'pt', 'aa', 'kaa', 'crh', 'ty',
+        'ksh', 'ro', 'rmy', 'rm', 'qu', 'rue', 'ru', 'sah', 'szy', 'se', 'sm',
+        'sa', 'sg', 'sat', 'skr', 'sc', 'sco', 'trv', 'stq', 'st', 'nso', 'tn',
+        'sq', 'scn', 'si', 'simple', 'sd', 'ss', 'sk', 'sl', 'cu', 'szl', 'so',
+        'ckb', 'srn', 'sr', 'sh', 'su', 'fi', 'sv', 'shi', 'tl', 'shn', 'ta',
+        'kab', 'roa-tara', 'tt', 'tay', 'te', 'tet', 'th', 'ti', 'tg', 'to',
+        'chr', 'chy', 've', 'tcy', 'tr', 'azb', 'tk', 'tw', 'kcg', 'tyv',
+        'din', 'udm', 'bug', 'uk', 'ur', 'ug', 'za', 'vec', 'vep', 'vi', 'vo',
+        'fiu-vro', 'wa', 'zh-classical', 'vls', 'war', 'wo', 'wuu', 'ts', 'yi',
+        'yo', 'zh-yue', 'diq', 'zea', 'bat-smg', 'zh', 'zh-tw', 'zh-cn',
     ]
 
     # The revised sorting order by first word from meta
     # MediaWiki:Interwiki_config-sorting_order-native-languagename-firstword
     alphabetic_revised = [
-        'ace', 'ady', 'kbd', 'af', 'ak', 'als', 'alt', 'am', 'smn', 'ang',
-        'ab', 'ar', 'an', 'arc', 'roa-rup', 'frp', 'as', 'ast', 'atj', 'awa',
-        'gn', 'av', 'ay', 'az', 'bjn', 'id', 'ms', 'ban', 'bm', 'bn',
+        'ace', 'ady', 'kbd', 'af', 'ak', 'als', 'alt', 'kcg', 'am', 'smn',
+        'ang', 'ab', 'ar', 'an', 'arc', 'roa-rup', 'frp', 'as', 'ast', 'atj',
+        'awa', 'gn', 'av', 'ay', 'az', 'bjn', 'id', 'ms', 'ban', 'bm', 'bn',
         'zh-min-nan', 'nan', 'map-bms', 'jv', 'su', 'ba', 'min', 'be',
         'be-tarask', 'mnw', 'mad', 'bh', 'bcl', 'bi', 'bar', 'bo', 'bs', 'br',
         'bug', 'bg', 'bxr', 'ca', 'ceb', 'cv', 'cs', 'ch', 'cbk-zam', 'ny',
@@ -132,28 +127,28 @@ class Family:
         'dv', 'nv', 'dsb', 'na', 'dty', 'dz', 'mh', 'et', 'el', 'eml', 'en',
         'myv', 'es', 'eo', 'ext', 'eu', 'ee', 'fa', 'hif', 'fo', 'fr', 'fy',
         'ff', 'fur', 'ga', 'gv', 'sm', 'gag', 'gd', 'gl', 'gan', 'ki', 'glk',
-        'gu', 'got', 'hak', 'xal', 'ko', 'ha', 'haw', 'hy', 'hi', 'ho', 'hsb',
-        'hr', 'hyw', 'io', 'ig', 'ilo', 'inh', 'bpy', 'ia', 'ie', 'iu', 'ik',
-        'os', 'xh', 'zu', 'is', 'it', 'he', 'kl', 'kn', 'kr', 'pam', 'ka',
-        'ks', 'csb', 'kk', 'kw', 'rw', 'ky', 'rn', 'mrj', 'sw', 'kv', 'kg',
-        'gom', 'avk', 'gor', 'ht', 'gcr', 'ku', 'shn', 'kj', 'lld', 'lad',
-        'lbe', 'lez', 'lfn', 'lo', 'la', 'ltg', 'lv', 'to', 'lb', 'lt', 'lij',
-        'li', 'ln', 'nia', 'olo', 'jbo', 'lg', 'lmo', 'lrc', 'hu', 'mai', 'mk',
-        'mg', 'ml', 'krc', 'mt', 'mi', 'mr', 'xmf', 'arz', 'mzn', 'mni', 'cdo',
-        'mwl', 'koi', 'mdf', 'mo', 'mn', 'mus', 'my', 'nah', 'fj', 'nl',
-        'nds-nl', 'cr', 'ne', 'new', 'ja', 'nqo', 'nap', 'ce', 'frr', 'pih',
-        'no', 'nb', 'nn', 'nrm', 'nov', 'ii', 'oc', 'mhr', 'or', 'om', 'ng',
-        'hz', 'uz', 'pa', 'pi', 'pfl', 'pag', 'pnb', 'pap', 'ps', 'jam', 'km',
-        'pcd', 'pms', 'nds', 'pl', 'pnt', 'pt', 'aa', 'kaa', 'crh', 'ty',
-        'ksh', 'ro', 'rmy', 'rm', 'qu', 'ru', 'rue', 'sah', 'szy', 'se', 'sa',
-        'sg', 'sat', 'skr', 'sc', 'sco', 'trv', 'stq', 'st', 'nso', 'tn', 'sq',
-        'scn', 'si', 'simple', 'sd', 'ss', 'sk', 'sl', 'cu', 'szl', 'so',
-        'ckb', 'srn', 'sr', 'sh', 'fi', 'sv', 'shi', 'tl', 'ta', 'kab', 'kbp',
-        'roa-tara', 'tt', 'tay', 'te', 'tet', 'th', 'vi', 'ti', 'tg', 'tpi',
-        'chr', 'chy', 've', 'tcy', 'tr', 'azb', 'tk', 'tw', 'tyv', 'din',
-        'udm', 'uk', 'ur', 'ug', 'za', 'vec', 'vep', 'vo', 'fiu-vro', 'wa',
-        'zh-classical', 'vls', 'war', 'wo', 'wuu', 'ts', 'yi', 'yo', 'zh-yue',
-        'diq', 'zea', 'bat-smg', 'zh', 'zh-tw', 'zh-cn',
+        'guw', 'gu', 'got', 'hak', 'xal', 'ko', 'ha', 'haw', 'hy', 'hi', 'ho',
+        'hsb', 'hr', 'hyw', 'io', 'ig', 'ilo', 'inh', 'bpy', 'ia', 'ie', 'iu',
+        'ik', 'os', 'xh', 'zu', 'is', 'it', 'he', 'kl', 'kn', 'kr', 'pam',
+        'ka', 'ks', 'csb', 'kk', 'kw', 'rw', 'ky', 'rn', 'mrj', 'sw', 'kv',
+        'kg', 'gom', 'avk', 'gor', 'ht', 'gcr', 'ku', 'shn', 'kj', 'lld',
+        'lad', 'lbe', 'lez', 'lfn', 'lo', 'la', 'ltg', 'lv', 'to', 'lb', 'lt',
+        'lij', 'li', 'ln', 'nia', 'olo', 'jbo', 'lg', 'lmo', 'lrc', 'hu',
+        'mai', 'mk', 'mg', 'ml', 'krc', 'mt', 'mi', 'mr', 'xmf', 'arz', 'mzn',
+        'mni', 'cdo', 'mwl', 'koi', 'mdf', 'mo', 'mn', 'mus', 'my', 'nah',
+        'fj', 'nl', 'nds-nl', 'cr', 'ne', 'new', 'ja', 'nqo', 'nap', 'ce',
+        'frr', 'pih', 'no', 'nb', 'nn', 'nrm', 'nov', 'ii', 'oc', 'mhr', 'or',
+        'om', 'ng', 'hz', 'uz', 'pa', 'pi', 'pfl', 'pag', 'ami', 'pnb', 'pap',
+        'ps', 'jam', 'km', 'pcd', 'pms', 'pwn', 'nds', 'pl', 'pnt', 'pt', 'aa',
+        'kaa', 'crh', 'ty', 'ksh', 'ro', 'rmy', 'rm', 'qu', 'ru', 'rue', 'sah',
+        'szy', 'se', 'sa', 'sg', 'sat', 'skr', 'sc', 'sco', 'trv', 'stq', 'st',
+        'nso', 'tn', 'sq', 'scn', 'si', 'simple', 'sd', 'ss', 'sk', 'sl', 'cu',
+        'szl', 'so', 'ckb', 'srn', 'sr', 'sh', 'fi', 'sv', 'shi', 'tl', 'ta',
+        'kab', 'kbp', 'roa-tara', 'tt', 'tay', 'te', 'tet', 'th', 'vi', 'ti',
+        'tg', 'tpi', 'chr', 'chy', 've', 'tcy', 'tr', 'azb', 'tk', 'tw', 'tyv',
+        'din', 'udm', 'uk', 'ur', 'ug', 'za', 'vec', 'vep', 'vo', 'fiu-vro',
+        'wa', 'zh-classical', 'vls', 'war', 'wo', 'wuu', 'ts', 'yi', 'yo',
+        'zh-yue', 'diq', 'zea', 'bat-smg', 'zh', 'zh-tw', 'zh-cn',
     ]
 
     # Order for fy: alphabetical by code, but y counts as i
@@ -161,204 +156,6 @@ class Family:
     fyinterwiki.remove('nb')
     fyinterwiki.sort(key=lambda x:
                      x.replace('y', 'i') + x.count('y') * '!')
-
-    # Letters that can follow a wikilink and are regarded as part of
-    # this link. This depends on the linktrail setting in LanguageXx.php
-    #
-    # Do not use this dict directly but Site.linktrail or Family.linktrail
-    # methods instead
-    linktrails = {
-        '_default': '[a-z]*',
-        'ab': '[a-zабвгҕдежзӡикқҟлмнопҧрстҭуфхҳцҵчҷҽҿшыҩџьә]*',
-        'als': '[äöüßa-z]*',
-        'alt': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'an': '[a-záéíóúñ]*',
-        'ar': '[a-zء-يؐ-ًؚ-ٰٟۖ-ۜ۟-۪ۤۧۨ-ۭ]*',
-        'ary': '[a-zء-يؐ-ًؚ-ٰٟۖ-ۜ۟-۪ۤۧۨ-ۭ]*',
-        'arz': '[a-zء-يؐ-ًؚ-ٰٟۖ-ۜ۟-۪ۤۧۨ-ۭ]*',
-        'ast': '[a-záéíóúñ]*',
-        'atj': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'av': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'avk': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'awa': '[a-zऀ-ॣ०-꣠-ꣿ]*',
-        'ay': '[a-záéíóúñ]*',
-        'az': '[a-zçəğıöşü]*',
-        'azb': '[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیآأئؤة‌]*',
-        'ba': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюяәөүғҡңҙҫһ“»]*',
-        'bar': '[äöüßa-z]*',
-        'bat-smg': '[a-ząčęėįšųūž]*',
-        'be': '[абвгґджзеёжзійклмнопрстуўфхцчшыьэюяćčłńśšŭźža-z]*',
-        'be-tarask': '[абвгґджзеёжзійклмнопрстуўфхцчшыьэюяćčłńśšŭźža-z]*',
-        'bg': '[a-zабвгдежзийклмнопрстуфхцчшщъыьэюя]*',
-        'bm': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'bn': '[ঀ-৿]*',
-        'bpy': '[ঀ-৿]*',
-        'bs': '[a-zćčžšđž]*',
-        'bxr': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'ca': '[a-zàèéíòóúç·ïü]*',
-        'cbk-zam': '[a-záéíóúñ]*',
-        'ce': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'ckb': '[ئابپتجچحخدرڕزژسشعغفڤقکگلڵمنوۆهھەیێ‌]*',
-        'co': '[a-zàéèíîìóòúù]*',
-        'crh': '[a-zâçğıñöşüа-яёʺʹ“»]*',
-        'cs': '[a-záčďéěíňóřšťúůýž]*',
-        'csb': '[a-zęóąśłżźćńĘÓĄŚŁŻŹĆŃ]*',
-        'cu': '[a-zабвгдеєжѕзїіıићклмнопсстѹфхѡѿцчш'
-              'щъыьѣюѥѧѩѫѭѯѱѳѷѵґѓђёјйљњќуўџэ҄я“»]*',
-        'cv': '[a-zа-яĕçăӳ"»]*',
-        'cy': '[àáâèéêìíîïòóôûŵŷa-z]*',
-        'da': '[a-zæøå]*',
-        'dag': '[ɛɣŋɔʒƐƔŊƆƷa-z]*',
-        'de': '[äöüßa-z]*',
-        'din': '[äëɛɛ̈éɣïŋöɔɔ̈óa-z]*',
-        'dsb': '[äöüßa-z]*',
-        'el': '[a-zαβγδεζηθικλμνξοπρστυφχψωςΑΒΓΔΕΖΗΘ'
-              'ΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩάέήίόύώϊϋΐΰΆΈΉΊΌΎΏΪΫ]*',
-        'eml': '[a-zàéèíîìóòúù]*',
-        'es': '[a-záéíóúñ]*',
-        'et': '[äöõšüža-z]*',
-        'ext': '[a-záéíóúñ]*',
-        'fa': '[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیآأئؤة‌]*',
-        'ff': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'fi': '[a-zäö]*',
-        'fiu-vro': '[äöõšüža-z]*',
-        'fo': '[áðíóúýæøa-z]*',
-        'fr': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'frp': '[a-zàâçéèêîœôû·’æäåāăëēïīòöōùü‘]*',
-        'frr': '[a-zäöüßåāđē]*',
-        'fur': '[a-zàéèíîìóòúù]*',
-        'fy': '[a-zàáèéìíòóùúâêîôûäëïöü]*',
-        'gag': '[a-zÇĞçğİıÖöŞşÜüÂâÎîÛû]*',
-        'gan': '',
-        'gcr': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'gl': '[áâãàéêẽçíòóôõq̃úüűũa-z]*',
-        'glk': '[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیآأئؤة‌]*',
-        'gn': '[a-záéíóúñ]*',
-        'gu': '[઀-૿]*',
-        'he': '[a-zא-ת]*',
-        'hi': '[a-zऀ-ॣ०-꣠-ꣿ]*',
-        'hr': '[čšžćđßa-z]*',
-        'hsb': '[äöüßa-z]*',
-        'ht': '[a-zàèòÀÈÒ]*',
-        'hu': '[a-záéíóúöüőűÁÉÍÓÚÖÜŐŰ]*',
-        'hy': '[a-zաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆև«»]*',
-        'hyw': '[a-zաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆև«»]*',
-        'ii': '',
-        'inh': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'is': '[áðéíóúýþæöa-z-–]*',
-        'it': '[a-zàéèíîìóòúù]*',
-        'ka': '[a-zაბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ“»]*',
-        'kab': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'kbp': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'kk': '[a-zäçéğıïñöşüýʺʹа-яёәғіқңөұүһٴ'
-              'ابپتجحدرزسشعفقكلمنڭەوۇۋۆىيچھ“»]*',
-        'kl': '[a-zæøå]*',
-        'koi': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'krc': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'ksh': '[äöüėëĳßəğåůæœça-z]*',
-        'ku': '[a-zçêîşûẍḧÇÊÎŞÛẌḦ]*',
-        'kv': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'lad': '[a-záéíóúñ]*',
-        'lb': '[äöüßa-z]*',
-        'lbe': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюяӀ1“»]*',
-        'lez': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'li': '[a-zäöüïëéèà]*',
-        'lij': '[a-zàéèíîìóòúù]*',
-        'lld': '[a-zàéèíîìóòúù]*',
-        'lmo': '[a-zàéèíîìóòúù]*',
-        'ln': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'lrc': '[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیآأئؤة‌]*',
-        'lt': '[a-ząčęėįšųūž]*',
-        'ltg': '[a-zA-ZĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]*',
-        'lv': '[a-zA-ZĀāČčĒēĢģĪīĶķĻļŅņŠšŪūŽž]*',
-        'mai': '[a-zऀ-ॣ०-꣠-ꣿ]*',
-        'mdf': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'mg': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'mhr': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'mk': '[a-zабвгдѓежзѕијклљмнњопрстќуфхцчџш]*',
-        'ml': '[a-zം-ൿ]*',
-        'mn': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя“»]*',
-        'mr': '[ऀ-ॣॱ-ॿ﻿‍]*',
-        'mrj': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'mwl': '[áâãàéêẽçíòóôõq̃úüűũa-z]*',
-        'myv': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'mzn': '[ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیآأئؤة‌]*',
-        'nah': '[a-záéíóúñ]*',
-        'nap': '[a-zàéèíîìóòúù]*',
-        'nds': '[äöüßa-z]*',
-        'nds-nl': '[a-zäöüïëéèà]*',
-        'nl': '[a-zäöüïëéèà]*',
-        'nn': '[æøåa-z]*',
-        'no': '[æøåa-z]*',
-        'nrm': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'oc': '[a-zàâçéèêîôû]*',
-        'olo': '[a-zčČšŠžŽäÄöÖ]*',
-        'or': '[a-z଀-୿]*',
-        'os': '[a-zаæбвгдеёжзийклмнопрстуфхцчшщъыьэюя“»]*',
-        'pa': '[ਁਂਃਅਆਇਈਉਊਏਐਓਔਕਖਗਘਙਚਛਜਝਞਟਠਡਢਣਤਥਦਧਨਪਫਬਭਮ'
-              'ਯਰਲਲ਼ਵਸ਼ਸਹ਼ਾਿੀੁੂੇੈੋੌ੍ਖ਼ਗ਼ਜ਼ੜਫ਼ੰੱੲੳa-z]*',
-        'pcd': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'pdc': '[äöüßa-z]*',
-        'pfl': '[äöüßa-z]*',
-        'pl': '[a-zęóąśłżźćńĘÓĄŚŁŻŹĆŃ]*',
-        'pms': '[a-zàéèíîìóòúù]*',
-        'pnt': '[a-zαβγδεζηθικλμνξοπρστυφχψωςΑΒΓΔΕΖΗΘ'
-               'ΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩάέήίόύώϊϋΐΰΆΈΉΊΌΎΏΪΫ]*',
-        'pt': '[áâãàéêẽçíòóôõq̃úüűũa-z]*',
-        'qu': '[a-záéíóúñ]*',
-        'rmy': '[a-zăâîşţșțĂÂÎŞŢȘȚ]*',
-        'ro': '[a-zăâîşţșțĂÂÎŞŢȘȚ]*',
-        'roa-rup': '[a-zăâîşţșțĂÂÎŞŢȘȚ]*',
-        'roa-tara': '[a-zàéèíîìóòúù]*',
-        'ru': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'rue': '[a-zабвгґдеєжзиіїйклмнопрстуфхцчшщьєюяёъы“»]*',
-        'sa': '[a-zऀ-ॣ०-꣠-ꣿ]*',
-        'sah': '[a-zабвгҕдеёжзийклмнҥоөпрсһтуүфхцчшщъыьэюя]*',
-        'scn': '[a-zàéèíîìóòúù]*',
-        'se': '[a-zàáâçčʒǯđðéèêëǧǥȟíìîïıǩŋñóòôõßšŧúùûýÿüžþæøåäö]*',
-        'sg': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'sh': '[a-zčćđžš]*',
-        'shi': '[ⴰ-ⵯa-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙḍḥɛṛɣṣṭẓḌḤƐṚƔṢṬẒʷ]*',
-        'sk': '[a-záäčďéíľĺňóôŕšťúýž]*',
-        'skr': '[ابپتٹثجچحخدڈذرڑزژسشصضطظعغفقکگلمنںوؤہھیئےآأءۃٻڄݙڋڰڳݨ]*',
-        'sl': '[a-zčćđžš]*',
-        'smn': '[a-zâčđŋšžäá]*',
-        'sr': '[abvgdđežzijklljmnnjoprstćufhcčdž'
-              'šабвгдђежзијклљмнњопрстћуфхцчџш]*',
-        'srn': '[a-zäöüïëéèà]*',
-        'stq': '[äöüßa-z]*',
-        'sv': '[a-zåäöéÅÄÖÉ]*',
-        'szl': '[a-zęóąśłżźćńĘÓĄŚŁŻŹĆŃ]*',
-        'szy': '',
-        'ta': '[஀-௿]*',
-        'tay': '',
-        'te': '[ఁ-౯]*',
-        'tet': '[áâãàéêẽçíòóôõq̃úüűũa-z]*',
-        'tg': '[a-zабвгдеёжзийклмнопрстуфхчшъэюяғӣқўҳҷцщыь]*',
-        'tk': '[a-zÄäÇçĞğŇňÖöŞşÜüÝýŽž]*',
-        'tr': '[a-zÇĞçğİıÖöŞşÜüÂâÎîÛû]*',
-        'trv': '',
-        'tt': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюяӘәӨөҮүҖҗҢңҺһ]*',
-        'ty': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'tyv': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'udm': '[a-zа-яёӝӟӥӧӵ]*',
-        'uk': '[a-zабвгґдеєжзиіїйклмнопрстуфхцчшщьєюяёъы“»]*',
-        'ur': '[ابپتٹثجچحخدڈذر​ڑ​زژسشصضطظعغفقکگل​م​نںوؤہھیئےآأءۃ]*',
-        'uz': '[a-zʻʼ“»]*',
-        'vec': '[a-zàéèíîìóòúù]*',
-        'vep': '[äöõšüža-z]*',
-        'vi': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'vls': '[a-zäöüïëéèà]*',
-        'wa': '[a-zåâêîôûçéè]*',
-        'wo': '[a-zàâçéèêîôûäëïöüùÇÉÂÊÎÔÛÄËÏÖÜÀÈÙ]*',
-        'wuu': '',
-        'xal': '[a-zабвгдеёжзийклмнопрстуфхцчшщъыьэюя]*',
-        'xmf': '[a-zაბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ“»]*',
-        'yi': '[a-zא-ת]*',
-        'za': '',
-        'zea': '[a-zäöüïëéèà]*',
-        'zh': '',
-    }
 
     # A list of category redirect template names in different languages
     category_redirect_templates = {
@@ -512,7 +309,7 @@ class Family:
     }
 
     # LDAP domain if your wiki uses LDAP authentication,
-    # https://www.mediawiki.org/wiki/Extension:LDAP_Authentication
+    # https://www.mediawiki.org/wiki/Extension:LDAPAuthentication2
     ldapDomain = ()
 
     # Allows crossnamespace interwiki linking.
@@ -543,10 +340,24 @@ class Family:
     # site. This value can specify this last one with (lang, family) tuple.
     shared_urlshortner_wiki = None  # type: Optional[Tuple[str, str]]
 
+    title_delimiter_and_aliases = ' _'
+    """Titles usually are delimited by a space and the alias is replaced
+    to this delimiter; e.g. "Main page" is the title with spaces as
+    delimiters but "Main_page" also works. Other families may have
+    different settings.
+
+    .. note:: The first character is used as delimiter, the others are
+       aliases.
+
+    .. warning:: This attribute is used within ``re.sub()`` method. Use
+       escape sequence if necessary
+
+    .. versionadded:: 7.0
+    """
+
     _families = {}
 
     @staticmethod
-    @deprecated_args(fatal=True)
     def load(fam: Optional[str] = None):
         """Import the named family.
 
@@ -556,10 +367,6 @@ class Family:
         """
         if fam is None:
             fam = config.family
-
-        assert all(x in NAME_CHARACTERS for x in fam), \
-            'Name of family "{}" must be ASCII letters and digits ' \
-            '[a-zA-Z0-9]'.format(fam)
 
         if fam in Family._families:
             return Family._families[fam]
@@ -605,29 +412,26 @@ class Family:
         Family._families[fam] = cls
         return cls
 
-    def linktrail(self, code, fallback='_default'):
+    @deprecated('APISite.linktrail()', since='7.3.0')
+    @remove_last_args(['fallback'])
+    def linktrail(self, code: str) -> str:
         """Return regex for trailing chars displayed as part of a link.
 
         Returns a string, not a compiled regular expression object.
+
+        .. deprecated:: 7.3
         """
-        if code in self.linktrails:
-            return self.linktrails[code]
+        site = pywikibot.Site(code, 'wikipedia')
+        return site.linktrail()
 
-        if fallback:
-            return self.linktrails[fallback]
-
-        raise KeyError(
-            'ERROR: linktrail in language {language_code} unknown'
-            .format(language_code=code))
-
-    def category_redirects(self, code, fallback='_default'):
+    def category_redirects(self, code, fallback: str = '_default'):
         """Return list of category redirect templates."""
         if not hasattr(self, '_catredirtemplates') \
            or code not in self._catredirtemplates:
             self._get_cr_templates(code, fallback)
         return self._catredirtemplates[code]
 
-    def _get_cr_templates(self, code, fallback):
+    def _get_cr_templates(self, code, fallback) -> None:
         """Build list of category redirect templates."""
         if not hasattr(self, '_catredirtemplates'):
             self._catredirtemplates = {}
@@ -652,26 +456,21 @@ class Family:
                     cr_set.add(newtitle)
         self._catredirtemplates[code] = list(cr_template_tuple) + list(cr_set)
 
-    @deprecated('site.category_redirects()', since='20170608')
-    def get_cr_templates(self, code, fallback):
-        """DEPRECATED: Build list of category redirect templates."""
-        self._get_cr_templates(code, fallback)
-
     def get_edit_restricted_templates(self, code):
         """Return tuple of edit restricted templates.
 
-        *New in version 3.0.*
+        .. versionadded:: 3.0
         """
         return self.edit_restricted_templates.get(code, ())
 
     def get_archived_page_templates(self, code):
         """Return tuple of archived page templates.
 
-        *New in version 3.0.*
+        .. versionadded:: 3.0
         """
         return self.archived_page_templates.get(code, ())
 
-    def disambig(self, code, fallback='_default'):
+    def disambig(self, code, fallback: str = '_default'):
         """Return list of disambiguation templates."""
         if code in self.disambiguationTemplates:
             return self.disambiguationTemplates[code]
@@ -699,7 +498,8 @@ class Family:
         """
         Return whether a HTTPS certificate should be verified.
 
-        *Renamed in version 5.3.*
+        .. versionadded:: 5.3
+           renamed from ignore_certificate_error
 
         :param code: language code
         :return: flag to verify the SSL certificate;
@@ -732,7 +532,7 @@ class Family:
         """
         return '/w'
 
-    def ssl_pathprefix(self, code):
+    def ssl_pathprefix(self, code) -> str:
         """The path prefix for secure HTTP access."""
         # Override this ONLY if the wiki family requires a path prefix
         return ''
@@ -762,43 +562,38 @@ class Family:
             uri = self.ssl_pathprefix(code) + uri
         return urlparse.urljoin('{}://{}'.format(protocol, host), uri)
 
-    def path(self, code):
+    def path(self, code) -> str:
         """Return path to index.php."""
         return '{}/index.php'.format(self.scriptpath(code))
 
-    def querypath(self, code):
+    def querypath(self, code) -> str:
         """Return path to query.php."""
         return '{}/query.php'.format(self.scriptpath(code))
 
-    def apipath(self, code):
+    def apipath(self, code) -> str:
         """Return path to api.php."""
         return '{}/api.php'.format(self.scriptpath(code))
 
     def eventstreams_host(self, code):
         """Hostname for EventStreams.
 
-        *New in version 3.0.*
+        .. versionadded:: 3.0
         """
         raise NotImplementedError('This family does not support EventStreams')
 
     def eventstreams_path(self, code):
         """Return path for EventStreams.
 
-        *New in version 3.0.*
+        .. versionadded:: 3.0
         """
         raise NotImplementedError('This family does not support EventStreams')
 
-    @deprecated_args(name='title')
-    def get_address(self, code, title):
+    def get_address(self, code, title) -> str:
         """Return the path to title using index.php with redirects disabled."""
         return '{}?title={}&redirect=no'.format(self.path(code), title)
 
-    def interface(self, code):
-        """
-        Return interface to use for code.
-
-        :rtype: str or subclass of BaseSite
-        """
+    def interface(self, code) -> str:
+        """Return interface to use for code."""
         if code in self.interwiki_removals:
             if code in self.codes:
                 pywikibot.warn('Interwiki removal {} is in {} codes'
@@ -811,12 +606,12 @@ class Family:
         return config.site_interface
 
     def from_url(self, url: str) -> Optional[str]:
-        """
-        Return whether this family matches the given url.
+        """Return whether this family matches the given url.
 
         It is first checking if a domain of this family is in the domain of
         the URL. If that is the case it's checking all codes and verifies that
-        a path generated via :py:obj:`APISite.article_path` and
+        a path generated via
+        :py:obj:`APISite.articlepath<pywikibot.site.APISite.articlepath>` and
         :py:obj:`Family.path` matches the path of the URL together with
         the hostname for that code.
 
@@ -825,13 +620,11 @@ class Family:
         determine which code applies.
 
         :param url: the URL which may contain a ``$1``. If it's missing it is
-            assumed to be at the end and if it's present nothing is allowed
-            after it.
+            assumed to be at the end.
         :return: The language code of the url. None if that url is not from
             this family.
         :raises RuntimeError: When there are multiple languages in this family
             which would work with the given URL.
-        :raises ValueError: When text is present after $1.
         """
         parsed = urlparse.urlparse(url)
         if not re.match('(https?)?$', parsed.scheme):
@@ -842,10 +635,7 @@ class Family:
             path += '?' + parsed.query
 
         # Discard $1 and everything after it
-        path, _, suffix = path.partition('$1')
-        if suffix:
-            raise ValueError('Url: {}\nText {} after the $1 placeholder is '
-                             'not supported (T111513).'.format(url, suffix))
+        path, *_ = path.partition('$1')
 
         for domain in self.domains:
             if domain in parsed.netloc:
@@ -865,6 +655,7 @@ class Family:
                 pywikibot.log('Found candidate {}'.format(site))
 
                 for iw_url in site._interwiki_urls():
+                    iw_url, *_ = iw_url.partition('{}')
                     if path.startswith(iw_url):
                         matched_sites.add(site)
                         break
@@ -883,11 +674,11 @@ class Family:
         """Return the maximum URL length for GET instead of POST."""
         return config.maximum_GET_length
 
-    def dbName(self, code):
+    def dbName(self, code) -> str:
         """Return the name of the MySQL database."""
         return '{}{}'.format(code, self.name)
 
-    def encoding(self, code):
+    def encoding(self, code) -> str:
         """Return the encoding for a specific language wiki."""
         return 'utf-8'
 
@@ -914,17 +705,17 @@ class Family:
     def __hash__(self):
         return hash(self.name)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'Family("{}")'.format(self.name)
 
     def shared_image_repository(self, code):
         """Return the shared image repository, if any."""
         return (None, None)
 
-    def isPublic(self, code):
+    def isPublic(self, code) -> bool:
         """Check the wiki require logging in before viewing it."""
         return True
 
@@ -947,21 +738,20 @@ class Family:
         return putText
 
     @property
-    def obsolete(self):
+    def obsolete(self) -> Dict[str, Optional[str]]:
         """
         Old codes that are not part of the family.
 
         Interwiki replacements override removals for the same code.
 
         :return: mapping of old codes to new codes (or None)
-        :rtype: dict
         """
         data = {code: None for code in self.interwiki_removals}
         data.update(self.interwiki_replacements)
         return types.MappingProxyType(data)
 
     @obsolete.setter
-    def obsolete(self, data):
+    def obsolete(self, data) -> None:
         """Split obsolete dict into constituent parts."""
         self.interwiki_removals[:] = [old for (old, new) in data.items()
                                       if new is None]
@@ -971,13 +761,11 @@ class Family:
                                            if new is not None)
 
     @classproperty
-    def domains(cls):
+    def domains(cls) -> Set[str]:
         """
         Get list of unique domain names included in this family.
 
         These domains may also exist in another family.
-
-        :rtype: set of str
         """
         return set(cls.langs.values())
 
@@ -1064,7 +852,8 @@ class FandomFamily(Family):
 
     """Common features of Fandom families.
 
-    *Renamed in version 3.0.*
+    .. versionadded:: 3.0
+       renamed from WikiaFamily
     """
 
     @classproperty
@@ -1077,7 +866,7 @@ class FandomFamily(Family):
 
         return {code: cls.domain for code in codes}
 
-    def protocol(self, code):
+    def protocol(self, code) -> str:
         """Return 'https' as the protocol."""
         return 'https'
 
@@ -1204,15 +993,15 @@ class WikimediaFamily(Family):
         """Return Wikimedia Commons as the shared image repository."""
         return ('commons', 'commons')
 
-    def protocol(self, code):
+    def protocol(self, code) -> str:
         """Return 'https' as the protocol."""
         return 'https'
 
-    def eventstreams_host(self, code):
+    def eventstreams_host(self, code) -> str:
         """Return 'https://stream.wikimedia.org' as the stream hostname."""
         return 'https://stream.wikimedia.org'
 
-    def eventstreams_path(self, code):
+    def eventstreams_path(self, code) -> str:
         """Return path for EventStreams."""
         return '/v2/stream'
 
@@ -1222,20 +1011,18 @@ class WikimediaOrgFamily(SingleSiteFamily, WikimediaFamily):
     """Single site family for sites hosted at ``*.wikimedia.org``."""
 
     @classproperty
-    def domain(cls):
+    def domain(cls) -> str:
         """Return the parents domain with a subdomain prefix."""
         return '{}.wikimedia.org'.format(cls.name)
 
 
-@deprecated_args(site=True)
-def AutoFamily(name: str, url: str):
+def AutoFamily(name: str, url: str) -> SingleSiteFamily:
     """
     Family that automatically loads the site configuration.
 
     :param name: Name for the family
     :param url: API endpoint URL of the wiki
     :return: Generated family class
-    :rtype: SingleSiteFamily
     """
     url = urlparse.urlparse(url)
     domain = url.netloc
@@ -1255,8 +1042,3 @@ def AutoFamily(name: str, url: str):
 
     AutoFamily = type('AutoFamily', (SingleSiteFamily,), locals())
     return AutoFamily()
-
-
-wrapper = ModuleDeprecationWrapper(__name__)
-wrapper.add_deprecated_attr('WikiaFamily', replacement=FandomFamily,
-                            since='20190420')

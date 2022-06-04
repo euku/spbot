@@ -1,6 +1,6 @@
 """Family module for Omega Wiki."""
 #
-# (C) Pywikibot team, 2006-2020
+# (C) Pywikibot team, 2006-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -15,6 +15,6 @@ class Family(family.SingleSiteFamily):
     name = 'omegawiki'
     domain = 'www.omegawiki.org'
 
-    def scriptpath(self, code):
+    def scriptpath(self, code) -> str:
         """Return the script path for this family."""
         return ''

@@ -1,16 +1,16 @@
+#!/usr/bin/python3
 """Tests for the user interface."""
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import io
 import logging
 import os
-import sys
 import unittest
-
-from contextlib import suppress
+from contextlib import redirect_stdout, suppress
+from unittest.mock import patch
 
 import pywikibot
 from pywikibot.bot import (
@@ -23,50 +23,15 @@ from pywikibot.bot import (
     VERBOSE,
     WARNING,
 )
+from pywikibot.tools import PYTHON_VERSION
 from pywikibot.userinterfaces import (
     terminal_interface_base,
     terminal_interface_unix,
     terminal_interface_win32,
 )
+from pywikibot.userinterfaces.transliteration import NON_LATIN_DIGITS, _trans
 from tests.aspects import TestCase, TestCaseBase
-from tests.utils import FakeModule
 
-
-class Stream:
-
-    """Handler for a StringIO instance able to patch itself."""
-
-    def __init__(self, name: str, patched_streams: dict):
-        """
-        Create a new stream with a StringIO instance.
-
-        :param name: The part after 'std' (e.g. 'err').
-        :param patched_streams: A mapping which maps the original stream to
-            the patched stream.
-        """
-        self._stream = io.StringIO()
-        self._name = 'std{}'.format(name)
-        self._original = getattr(sys, self._name)
-        patched_streams[self._original] = self._stream
-
-    def __repr__(self):
-        return '<patched {} {!r} wrapping {!r}>'.format(
-            self._name, self._stream, self._original)
-
-    def reset(self):
-        """Reset own stream."""
-        self._stream.truncate(0)
-        self._stream.seek(0)
-
-
-patched_streams = {}
-strout = Stream('out', patched_streams)
-strerr = Stream('err', patched_streams)
-strin = Stream('in', {})
-
-newstdout = strout._stream
-newstderr = strerr._stream
-newstdin = strin._stream
 
 logger = logging.getLogger('pywiki')
 loggingcontext = {'caller_name': 'ui_tests',
@@ -82,19 +47,23 @@ class UITestCase(TestCaseBase):
     net = False
 
     def setUp(self):
+        """Setup test.
+
+        Here we patch standard input, output, and errors, essentially
+        redirecting to `StringIO` streams.
+        """
         super().setUp()
+        self.stdout_patcher = patch('sys.stdout', new_callable=io.StringIO)
+        self.strout = self.stdout_patcher.start()
+        self.stderr_patcher = patch('sys.stderr', new_callable=io.StringIO)
+        self.strerr = self.stderr_patcher.start()
+        self.stdin_patcher = patch('sys.stdin', new_callable=io.StringIO)
+        self.strin = self.stdin_patcher.start()
 
         pywikibot.bot.set_interface('terminal')
 
-        self.org_print = pywikibot.bot.ui._print
         self.org_input = pywikibot.bot.ui._raw_input
-
-        pywikibot.bot.ui._print = self._patched_print
         pywikibot.bot.ui._raw_input = self._patched_input
-
-        strout.reset()
-        strerr.reset()
-        strin.reset()
 
         pywikibot.config.colorized_output = True
         pywikibot.config.transliterate = False
@@ -102,25 +71,18 @@ class UITestCase(TestCaseBase):
         pywikibot.ui.encoding = 'utf-8'
 
     def tearDown(self):
+        """Cleanup test."""
         super().tearDown()
 
-        pywikibot.bot.ui._print = self.org_print
-        pywikibot.bot.ui._raw_input = self.org_input
+        self.stdout_patcher.stop()
+        self.stderr_patcher.stop()
+        self.stdin_patcher.stop()
 
+        pywikibot.bot.ui._raw_input = self.org_input
         pywikibot.bot.set_interface('buffer')
 
-    def _patched_print(self, text, target_stream):
-        try:
-            stream = patched_streams[target_stream]
-        except KeyError:
-            expected = pywikibot.userinterfaces.win32_unicode.UnicodeOutput
-            assert isinstance(target_stream, expected)
-            assert target_stream._stream
-            stream = patched_streams[target_stream._stream]
-        self.org_print(text, stream)
-
     def _patched_input(self):
-        return strin._stream.readline().strip()
+        return self.strin.readline().strip()
 
 
 class TestExceptionError(Exception):
@@ -148,71 +110,85 @@ class TestTerminalOutput(UITestCase):
         for text, level, out, err in self.tests:
             with self.subTest(test=text):
                 logger.log(level, text, extra=loggingcontext)
-                self.assertEqual(newstdout.getvalue(), out)
-                self.assertEqual(newstderr.getvalue(), err)
+                self.assertEqual(self.strout.getvalue(), out)
+                self.assertEqual(self.strerr.getvalue(), err)
 
                 # reset terminal files
-                strout.reset()
-                strerr.reset()
-                strin.reset()
+                for stream in [self.strout, self.strerr, self.strin]:
+                    stream.truncate(0)
+                    stream.seek(0)
 
     def test_output(self):
         pywikibot.output('output')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'output\n')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'output\n')
 
     def test_stdout(self):
         pywikibot.stdout('output')
-        self.assertEqual(newstdout.getvalue(), 'output\n')
-        self.assertEqual(newstderr.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), 'output\n')
+        self.assertEqual(self.strerr.getvalue(), '')
 
     def test_warning(self):
         pywikibot.warning('warning')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'WARNING: warning\n')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'WARNING: warning\n')
 
     def test_error(self):
         pywikibot.error('error')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'ERROR: error\n')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'ERROR: error\n')
 
     def test_log(self):
         pywikibot.log('log')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), '')
 
     def test_critical(self):
         pywikibot.critical('critical')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'CRITICAL: critical\n')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'CRITICAL: critical\n')
 
     def test_debug(self):
-        pywikibot.debug('debug', 'test')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), '')
+        pywikibot.debug('debug', layer='test')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), '')
 
     def test_exception(self):
         try:
             raise TestExceptionError('Testing Exception')
         except TestExceptionError:
-            pywikibot.exception('exception')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(),
-                         'ERROR: TestExceptionError: Testing Exception\n')
+            pywikibot.error('exception', exc_info=False)
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(),
+                         'ERROR: exception\n')
+
+    def test_exception_empty(self):
+        try:
+            raise TestExceptionError('Testing Exception')
+        except TestExceptionError:
+            pywikibot.exception(exc_info=False)
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(),
+                         'ERROR: Testing Exception (TestExceptionError)\n')
 
     def test_exception_tb(self):
         try:
             raise TestExceptionError('Testing Exception')
         except TestExceptionError:
-            pywikibot.exception('exception', tb=True)
-        self.assertEqual(newstdout.getvalue(), '')
-        stderrlines = newstderr.getvalue().split('\n')
+            pywikibot.exception()
+        self.assertEqual(self.strout.getvalue(), '')
+        stderrlines = self.strerr.getvalue().split('\n')
         self.assertEqual(stderrlines[0],
-                         'ERROR: TestExceptionError: Testing Exception')
+                         'ERROR: Testing Exception')
         self.assertEqual(stderrlines[1], 'Traceback (most recent call last):')
         self.assertEqual(stderrlines[3],
                          "    raise TestExceptionError('Testing Exception')")
-        self.assertTrue(stderrlines[4].endswith(': Testing Exception'))
+
+        end_str = ': Testing Exception'
+        traceback_line = stderrlines[4 + (PYTHON_VERSION >= (3, 11))]
+        self.assertTrue(traceback_line.endswith(end_str),
+                        '\n{!r} does not end with {!r}'
+                        .format(traceback_line, end_str))
 
         self.assertNotEqual(stderrlines[-1], '\n')
 
@@ -224,22 +200,22 @@ class TestTerminalInput(UITestCase):
     input_choice_output = 'question ([A]nswer 1, a[n]swer 2, an[s]wer 3): '
 
     def testInput(self):
-        newstdin.write('input to read\n')
-        newstdin.seek(0)
+        self.strin.write('input to read\n')
+        self.strin.seek(0)
         returned = pywikibot.input('question')
 
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'question: ')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'question: ')
         self.assertIsInstance(returned, str)
         self.assertEqual(returned, 'input to read')
 
     def test_input_yn(self):
-        newstdin.write('\n')
-        newstdin.seek(0)
+        self.strin.write('\n')
+        self.strin.seek(0)
         returned = pywikibot.input_yn('question', False, automatic_quit=False)
 
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'question ([y]es, [N]o): ')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'question ([y]es, [N]o): ')
         self.assertFalse(returned)
 
     def _call_input_choice(self):
@@ -251,39 +227,39 @@ class TestTerminalInput(UITestCase):
             'A',
             automatic_quit=False)
 
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertIsInstance(rv, str)
         return rv
 
     def testInputChoiceDefault(self):
-        newstdin.write('\n')
-        newstdin.seek(0)
+        self.strin.write('\n')
+        self.strin.seek(0)
         returned = self._call_input_choice()
 
         self.assertEqual(returned, 'a')
 
     def testInputChoiceCapital(self):
-        newstdin.write('N\n')
-        newstdin.seek(0)
+        self.strin.write('N\n')
+        self.strin.seek(0)
         returned = self._call_input_choice()
 
-        self.assertEqual(newstderr.getvalue(), self.input_choice_output)
+        self.assertEqual(self.strerr.getvalue(), self.input_choice_output)
         self.assertEqual(returned, 'n')
 
     def testInputChoiceNonCapital(self):
-        newstdin.write('n\n')
-        newstdin.seek(0)
+        self.strin.write('n\n')
+        self.strin.seek(0)
         returned = self._call_input_choice()
 
-        self.assertEqual(newstderr.getvalue(), self.input_choice_output)
+        self.assertEqual(self.strerr.getvalue(), self.input_choice_output)
         self.assertEqual(returned, 'n')
 
     def testInputChoiceIncorrectAnswer(self):
-        newstdin.write('X\nN\n')
-        newstdin.seek(0)
+        self.strin.write('X\nN\n')
+        self.strin.seek(0)
         returned = self._call_input_choice()
 
-        self.assertEqual(newstderr.getvalue(), self.input_choice_output * 2)
+        self.assertEqual(self.strerr.getvalue(), self.input_choice_output * 2)
         self.assertEqual(returned, 'n')
 
     def test_input_list_choice(self):
@@ -291,9 +267,9 @@ class TestTerminalInput(UITestCase):
         options = ('answer 1', 'answer 2', 'answer 3')
         rv = pywikibot.bot.input_list_choice('question', options, '2')
 
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertEqual(
-            newstderr.getvalue(),
+            self.strerr.getvalue(),
             ''.join('{}: {}\n'.format(num, items)
                     for num, items in enumerate(options, start=1))
             + 'question (default: 2): ')
@@ -305,33 +281,33 @@ class TestTerminalOutputColorUnix(UITestCase):
 
     """Terminal output color tests."""
 
-    str1 = 'text \03{lightpurple}light purple text\03{default} text'
+    str1 = 'text <<lightpurple>>light purple text<<default>> text'
 
     def testOutputColorizedText(self):
         pywikibot.output(self.str1)
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertEqual(
-            newstderr.getvalue(),
+            self.strerr.getvalue(),
             'text \x1b[95mlight purple text\x1b[0m text\n')
 
     def testOutputNoncolorizedText(self):
         pywikibot.config.colorized_output = False
         pywikibot.output(self.str1)
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertEqual(
-            newstderr.getvalue(),
+            self.strerr.getvalue(),
             'text light purple text text ***\n')
 
-    str2 = ('normal text \03{lightpurple} light purple '
-            '\03{lightblue} light blue \03{previous} light purple '
-            '\03{default} normal text')
+    str2 = ('normal text <<lightpurple>> light purple '
+            '<<lightblue>> light blue <<previous>> light purple '
+            '<<default>> normal text')
 
     def testOutputColorCascade_incorrect(self):
         """Test incorrect behavior of testOutputColorCascade."""
         pywikibot.output(self.str2)
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertEqual(
-            newstderr.getvalue(),
+            self.strerr.getvalue(),
             'normal text \x1b[95m light purple '
             '\x1b[94m light blue \x1b[95m light purple '
             '\x1b[0m normal text\n')
@@ -344,18 +320,18 @@ class TestTerminalUnicodeUnix(UITestCase):
 
     def testOutputUnicodeText(self):
         pywikibot.output('Заглавная_страница')
-        self.assertEqual(newstdout.getvalue(), '')
-        self.assertEqual(newstderr.getvalue(), 'Заглавная_страница\n')
+        self.assertEqual(self.strout.getvalue(), '')
+        self.assertEqual(self.strerr.getvalue(), 'Заглавная_страница\n')
 
     def testInputUnicodeText(self):
-        newstdin.write('Заглавная_страница\n')
-        newstdin.seek(0)
+        self.strin.write('Заглавная_страница\n')
+        self.strin.seek(0)
 
         returned = pywikibot.input('Википедию? ')
 
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertEqual(
-            newstderr.getvalue(), 'Википедию? ')
+            self.strerr.getvalue(), 'Википедию? ')
 
         self.assertIsInstance(returned, str)
         self.assertEqual(returned, 'Заглавная_страница')
@@ -370,13 +346,35 @@ class TestTransliterationUnix(UITestCase):
         pywikibot.bot.ui.encoding = 'latin-1'
         pywikibot.config.transliterate = True
         pywikibot.output('abcd АБГД αβγδ あいうえお')
-        self.assertEqual(newstdout.getvalue(), '')
+        self.assertEqual(self.strout.getvalue(), '')
         self.assertEqual(
-            newstderr.getvalue(),
+            self.strerr.getvalue(),
             'abcd \x1b[93mA\x1b[0m\x1b[93mB\x1b[0m\x1b[93mG\x1b[0m'
             '\x1b[93mD\x1b[0m \x1b[93ma\x1b[0m\x1b[93mb\x1b[0m\x1b[93mg'
             '\x1b[0m\x1b[93md\x1b[0m \x1b[93ma\x1b[0m\x1b[93mi\x1b[0m'
             '\x1b[93mu\x1b[0m\x1b[93me\x1b[0m\x1b[93mo\x1b[0m\n')
+
+
+class TestTransliterationTable(TestCase):
+
+    """Test transliteration table."""
+
+    net = False
+
+    def test_latin_digits(self):
+        """Test that non latin digits are in transliteration table."""
+        for lang, digits in NON_LATIN_DIGITS.items():
+            with self.subTest(lang=lang):
+                for char in digits:
+                    self.assertIn(char, _trans,
+                                  '{!r} not in transliteration table'
+                                  .format(char))
+
+    def test_transliteration_table(self):
+        """Test transliteration table consistency."""
+        for k, v in _trans.items():
+            with self.subTest():
+                self.assertNotEqual(k, v)
 
 
 # TODO: add tests for background colors.
@@ -393,8 +391,9 @@ class FakeUITest(TestCase):
     def setUp(self):
         """Create dummy instances for the test and patch encounter_color."""
         super().setUp()
-        self.stream = io.StringIO()
         self.ui_obj = self.ui_class()
+        # Write to sys.stdout stream, which we'll redirect to the stream below
+        self.redirect = io.StringIO()
         self._orig_encounter_color = self.ui_obj.encounter_color
         self.ui_obj.encounter_color = self._encounter_color
         self._index = 0
@@ -406,10 +405,6 @@ class FakeUITest(TestCase):
         self.assertEqual(self._index,
                          len(self._colors) if self.expect_color else 0)
 
-    def _getvalue(self):
-        """Get the value of the stream."""
-        return self.stream.getvalue()
-
     def _encounter_color(self, color, target_stream):
         """Patched encounter_color method."""
         raise AssertionError('This method should not be invoked')
@@ -417,48 +412,61 @@ class FakeUITest(TestCase):
     def test_no_color(self):
         """Test a string without any colors."""
         self._colors = ()
-        self.ui_obj._print('Hello world you!', self.stream)
-        self.assertEqual(self._getvalue(), 'Hello world you!')
+        with redirect_stdout(self.redirect) as f:
+            self.ui_obj._print('Hello world you!', self.ui_obj.stdout)
+        self.assertEqual(f.getvalue(), 'Hello world you!')
 
     def test_one_color(self):
         """Test a string using one color."""
         self._colors = (('red', 6), ('default', 10))
-        self.ui_obj._print('Hello \03{red}world you!', self.stream)
-        self.assertEqual(self._getvalue(), self.expected)
+        with redirect_stdout(self.redirect) as f:
+            self.ui_obj._print('Hello <<red>>world you!', self.ui_obj.stdout)
+        self.assertEqual(f.getvalue(), self.expected)
 
     def test_flat_color(self):
         """Test using colors with defaulting in between."""
         self._colors = (('red', 6), ('default', 6), ('yellow', 3),
                         ('default', 1))
-        self.ui_obj._print('Hello \03{red}world \03{default}you\03{yellow}!',
-                           self.stream)
-        self.assertEqual(self._getvalue(), self.expected)
+        with redirect_stdout(self.redirect) as f:
+            self.ui_obj._print(
+                'Hello <<red>>world <<default>>you<<yellow>>!',
+                self.ui_obj.stdout)
+        self.assertEqual(f.getvalue(), self.expected)
 
     def test_stack_with_pop_color(self):
         """Test using stacked colors and just popping the latest color."""
         self._colors = (('red', 6), ('yellow', 6), ('red', 3), ('default', 1))
-        self.ui_obj._print('Hello \03{red}world \03{yellow}you\03{previous}!',
-                           self.stream)
-        self.assertEqual(self._getvalue(), self.expected)
+        with redirect_stdout(self.redirect) as f:
+            self.ui_obj._print(
+                'Hello <<red>>world <<yellow>>you<<previous>>!',
+                self.ui_obj.stdout)
+        self.assertEqual(f.getvalue(), self.expected)
 
     def test_stack_implicit_color(self):
         """Test using stacked colors without popping any."""
         self._colors = (('red', 6), ('yellow', 6), ('default', 4))
-        self.ui_obj._print('Hello \03{red}world \03{yellow}you!', self.stream)
-        self.assertEqual(self._getvalue(), self.expected)
+        with redirect_stdout(self.redirect) as f:
+            self.ui_obj._print('Hello <<red>>world <<yellow>>you!',
+                               self.ui_obj.stdout)
+        self.assertEqual(f.getvalue(), self.expected)
 
     def test_one_color_newline(self):
         """Test with trailing new line and one color."""
         self._colors = (('red', 6), ('default', 11))
-        self.ui_obj._print('Hello \03{red}world you!\n', self.stream)
-        self.assertEqual(self._getvalue(), self.expected + '\n')
+        with redirect_stdout(self.redirect) as f:
+            self.ui_obj._print('Hello <<red>>world you!\n',
+                               self.ui_obj.stdout)
+        self.assertEqual(f.getvalue(), self.expected + '\n')
 
 
 class FakeUIColorizedTestBase(TestCase):
 
     """Base class for test cases requiring that colorized output is active."""
 
+    net = False
+
     expect_color = True
+    expected = 'Hello world you!'
 
     def setUp(self):
         """Force colorized_output to True."""
@@ -471,24 +479,21 @@ class FakeUIColorizedTestBase(TestCase):
         pywikibot.config.colorized_output = self._old_config
         super().tearDown()
 
+    def _encounter_color(self, color, target_stream):
+        """Verify that the written data, color and stream are correct."""
+        self.assertIs(target_stream, self.ui_obj.stdout)
+        expected_color = self._colors[self._index][0]
+        self._index += 1
+        self.assertEqual(color, expected_color)
+        self.assertLength(self.redirect.getvalue(),
+                          sum(e[1] for e in self._colors[:self._index]))
+
 
 class FakeUnixTest(FakeUIColorizedTestBase, FakeUITest):
 
     """Test case to allow doing colorized Unix tests in any environment."""
 
-    net = False
-
-    expected = 'Hello world you!'
     ui_class = terminal_interface_unix.UnixUI
-
-    def _encounter_color(self, color, target_stream):
-        """Verify that the written data, color and stream are correct."""
-        self.assertIs(target_stream, self.stream)
-        expected_color = self._colors[self._index][0]
-        self._index += 1
-        self.assertEqual(color, expected_color)
-        self.assertLength(self.stream.getvalue(),
-                          sum(e[1] for e in self._colors[:self._index]))
 
 
 class FakeWin32Test(FakeUIColorizedTestBase, FakeUITest):
@@ -501,53 +506,20 @@ class FakeWin32Test(FakeUIColorizedTestBase, FakeUITest):
     import these will be unpatched.
     """
 
-    net = False
-
-    expected = 'Hello world you!'
     ui_class = terminal_interface_win32.Win32UI
 
     def setUp(self):
         """Patch the ctypes import and initialize a stream and UI instance."""
         super().setUp()
-        self._orig_ctypes = terminal_interface_win32.ctypes
-        ctypes = FakeModule.create_dotted('ctypes.windll.kernel32')
-        ctypes.windll.kernel32.SetConsoleTextAttribute = self._handle_setattr
-        terminal_interface_win32.ctypes = ctypes
-        self.stream._hConsole = object()
-
-    def tearDown(self):
-        """Unpatch the ctypes import and check that all colors were used."""
-        terminal_interface_win32.ctypes = self._orig_ctypes
-        super().tearDown()
-
-    def _encounter_color(self, color, target_stream):
-        """Call the original method."""
-        self._orig_encounter_color(color, target_stream)
-
-    def _handle_setattr(self, handle, attribute):
-        """Dummy method to handle SetConsoleTextAttribute."""
-        self.assertIs(handle, self.stream._hConsole)
-        color = self._colors[self._index][0]
-        self._index += 1
-        color = terminal_interface_win32.windowsColors[color]
-        self.assertEqual(attribute, color)
-        self.assertLength(self.stream.getvalue(),
-                          sum(e[1] for e in self._colors[:self._index]))
+        self.ui_obj.stdout.isatty = lambda: self.expect_color
 
 
 class FakeWin32UncolorizedTest(FakeWin32Test):
 
     """Test case to allow doing uncolorized Win32 tests in any environment."""
 
-    net = False
-
     expected = 'Hello world you! ***'
     expect_color = False
-
-    def setUp(self):
-        """Change the local stream's console to None to disable colors."""
-        super().setUp()
-        self.stream._hConsole = None
 
 
 if __name__ == '__main__':  # pragma: no cover

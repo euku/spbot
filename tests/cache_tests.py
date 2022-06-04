@@ -1,13 +1,17 @@
+#!/usr/bin/python3
 """API Request cache tests."""
 #
-# (C) Pywikibot team, 2012-2021
+# (C) Pywikibot team, 2012-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import unittest
 
-import scripts.maintenance.cache as cache
 from pywikibot.site import BaseSite
+from pywikibot.login import LoginStatus
+
+import scripts.maintenance.cache as cache
+
 from tests import join_cache_path
 from tests.aspects import TestCase
 
@@ -23,7 +27,7 @@ class RequestCacheTests(TestCase):
         self.assertIsInstance(entry.site, BaseSite)
         self.assertIsInstance(entry.site._loginstatus, int)
         self.assertNotIsInstance(entry.site._username, list)
-        if entry.site._loginstatus >= 1:
+        if entry.site._loginstatus >= LoginStatus.AS_USER:
             self.assertIsNotNone(entry.site._username)
         self.assertIsInstance(entry._params, dict)
         self.assertIsNotNone(entry._params)

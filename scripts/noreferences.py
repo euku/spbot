@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This script adds a missing references section to pages.
 
@@ -29,7 +29,7 @@ bandwidth. Instead, use the -xml parameter, or use another way to generate
 a list of affected articles
 """
 #
-# (C) Pywikibot team, 2007-2021
+# (C) Pywikibot team, 2007-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -38,10 +38,9 @@ from functools import partial
 
 import pywikibot
 from pywikibot import i18n, pagegenerators, textlib
-from pywikibot.bot import ExistingPageBot, NoRedirectPageBot, SingleSiteBot
+from pywikibot.bot import ExistingPageBot, SingleSiteBot
 from pywikibot.exceptions import LockedPageError
 from pywikibot.pagegenerators import XMLDumpPageGenerator
-from pywikibot.tools import remove_last_args
 
 
 # This is required for the text that is shown when you run this script
@@ -234,9 +233,9 @@ placeBeforeSections = {
 }
 
 # Titles of sections where a reference tag would fit into.
-# The first title should be the preferred one: It's the one that
-# will be used when a new section has to be created.
-# Except for the first, others are tested as regexes.
+# The first title should be the preferred one: It's the one that will be
+# used when a new section has to be created. Section titles can be regex
+# patterns except of the first.
 referencesSections = {
     'wikipedia': {
         'ar': [             # not sure about which ones are preferred.
@@ -512,11 +511,13 @@ XmlDumpNoReferencesPageGenerator = partial(
     XMLDumpPageGenerator, text_predicate=_match_xml_page_text)
 
 
-class NoReferencesBot(SingleSiteBot, ExistingPageBot, NoRedirectPageBot):
+class NoReferencesBot(SingleSiteBot, ExistingPageBot):
 
     """References section bot."""
 
-    @remove_last_args(['gen'])
+    use_disambigs = False
+    use_redirects = False
+
     def __init__(self, **kwargs) -> None:
         """Initializer."""
         self.available_options.update({
@@ -686,7 +687,7 @@ class NoReferencesBot(SingleSiteBot, ExistingPageBot, NoRedirectPageBot):
         index = len(tmpText)
         return self.createReferenceSection(oldText, index)
 
-    def createReferenceSection(self, oldText, index, ident='==') -> str:
+    def createReferenceSection(self, oldText, index, ident: str = '==') -> str:
         """Create a reference section and insert it into the given text.
 
         :param oldText: page text that is going to be be amended
@@ -696,7 +697,6 @@ class NoReferencesBot(SingleSiteBot, ExistingPageBot, NoRedirectPageBot):
         :type index: int
         :param ident: symbols to be inserted before and after reference section
             title
-        :type ident: str
         :return: the amended page text with reference section added
         """
         if self.site.code in noTitleRequired:
@@ -709,9 +709,7 @@ class NoReferencesBot(SingleSiteBot, ExistingPageBot, NoRedirectPageBot):
 
     def skip_page(self, page):
         """Check whether the page could be processed."""
-        if page.isDisambig():
-            pywikibot.output('Page {} is a disambig; skipping.'
-                             .format(page.title(as_link=True)))
+        if super().skip_page(page):
             return True
 
         if self.site.sitename == 'wikipedia:en' and page.isIpEdit():
@@ -720,7 +718,7 @@ class NoReferencesBot(SingleSiteBot, ExistingPageBot, NoRedirectPageBot):
                 .format(page.title(as_link=True)))
             return True
 
-        return super().skip_page(page)
+        return False
 
     def treat_page(self) -> None:
         """Run the bot."""

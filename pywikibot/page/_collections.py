@@ -1,11 +1,11 @@
 """Structures holding data for Wikibase entities."""
 #
-# (C) Pywikibot team, 2019-2021
+# (C) Pywikibot team, 2019-2022
 #
 # Distributed under the terms of the MIT license.
 #
 from collections import defaultdict
-from collections.abc import MutableMapping
+from collections.abc import MutableMapping, MutableSequence
 from typing import Optional
 
 import pywikibot
@@ -17,6 +17,7 @@ __all__ = (
     'ClaimCollection',
     'LanguageDict',
     'SiteLinkCollection',
+    'SubEntityCollection',
 )
 
 
@@ -29,7 +30,7 @@ class BaseDataDict(MutableMapping):
     specialised in subclasses.
     """
 
-    def __init__(self, data=None):
+    def __init__(self, data=None) -> None:
         super().__init__()
         self._data = {}
         if data:
@@ -44,30 +45,34 @@ class BaseDataDict(MutableMapping):
         key = self.normalizeKey(key)
         return self._data[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value) -> None:
         key = self.normalizeKey(key)
         self._data[key] = value
 
-    def __delitem__(self, key):
+    def __delitem__(self, key) -> None:
         key = self.normalizeKey(key)
         del self._data[key]
 
     def __iter__(self):
         return iter(self._data)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._data)
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         key = self.normalizeKey(key)
         return key in self._data
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{}({})'.format(type(self), self._data)
 
     @staticmethod
     def normalizeKey(key) -> str:
-        """Helper function to return language codes of a site object."""
+        """Helper function to return language codes of a site object.
+
+        :param key: input key to be normalized
+        :type key: pywikibot.site.BaseSite or str
+        """
         if isinstance(key, BaseSite):
             key = key.lang
         return key
@@ -87,8 +92,7 @@ class LanguageDict(BaseDataDict):
         """Construct a new LanguageDict from JSON."""
         if data != []:  # workaround for T222159
             return cls({key: value['value'] for key, value in data.items()})
-        else:
-            return cls()
+        return cls()
 
     @classmethod
     def normalizeData(cls, data: dict):
@@ -187,7 +191,7 @@ class AliasesDict(BaseDataDict):
 class ClaimCollection(MutableMapping):
     """A structure holding claims for a Wikibase entity."""
 
-    def __init__(self, repo):
+    def __init__(self, repo) -> None:
         """Initializer."""
         super().__init__()
         self.repo = repo
@@ -210,22 +214,22 @@ class ClaimCollection(MutableMapping):
     def __getitem__(self, key):
         return self._data[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value) -> None:
         self._data[key] = value
 
-    def __delitem__(self, key):
+    def __delitem__(self, key) -> None:
         del self._data[key]
 
     def __iter__(self):
         return iter(self._data)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._data)
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         return key in self._data
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{}({})'.format(type(self), self._data)
 
     @classmethod
@@ -273,6 +277,7 @@ class ClaimCollection(MutableMapping):
 
             for claim, json in zip(self[prop], claims[prop]):
                 if 'id' not in json:
+                    temp[prop].append(json)
                     continue
 
                 claim_ids.add(json['id'])
@@ -291,7 +296,7 @@ class ClaimCollection(MutableMapping):
         claims = temp
         return claims
 
-    def set_on_item(self, item):
+    def set_on_item(self, item) -> None:
         """Set Claim.on_item attribute for all claims in this collection."""
         for claims in self.values():
             for claim in claims:
@@ -301,7 +306,7 @@ class ClaimCollection(MutableMapping):
 class SiteLinkCollection(MutableMapping):
     """A structure holding SiteLinks for a Wikibase item."""
 
-    def __init__(self, repo, data=None):
+    def __init__(self, repo, data=None) -> None:
         """
         Initializer.
 
@@ -355,7 +360,7 @@ class SiteLinkCollection(MutableMapping):
         self._data[key] = val
         return val
 
-    def __setitem__(self, key, val):
+    def __setitem__(self, key, val) -> None:
         """
         Set the SiteLink for a given key.
 
@@ -374,17 +379,17 @@ class SiteLinkCollection(MutableMapping):
             assert val.site.dbName() == key
         self._data[key] = val
 
-    def __delitem__(self, key):
+    def __delitem__(self, key) -> None:
         key = self.getdbName(key)
         del self._data[key]
 
     def __iter__(self):
         return iter(self._data)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._data)
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         key = self.getdbName(key)
         return key in self._data
 
@@ -473,3 +478,101 @@ class SiteLinkCollection(MutableMapping):
             for dbname in to_nuke:
                 del data[dbname]
         return data
+
+
+class SubEntityCollection(MutableSequence):
+
+    """Ordered collection of sub-entities indexed by their ids."""
+
+    def __init__(self, repo, data=None):
+        """
+        Initializer.
+
+        :param repo: Wikibase site
+        :type repo: pywikibot.site.DataSite
+        :param data: iterable of LexemeSubEntity
+        :type data: iterable
+        """
+        super().__init__()
+        self.repo = repo
+        self._data = []
+        self._by_key = {}
+        if data:
+            self.extend(data)
+
+    def _validate_isinstance(self, obj):
+        if not isinstance(obj, self.type_class):
+            raise TypeError(
+                '{} should only hold instances of {}, '
+                'instance of {} was provided'
+                .format(self.__class__.__name__,
+                        self.type_class.__name__,
+                        obj.__class__.__name__))
+
+    def __getitem__(self, index):
+        if isinstance(index, str):
+            try:
+                index = self._by_key[index]
+            except KeyError as e:
+                raise ValueError('No entity with id {} was found'
+                                 .format(index)) from e
+        return self._data[index]
+
+    def __setitem__(self, index, value):
+        raise NotImplementedError
+
+    def __delitem__(self, index):
+        if isinstance(index, str):
+            try:
+                index = self._by_key[index]
+            except KeyError as e:
+                raise ValueError('No entity with id {} was found'
+                                 .format(index)) from e
+        obj = self._data[index]
+        del self._data[index]
+        del self._by_key[obj.id]
+
+    def __len__(self):
+        return len(self._data)
+
+    def insert(self, index, obj):
+        """Insert a sub-entity to the collection."""
+        self._validate_isinstance(obj)
+        self._data.insert(index, obj)
+        self._by_key[obj.id] = index
+
+    @classmethod
+    def new_empty(cls, repo):
+        """Construct a new empty SubEntityCollection."""
+        return cls(repo)
+
+    @classmethod
+    def fromJSON(cls, data, repo):
+        """Construct a new SubEntityCollection from JSON."""
+        this = cls(repo)
+        for entity in data:
+            this.append(cls.type_class.fromJSON(repo, entity))
+        return this
+
+    @classmethod
+    def normalizeData(cls, data: list) -> dict:
+        """
+        Helper function to expand data into the Wikibase API structure.
+
+        :param data: Data to normalize
+        :type data: list
+
+        :return: the altered dict from parameter data.
+        """
+        raise NotImplementedError  # todo
+
+    def toJSON(self, diffto: Optional[dict] = None) -> dict:
+        """
+        Create JSON suitable for Wikibase API.
+
+        When diffto is provided, JSON representing differences
+        to the provided data is created.
+
+        :param diffto: JSON containing entity data
+        """
+        raise NotImplementedError  # todo

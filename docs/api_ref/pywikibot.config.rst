@@ -5,7 +5,6 @@ API reference
 ^^^^^^^^^^^^^
 
 .. automodule:: pywikibot.config
-   :noindex:
 
 Option setting
 ^^^^^^^^^^^^^^
@@ -17,6 +16,7 @@ Account Settings
 .. literalinclude:: ../../pywikibot/config.py
    :start-at: # ############# ACCOUNT SETTINGS
    :end-before: # #############
+
 
 User Interface Settings
 +++++++++++++++++++++++

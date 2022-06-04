@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This bot downloads dump from dumps.wikimedia.org.
 
@@ -11,9 +11,12 @@ This script supports the following command line parameters:
     -dumpdate:#     The dumpdate date of the dump (default to `latest`)
                     formatted as YYYYMMDD.
 
+.. note:: This script is a
+   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   can be set within a settings file which is scripts.ini by default.
 """
 #
-# (C) Pywikibot team, 2017-2021
+# (C) Pywikibot team, 2017-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -23,13 +26,17 @@ from http import HTTPStatus
 from os import remove, replace, symlink, urandom
 
 import pywikibot
-from pywikibot import Bot
+from pywikibot.bot import Bot, ConfigParserBot
 from pywikibot.comms.http import fetch
 
 
-class DownloadDumpBot(Bot):
+class DownloadDumpBot(Bot, ConfigParserBot):
 
-    """Download dump bot."""
+    """Download dump bot.
+
+    .. versionchanged:: 7.0
+       DownloadDumpBot is a ConfigParserBot
+    """
 
     available_options = {
         'wikiname': '',
@@ -63,7 +70,7 @@ class DownloadDumpBot(Bot):
                         return dump_filepath
         return None
 
-    def run(self):
+    def run(self) -> None:
         """Run bot."""
         def convert_from_bytes(total_bytes):
             for unit in ['B', 'K', 'M', 'G', 'T']:
@@ -95,9 +102,8 @@ class DownloadDumpBot(Bot):
                 if toolforge_dump_filepath:
                     pywikibot.output('Symlinking file from '
                                      + toolforge_dump_filepath)
-                    if non_atomic:
-                        if os.path.exists(file_final_storepath):
-                            remove(file_final_storepath)
+                    if non_atomic and os.path.exists(file_final_storepath):
+                        remove(file_final_storepath)
                     symlink(toolforge_dump_filepath, file_current_storepath)
                 else:
                     url = 'https://dumps.wikimedia.org/{}/{}/{}'.format(
@@ -127,7 +133,7 @@ class DownloadDumpBot(Bot):
                         parts = 50
                         display_string = ''
 
-                        pywikibot.output('')
+                        pywikibot.output()
                         for data in response.iter_content(100 * 1024):
                             result_file.write(data)
 
@@ -150,7 +156,7 @@ class DownloadDumpBot(Bot):
                                 - len(display_string.rstrip()))
 
                             pywikibot.output(display_string, newline=False)
-                        pywikibot.output('')
+                        pywikibot.output()
 
                 # Rename the temporary file to the target file
                 # if the download completes successfully
@@ -158,13 +164,13 @@ class DownloadDumpBot(Bot):
                     replace(file_current_storepath, file_final_storepath)
                     break
 
-            except OSError:
-                pywikibot.exception()
+            except OSError as e:
+                pywikibot.error(e)
 
                 try:
                     remove(file_current_storepath)
-                except OSError:
-                    pywikibot.exception()
+                except OSError as e:
+                    pywikibot.error(e)
 
                 # If the atomic download fails, try without a temporary file
                 # If the non-atomic download also fails, exit the script

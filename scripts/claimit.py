@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 A script that adds claims to Wikidata items based on a list of pages.
 
@@ -46,7 +46,7 @@ but 'p' must be included.
 
 """
 #
-# (C) Pywikibot team, 2013-2021
+# (C) Pywikibot team, 2013-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -65,13 +65,12 @@ class ClaimRobot(WikidataBot):
 
     use_from_page = None
 
-    def __init__(self, claims, exists_arg='', **kwargs) -> None:
+    def __init__(self, claims, exists_arg: str = '', **kwargs) -> None:
         """Initializer.
 
         :param claims: A list of wikidata claims
         :type claims: list
         :param exists_arg: String specifying how to handle duplicate claims
-        :type exists_arg: str
         """
         self.available_options['always'] = True
         super().__init__(**kwargs)

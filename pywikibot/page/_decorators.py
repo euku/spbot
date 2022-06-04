@@ -1,7 +1,6 @@
-
 """Decorators for Page objects."""
 #
-# (C) Pywikibot team, 2017-2021
+# (C) Pywikibot team, 2017-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -47,7 +46,7 @@ def allow_asynchronous(func):
         if callback:
             callback(self, err)
 
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs) -> None:
         if kwargs.get('asynchronous'):
             pywikibot.async_request(handle, func, self, *args, **kwargs)
         else:

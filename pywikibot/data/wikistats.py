@@ -1,6 +1,6 @@
 """Objects representing WikiStats API."""
 #
-# (C) Pywikibot team, 2014-2020
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -10,7 +10,6 @@ from typing import Optional
 
 import pywikibot
 from pywikibot.comms import http
-from pywikibot.tools import remove_last_args
 
 
 class WikiStats:
@@ -72,12 +71,11 @@ class WikiStats:
 
     ALL_KEYS = set(FAMILY_MAPPING.keys()) | ALL_TABLES
 
-    def __init__(self, url='https://wikistats.wmcloud.org/') -> None:
+    def __init__(self, url: str = 'https://wikistats.wmcloud.org/') -> None:
         """Initializer."""
         self.url = url
         self._data = {}
 
-    @remove_last_args(['format'])
     def get(self, table: str) -> list:
         """Get a list of a table of data.
 
@@ -99,7 +97,6 @@ class WikiStats:
         self._data[table] = data
         return data
 
-    @remove_last_args(['format'])
     def get_dict(self, table: str) -> dict:
         """Get dictionary of a table of data.
 

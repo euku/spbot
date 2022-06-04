@@ -1,7 +1,6 @@
-#!/usr/bin/python
 """Library to log the bot in to a wiki account."""
 #
-# (C) Pywikibot team, 2003-2021
+# (C) Pywikibot team, 2003-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -13,18 +12,11 @@ from typing import Any, Optional
 from warnings import warn
 
 import pywikibot
-import pywikibot.data.api
 from pywikibot import __url__, config
 from pywikibot.backports import Dict, Tuple
 from pywikibot.comms import http
 from pywikibot.exceptions import APIError, NoUsernameError
-from pywikibot.tools import (
-    ModuleDeprecationWrapper,
-    deprecated_args,
-    file_mode_checker,
-    normalize_username,
-    remove_last_args,
-)
+from pywikibot.tools import file_mode_checker, normalize_username
 
 
 try:
@@ -32,17 +24,10 @@ try:
 except ImportError as e:
     mwoauth = e
 
-# TODO: replace these after T286867
-
-OPT_SITE_TYPE = Any  # Optional['pywikibot.site.BaseSite']
-
 
 class _PasswordFileWarning(UserWarning):
 
     """The format of password file is incorrect."""
-
-
-_logger = 'wiki.login'
 
 
 # On some wikis you are only allowed to run a bot if there is a link to
@@ -89,9 +74,8 @@ class LoginManager:
 
     """Site login manager."""
 
-    @deprecated_args(username='user', verbose=True, sysop=True)
     def __init__(self, password: Optional[str] = None,
-                 site: OPT_SITE_TYPE = None,
+                 site: Optional['pywikibot.site.BaseSite'] = None,
                  user: Optional[str] = None) -> None:
         """
         Initializer.
@@ -131,7 +115,7 @@ class LoginManager:
         """
         Check that the username exists on the site.
 
-        :see: https://www.mediawiki.org/wiki/API:Users
+        .. seealso:: :api:`Users`
 
         :raises pywikibot.exceptions.NoUsernameError: Username doesn't exist in
             user list.
@@ -190,7 +174,6 @@ class LoginManager:
         # THIS IS OVERRIDDEN IN data/api.py
         raise NotImplementedError
 
-    @remove_last_args(['data'])
     def storecookiedata(self) -> None:
         """Store cookie data."""
         http.cookie_jar.save(ignore_discard=True)
@@ -282,7 +265,7 @@ class LoginManager:
         """
         Attempt to log into the server.
 
-        :see: https://www.mediawiki.org/wiki/API:Login
+        .. seealso:: :api:`Login`
 
         :param retry: infinitely retry if the API returns an unknown error
         :param autocreate: if true, allow auto-creation of the account
@@ -369,9 +352,8 @@ class OauthLoginManager(LoginManager):
     # NOTE: Currently OauthLoginManager use mwoauth directly to complete OAuth
     # authentication process
 
-    @deprecated_args(sysop=True)
     def __init__(self, password: Optional[str] = None,
-                 site: OPT_SITE_TYPE = None,
+                 site: Optional['pywikibot.site.BaseSite'] = None,
                  user: Optional[str] = None) -> None:
         """
         Initializer.
@@ -402,7 +384,7 @@ class OauthLoginManager(LoginManager):
         """
         Attempt to log into the server.
 
-        :see: https://www.mediawiki.org/wiki/API:Login
+        .. seealso:: :api:`Login`
 
         :param retry: infinitely retry if exception occurs during
             authentication.
@@ -430,8 +412,7 @@ class OauthLoginManager(LoginManager):
                 pywikibot.error(e)
                 if retry:
                     return self.login(retry=True, force=force)
-                else:
-                    return False
+                return False
         else:
             pywikibot.output('Logged in to {site} via consumer {key}'
                              .format(key=self.consumer_token[0],
@@ -443,7 +424,7 @@ class OauthLoginManager(LoginManager):
         """
         Return OAuth consumer key token and secret token.
 
-        :see: https://www.mediawiki.org/wiki/API:Tokens
+        .. seealso:: :api:`Tokens`
         """
         return self._consumer_token
 
@@ -452,7 +433,7 @@ class OauthLoginManager(LoginManager):
         """
         Return OAuth access key token and secret token.
 
-        :see: https://www.mediawiki.org/wiki/API:Tokens
+        .. seealso:: :api:`Tokens`
         """
         return self._access_token
 
@@ -472,12 +453,3 @@ class OauthLoginManager(LoginManager):
         except Exception as e:
             pywikibot.error(e)
             return None
-
-
-OAuthImpossible = ImportError
-
-wrapper = ModuleDeprecationWrapper(__name__)
-wrapper.add_deprecated_attr(
-    'OAuthImpossible',
-    replacement_name='ImportError',
-    since='20210423')

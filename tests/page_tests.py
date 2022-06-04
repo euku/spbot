@@ -1,12 +1,15 @@
+#!/usr/bin/python3
 """Tests for the page module."""
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import pickle
 import re
 from contextlib import suppress
+from datetime import timedelta
+from unittest import mock
 
 import pywikibot
 import pywikibot.page
@@ -20,7 +23,7 @@ from pywikibot.exceptions import (
     UnknownExtensionError,
 )
 from pywikibot.tools import suppress_warnings
-from tests import WARN_SITE_CODE, mock
+from tests import WARN_SITE_CODE
 from tests.aspects import (
     DefaultDrySiteTestCase,
     DefaultSiteTestCase,
@@ -28,6 +31,7 @@ from tests.aspects import (
     TestCase,
     unittest,
 )
+from tests.utils import skipping
 
 
 EMPTY_TITLE_RE = r'Title must be specified and not empty if source is a Site\.'
@@ -95,12 +99,6 @@ class TestLinkObject(SiteAttributeTestCase):
         'Nowy_Sącz':                     'Nowy Sącz',
         'battle of Węgierska  Górka':    'Battle of Węgierska Górka',
     }
-    # random bunch of possible section titles
-    sections = ['',
-                '#Phase_2',
-                '#History',
-                '#later life',
-                ]
 
     def testNamespaces(self):
         """Test that Link() normalizes namespace names."""
@@ -164,8 +162,8 @@ class TestLinkObject(SiteAttributeTestCase):
                                  source=self.enws)
         self.assertEqual(l3.ns_title(), 'Translation:Albert Einstein')
         with self.assertRaisesRegex(
-                Error,
-                'No corresponding namespace found for '
+                InvalidTitleError,
+                'No corresponding title found for '
                 'namespace Translation: on wikisource:it.'):
             l3.ns_title(onsite=self.itws)
 
@@ -200,14 +198,11 @@ class TestPageObjectEnglish(TestCase):
         ns_name = 'Help'
         if site.namespaces[12][0] != ns_name:
             ns_name = site.namespaces[12][0]
-        self.assertEqual(p1.title(),
-                         ns_name + ':Test page#Testing')
+        self.assertEqual(p1.title(), ns_name + ':Test page#Testing')
         self.assertEqual(p1.title(underscore=True),
                          ns_name + ':Test_page#Testing')
-        self.assertEqual(p1.title(with_ns=False),
-                         'Test page#Testing')
-        self.assertEqual(p1.title(with_section=False),
-                         ns_name + ':Test page')
+        self.assertEqual(p1.title(with_ns=False), 'Test page#Testing')
+        self.assertEqual(p1.title(with_section=False), ns_name + ':Test page')
         self.assertEqual(p1.title(with_ns=False, with_section=False),
                          'Test page')
         self.assertEqual(p1.title(as_url=True),
@@ -237,12 +232,10 @@ class TestPageObjectEnglish(TestCase):
         ns_name = 'File'
         if site.namespaces[6][0] != ns_name:
             ns_name = site.namespaces[6][0]
-        self.assertEqual(p2.title(),
-                         'File:Jean-Léon Gérôme 003.jpg')
+        self.assertEqual(p2.title(), 'File:Jean-Léon Gérôme 003.jpg')
         self.assertEqual(p2.title(underscore=True),
                          'File:Jean-Léon_Gérôme_003.jpg')
-        self.assertEqual(p2.title(with_ns=False),
-                         'Jean-Léon Gérôme 003.jpg')
+        self.assertEqual(p2.title(with_ns=False), 'Jean-Léon Gérôme 003.jpg')
         self.assertEqual(p2.title(with_section=False),
                          'File:Jean-Léon Gérôme 003.jpg')
         self.assertEqual(p2.title(with_ns=False, with_section=False),
@@ -290,6 +283,19 @@ class TestPageObjectEnglish(TestCase):
         self.assertIsInstance(mainpage.oldest_revision.timestamp,
                               pywikibot.Timestamp)
 
+    def test_old_version(self):
+        """Test page.getOldVersion()."""
+        mainpage = self.get_mainpage()
+        revid = mainpage.oldest_revision.revid
+        self.assertIsNone(mainpage.oldest_revision.text)
+        self.assertIsNone(mainpage._revisions[revid].text)
+        text = mainpage.getOldVersion(revid)
+        self.assertEqual(
+            text[:53], "'''[[Welcome, newcomers|Welcome]] to [[Wikipedia]]'''")
+        self.assertEqual(text, mainpage._revisions[revid].text)
+        with skipping(AssertionError, msg='T304786'):
+            self.assertEqual(text, mainpage.oldest_revision.text)
+
 
 class TestPageObject(DefaultSiteTestCase):
 
@@ -322,15 +328,11 @@ class TestPageObject(DefaultSiteTestCase):
         # the site parameter.
         # Empty string or None as title raises error.
         page = pywikibot.page.BasePage(site)
-        with self.assertRaisesRegex(
-                InvalidTitleError,
-                INVALID_TITLE_RE):
+        with self.assertRaisesRegex(InvalidTitleError, INVALID_TITLE_RE):
             page.title()
 
         page = pywikibot.page.BasePage(site, title='')
-        with self.assertRaisesRegex(
-                InvalidTitleError,
-                INVALID_TITLE_RE):
+        with self.assertRaisesRegex(InvalidTitleError, INVALID_TITLE_RE):
             page.title()
 
         with self.assertRaisesRegex(ValueError, 'Title cannot be None.'):
@@ -342,13 +344,10 @@ class TestPageObject(DefaultSiteTestCase):
         mainpage = self.get_mainpage()
 
         # Test that Page() needs a title when Site is used as source.
-        with self.assertRaisesRegex(
-                ValueError,
-                EMPTY_TITLE_RE):
+        with self.assertRaisesRegex(ValueError, EMPTY_TITLE_RE):
             pywikibot.Page(site)
-        with self.assertRaisesRegex(
-                ValueError,
-                EMPTY_TITLE_RE):
+
+        with self.assertRaisesRegex(ValueError, EMPTY_TITLE_RE):
             pywikibot.Page(site, '')
 
         # Test Page as source.
@@ -356,10 +355,9 @@ class TestPageObject(DefaultSiteTestCase):
         self.assertEqual(p1, mainpage)
 
         # Test not valid source.
-        with self.assertRaisesRegex(
-                Error,
-                r"Invalid argument type '<\w* '\w*'>' in "
-                'Page initializer: dummy'):
+        with self.assertRaisesRegex(Error,
+                                    r"Invalid argument type '<\w* '\w*'>' in "
+                                    'Page initializer: dummy'):
             pywikibot.Page('dummy')
 
     def testTitle(self):
@@ -367,20 +365,13 @@ class TestPageObject(DefaultSiteTestCase):
         # at last test article namespace
         site = self.get_site()
         p2 = pywikibot.Page(site, 'Test page')
-        self.assertEqual(p2.title(),
-                         'Test page')
-        self.assertEqual(p2.title(underscore=True),
-                         'Test_page')
-        self.assertEqual(p2.title(),
-                         p2.title(with_ns=False))
-        self.assertEqual(p2.title(),
-                         p2.title(with_section=False))
-        self.assertEqual(p2.title(as_url=True),
-                         p2.title(underscore=True))
-        self.assertEqual(p2.title(as_link=True, insite=site),
-                         '[[Test page]]')
-        self.assertEqual(p2.title(as_filename=True),
-                         p2.title(underscore=True))
+        self.assertEqual(p2.title(), 'Test page')
+        self.assertEqual(p2.title(underscore=True), 'Test_page')
+        self.assertEqual(p2.title(), p2.title(with_ns=False))
+        self.assertEqual(p2.title(), p2.title(with_section=False))
+        self.assertEqual(p2.title(as_url=True), p2.title(underscore=True))
+        self.assertEqual(p2.title(as_link=True, insite=site), '[[Test page]]')
+        self.assertEqual(p2.title(as_filename=True), p2.title(underscore=True))
         self.assertEqual(p2.title(underscore=True),
                          p2.title(underscore=True, with_ns=False))
         self.assertEqual(p2.title(underscore=True),
@@ -487,9 +478,7 @@ class TestPageObject(DefaultSiteTestCase):
     def test_bad_page(self):
         """Test various methods that rely on API: bad page."""
         badpage = self.get_missing_article()
-        with self.assertRaisesRegex(
-                NoPageError,
-                NO_PAGE_RE):
+        with self.assertRaisesRegex(NoPageError, NO_PAGE_RE):
             badpage.get()
 
     def testIsDisambig(self):
@@ -506,25 +495,15 @@ class TestPageObject(DefaultSiteTestCase):
     def testReferences(self):
         """Test references to a page."""
         mainpage = self.get_mainpage()
-        count = 0
         # Ignore redirects for time considerations
-        for p in mainpage.getReferences(follow_redirects=False):
-            count += 1
+        for p in mainpage.getReferences(follow_redirects=False, total=10):
             self.assertIsInstance(p, pywikibot.Page)
-            if count >= 10:
-                break
-        count = 0
-        for p in mainpage.backlinks(follow_redirects=False):
-            count += 1
+
+        for p in mainpage.backlinks(follow_redirects=False, total=10):
             self.assertIsInstance(p, pywikibot.Page)
-            if count >= 10:
-                break
-        count = 0
-        for p in mainpage.embeddedin():
-            count += 1
+
+        for p in mainpage.embeddedin(total=10):
             self.assertIsInstance(p, pywikibot.Page)
-            if count >= 10:
-                break
 
     def testLinks(self):
         """Test the different types of links from a page."""
@@ -623,7 +602,6 @@ class TestPageCoordinates(TestCase):
 
     family = 'wikipedia'
     code = 'de'
-
     cached = True
 
     def test_coordinates(self):
@@ -640,17 +618,6 @@ class TestPageCoordinates(TestCase):
             coord = page.coordinates(primary_only=True)
             self.assertIsInstance(coord, pywikibot.Coordinate)
             self.assertTrue(coord.primary)
-
-
-class TestPageBaseUnicode(DefaultDrySiteTestCase):
-
-    """Base class for tests requiring a page using a unicode title."""
-
-    @classmethod
-    def setUpClass(cls):
-        """Initialize page instance."""
-        super().setUpClass()
-        cls.page = pywikibot.Page(cls.site, 'Ō')
 
 
 class TestPageGetFileHistory(DefaultDrySiteTestCase):
@@ -671,28 +638,15 @@ class TestPageGetFileHistory(DefaultDrySiteTestCase):
             self.site.loadimageinfo.assert_called_once_with(page, history=True)
 
 
-class TestFilePage(DefaultSiteTestCase):
-
-    """Test methods of the FilePage class."""
-
-    family = 'commons'
-    code = 'commons'
-
-    cached = True
-
-    def test_globalusage(self, key):
-        """Test globalusage generator."""
-        page = pywikibot.FilePage(self.site, 'File:Example.jpg')
-        gen = page.globalusage(total=3)
-        pages = list(gen)
-        self.assertLength(pages, 3)
-        self.assertTrue(any(isinstance(p), pywikibot.Page) for p in pages)
-        self.assertTrue(any(p.site != self.site for p in pages))
-
-
-class TestPageRepr(TestPageBaseUnicode):
+class TestPageRepr(DefaultDrySiteTestCase):
 
     """Test for Page's repr implementation."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Initialize page instance."""
+        super().setUpClass()
+        cls.page = pywikibot.Page(cls.site, 'Ō')
 
     def setUp(self):
         """Force the console encoding to UTF-8."""
@@ -722,29 +676,12 @@ class TestPageRepr(TestPageBaseUnicode):
         self.assertEqual('{!r}'.format(self.page), "Page('Ō')")
 
 
-class TestPageReprASCII(TestPageBaseUnicode):
-
-    """Test for Page's repr implementation when using ASCII encoding."""
-
-    def setUp(self):
-        """Patch the current console encoding to ASCII."""
-        super().setUp()
-        self._old_encoding = config.console_encoding
-        config.console_encoding = 'ascii'
-
-    def tearDown(self):
-        """Restore the original console encoding."""
-        config.console_encoding = self._old_encoding
-        super().tearDown()
-
-
 class TestPageBotMayEdit(TestCase):
 
     """Test Page.botMayEdit() method."""
 
     family = 'wikipedia'
     code = 'test'
-
     cached = True
     login = True
 
@@ -950,6 +887,38 @@ class TestPageHistory(DefaultSiteTestCase):
         self.assertIsInstance(top_two_edit_count, int)
         self.assertEqual(top_two_edit_count, sum(top_two_counts))
 
+    def test_revisions_time_interval_false(self):
+        """Test Page.revisions() with reverse=False."""
+        mp = self.get_mainpage()
+
+        latest_rev = mp.latest_revision
+        oldest_rev = mp.oldest_revision
+        oldest_ts = oldest_rev.timestamp
+
+        [rev] = list(mp.revisions(total=1))
+        self.assertEqual(rev.revid, latest_rev.revid)
+
+        ts = oldest_ts + timedelta(seconds=1)
+        [rev] = list(mp.revisions(total=1, starttime=ts.isoformat()))
+        self.assertEqual(rev.revid, oldest_rev.revid)
+
+    def test_revisions_time_interval_true(self):
+        """Test Page.revisions() with reverse=True."""
+        mp = self.get_mainpage()
+
+        latest_rev = mp.latest_revision
+        latest_ts = latest_rev.timestamp
+        oldest_rev = mp.oldest_revision
+
+        [rev] = list(mp.revisions(total=1, reverse=True))
+        self.assertEqual(rev.revid, oldest_rev.revid)
+
+        ts = latest_ts - timedelta(seconds=1)
+        [rev] = list(mp.revisions(total=1,
+                                  starttime=ts.isoformat(),
+                                  reverse=True))
+        self.assertEqual(rev.revid, latest_rev.revid)
+
 
 class TestPageRedirects(TestCase):
 
@@ -961,14 +930,22 @@ class TestPageRedirects(TestCase):
     'R2' is a normal page and 'R3' does not exist.
     """
 
-    family = 'wikipedia'
-    code = 'en'
+    sites = {
+        'en': {
+            'family': 'wikipedia',
+            'code': 'en',
+        },
+        'test': {
+            'family': 'wikipedia',
+            'code': 'test',
+        },
+    }
 
     cached = True
 
     def testIsRedirect(self):
         """Test ``Page.isRedirectPage()`` and ``Page.getRedirectTarget``."""
-        site = self.get_site()
+        site = self.get_site('en')
         p1 = pywikibot.Page(site, 'User:Legoktm/R1')
         p2 = pywikibot.Page(site, 'User:Legoktm/R2')
         self.assertTrue(p1.isRedirectPage())
@@ -976,9 +953,18 @@ class TestPageRedirects(TestCase):
         self.assertEqual(p3, p2)
         self.assertIsInstance(p3, pywikibot.User)
 
+    def testIsStaticRedirect(self):
+        """Test ``Page.isStaticRedirect()``."""
+        site = self.get_site('test')
+        page = pywikibot.Page(site, 'Static Redirect')
+        self.assertTrue(page.isRedirectPage())
+        self.assertTrue(page.isStaticRedirect())
+        self.assertIn('staticredirect', page.properties())
+        self.assertIn('__STATICREDIRECT__', page.text)
+
     def testPageGet(self):
         """Test ``Page.get()`` on different types of pages."""
-        site = self.get_site()
+        site = self.get_site('en')
         p1 = pywikibot.Page(site, 'User:Legoktm/R2')
         p2 = pywikibot.Page(site, 'User:Legoktm/R1')
         p3 = pywikibot.Page(site, 'User:Legoktm/R3')
@@ -986,33 +972,27 @@ class TestPageRedirects(TestCase):
         text = ('This page is used in the [[mw:Manual:Pywikipediabot]] '
                 'testing suite.')
         self.assertEqual(p1.get(), text)
-        with self.assertRaisesRegex(
-                IsRedirectPageError,
-                r'{} is a redirect page\.'
-                .format(re.escape(str(p2)))):
+        with self.assertRaisesRegex(IsRedirectPageError,
+                                    r'{} is a redirect page\.'
+                                    .format(re.escape(str(p2)))):
             p2.get()
-        with self.assertRaisesRegex(
-                NoPageError,
-                NO_PAGE_RE):
+        with self.assertRaisesRegex(NoPageError, NO_PAGE_RE):
             p3.get()
 
     def test_set_redirect_target(self):
         """Test set_redirect_target method."""
         # R1 redirects to R2 and R3 doesn't exist.
-        site = self.get_site()
+        site = self.get_site('en')
         p1 = pywikibot.Page(site, 'User:Legoktm/R2')
         p2 = pywikibot.Page(site, 'User:Legoktm/R1')
         p3 = pywikibot.Page(site, 'User:Legoktm/R3')
 
         text = p2.get(get_redirect=True)
-        with self.assertRaisesRegex(
-                IsNotRedirectPageError,
-                r'{} is not a redirect page\.'
-                .format(re.escape(str(p1)))):
+        with self.assertRaisesRegex(IsNotRedirectPageError,
+                                    r'{} is not a redirect page\.'
+                                    .format(re.escape(str(p1)))):
             p1.set_redirect_target(p2)
-        with self.assertRaisesRegex(
-                NoPageError,
-                NO_PAGE_RE):
+        with self.assertRaisesRegex(NoPageError, NO_PAGE_RE):
             p3.set_redirect_target(p2)
         p2.set_redirect_target(p1, save=False)
         self.assertEqual(text, p2.get(get_redirect=True))
@@ -1056,7 +1036,7 @@ class TestPageDelete(TestCase):
     code = 'test'
 
     write = True
-    sysop = True
+    rights = 'delete'
 
     def test_delete(self):
         """Test the site.delete and site.undelete method."""
@@ -1064,26 +1044,23 @@ class TestPageDelete(TestCase):
         p = pywikibot.Page(site, 'User:Unicodesnowman/DeleteTest')
         # Ensure the page exists
         p.text = 'pywikibot unit test page'
-        p.save('#redirect[[unit test]]', botflag=True)
-        self.assertEqual(p.isRedirectPage(), True)
+        p.save('Pywikibot unit test', botflag=True)
+
         # Test deletion
-        p.delete(reason='pywikibot unit test', prompt=False, mark=False)
+        res = p.delete(reason='Pywikibot unit test', prompt=False, mark=False)
         self.assertEqual(p._pageid, 0)
-        self.assertEqual(p.isRedirectPage(), False)
-        with self.assertRaisesRegex(
-                NoPageError,
-                NO_PAGE_RE):
+        self.assertEqual(res, 1)
+        with self.assertRaisesRegex(NoPageError, NO_PAGE_RE):
             p.get(force=True)
+
         # Test undeleting last two revisions
         del_revs = list(p.loadDeletedRevisions())
         revid = p.getDeletedRevision(del_revs[-1])['revid']
         p.markDeletedRevision(del_revs[-1])
         p.markDeletedRevision(del_revs[-2])
-        with self.assertRaisesRegex(
-                ValueError,
-                'is not a deleted revision'):
+        with self.assertRaisesRegex(ValueError, 'is not a deleted revision'):
             p.markDeletedRevision(123)
-        p.undelete(reason='pywikibot unit test')
+        p.undelete(reason='Pywikibot unit test')
         revs = list(p.revisions())
         self.assertLength(revs, 2)
         self.assertEqual(revs[1].revid, revid)
@@ -1129,7 +1106,7 @@ class TestPageProtect(TestCase):
     code = 'test'
 
     write = True
-    sysop = True
+    rights = 'protect'
 
     def test_protect(self):
         """Test Page.protect."""
@@ -1262,9 +1239,12 @@ class TestShortLink(TestCase):
     def test_create_short_link(self):
         """Test create_short_link function."""
         # Make sure test user is logged in on meta:meta (T244062)
-        meta = pywikibot.Site('meta', 'meta')
+        meta = pywikibot.Site('meta')
         if not meta.logged_in():
             meta.login()
+        if not meta.user():
+            self.skipTest('{}: Not able to login to {}'
+                          .format(type(self).__name__, meta))
 
         site = self.get_site()
         p1 = pywikibot.Page(site, 'User:Framawiki/pwb_tests/shortlink')

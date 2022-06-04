@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Test logentries module."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -91,7 +92,7 @@ class TestLogentriesBase(TestCase):
             self.assertRegex(
                 str(e),
                 r"Log entry \([^)]+\) has a hidden 'comment' key and you "
-                r"don't have permission to view it\.")
+                r"don't have permission to view it")
         except KeyError as e:
             self.assertRegex(str(e), "Log entry ([^)]+) has no 'comment' key")
         else:
@@ -196,7 +197,9 @@ class TestLogentryParams(TestLogentriesBase):
             if logentry.action() == 'block':
                 self.assertIsInstance(logentry.flags(), list)
                 # Check that there are no empty strings
-                self.assertTrue(all(logentry.flags()))
+                for flag in logentry.flags():
+                    self.assertIsInstance(flag, str)
+                    self.assertNotEqual(flag, '')
                 if logentry.expiry() is not None:
                     self.assertIsInstance(logentry.expiry(),
                                           pywikibot.Timestamp)

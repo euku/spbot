@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 r"""
 This script runs commands on each entry in the API caches.
 
@@ -64,7 +64,7 @@ Available output commands:
     uniquedesc(entry)
 """
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -229,7 +229,7 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
     """
     if not cache_path:
         cache_path = os.path.join(pywikibot.config.base_dir,
-                                  'apicache-py{0:d}'.format(PYTHON_VERSION[0]))
+                                  'apicache-py{:d}'.format(PYTHON_VERSION[0]))
 
     if not os.path.exists(cache_path):
         pywikibot.error('{}: no such file or directory'.format(cache_path))
@@ -265,10 +265,10 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
 
         try:
             entry._load_cache()
-        except ValueError as e:
+        except ValueError:
             pywikibot.error('Failed loading {}'.format(
                 entry._cachefile_path()))
-            pywikibot.exception(e, tb=True)
+            pywikibot.exception()
             continue
 
         if use_accesstime is None:
@@ -282,19 +282,19 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
 
         try:
             entry.parse_key()
-        except ParseError:
+        except ParseError as e:
             pywikibot.error('Problems parsing {} with key {}'
                             .format(entry.filename, entry.key))
-            pywikibot.exception()
+            pywikibot.error(e)
             continue
 
         try:
             entry._rebuild()
-        except Exception as e:
+        except Exception:
             pywikibot.error('Problems loading {} with key {}, {!r}'
                             .format(entry.filename, entry.key,
                                     entry._parsed_key))
-            pywikibot.exception(e, tb=True)
+            pywikibot.exception()
             continue
 
         if func is None or func(entry):
@@ -317,8 +317,8 @@ def _parse_command(command, name):
 
     try:
         return eval('lambda entry: ' + command)
-    except Exception:
-        pywikibot.exception()
+    except Exception as e:
+        pywikibot.error(e)
         pywikibot.error(
             'Cannot compile {} command: {}'.format(name, command))
         return None

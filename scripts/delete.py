@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This script can be used to delete and undelete pages en masse.
 
@@ -51,7 +51,7 @@ Delete everything in the category "To delete" without prompting:
     python pwb.py delete -cat:"To delete" -always
 """
 #
-# (C) Pywikibot team, 2013-2021
+# (C) Pywikibot team, 2013-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -81,7 +81,7 @@ class PageWithRefs(Page):
     Supports the same interface as Page, with some added methods.
     """
 
-    def __init__(self, source, title='', ns=0) -> None:
+    def __init__(self, source, title: str = '', ns=0) -> None:
         """Initializer."""
         super().__init__(source, title, ns)
         _cache_attrs = list(super()._cache_attrs)
@@ -175,7 +175,7 @@ class DeletionRobot(CurrentPageBot):
                     ns_name, ns_id, n_pages_in_ns, width=width, pl=plural))
             if show_n_pages:  # do not show marker if 0 pages are requested.
                 for page in islice_with_ellipsis(refs[ns], show_n_pages):
-                    pywikibot.output('      {0!s}'.format(page.title()))
+                    pywikibot.output('      {!s}'.format(page.title()))
 
     def skip_page(self, page) -> bool:
         """Skip the page under some conditions."""
@@ -191,6 +191,7 @@ class DeletionRobot(CurrentPageBot):
         """Process one page from the generator."""
         if self.opt.undelete:
             self.current_page.undelete(self.summary)
+            self.counter['undelete'] += 1
         else:
             if (self.opt.isorphan is not False
                     and not self.opt.always):
@@ -210,10 +211,16 @@ class DeletionRobot(CurrentPageBot):
 
             if self.current_page.site.user() is None:
                 self.current_page.site.login()
-            self.current_page.delete(self.summary,
-                                     not self.opt.always,
-                                     self.opt.always,
-                                     automatic_quit=True)
+            res = self.current_page.delete(self.summary,
+                                           not self.opt.always,
+                                           self.opt.always,
+                                           automatic_quit=True)
+            if res > 0:
+                self.counter['delete'] += 1
+            elif res < 0:
+                self.counter['marked-for-deletion'] += 1
+            else:
+                self.counter['no-action'] += 1
 
 
 def main(*args: str) -> None:

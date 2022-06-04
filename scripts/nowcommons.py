@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 r"""
 Script to delete files that are also present on Wikimedia Commons.
 
@@ -38,15 +38,12 @@ Example
 
     python pwb.py nowcommons -replaceonly -replaceloose -replacealways -replace
 
-Todo
-----
-Please fix these if you are capable and motivated:
-
-- if a file marked nowcommons is not present on Wikimedia Commons, the bot
-  will exit.
+.. note:: This script is a
+   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   can be set within a settings file which is scripts.ini by default.
 """
 #
-# (C) Pywikibot team, 2006-2021
+# (C) Pywikibot team, 2006-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -54,11 +51,11 @@ import sys
 from itertools import chain
 
 import pywikibot
-from pywikibot import Bot, i18n
+from pywikibot import i18n
 from pywikibot import pagegenerators as pg
+from pywikibot.bot import Bot, ConfigParserBot
 from pywikibot.exceptions import IsRedirectPageError, NoPageError
 from pywikibot.tools import filter_unique
-from pywikibot.tools.formatter import color_format
 from scripts.image import ImageRobot as ImageBot
 
 
@@ -175,9 +172,13 @@ namespace_in_template = [
 ]
 
 
-class NowCommonsDeleteBot(Bot):
+class NowCommonsDeleteBot(Bot, ConfigParserBot):
 
-    """Bot to delete migrated files."""
+    """Bot to delete migrated files.
+
+    .. versionchanged:: 7.0
+       NowCommonsDeleteBot is a ConfigParserBot
+    """
 
     update_options = {
         'replace': False,
@@ -186,7 +187,7 @@ class NowCommonsDeleteBot(Bot):
         'replaceonly': False,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Initializer."""
         super().__init__(**kwargs)
         self.site = pywikibot.Site()
@@ -255,7 +256,7 @@ class NowCommonsDeleteBot(Bot):
                     file_on_commons = val[1].strip()
             return file_on_commons
 
-    def run(self):
+    def run(self) -> None:
         """Run the bot."""
         commons = self.commons
         comment = self.summary
@@ -278,19 +279,19 @@ class NowCommonsDeleteBot(Bot):
                         != commons_file_page.title(with_ns=False)):
                     using_pages = list(local_file_page.using_pages())
                     if using_pages and using_pages != [local_file_page]:
-                        pywikibot.output(color_format(
-                            '"{lightred}{0}{default}" '
-                            'is still used in {1} pages.',
-                            local_file_page.title(with_ns=False),
-                            len(using_pages)))
-                        if self.opt.replace:
-                            pywikibot.output(color_format(
-                                'Replacing "{lightred}{0}{default}" by '
-                                '"{lightgreen}{1}{default}\".',
+                        pywikibot.output(
+                            '"<<lightred>>{}<<default>>" is still used in {} '
+                            'pages.'.format(
                                 local_file_page.title(with_ns=False),
-                                commons_file_page.title(with_ns=False)))
+                                len(using_pages)))
+                        if self.opt.replace:
+                            pywikibot.output(
+                                'Replacing "<<lightred>>{}<<default>>" by '
+                                '"<<lightgreen>>{}<<default>>".'.format(
+                                    local_file_page.title(with_ns=False),
+                                    commons_file_page.title(with_ns=False)))
                             bot = ImageBot(
-                                pg.FileLinksGenerator(local_file_page),
+                                local_file_page.usingPages(),
                                 local_file_page.title(with_ns=False),
                                 commons_file_page.title(with_ns=False),
                                 always=self.opt.replacealways,
@@ -303,7 +304,7 @@ class NowCommonsDeleteBot(Bot):
                                 page.title()).using_pages(total=1)))
                             if is_used and self.opt.replaceloose:
                                 bot = ImageBot(
-                                    pg.FileLinksGenerator(local_file_page),
+                                    local_file_page.usimgPages(),
                                     local_file_page.title(with_ns=False,
                                                           as_url=True),
                                     commons_file_page.title(with_ns=False),
@@ -317,10 +318,10 @@ class NowCommonsDeleteBot(Bot):
                         else:
                             pywikibot.output('Please change them manually.')
                         continue
-                    pywikibot.output(color_format(
-                        'No page is using "{lightgreen}{0}{default}" '
-                        'anymore.',
-                        local_file_page.title(with_ns=False)))
+                    pywikibot.output(
+                        'No page is using "<<lightgreen>>{}<<default>>" '
+                        'anymore.'.format(
+                            local_file_page.title(with_ns=False)))
                 commons_text = commons_file_page.get()
                 if not self.opt.replaceonly:
                     if sha1 == commons_file_page.latest_file_info.sha1:
@@ -333,13 +334,14 @@ class NowCommonsDeleteBot(Bot):
                                 'the old versions are not worth keeping.')
                             continue
                         if self.opt.always is False:
-                            format_str = color_format(
-                                '\n\n>>>> Description on {lightpurple}%s'
-                                '{default} <<<<\n')
-                            pywikibot.output(format_str % page.title())
+                            format_str = (
+                                '\n\n>>>> Description on '
+                                '<<<lightpurple>>{}<<default>> <<<<\n'
+                            )
+                            pywikibot.output(format_str.format(page.title()))
                             pywikibot.output(local_file_page.get())
-                            pywikibot.output(format_str %
-                                             commons_file_page.title())
+                            pywikibot.output(
+                                format_str.format(commons_file_page.title()))
                             pywikibot.output(commons_text)
                             if pywikibot.input_yn(
                                     'Does the description on Commons contain '
@@ -362,8 +364,8 @@ class NowCommonsDeleteBot(Bot):
                 pywikibot.output(str(e[0]))
                 continue
             else:
-                self._treat_counter += 1
-        if not self._treat_counter:
+                self.counter['read'] += 1
+        if not self.counter['read']:
             pywikibot.output('No transcluded files found for {}.'
                              .format(self.nc_templates_list()[0]))
         self.exit()
@@ -383,9 +385,11 @@ def main(*args: str) -> None:
         if arg == '-replacealways':
             options['replace'] = True
             options['replacealways'] = True
-        elif arg.startswith('-'):
-            if arg[1:] in ('always', 'replace', 'replaceloose', 'replaceonly'):
-                options[arg[1:]] = True
+        elif arg.startswith('-') and arg[1:] in ('always',
+                                                 'replace',
+                                                 'replaceloose',
+                                                 'replaceonly'):
+            options[arg[1:]] = True
 
     bot = NowCommonsDeleteBot(**options)
     bot.run()

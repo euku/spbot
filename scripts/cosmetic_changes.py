@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This module can do slight modifications to tidy a wiki page's source code.
 
@@ -32,18 +32,15 @@ The following generators and filters are supported:
 For further information see pywikibot/cosmetic_changes.py
 """
 #
-# (C) Pywikibot team, 2006-2021
+# (C) Pywikibot team, 2006-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import pywikibot
 from pywikibot import config, pagegenerators
-from pywikibot.bot import (
-    AutomaticTWSummaryBot,
-    ExistingPageBot,
-    NoRedirectPageBot,
-)
+from pywikibot.bot import AutomaticTWSummaryBot, ExistingPageBot
 from pywikibot.cosmetic_changes import CANCEL, CosmeticChangesToolkit
+from pywikibot.exceptions import InvalidPageError
 
 
 warning = """
@@ -58,12 +55,11 @@ docuReplacements = {
 }
 
 
-class CosmeticChangesBot(AutomaticTWSummaryBot,
-                         ExistingPageBot,
-                         NoRedirectPageBot):
+class CosmeticChangesBot(AutomaticTWSummaryBot, ExistingPageBot):
 
     """Cosmetic changes bot."""
 
+    use_redirects = False
     summary_key = 'cosmetic_changes-standalone'
     update_options = {
         'async': False,
@@ -72,12 +68,22 @@ class CosmeticChangesBot(AutomaticTWSummaryBot,
     }
 
     def treat_page(self) -> None:
-        """Treat page with the cosmetic toolkit."""
+        """Treat page with the cosmetic toolkit.
+
+        .. versionchanged:: 7.0
+           skip if InvalidPageError is raised
+        """
         cc_toolkit = CosmeticChangesToolkit(self.current_page,
                                             ignore=self.opt.ignore)
-        changed_text = cc_toolkit.change(self.current_page.text)
-        if changed_text is not False:
-            self.put_current(new_text=changed_text,
+        try:
+            old_text = self.current_page.text
+        except InvalidPageError as e:
+            pywikibot.error(e)
+            return
+
+        new_text = cc_toolkit.change(old_text)
+        if new_text is not False:
+            self.put_current(new_text=new_text,
                              summary=self.opt.summary,
                              asynchronous=self.opt['async'])
 

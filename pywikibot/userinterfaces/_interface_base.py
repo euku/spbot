@@ -1,6 +1,6 @@
 """Abstract base user interface module.
 
-*New in version 6.2.*
+.. versionadded:: 6.2
 """
 #
 # (C) Pywikibot team, 2021
@@ -8,7 +8,6 @@
 # Distributed under the terms of the MIT license.
 #
 import sys
-
 from abc import ABC, abstractmethod
 from typing import Any, Union
 
@@ -21,6 +20,8 @@ class ABUIC(ABC):
 
     Every user interface should derive from it to ensure that all
     required methods are implemented.
+
+    .. versionadded:: 6.2
     """
 
     def argvu(self) -> List[str]:
@@ -30,14 +31,15 @@ class ABUIC(ABC):
         """
         return list(sys.argv)
 
-    def flush(self):
+    @abstractmethod
+    def flush(self) -> None:
         """Flush cached output.
 
         May be passed to atexit.register() to flush any ui cache.
         """
 
     @abstractmethod
-    def init_handlers(self, *args, **kwargs):
+    def init_handlers(self, *args, **kwargs) -> None:
         """Initialize the handlers for user output.
 
         Called in bot.init_handlers().
@@ -72,4 +74,4 @@ class ABUIC(ABC):
     @abstractmethod
     def output(self, *args, **kwargs) -> None:
         """Output text to a stream."""
-        print(*args, **kwargs)  # noqa: T001
+        print(*args, **kwargs)  # noqa: T001, T201

@@ -1,17 +1,21 @@
 """Title translate module."""
 #
-# (C) Pywikibot team, 2003-2021
+# (C) Pywikibot team, 2003-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import pywikibot
 from pywikibot import config, date
-from pywikibot.tools import deprecated_args
+from pywikibot.backports import List
 
 
-@deprecated_args(family=True)
-def translate(page=None, hints=(), auto=True, removebrackets=False,
-              site=None) -> list:
+def translate(
+    page=None,
+    hints=(),
+    auto: bool = True,
+    removebrackets: bool = False,
+    site=None
+) -> List['pywikibot.Link']:
     """
     Return a list of links to pages on other sites based on hints.
 

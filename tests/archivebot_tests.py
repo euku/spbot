@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for archivebot scripts."""
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -9,7 +10,6 @@ from contextlib import suppress
 from datetime import datetime, timedelta
 
 import pywikibot
-import pywikibot.page
 from pywikibot.exceptions import Error
 from pywikibot.textlib import TimeStripper
 from scripts import archivebot

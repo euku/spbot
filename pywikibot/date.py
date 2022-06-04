@@ -1,13 +1,12 @@
 """Date data and manipulation module."""
 #
-# (C) Pywikibot team, 2003-2021
+# (C) Pywikibot team, 2003-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import calendar
 import datetime
 import re
-
 from collections import abc, defaultdict
 from contextlib import suppress
 from functools import singledispatch
@@ -16,9 +15,6 @@ from typing import Optional, Union
 
 import pywikibot.site
 from pywikibot import Site
-from pywikibot.textlib import NON_LATIN_DIGITS
-from pywikibot.tools import deprecated, first_lower, first_upper
-
 from pywikibot.backports import (
     Any,
     Callable,
@@ -30,6 +26,9 @@ from pywikibot.backports import (
     Sequence,
     Tuple,
 )
+from pywikibot.textlib import NON_LATIN_DIGITS
+from pywikibot.tools import first_lower, first_upper
+
 
 #
 # Different collections of well known formats
@@ -235,7 +234,7 @@ def slh(value: int, lst: Sequence[str]) -> str:
     return lst[value - 1]
 
 
-@slh.register(str)  # type: ignore
+@slh.register(str)
 def _(value: str, lst: Sequence[str]) -> int:
     return lst.index(value) + 1
 
@@ -246,7 +245,7 @@ def dh_singVal(value: int, match: str) -> str:
     return dh_constVal(value, 0, match)
 
 
-@dh_singVal.register(str)  # type: ignore
+@dh_singVal.register(str)
 def _(value: str, match: str) -> int:
     return dh_constVal(value, 0, match)  # type: ignore[return-value]
 
@@ -263,7 +262,7 @@ def dh_constVal(value: int, ind: int, match: str) -> str:
     raise ValueError('unknown value {}'.format(value))
 
 
-@dh_constVal.register(str)  # type: ignore
+@dh_constVal.register(str)
 def _(value: str, ind: int, match: str) -> int:
     if value == match:
         return ind
@@ -352,7 +351,7 @@ def romanNumToInt(v: str) -> int:
 # (from int to a str) and decoder (from str to an int)
 _digitDecoders = {
     # %% is a %
-    '%': '%',  # type: ignore
+    '%': '%',
     # %d is a decimal
     'd': (_decimalDigits, str, int),
     # %R is a roman numeral. This allows for only the simplest linear
@@ -407,10 +406,10 @@ def escapePattern2(pattern: str
 
         if len(subpattern) == 3:
             # enforce mandatory field size
-            newpattern += '([%s]{%s})' % (dec[0], subpattern[1])
+            newpattern += '([{}]{{{}}})'.format(dec[0], subpattern[1])
             # add the number of required digits as the last (4th)
             # part of the tuple
-            decoders.append(dec + (int(s[1]),))  # type: ignore
+            decoders.append(dec + (int(s[1]),))
         else:
             newpattern += '([{}]+)'.format(dec[0])
             decoders.append(dec)
@@ -483,7 +482,7 @@ def dh(value: int, pattern: str, encf: encf_type, decf: decf_type,
         numeral number.
 
     """
-    compPattern, strPattern, decoders = escapePattern2(pattern)
+    _compPattern, strPattern, decoders = escapePattern2(pattern)
     # Encode an integer value into a textual form.
     # This will be called from outside as well as recursivelly to verify
     # parsed value
@@ -508,10 +507,10 @@ def dh(value: int, pattern: str, encf: encf_type, decf: decf_type,
     return strPattern % _make_parameter(decoders[0], params)
 
 
-@dh.register(str)  # type: ignore
+@dh.register(str)
 def _(value: str, pattern: str, encf: encf_type, decf: decf_type,
       filter: Optional[Callable[[int], bool]] = None) -> int:
-    compPattern, strPattern, decoders = escapePattern2(pattern)
+    compPattern, _strPattern, decoders = escapePattern2(pattern)
     m = compPattern.match(value)
     if m:
         # decode each found value using provided decoder
@@ -532,7 +531,7 @@ def _(value: str, pattern: str, encf: encf_type, decf: decf_type,
 
 def _make_parameter(decoder: decoder_type, param: int) -> str:
     newValue = decoder[1](param)
-    required_digits = decoder[3] if len(decoder) == 4 else None  # type: ignore
+    required_digits = decoder[3] if len(decoder) == 4 else None
     if required_digits is not None and len(newValue) < required_digits:
         # force parameter length by taking the first digit in the list and
         # repeating it required number of times
@@ -597,6 +596,8 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
     day_formats = {
         'af': ('%d {}', True),
         'ang': ('%d {}', True),
+        'ar': ('%d {}', True),
+        'arz': ('%d {}', True),
         'bg': ('%d {}', False),
         'bn': ('{} %%B', None),
         'ceb': ('{} %d', True),
@@ -645,7 +646,6 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
     }
 
     year_formats = {
-        'ar': ('{} %d', None),
         'cs': ('{} %d', None),
         'eo': ('{} de %d', None),
         'es': ('{} de %d', True),
@@ -682,7 +682,7 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
             elif ucase is False:
                 f = first_lower
             else:
-                f = str  # type: ignore
+                f = str
 
             month_pattern = pattern.format(f(monthName(key, self.index)))
             expression = "lambda v: {}(v, '{}')".format(func, month_pattern)
@@ -706,6 +706,7 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
 formats = {
     'Number': {
         'ar': lambda v: dh_number(v, '%d (عدد)'),
+        'ary': lambda v: dh_number(v, '%d'),
         'be': lambda v: dh_number(v, '%d (лік)'),
         'bg': lambda v: dh_number(v, '%d (число)'),
         'bs': lambda v: dh_number(v, '%d (broj)'),
@@ -764,6 +765,7 @@ formats = {
 
     'YearBC': {
         'af': lambda v: dh_yearBC(v, '%d v.C.'),
+        'ar': lambda v: dh_yearBC(v, '%d ق م'),
         'ast': lambda v: dh_yearBC(v, '%d edC'),
         'be': lambda v: dh_yearBC(v, '%d да н.э.'),
         'bg': lambda v: dh_yearBC(v, '%d г. пр.н.е.'),
@@ -973,6 +975,7 @@ formats = {
     },
 
     'DecadeBC': {
+        'ar': lambda v: dh_decBC(v, 'عقد %d ق م'),
         'de': lambda v: dh_decBC(v, '%der v. Chr.'),
         'da': lambda v: dh_decBC(v, "%d'erne f.Kr."),
         'en': lambda v: dh_decBC(v, '%ds BC'),
@@ -1037,7 +1040,7 @@ formats = {
              lambda p: p in (1, 8) or (p >= 20)),
             (lambda v: dh_centuryAD(v, '%dde eeu'), alwaysTrue)]),
         'ang': lambda v: dh_centuryAD(v, '%de gēarhundred'),
-        'ar': lambda v: dh_centuryAD(v, 'قرن %d'),
+        'ar': lambda v: dh_centuryAD(v, 'القرن %d'),
         'ast': lambda v: dh_centuryAD(v, 'Sieglu %R'),
         'be': lambda v: dh_centuryAD(v, '%d стагодзьдзе'),
         'bg': lambda v: dh_centuryAD(v, '%d век'),
@@ -1410,6 +1413,7 @@ formats = {
     },
 
     'Cat_Year_MusicAlbums': {
+        'ar': lambda v: dh_yearAD(v, 'ألبومات %d'),
         'cs': lambda v: dh_yearAD(v, 'Alba roku %d'),
         'en': lambda v: dh_yearAD(v, '%d albums'),
         'fa': lambda v: dh_yearAD(v, 'آلبوم‌های %d (میلادی)'),
@@ -1425,6 +1429,7 @@ formats = {
     'Cat_BirthsAD': {
         'an': lambda v: dh_yearAD(v, '%d (naixencias)'),
         'ar': lambda v: dh_yearAD(v, 'مواليد %d'),
+        'ary': lambda v: dh_yearAD(v, 'زيادة %d'),
         'arz': lambda v: dh_yearAD(v, 'مواليد %d'),
         'bar': lambda v: dh_yearAD(v, 'Geboren %d'),
         'be': lambda v: dh_yearAD(v, 'Нарадзіліся ў %d годзе'),
@@ -1596,10 +1601,14 @@ formats = {
     },
 
     'Cat_BirthsBC': {
+        'ar': lambda v: dh_yearBC(v, 'مواليد %d ق م'),
+        'arz': lambda v: dh_yearBC(v, 'مواليد %d ق م'),
         'en': lambda v: dh_yearBC(v, '%d BC births'),
         'nb': lambda v: dh_yearBC(v, 'Fødsler i %d f.Kr.'),
     },
     'Cat_DeathsBC': {
+        'ar': lambda v: dh_yearBC(v, 'وفيات %d ق م'),
+        'arz': lambda v: dh_yearBC(v, 'وفيات %d ق م'),
         'en': lambda v: dh_yearBC(v, '%d BC deaths'),
         'fr': lambda v: dh_yearBC(v, 'Décès en -%d'),
         'nb': lambda v: dh_yearBC(v, 'Dødsfall i %d f.Kr.'),
@@ -1609,6 +1618,7 @@ formats = {
         'an': lambda v: dh_singVal(v, 'Autualidá'),
         'ang': lambda v: dh_singVal(v, 'Efenealde belimpas'),
         'ar': lambda v: dh_singVal(v, 'أحداث جارية'),
+        'ary': lambda v: dh_singVal(v, 'آخر الأحداث'),
         'arz': lambda v: dh_singVal(v, 'احداث دلوقتى'),
         'be': lambda v: dh_singVal(v, 'Бягучыя падзеі'),
         'bg': lambda v: dh_singVal(v, 'Текущи събития'),
@@ -1664,18 +1674,18 @@ formats = {
         'yo': lambda v: dh_singVal(v, 'Current events'),
         'zh': lambda v: dh_singVal(v, '新闻动态'),
     },
-}  # type: Dict[str, Dict[str, Callable[[int], str]]]
+}  # type: Dict[Union[str, int], Mapping[str, Callable[[int], str]]]
 
-formats['MonthName'] = MonthNames()  # type: ignore[assignment]
+formats['MonthName'] = MonthNames()
 #
 # Add auto-generated empty dictionaries for DayOfMonth and MonthOfYear articles
 #
 for index, day_of_month in enumerate(dayMnthFmts, 1):
     val = MonthFormat(index, day_of_month)
-    formats[day_of_month] = val  # type: ignore[assignment]
+    formats[day_of_month] = val
 for index, month_of_year in enumerate(yrMnthFmts, 1):
     val = MonthFormat(index, month_of_year)
-    formats[month_of_year] = val  # type: ignore[assignment]
+    formats[month_of_year] = val
 
 
 def addFmt1(lang: str, isMnthOfYear: bool,
@@ -1837,30 +1847,30 @@ addFmt1('vi', False, makeMonthList('%%d tháng %d'))
 addFmt1('zh', False, makeMonthList('%d月%%d日'))
 
 # Walloon names depend on the day number, thus we must generate various
-# different patterns
+# different patterns:
 
 # For month names beginning with a consonant...
-for i in (0, 1, 2, 4, 5, 6, 8, 10, 11):
-    formats[dayMnthFmts[i]]['wa'] = eval(
-        'lambda m: multi(m, ['
-        '(lambda v: dh_dayOfMnth(v, "%dî d\' {mname}"), lambda p: p == 1), '
-        '(lambda v: dh_dayOfMnth(v, "%d d\' {mname}"), '
-        'lambda p: p in [2,3,20,22,23]), '
-        '(lambda v: dh_dayOfMnth(v, "%d di {mname}"), alwaysTrue)])'
-        .format(mname=waMonthNames[i]))
-
+_consonant_pattern = (
+    'lambda m: multi(m, ['
+    '(lambda v: dh_dayOfMnth(v, "%dî d\' {mname}"), lambda p: p == 1), '
+    '(lambda v: dh_dayOfMnth(v, "%d d\' {mname}"), '
+    'lambda p: p in [2,3,20,22,23]), '
+    '(lambda v: dh_dayOfMnth(v, "%d di {mname}"), alwaysTrue)])'
+)
 # For month names beginning with a vowel...
-for i in (3, 7, 9):
-    formats[dayMnthFmts[i]]['wa'] = eval(
-        'lambda m: multi(m, ['
-        '(lambda v: dh_dayOfMnth(v, "%dî d\' {mname}"), lambda p: p == 1), '
-        '(lambda v: dh_dayOfMnth(v, "%d d\' {mname}"), alwaysTrue)])'
-        .format(mname=waMonthNames[i]))
+_vowel_pattern = (
+    'lambda m: multi(m, ['
+    '(lambda v: dh_dayOfMnth(v, "%dî d\' {mname}"), lambda p: p == 1), '
+    '(lambda v: dh_dayOfMnth(v, "%d d\' {mname}"), alwaysTrue)])'
+)
 
 # Brazil uses '1añ' for the 1st of every month, and number without suffix for
 # all other days
 brMonthNames = makeMonthNamedList('br', '%s', True)
-for i in range(0, 12):
+
+for i in range(12):
+    pattern = _vowel_pattern if i in (3, 7, 9) else _consonant_pattern
+    formats[dayMnthFmts[i]]['wa'] = eval(pattern.format(mname=waMonthNames[i]))
     formats[dayMnthFmts[i]]['br'] = eval(
         'lambda m: multi(m, ['
         '(lambda v: dh_dayOfMnth(v, "%dañ {mname}"), lambda p: p == 1), '
@@ -1971,7 +1981,7 @@ def getAutoFormat(lang: str, title: str, ignoreFirstLetterCase: bool = True
     """
     for dict_name, dictionary in formats.items():
         with suppress(Exception):
-            year = dictionary[lang](title)  # type: ignore
+            year = dictionary[lang](title)
             return dict_name, year
     # sometimes the title may begin with an upper case while its listed as
     # lower case, or the other way around
@@ -1984,20 +1994,6 @@ def getAutoFormat(lang: str, title: str, ignoreFirstLetterCase: bool = True
                 title = first_upper(title)
             return getAutoFormat(lang, title, ignoreFirstLetterCase=False)
     return None, None
-
-
-@deprecated('date.format_date', since='20190526')
-class FormatDate:
-
-    """DEPRECATED. Format a date."""
-
-    def __init__(self, site: Union[str, 'pywikibot.site.BaseSite']) -> None:
-        """Initializer."""
-        self.site = site
-
-    def __call__(self, m: int, d: int) -> str:
-        """Return a formatted month and day."""
-        return format_date(m, d, self.site)
 
 
 def format_date(month: int, day: int,

@@ -9,7 +9,7 @@ checks:
       threshold: 900
   method-complexity:
     config:
-      threshold: 7
+      threshold: 10
   method-count:
     config:
       threshold: 30
@@ -32,8 +32,6 @@ plugins:
 exclude_patterns:
 - "docs/"
 - "!docs/conf.py"
-- "scripts/archive/"
-- "tests/archive/"
 - "*.rst"
 - "*.txt"
-
+- "scripts/dataextend.py"

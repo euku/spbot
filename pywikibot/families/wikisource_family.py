@@ -1,6 +1,6 @@
 """Family module for Wikisource."""
 #
-# (C) Pywikibot team, 2004-2021
+# (C) Pywikibot team, 2004-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -16,21 +16,21 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     name = 'wikisource'
 
     closed_wikis = [
-        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/closed.dblist  # noqa
+        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/closed.dblist
         'ang', 'ht',
     ]
     removed_wikis = [
-        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/deleted.dblist  # noqa
+        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/deleted.dblist
         'tokipona',
     ]
 
     languages_by_size = [
-        'pl', 'en', 'ru', 'de', 'fr', 'zh', 'he', 'it', 'es', 'uk', 'ar', 'cs',
-        'gu', 'mul', 'pt', 'sr', 'fa', 'sv', 'hu', 'ko', 'ml', 'sa', 'bn',
-        'ta', 'te', 'sl', 'hy', 'el', 'tr', 'vi', 'ro', 'fi', 'ja', 'nap',
-        'la', 'az', 'ca', 'nl', 'br', 'kn', 'hr', 'no', 'th', 'eo', 'is',
-        'vec', 'hi', 'be', 'id', 'pms', 'ban', 'et', 'da', 'lij', 'mk', 'yi',
-        'as', 'mr', 'bg', 'li', 'lt', 'wa', 'pa', 'or', 'eu', 'jv', 'cy', 'gl',
+        'pl', 'en', 'ru', 'de', 'fr', 'zh', 'he', 'it', 'es', 'ar', 'uk', 'cs',
+        'mul', 'gu', 'sr', 'pt', 'sv', 'fa', 'hu', 'ko', 'bn', 'ml', 'sa',
+        'ta', 'te', 'sl', 'tr', 'hy', 'el', 'la', 'vi', 'ja', 'ro', 'fi',
+        'nap', 'nl', 'az', 'ca', 'br', 'kn', 'hr', 'no', 'th', 'id', 'be',
+        'eo', 'hi', 'is', 'vec', 'pms', 'ban', 'lij', 'da', 'et', 'mr', 'mk',
+        'cy', 'yi', 'as', 'bg', 'li', 'lt', 'jv', 'wa', 'pa', 'eu', 'or', 'gl',
         'bs', 'sah', 'sk', 'zh-min-nan', 'fo',
     ]
 
@@ -51,7 +51,7 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     # the main page, so using 'wikisource.org'
     @classproperty
     def langs(cls):
-        cls.langs = super(Family, cls).langs
+        cls.langs = super().langs
         cls.langs['mul'] = cls.domain
         cls.langs['beta'] = 'en.wikisource.beta.wmflabs.org'
         return cls.langs
@@ -59,7 +59,7 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     # Need to explicitly inject the beta domain
     @classproperty
     def domains(cls):
-        cls.domains = super(Family, cls).domains
+        cls.domains = super().domains
         cls.domains.append(cls.langs['beta'])
         return cls.domains
 
@@ -67,7 +67,7 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     # the main page, so using mul alias, see T114574 and T241413
     @classproperty
     def code_aliases(cls):
-        cls.code_aliases = super(Family, cls).code_aliases.copy()
+        cls.code_aliases = super().code_aliases.copy()
         aliases = cls.alphabetic + ['-', 'www']
         for code in aliases:
             if (code not in cls.languages_by_size

@@ -5,7 +5,7 @@ Several parts of the test infrastructure are implemented as mixins,
 such as API result caching and excessive test durations.
 """
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -24,7 +24,7 @@ from unittest.util import safe_repr
 
 import pywikibot
 from pywikibot import Site, config
-from pywikibot.backports import removeprefix
+from pywikibot.backports import removeprefix, removesuffix
 from pywikibot.comms import http
 from pywikibot.data.api import Request as _original_Request
 from pywikibot.exceptions import (
@@ -65,7 +65,30 @@ OSWIN32 = (sys.platform == 'win32')
 pywikibot.bot.set_interface('buffer')
 
 
-class TestCaseBase(unittest.TestCase):
+class TestTimerMixin(unittest.TestCase):
+
+    """Time each test and report excessive durations."""
+
+    # Number of seconds each test may consume
+    # before a note is added after the test.
+    test_duration_warning_interval = 10
+
+    def setUp(self):
+        """Set up test."""
+        self.test_start = time.time()
+        super().setUp()
+
+    def tearDown(self):
+        """Tear down test."""
+        super().tearDown()
+        self.test_completed = time.time()
+        duration = self.test_completed - self.test_start
+        if duration > self.test_duration_warning_interval:
+            unittest_print(' {:.3f}s'.format(duration), end=' ')
+            sys.stdout.flush()
+
+
+class TestCaseBase(TestTimerMixin):
 
     """Base class for all tests."""
 
@@ -199,10 +222,10 @@ class TestCaseBase(unittest.TestCase):
 
         page_namespaces = {page.namespace() for page in gen}
 
-        if skip and page_namespaces != namespaces:
-            raise unittest.SkipTest('Pages in namespaces {!r} not found.'
-                                    .format(
-                                        list(namespaces - page_namespaces)))
+        if skip and page_namespaces < namespaces:
+            raise unittest.SkipTest(
+                'No pages in namespaces {} found.'
+                .format(list(namespaces - page_namespaces)))
 
         self.assertEqual(page_namespaces, namespaces)
 
@@ -268,31 +291,6 @@ class TestCaseBase(unittest.TestCase):
             code, info, msg, self).handle(callable_obj, args, kwargs)
 
 
-class TestTimerMixin(TestCaseBase):
-
-    """Time each test and report excessive durations."""
-
-    # Number of seconds each test may consume
-    # before a note is added after the test.
-    test_duration_warning_interval = 10
-
-    def setUp(self):
-        """Set up test."""
-        super().setUp()
-        self.test_start = time.time()
-
-    def tearDown(self):
-        """Tear down test."""
-        self.test_completed = time.time()
-        duration = self.test_completed - self.test_start
-
-        if duration > self.test_duration_warning_interval:
-            unittest_print(' {0:.3f}s'.format(duration), end=' ')
-            sys.stdout.flush()
-
-        super().tearDown()
-
-
 def require_modules(*required_modules):
     """Require that the given list of modules can be imported."""
     def test_requirement(obj):
@@ -328,7 +326,6 @@ class DisableSiteMixin(TestCaseBase):
         self.old_Site_lookup_method = pywikibot.Site
         pywikibot.Site = lambda *args: self.fail(
             '{}: Site() not permitted'.format(self.__class__.__name__))
-        pywikibot.Site.__doc__ = 'TEST'
 
         super().setUp()
 
@@ -470,9 +467,8 @@ class CheckHostnameMixin(TestCaseBase):
                         'HTTP status: {} - {}'.format(
                             r.status_code, HTTPStatus(r.status_code).phrase))
             except Exception as e:
-                pywikibot.error('{}: accessing {} caused exception:'
-                                .format(cls.__name__, hostname))
-                pywikibot.exception(e, tb=True)
+                pywikibot.exception('{}: accessing {} caused exception:'
+                                    .format(cls.__name__, hostname))
 
                 cls._checked_hostnames[hostname] = e
                 raise unittest.SkipTest(
@@ -559,9 +555,6 @@ class RequireLoginMixin(TestCaseBase):
         """
         super().setUpClass()
 
-        # currently 'sysop' attribute is an alias for 'login'
-        # sysop = hasattr(cls, 'sysop') and cls.sysop
-
         for site_dict in cls.sites.values():
             cls.require_site_user(site_dict['family'], site_dict['code'])
 
@@ -590,18 +583,25 @@ class RequireLoginMixin(TestCaseBase):
         Login to the site if it is not logged in.
         """
         super().setUp()
-        self._reset_login()
+        self._reset_login(True)
 
     def tearDown(self):
         """Log back into the site."""
         super().tearDown()
         self._reset_login()
 
-    def _reset_login(self):
-        """Login to all sites."""
-        # There may be many sites, and setUp doesn't know
-        # which site is to be tested; ensure they are all
-        # logged in.
+    def _reset_login(self, skip_if_login_fails: bool = False):
+        """Login to all sites.
+
+        There may be many sites, and setUp doesn't know which site is to
+        be tested; ensure they are all logged in.
+
+        .. versionadded:: 7.0
+           The `skip_if_login_fails` parameter.
+
+        :param skip_if_login_fails: called with setUp(); if True, skip
+            the current current test.
+        """
         for site in self.sites.values():
             site = site['site']
 
@@ -610,7 +610,10 @@ class RequireLoginMixin(TestCaseBase):
 
             if not site.logged_in():
                 site.login()
-            assert site.user()
+
+            if skip_if_login_fails and not site.user():  # during setUp() only
+                self.skipTest('{}: Not able to re-login to {}'
+                              .format(type(self).__name__, site))
 
     def get_userpage(self, site=None):
         """Create a User object for the user's userpage."""
@@ -626,6 +629,32 @@ class RequireLoginMixin(TestCaseBase):
         userpage = pywikibot.User(site, site.username())
         self._userpage = userpage
         return userpage
+
+
+class NeedRightsMixin(TestCaseBase):
+
+    """Require specific rights."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up the test class.
+
+        Skip the test class if the user does not have required rights.
+        """
+        super().setUpClass()
+        for site_dict in cls.sites.values():
+            site = site_dict['site']
+
+            if site.siteinfo['readonly'] or site.obsolete:
+                raise unittest.SkipTest(
+                    'Site {} has readonly state: {}'.format(
+                        site, site.siteinfo.get('readonlyreason', '')))
+
+            for right in cls.rights.split(','):
+                if not site.has_right(right):
+                    raise unittest.SkipTest('User "{}" does not have required '
+                                            'user right "{}"'
+                                            .format(site.user(), right))
 
 
 class MetaTestCaseClass(type):
@@ -647,10 +676,7 @@ class MetaTestCaseClass(type):
             # sitedata['family'] may be an AutoFamily. Use str() for its name
             sitename = str(sitedata['family']) + ':' + sitedata['code']
             if func.__doc__:
-                if func.__doc__.endswith('.'):
-                    wrapped_method.__doc__ = func.__doc__[:-1]
-                else:
-                    wrapped_method.__doc__ = func.__doc__
+                wrapped_method.__doc__ = removesuffix(func.__doc__, '.')
                 wrapped_method.__doc__ += ' on ' + sitename
             else:
                 wrapped_method.__doc__ = 'Test ' + sitename
@@ -678,8 +704,8 @@ class MetaTestCaseClass(type):
         # Inherit superclass attributes
         for base in bases:
             for key in ('cached', 'code', 'dry', 'family', 'hostname',
-                        'hostnames', 'net', 'oauth', 'pwb', 'site', 'sites',
-                        'sysop', 'user', 'wikibase', 'write'):
+                        'hostnames', 'login', 'net', 'oauth', 'pwb', 'site',
+                        'sites', 'rights', 'wikibase', 'write'):
                 if hasattr(base, key) and key not in dct:
                     dct[key] = getattr(base, key)
 
@@ -731,12 +757,11 @@ class MetaTestCaseClass(type):
             # test class dependencies are declarative, this requires the
             # test writer explicitly sets 'site=False' so code reviewers
             # check that the script invoked by pwb will not load a site.
-            if dct.get('pwb'):
-                if 'site' not in dct:
-                    raise Exception(
-                        '{}: Test classes using pwb must set "site"; add '
-                        'site=False if the test script will not use a site'
-                        .format(name))
+            if dct.get('pwb') and 'site' not in dct:
+                raise Exception(
+                    '{}: Test classes using pwb must set "site"; add '
+                    'site=False if the test script will not use a site'
+                    .format(name))
 
             # If the 'site' attribute is a false value,
             # remove it so it matches 'not site' in pytest.
@@ -773,25 +798,26 @@ class MetaTestCaseClass(type):
             assert not hostnames, 'net must be True with hostnames defined'
 
         if dct.get('write'):
-            dct.setdefault('user', True)
+            dct.setdefault('login', True)
             bases = cls.add_base(bases, SiteWriteMixin)
 
-        if dct.get('login') or dct.get('sysop'):
+        if dct.get('rights'):
+            bases = cls.add_base(bases, NeedRightsMixin)
+            dct.setdefault('login', True)
+
+        if dct.get('login'):
             bases = cls.add_base(bases, RequireLoginMixin)
 
         for test in tests:
             test_func = dct[test]
 
-            # method decorated with unittest.expectedFailure has no arguments
+            # Method decorated with unittest.expectedFailure has no arguments
             # so it is assumed to not be a multi-site test method.
-            if test_func.__code__.co_argcount == 0:
+            # A normal test method only accepts 'self'
+            if test_func.__code__.co_argcount in (0, 1):
                 continue
 
-            # a normal test method only accepts 'self'
-            if test_func.__code__.co_argcount == 1:
-                continue
-
-            # a multi-site test method only accepts 'self' and the site-key
+            # A multi-site test method only accepts 'self' and the site-key
             if test_func.__code__.co_argcount != 2:
                 raise Exception(
                     '{}: Test method {} must accept either 1 or 2 arguments; '
@@ -800,8 +826,8 @@ class MetaTestCaseClass(type):
 
             # create test methods processed by unittest
             for (key, sitedata) in dct['sites'].items():
-                test_name = (test + '_'
-                             + key.replace('-', '_').replace(':', '_'))
+                table = str.maketrans('-:', '__')
+                test_name = (test + '_' + key.translate(table))
                 cls.add_method(dct, test_name,
                                wrap_method(key, sitedata, dct[test]))
 
@@ -835,7 +861,7 @@ class MetaTestCaseClass(type):
             dct[test_name].__doc__ = doc
 
 
-class TestCase(TestTimerMixin, TestCaseBase, metaclass=MetaTestCaseClass):
+class TestCase(TestCaseBase, metaclass=MetaTestCaseClass):
 
     """Run tests on pre-defined sites."""
 
@@ -866,10 +892,11 @@ class TestCase(TestTimerMixin, TestCaseBase, metaclass=MetaTestCaseClass):
             interface = DrySite
 
         for data in cls.sites.values():
+            prod_only = os.environ.get('PYWIKIBOT_TEST_PROD_ONLY', '0') == '1'
             if (data.get('code') in ('test', 'mediawiki')
-                    and 'PYWIKIBOT_TEST_PROD_ONLY' in os.environ and not dry):
+                    and prod_only and not dry):
                 raise unittest.SkipTest(
-                    'Site code "{}" and PYWIKIBOT_TEST_PROD_ONLY is set.'
+                    'Site code {!r} and PYWIKIBOT_TEST_PROD_ONLY is set.'
                     .format(data['code']))
 
             if 'site' not in data and 'code' in data and 'family' in data:
@@ -927,8 +954,7 @@ class TestCase(TestTimerMixin, TestCaseBase, metaclass=MetaTestCaseClass):
         if not family:
             raise Exception('no family defined for {}'.format(cls.__name__))
         if not code:
-            raise Exception('no site code defined for {}'
-                            .format(cls.__name__))
+            raise Exception('no site code defined for {}'.format(cls.__name__))
 
         usernames = config.usernames
 
@@ -984,78 +1010,11 @@ class TestCase(TestTimerMixin, TestCaseBase, metaclass=MetaTestCaseClass):
         """
         if not site:
             site = self.get_site()
-        page = pywikibot.Page(pywikibot.page.Link(
-                              'There is no page with this title', site))
+        page = pywikibot.Page(site, 'There is no page with this title')
         if page.exists():
             raise unittest.SkipTest('Did not find a page that does not exist.')
 
         return page
-
-
-class CapturingTestCase(TestCase):
-
-    """
-    Capture assertion calls to do additional calls around them.
-
-    All assertions done which start with "assert" are patched in such a way
-    that after the assertion it calls ``process_assertion`` with the assertion
-    and the arguments.
-
-    To avoid that it patches the assertion it's possible to put the call in an
-    ``disable_assert_capture`` with-statement.
-
-    """
-
-    # Is True while an assertion is running, so that assertions won't be
-    # patched when they are executed while an assertion is running and only
-    # the outer most assertion gets actually patched.
-    _patched = False
-
-    @contextmanager
-    def disable_assert_capture(self):
-        """A context manager preventing that assertions are patched."""
-        nested = self._patched  # Don't reset if it was set before
-        self._patched = True
-        yield
-        if not nested:
-            self._patched = False
-
-    @contextmanager
-    def _delay_assertion(self, context, assertion, args, kwargs):
-        with self.disable_assert_capture():
-            with context as ctx:
-                yield ctx
-            self.after_assert(assertion, *args, **kwargs)
-
-    def process_assert(self, assertion, *args, **kwargs):
-        """Handle the assertion call."""
-        return assertion(*args, **kwargs)
-
-    def after_assert(self, assertion, *args, **kwargs):
-        """Handle after the assertion."""
-
-    def patch_assert(self, assertion):
-        """Execute process_assert when the assertion is called."""
-        def inner_assert(*args, **kwargs):
-            assert self._patched is False
-            self._patched = True
-            try:
-                context = self.process_assert(assertion, *args, **kwargs)
-                if hasattr(context, '__enter__'):
-                    return self._delay_assertion(context, assertion, args,
-                                                 kwargs)
-                self.after_assert(assertion, *args, **kwargs)
-                return context
-            finally:
-                self._patched = False
-        return inner_assert
-
-    def __getattribute__(self, attr):
-        """Patch assertions if enabled."""
-        result = super().__getattribute__(attr)
-        if attr.startswith('assert') and not self._patched:
-            return self.patch_assert(result)
-        return result
 
 
 class PatchingTestCase(TestCase):
@@ -1177,14 +1136,7 @@ class DefaultDrySiteTestCase(DefaultSiteTestCase):
     dry = True
 
 
-class WikimediaSiteTestCase(TestCase):
-
-    """Test class uses only WMF sites."""
-
-    wmf = True
-
-
-class WikimediaDefaultSiteTestCase(DefaultSiteTestCase, WikimediaSiteTestCase):
+class WikimediaDefaultSiteTestCase(DefaultSiteTestCase):
 
     """Test class to run against a WMF site, preferring the default site."""
 
@@ -1372,7 +1324,8 @@ class RecentChangesTestCase(WikimediaDefaultSiteTestCase):
     def setUpClass(cls):
         """Set up test class."""
         if os.environ.get('PYWIKIBOT_TEST_NO_RC', '0') == '1':
-            raise unittest.SkipTest('RecentChanges tests disabled.')
+            raise unittest.SkipTest(
+                'PYWIKIBOT_TEST_NO_RC is set; RecentChanges tests disabled.')
 
         super().setUpClass()
 
@@ -1405,7 +1358,6 @@ class DeprecationTestCase(DebugOnlyTestCase, TestCase):
         unittest.case._AssertRaisesContext,
         TestCase.assertRaises,
         TestCase.assertRaisesRegex,
-        TestCase.assertRaisesRegexp,
     ]
 
     # Require no instead string
@@ -1533,12 +1485,12 @@ class DeprecationTestCase(DebugOnlyTestCase, TestCase):
         if msg:
             self.assertNotIn(msg, self.deprecation_messages)
         else:
-            self.assertEqual([], self.deprecation_messages)
+            self.assertIsEmpty(self.deprecation_messages)
 
     def assertDeprecationClass(self, cls):
         """Assert that all deprecation warning are of one class."""
-        self.assertTrue(all(isinstance(item.message, cls)
-                            for item in self.warning_log))
+        for item in self.warning_log:
+            self.assertIsInstance(item.message, cls)
 
     def assertDeprecationFile(self, filename):
         """Assert that all deprecation warning are of one filename."""
@@ -1566,27 +1518,6 @@ class DeprecationTestCase(DebugOnlyTestCase, TestCase):
         self.context_manager.__exit__()
 
         super().tearDown()
-
-
-class AutoDeprecationTestCase(CapturingTestCase, DeprecationTestCase):
-
-    """
-    A test case capturing asserts and asserting a deprecation afterwards.
-
-    For example ``assertEqual`` will do first ``assertEqual`` and then
-    ``assertOneDeprecation``.
-    """
-
-    def after_assert(self, assertion, *args, **kwargs):
-        """Handle assertion and call ``assertOneDeprecation`` after it."""
-        super().after_assert(
-            assertion, *args, **kwargs)
-        self.assertOneDeprecation()
-
-    source_adjustment_skips = DeprecationTestCase.source_adjustment_skips + [
-        CapturingTestCase.process_assert,
-        CapturingTestCase.patch_assert,
-    ]
 
 
 @optional_pytest_httpbin_cls_decorator

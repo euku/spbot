@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for the Category class."""
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -8,7 +9,6 @@ import unittest
 from contextlib import suppress
 
 import pywikibot
-import pywikibot.page
 from pywikibot.exceptions import IsNotRedirectPageError
 from tests.aspects import TestCase
 

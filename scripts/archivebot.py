@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 archivebot.py - discussion page archiving bot.
 
@@ -72,9 +72,9 @@ week, which is in the year before if January 1st is not a Monday. If it's
 between Friday or Sunday (including) the following week is then the first week
 of the year. So up to three days are still counted as the year before.
 
-See also:
- - https://webspace.science.uu.nl/~gent0113/calendar/isocalendar.htm
- - https://docs.python.org/3.4/library/datetime.html#datetime.date.isocalendar
+.. seealso:: Python :python:`datetime.date.isocalendar
+   <library/datetime.html#datetime.date.isocalendar>`,
+   https://webspace.science.uu.nl/~gent0113/calendar/isocalendar.htm
 
 Options (may be omitted):
 
@@ -88,7 +88,7 @@ Options (may be omitted):
   -salt:SALT      specify salt
 """
 #
-# (C) Pywikibot team, 2006-2021
+# (C) Pywikibot team, 2006-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -112,6 +112,7 @@ from pywikibot.date import apply_month_delta
 from pywikibot.exceptions import Error, NoPageError
 from pywikibot.textlib import (
     TimeStripper,
+    case_escape,
     extract_sections,
     findmarker,
     to_local_digits,
@@ -297,14 +298,9 @@ def template_title_regex(tpl_page: pywikibot.Page) -> Pattern:
     ns = tpl_page.site.namespaces[tpl_page.namespace()]
     marker = '?' if ns.id == 10 else ''
     title = tpl_page.title(with_ns=False)
-    if ns.case != 'case-sensitive':
-        title = '[{}{}]{}'.format(re.escape(title[0].upper()),
-                                  re.escape(title[0].lower()),
-                                  re.escape(title[1:]))
-    else:
-        title = re.escape(title)
+    title = case_escape(ns.case, title)
 
-    return re.compile(r'(?:(?:%s):)%s%s' % ('|'.join(ns), marker, title))
+    return re.compile(r'(?:(?:{}):){}{}'.format('|'.join(ns), marker, title))
 
 
 def calc_md5_hexdigest(txt, salt) -> str:
@@ -496,12 +492,12 @@ class DiscussionPage(pywikibot.Page):
         return len(self.header.encode('utf-8')) + sum(t.size()
                                                       for t in self.threads)
 
-    def update(self, summary, sort_threads=False) -> None:
+    def update(self, summary, sort_threads: bool = False) -> None:
         """Recombine threads and save page."""
         if sort_threads:
             pywikibot.output('Sorting threads...')
             self.threads.sort(key=lambda t: t.timestamp)
-        newtext = re.sub('\n*$', '\n\n', self.header)  # Fix trailing newlines
+        newtext = self.header.strip() + '\n\n'  # Fix trailing newlines
         for t in self.threads:
             newtext += t.to_text()
         if self.full:
@@ -562,7 +558,7 @@ class PageArchiver:
         """Get an archiver attribute."""
         return self.attributes.get(attr, [default])[0]
 
-    def set_attr(self, attr, value, out=True) -> None:
+    def set_attr(self, attr, value, out: bool = True) -> None:
         """Set an archiver attribute."""
         if attr == 'archive':
             value = value.replace('_', ' ')
@@ -595,8 +591,8 @@ class PageArchiver:
 
     def load_config(self) -> None:
         """Load and validate archiver template."""
-        pywikibot.output('Looking for: {{%s}} in %s' % (self.tpl.title(),
-                                                        self.page))
+        pywikibot.output('Looking for: {{{{{}}}}} in {}'.format(
+            self.tpl.title(), self.page))
         for tpl, params in self.page.raw_extracted_templates:
             try:  # Check tpl name before comparing; it might be invalid.
                 tpl_page = pywikibot.Page(self.site, tpl, ns=10)
@@ -694,7 +690,7 @@ class PageArchiver:
             # "era" regardless of the counter and deal with it later
             key = pattern % params
             threads_per_archive[key].append((i, thread))
-            whys.add(why)  # xxx: we don't now if we ever archive anything
+            whys.add(why)  # xxx: we don't know if we ever archive anything
 
         params = self.get_params(self.now, counter)
         aux_params = self.get_params(self.now, counter + 1)
@@ -783,7 +779,7 @@ class PageArchiver:
             pywikibot.output('Archiving {} thread(s).'
                              .format(self.archived_threads))
             # Save the archives first (so that bugs don't cause a loss of data)
-            for title, archive in sorted(self.archives.items()):
+            for _title, archive in sorted(self.archives.items()):
                 count = archive.archived_threads
                 if count == 0:
                     continue
@@ -897,7 +893,7 @@ def main(*args: str) -> None:
                                                follow_redirects=False,
                                                namespaces=ns))
         if filename:
-            for pg in open(filename, 'r').readlines():
+            for pg in open(filename).readlines():
                 pagelist.append(pywikibot.Page(site, pg, ns=10))
         if pagename:
             pagelist.append(pywikibot.Page(site, pagename, ns=3))
@@ -914,9 +910,8 @@ def main(*args: str) -> None:
                 pywikibot.error('Missing or malformed template in page {}: {}'
                                 .format(pg, e))
             except Exception:
-                pywikibot.error('Error occurred while processing page {}'
-                                .format(pg))
-                pywikibot.exception(tb=True)
+                pywikibot.exception('Error occurred while processing page {}'
+                                    .format(pg))
 
 
 if __name__ == '__main__':

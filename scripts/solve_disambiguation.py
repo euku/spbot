@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Script to help a human solve disambiguations by presenting a set of options.
 
@@ -75,7 +75,7 @@ To complete a move of a page, one can use:
 
 """
 #
-# (C) Pywikibot team, 2003-2021
+# (C) Pywikibot team, 2003-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -106,12 +106,7 @@ from pywikibot.exceptions import (
     NoPageError,
     PageSaveRelatedError,
 )
-from pywikibot.tools import (
-    deprecated,
-    first_lower,
-    first_upper,
-    issue_deprecation_warning,
-)
+from pywikibot.tools import first_lower, first_upper, issue_deprecation_warning
 from pywikibot.tools.formatter import SequenceOutputter
 
 
@@ -399,14 +394,16 @@ class ReferringPageGeneratorWithIgnore:
 
     """Referring Page generator, with an ignore manager."""
 
-    def __init__(self, page, primary=False, minimum=0, main_only=False
-                 ) -> None:
+    def __init__(
+        self,
+        page,
+        primary: bool = False,
+        minimum: int = 0,
+        main_only: bool = False
+    ) -> None:
         """Initializer.
 
         :type page: pywikibot.Page
-        :type primary: bool
-        :type minimum: int
-        :type main_only: bool
         """
         self.page = page
         # if run with the -primary argument, enable the ignore manager
@@ -451,13 +448,10 @@ class PrimaryIgnoreManager:
 
     """
 
-    def __init__(self, disamb_page, enabled=False) -> None:
+    def __init__(self, disamb_page, enabled: bool = False) -> None:
         """Initializer.
 
         :type disamb_page: pywikibot.Page
-        :type enabled: bool
-        :rtype: None
-
         """
         self.disamb_page = disamb_page
         self.enabled = enabled
@@ -578,7 +572,7 @@ class AliasOption(StandardOption):
 
     """An option allowing multiple aliases which also select it."""
 
-    def __init__(self, option, shortcuts, stop=True) -> None:
+    def __init__(self, option, shortcuts, stop: bool = True) -> None:
         """Initializer."""
         super().__init__(option, shortcuts[0], stop=stop)
         self._aliases = frozenset(s.lower() for s in shortcuts[1:])
@@ -637,7 +631,7 @@ class DisambiguationRobot(SingleSiteBot):
         self.summary = None
         self.dn_template_str = i18n.translate(self.site, dn_template)
 
-    def _clean_args(self, args, kwargs):
+    def _clean_args(self, args, kwargs) -> None:
         """Cleanup positional and keyword arguments.
 
         Replace positional arguments with keyword arguments.
@@ -670,7 +664,7 @@ class DisambiguationRobot(SingleSiteBot):
             issue_deprecation_warning(
                 'Positional argument {} ({})'.format(i + 1, arg),
                 'keyword argument "{}={}"'.format(key, arg),
-                since='20210303')
+                since='6.0.0')
             if key in kwargs:
                 pywikibot.warning('{!r} is given as keyword argument {!r} '
                                   'already; ignoring {!r}'
@@ -684,17 +678,16 @@ class DisambiguationRobot(SingleSiteBot):
                 newkey = keymap[key]
                 issue_deprecation_warning(
                     '{!r} argument of {}'.format(key, self.__class__.__name__),
-                    repr(newkey), since='20210303')
+                    repr(newkey), since='6.0.0')
                 kwargs[newkey] = kwargs.pop(key)
 
         # Expand available_options
         # Currently scripts may have its own options set
         added_keys = []
         for key in keys:
-            if key != 'generator':
-                if key not in self.available_options:
-                    added_keys.append(key)
-                    self.available_options[key] = self.disambig_options[key]
+            if key != 'generator' and key not in self.available_options:
+                added_keys.append(key)
+                self.available_options[key] = self.disambig_options[key]
         if added_keys:
             pywikibot.warning("""\
 The following keys were added to available_options:
@@ -703,90 +696,6 @@ Either add them to available_options setting of {classname}
 bot class or use available_options.update() to use default settings from
 DisambiguationRobot""".format(options=added_keys,
                               classname=self.__class__.__name__))
-
-    # Deprecated properties ---------------------------------------
-
-    @property
-    @deprecated('opt.always', since='20210303')
-    def always(self):  # noqa: D102
-        return self.opt.always
-
-    @always.setter
-    @deprecated('opt.always', since='20210303')
-    def always(self, value):
-        self.opt.always = value
-
-    @property
-    @deprecated('opt.dnskip', since='20210303')
-    def dnSkip(self):  # noqa: D102
-        return self.opt.dnskip
-
-    @dnSkip.setter
-    @deprecated('opt.dnskip', since='20210303')
-    def dnSkip(self, value):
-        self.opt.dnskip = value
-
-    @property
-    @deprecated('opt.primary', since='20210303')
-    def primary(self):  # noqa: D102
-        return self.opt.primary
-
-    @primary.setter
-    @deprecated('opt.primary', since='20210303')
-    def primary(self, value):
-        self.opt.primary = value
-
-    @property
-    @deprecated('opt.main', since='20210303')
-    def main_only(self):  # noqa: D102
-        return self.opt.main
-
-    @main_only.setter
-    @deprecated('opt.main', since='20210303')
-    def main_only(self, value):
-        self.opt.main = value
-
-    @property
-    @deprecated('opt.first', since='20210303')
-    def first_only(self):  # noqa: D102
-        return self.opt.first
-
-    @first_only.setter
-    @deprecated('opt.first', since='20210303')
-    def first_only(self, value):
-        self.opt.first = value
-
-    @property
-    @deprecated('opt.min', since='20210303')
-    def minimum(self):  # noqa: D102
-        return self.opt.min
-
-    @minimum.setter
-    @deprecated('opt.min', since='20210303')
-    def minimum(self, value):
-        self.opt.min = value
-
-    @property
-    @deprecated('opt.pos', since='20210303')
-    def alternatives(self):  # noqa: D102
-        return self.opt.pos
-
-    @alternatives.setter
-    @deprecated('opt.pos', since='20210303')
-    def alternatives(self, value):
-        self.opt.pos = value
-
-    @property
-    @deprecated('opt.just', since='20210303')
-    def getAlternatives(self):  # noqa: D102
-        return self.opt.just
-
-    @getAlternatives.setter
-    @deprecated('opt.just', since='20210303')
-    def getAlternatives(self, value):
-        self.opt.just = value
-
-    # -------------------------------------------------------------
 
     def checkContents(self, text: str) -> Optional[str]:  # noqa: N802
         """
@@ -988,7 +897,7 @@ DisambiguationRobot""".format(options=added_keys,
                     foundlink = pywikibot.Link(m.group('title'),
                                                disamb_page.site)
                     foundlink.parse()
-                except (Error, ValueError):  # T111513
+                except Error:
                     continue
 
                 # ignore interwiki links
@@ -1175,7 +1084,7 @@ DisambiguationRobot""".format(options=added_keys,
             else:
                 pywikibot.output('\nThe following changes have been made:\n')
                 pywikibot.showDiff(original_text, text)
-                pywikibot.output('')
+                pywikibot.output()
                 # save the page
                 self.setSummaryMessage(disamb_page, new_targets,
                                        unlink_counter, dn)
@@ -1279,8 +1188,13 @@ or press enter to quit:""")
             self.opt.pos += links
         return True
 
-    def setSummaryMessage(self, page, new_targets=None, unlink_counter=0,
-                          dn=False) -> None:
+    def setSummaryMessage(
+        self,
+        page,
+        new_targets=None,
+        unlink_counter: int = 0,
+        dn: bool = False
+    ) -> None:
         """Setup i18n summary message."""
         new_targets = new_targets or []
         # make list of new targets
@@ -1345,7 +1259,7 @@ or press enter to quit:""")
                      'to': targets,
                      'count': len(new_targets)})
 
-    def teardown(self):
+    def teardown(self) -> None:
         """Write ignoring pages to a file."""
         self.primaryIgnoreManager.ignore(self.ignores)
 
@@ -1374,9 +1288,9 @@ or press enter to quit:""")
         )
         gen = pagegenerators.PreloadingGenerator(gen)
         for ref_page in gen:
-            if not self.primaryIgnoreManager.isIgnored(ref_page):
-                if not self.treat_links(ref_page, page):
-                    break  # next disambig
+            if not self.primaryIgnoreManager.isIgnored(ref_page) \
+               and not self.treat_links(ref_page, page):
+                break  # next disambig
 
         # clear alternatives before working on next disambiguation page
         self.opt.pos = []

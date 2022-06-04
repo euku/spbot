@@ -19,21 +19,20 @@ system that has a compatible version of Python installed. To check
 whether you have Python installed and to find its version, just type
 ``python`` at the CMD or shell prompt.
 
-Python 3.5 or higher is currently required to run the bot, but Python 3.6
-or higher is recommended.
+Python 3.5.3 or higher is currently required to run the bot, but Python 3.6
+or higher is recommended. Python 3.5 support will be dropped with Pywikibot 8.
 
 Pywikibot and this documentation are licensed under the
-:ref:`MIT license <licenses-MIT>`;
+:ref:`MIT license`;
 manual pages on mediawiki.org are licensed under the `CC-BY-SA 3.0`_ license.
 
-The documentation consists of four major parts:
+.. seealso:: `Pywikibot Manual`_ at https://www.mediawiki.org
 
-#. :doc:`installation`
-#. :doc:`scripts/index`
-#. :doc:`library_usage`
-#. :doc:`api_ref/index`
 
-See also: `Pywikibot Manual`_ at https://www.mediawiki.org
+Framework Modules Overview
+--------------------------
+.. image:: framework.png
+   :alt: Framework modules dependency network
 
 
 For bot users:
@@ -43,7 +42,7 @@ For bot users:
    :maxdepth: 1
 
    installation
-   utilities/index
+   utilities/scripts
    scripts/index
    global_options
    faq
@@ -56,10 +55,8 @@ For bot developers:
 .. toctree::
    :maxdepth: 1
 
-   installation
    library_usage
    recipes
-   getting_help
    api_ref/index
 
 For framework developers:
@@ -68,7 +65,11 @@ For framework developers:
 .. toctree::
    :maxdepth: 1
 
-   scripts/scripts.maintenance
+   Utility Scripts Reference<utilities/scripts_ref>
+   scripts_ref/index
+   tests_ref/index
+   Maintenance Scripts<scripts_ref/scripts.maintenance>
+   utilities/install
 
 
 Miscellaneous

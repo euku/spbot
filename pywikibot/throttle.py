@@ -1,6 +1,6 @@
 """Mechanics to slow down wiki read and/or write rate."""
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -8,16 +8,14 @@ import itertools
 import math
 import threading
 import time
-
-from collections import namedtuple, Counter
+from collections import Counter, namedtuple
 from contextlib import suppress
 from typing import Optional, Union
 
 import pywikibot
-
 from pywikibot import config
+from pywikibot.tools import PYTHON_VERSION, deprecated
 
-from pywikibot.tools import deprecated, deprecated_args, PYTHON_VERSION
 
 if PYTHON_VERSION < (3, 6):
     from hashlib import md5
@@ -25,8 +23,6 @@ if PYTHON_VERSION < (3, 6):
 else:
     from hashlib import blake2b
 
-
-_logger = 'wiki.throttle'
 
 FORMAT_LINE = '{module_id} {pid} {time} {site}\n'
 ProcEntry = namedtuple('ProcEntry', ['module_id', 'pid', 'time', 'site'])
@@ -49,13 +45,17 @@ class Throttle:
     Each Site initiates one Throttle object (`site.throttle`) to control
     the rate of access.
 
+    :param site: site or sitename for this Throttle. If site is an empty
+        string, it will not be written to the throttle.ctrl file.
+    :param mindelay: The minimal delay, also used for read access
+    :param maxdelay: The maximal delay
+    :param writedelay: The write delay
     """
 
-    @deprecated_args(multiplydelay=True)
-    def __init__(self, site, *,
+    def __init__(self, site: Union['pywikibot.site.BaseSite', str], *,
                  mindelay: Optional[int] = None,
                  maxdelay: Optional[int] = None,
-                 writedelay: Union[int, float, None] = None):
+                 writedelay: Union[int, float, None] = None) -> None:
         """Initializer."""
         self.lock = threading.RLock()
         self.lock_write = threading.RLock()
@@ -88,13 +88,13 @@ class Throttle:
 
     @property
     @deprecated(since='6.2')
-    def multiplydelay(self):
+    def multiplydelay(self) -> bool:
         """DEPRECATED attribute."""
         return True
 
     @multiplydelay.setter
     @deprecated(since='6.2')
-    def multiplydelay(self):
+    def multiplydelay(self) -> None:
         """DEPRECATED attribute setter."""
 
     @staticmethod
@@ -109,12 +109,12 @@ class Throttle:
             hashobj = md5(module)
         return hashobj.hexdigest()[:4]  # slice for Python 3.5
 
-    def _read_file(self, raise_exc=False):
+    def _read_file(self, raise_exc: bool = False):
         """Yield process entries from file."""
         try:
-            with open(self.ctrlfilename, 'r') as f:
+            with open(self.ctrlfilename) as f:
                 lines = f.readlines()
-        except IOError:
+        except OSError:
             if raise_exc and pid:
                 raise
             return
@@ -138,7 +138,7 @@ class Throttle:
                 continue
             yield proc_entry
 
-    def _write_file(self, processes):
+    def _write_file(self, processes) -> None:
         """Write process entries to file."""
         if not isinstance(processes, list):
             processes = list(processes)
@@ -148,12 +148,15 @@ class Throttle:
             for p in processes:
                 f.write(FORMAT_LINE.format_map(p._asdict()))
 
-    def checkMultiplicity(self):
-        """Count running processes for site and set process_multiplicity."""
+    def checkMultiplicity(self) -> None:
+        """Count running processes for site and set process_multiplicity.
+
+        .. versionchanged:: 7.0
+           process is not written to throttle.ctrl file is site is empty
+        """
         global pid
         mysite = self.mysite
-        pywikibot.debug('Checking multiplicity: pid = {pid}'.format(pid=pid),
-                        _logger)
+        pywikibot.debug('Checking multiplicity: pid = {pid}'.format(pid=pid))
         with self.lock:
             processes = []
             used_pids = set()
@@ -168,7 +171,7 @@ class Throttle:
                    and proc.site == mysite \
                    and proc.pid != pid:
                     count += 1
-                if proc.site != self.mysite or proc.pid != pid:
+                if proc.site != mysite or proc.pid != pid:
                     processes.append(proc)
 
             free_pid = (i for i in itertools.count(start=1)
@@ -182,13 +185,21 @@ class Throttle:
                           time=self.checktime, site=mysite))
             self.modules = Counter(p.module_id for p in processes)
 
+            if not mysite:
+                del processes[-1]
+
             self._write_file(sorted(processes, key=lambda p: p.pid))
 
             self.process_multiplicity = count
             pywikibot.log('Found {} {} processes running, including this one.'
                           .format(count, mysite))
 
-    def setDelays(self, delay=None, writedelay=None, absolute=False):
+    def setDelays(
+        self,
+        delay=None,
+        writedelay=None,
+        absolute: bool = False
+    ) -> None:
         """Set the nominal delays in seconds. Defaults to config values."""
         with self.lock:
             delay = delay or self.mindelay
@@ -202,7 +213,7 @@ class Throttle:
             # Start the delay count now, not at the next check
             self.last_read = self.last_write = time.time()
 
-    def getDelay(self, write=False):
+    def getDelay(self, write: bool = False):
         """Return the actual delay, accounting for multiple processes.
 
         This value is the maximum wait between reads/writes, not taking
@@ -225,7 +236,7 @@ class Throttle:
         thisdelay *= self.process_multiplicity
         return thisdelay
 
-    def waittime(self, write=False):
+    def waittime(self, write: bool = False):
         """Return waiting time in seconds.
 
         The result is for a query that would be made right now.
@@ -237,7 +248,7 @@ class Throttle:
         ago = now - (self.last_write if write else self.last_read)
         return max(0.0, thisdelay - ago)
 
-    def drop(self):
+    def drop(self) -> None:
         """Remove me from the list of running bot processes."""
         # drop all throttles with this process's pid, regardless of site
         self.checktime = 0
@@ -248,7 +259,7 @@ class Throttle:
 
         self._write_file(processes)
 
-    def wait(self, seconds):
+    def wait(self, seconds) -> None:
         """Wait for seconds seconds.
 
         Announce the delay if it exceeds a preset limit.
@@ -268,7 +279,7 @@ class Throttle:
 
         time.sleep(seconds)
 
-    def __call__(self, requestsize=1, write=False):
+    def __call__(self, requestsize: int = 1, write: bool = False) -> None:
         """Block the calling program if the throttle time has not expired.
 
         Parameter requestsize is the number of Pages to be read/written;
@@ -295,7 +306,7 @@ class Throttle:
             else:
                 self.last_read = time.time()
 
-    def lag(self, lagtime: Optional[float] = None):
+    def lag(self, lagtime: Optional[float] = None) -> None:
         """Seize the throttle lock due to server lag.
 
         Usually the `self.retry-after` value from `response_header` of the
@@ -327,5 +338,4 @@ class Throttle:
 
     def get_pid(self, module: str) -> int:
         """Get the global pid if the module is running multiple times."""
-        global pid
         return pid if self.modules[self._module_hash(module)] > 1 else 0

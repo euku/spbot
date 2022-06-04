@@ -1,6 +1,6 @@
 """Interface to Mediawiki's api.php."""
 #
-# (C) Pywikibot team, 2007-2021
+# (C) Pywikibot team, 2007-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -13,19 +13,18 @@ import pprint
 import re
 import traceback
 from collections.abc import Container, MutableMapping, Sized
-from contextlib import suppress
 from email.generator import BytesGenerator
 from email.mime.multipart import MIMEMultipart as MIMEMultipartOrig
 from email.mime.nonmultipart import MIMENonMultipart
 from inspect import getfullargspec
 from io import BytesIO
-from typing import Optional, Union
+from typing import Any, Optional, Union
 from urllib.parse import unquote, urlencode
 from warnings import warn
 
 import pywikibot
 from pywikibot import config, login
-from pywikibot.backports import Dict, Tuple, removeprefix
+from pywikibot.backports import Callable, Dict, Match, Tuple, removeprefix
 from pywikibot.comms import http
 from pywikibot.exceptions import (
     Error,
@@ -42,22 +41,19 @@ from pywikibot.exceptions import (
 from pywikibot.family import SubdomainFamily
 from pywikibot.login import LoginStatus
 from pywikibot.textlib import removeHTMLParts
-from pywikibot.tools import PYTHON_VERSION, ModuleDeprecationWrapper, itergroup
-from pywikibot.tools.formatter import color_format
+from pywikibot.tools import PYTHON_VERSION, itergroup
 
-
-_logger = 'data.api'
 
 lagpattern = re.compile(
     r'Waiting for [\w.: ]+: (?P<lag>\d+(?:\.\d+)?) seconds? lagged')
 
 
-def _invalidate_superior_cookies(family):
+def _invalidate_superior_cookies(family) -> None:
     """
     Clear cookies for site's second level domain.
 
     get_login_token() will generate new cookies needed.
-    This is a workaround for requests bug, see T224712
+    This is a workaround for requests bug, see :phab:`T224712`
     and https://github.com/psf/requests/issues/5411
     for more details.
     """
@@ -78,12 +74,12 @@ class CTEBinaryBytesGenerator(BytesGenerator):
 
     """Workaround for bug in python 3 email handling of CTE binary."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         """Initializer."""
         super().__init__(*args, **kwargs)
         self._writeBody = self._write_body
 
-    def _write_body(self, msg):
+    def _write_body(self, msg) -> None:
         if msg['content-transfer-encoding'] == 'binary':
             self._fp.write(msg.get_payload(decode=True))
         else:
@@ -94,7 +90,7 @@ class CTEBinaryMIMEMultipart(MIMEMultipartOrig):
 
     """Workaround for bug in python 3 email handling of CTE binary."""
 
-    def as_bytes(self, unixfrom=False, policy=None):
+    def as_bytes(self, unixfrom: bool = False, policy=None):
         """Return unmodified binary payload."""
         policy = self.policy if policy is None else policy
         fp = BytesIO()
@@ -123,7 +119,12 @@ class ParamInfo(Sized, Container):
 
     init_modules = frozenset(['main', 'paraminfo'])
 
-    def __init__(self, site, preloaded_modules=None, modules_only_mode=None):
+    def __init__(
+        self,
+        site,
+        preloaded_modules=None,
+        modules_only_mode=None
+    ) -> None:
         """
         Initializer.
 
@@ -155,7 +156,7 @@ class ParamInfo(Sized, Container):
         if self.modules_only_mode:
             self.paraminfo_keys = frozenset(['modules'])
 
-    def _add_submodules(self, name, modules):
+    def _add_submodules(self, name, modules) -> None:
         """Add the modules to the internal cache or check if equal."""
         # The current implementation here doesn't support submodules inside of
         # submodules, because that would require to fetch all modules when only
@@ -218,11 +219,11 @@ class ParamInfo(Sized, Container):
             self._fetch({'query'})
         assert 'query' in self._modules
 
-    def _emulate_pageset(self):
+    def _emulate_pageset(self) -> None:
         """Emulate the pageset module, which existed until MW 1.24."""
         # pageset isn't a module in the new system, so it is emulated, with
         # the paraminfo from the query module.
-        assert('query' in self._paraminfo)
+        assert 'query' in self._paraminfo
 
         self._paraminfo['pageset'] = {
             'name': 'pageset',
@@ -308,13 +309,13 @@ class ParamInfo(Sized, Container):
         # number of modules that may be processed in a single batch.
         for module_batch in module_generator():
             if self.modules_only_mode and 'pageset' in module_batch:
-                pywikibot.debug('paraminfo fetch: removed pageset', _logger)
+                pywikibot.debug('paraminfo fetch: removed pageset')
                 module_batch.remove('pageset')
                 # If this occurred during initialisation,
                 # also record it in the preloaded_modules.
                 # (at least so tests know an extra load was intentional)
                 if 'query' not in self._paraminfo:
-                    pywikibot.debug('paraminfo batch: added query', _logger)
+                    pywikibot.debug('paraminfo batch: added query')
                     module_batch.append('query')
                     self.preloaded_modules |= {'query'}
 
@@ -373,67 +374,65 @@ class ParamInfo(Sized, Container):
                     del normalized_result[path]
 
             self._paraminfo.update(normalized_result)
-            self._generate_submodules(mod['path']
-                                      for mod in normalized_result.values())
+            for mod in normalized_result.values():
+                self._generate_submodules(mod['path'])
 
         if 'pageset' in modules and 'pageset' not in self._paraminfo:
             self._emulate_pageset()
 
-    def _generate_submodules(self, modules):
-        """Check and generate submodules for the given modules."""
-        for module in modules:
-            parameters = self._paraminfo[module].get('parameters', [])
-            submodules = set()
-            # Advanced submodule into added to MW API in df80f1ea
-            if self.site.mw_version >= '1.26wmf9':
-                # This is supplying submodules even if they aren't submodules
-                # of the given module so skip those
-                for param in parameters:
-                    if ((module == 'main' and param['name'] == 'format')
-                            or 'submodules' not in param):
-                        continue
-                    for submodule in param['submodules'].values():
-                        if '+' in submodule:
-                            parent, child = submodule.rsplit('+', 1)
-                        else:
-                            parent = 'main'
-                            child = submodule
-                        if parent == module:
-                            submodules.add(child)
-            else:
-                # Boolean submodule info added to MW API in afa153ae
-                if self.site.mw_version < '1.24wmf18':
-                    if module == 'main':
-                        params = {'action'}
-                    elif module == 'query':
-                        params = {'prop', 'list', 'meta'}
+    def _generate_submodules(self, module) -> None:
+        """Check and generate submodules for the given module."""
+        parameters = self._paraminfo[module].get('parameters', [])
+        submodules = set()
+        # Advanced submodule into added to MW API in df80f1ea
+        if self.site.mw_version >= '1.26wmf9':
+            # This is supplying submodules even if they aren't submodules
+            # of the given module so skip those
+            for param in parameters:
+                if module == 'main' and param['name'] == 'format' \
+                   or 'submodules' not in param:
+                    continue
+
+                for submodule in param['submodules'].values():
+                    if '+' in submodule:
+                        parent, child = submodule.rsplit('+', 1)
                     else:
-                        params = set()
-                    for param in parameters:
-                        if param['name'] in params:
-                            param['submodules'] = ''
-
-                for param in parameters:
-                    # Do not add format modules
-                    if ('submodules' in param
-                        and (module != 'main'
-                             or param['name'] != 'format')):
-                        submodules |= set(param['type'])
-
-            if submodules:
-                self._add_submodules(module, submodules)
-            if module == 'query':
-                # Previously also modules from generator were used as query
-                # modules, but verify that those are just a subset of the
-                # prop/list/meta modules. There is no sanity check as this
-                # needs to be revisited if query has no generator parameter
-                for param in parameters:
-                    if param['name'] == 'generator':
-                        break
+                        parent, child = 'main', submodule
+                    if parent == module:
+                        submodules.add(child)
+        else:
+            # Boolean submodule info added to MW API in afa153ae
+            if self.site.mw_version < '1.24wmf18':
+                if module == 'main':
+                    params = {'action'}
+                elif module == 'query':
+                    params = {'prop', 'list', 'meta'}
                 else:
-                    param = {}
-                assert param['name'] == 'generator' \
-                    and submodules >= set(param['type'])
+                    params = set()
+                for param in parameters:
+                    if param['name'] in params:
+                        param['submodules'] = ''
+
+            for param in parameters:
+                # Do not add format modules
+                if 'submodules' in param \
+                   and (module != 'main' or param['name'] != 'format'):
+                    submodules |= set(param['type'])
+
+        if submodules:
+            self._add_submodules(module, submodules)
+        if module == 'query':
+            # Previously also modules from generator were used as query
+            # modules, but verify that those are just a subset of the
+            # prop/list/meta modules. There is no sanity check as this
+            # needs to be revisited if query has no generator parameter
+            for param in parameters:
+                if param['name'] == 'generator':
+                    break
+            else:
+                param = {}
+            assert param['name'] == 'generator' \
+                and submodules >= set(param['type'])
 
     def _normalize_modules(self, modules) -> set:
         """Add query+ to any query module name not also in action modules."""
@@ -549,7 +548,11 @@ class ParamInfo(Sized, Container):
         """Return number of cached modules."""
         return len(self._paraminfo)
 
-    def parameter(self, module: str, param_name: str) -> Optional[dict]:
+    def parameter(
+        self,
+        module: str,
+        param_name: str
+    ) -> Optional[Dict[str, Any]]:
         """
         Get details about one modules parameter.
 
@@ -686,7 +689,7 @@ class OptionSet(MutableMapping):
     def __init__(self, site=None,
                  module: Optional[str] = None,
                  param: Optional[str] = None,
-                 dict: Optional[dict] = None):
+                 dict: Optional[dict] = None) -> None:
         """
         Initializer.
 
@@ -785,7 +788,7 @@ class OptionSet(MutableMapping):
         self._enabled = enabled | (self._enabled - disabled - removed)
         self._disabled = disabled | (self._disabled - enabled - removed)
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear all enabled and disabled options."""
         self._enabled.clear()
         self._disabled.clear()
@@ -829,11 +832,11 @@ class OptionSet(MutableMapping):
             return None
         raise KeyError('Invalid name "{}"'.format(name))
 
-    def __delitem__(self, name):
+    def __delitem__(self, name) -> None:
         """Remove the item by setting it to None."""
         self[name] = None
 
-    def __contains__(self, name):
+    def __contains__(self, name) -> bool:
         """Return True if option has been set."""
         return name in self._enabled or name in self._disabled
 
@@ -848,7 +851,7 @@ class OptionSet(MutableMapping):
         for disabled in self._disabled:
             yield '!{}'.format(disabled)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return the number of enabled and disabled options."""
         return len(self._enabled) + len(self._disabled)
 
@@ -919,7 +922,7 @@ class Request(MutableMapping):
                  max_retries: Optional[int] = None,
                  retry_wait: Optional[int] = None,
                  use_get: Optional[bool] = None,
-                 parameters=_PARAM_DEFAULT, **kwargs):
+                 parameters=_PARAM_DEFAULT, **kwargs) -> None:
         """
         Create a new Request instance with the given parameters.
 
@@ -1009,7 +1012,7 @@ class Request(MutableMapping):
             raise ValueError("'action' specification missing from Request.")
         self.action = parameters['action']
         self.update(parameters)  # also convert all parameter values to lists
-        self._warning_handler = None
+        self._warning_handler = None  # type: Optional[Callable[[str, str], Union[Match[str], bool, None]]]  # noqa: E501
         # Actions that imply database updates on the server, used for various
         # things like throttling or skipping actions when we're in simulation
         # mode
@@ -1025,6 +1028,8 @@ class Request(MutableMapping):
             'wbremovequalifiers', 'wbremovereferences', 'wbsetaliases',
             'wbsetclaim', 'wbsetclaimvalue', 'wbsetdescription', 'wbsetlabel',
             'wbsetqualifier', 'wbsetreference', 'wbsetsitelink',
+            'wbladdform', 'wbleditformelements', 'wblmergelexemes',
+            'wblremoveform',
         }
         # Client side verification that the request is being performed
         # by a logged in user, and warn if it isn't a config username.
@@ -1045,7 +1050,7 @@ class Request(MutableMapping):
 
         # Make sure user is logged in
         if self.write:
-            pywikibot.debug('Adding user assertion', _logger)
+            pywikibot.debug('Adding user assertion')
             self['assert'] = 'user'
 
     @classmethod
@@ -1062,14 +1067,14 @@ class Request(MutableMapping):
         return cls(site=req_site, parameters=kwargs)
 
     @classmethod
-    def _warn_both(cls):
+    def _warn_both(cls) -> None:
         """Warn that kwargs mode was used but parameters was set too."""
         warn('Both kwargs and parameters are set in Request.__init__. It '
              'assumes that "parameters" is actually a parameter of the '
              'Request and is added to kwargs.', DeprecationWarning, 3)
 
     @classmethod
-    def _warn_kwargs(cls):
+    def _warn_kwargs(cls) -> None:
         """Warn that kwargs was used instead of parameters."""
         warn('Instead of using kwargs from Request.__init__, parameters '
              'for the request to the API should be added via the '
@@ -1098,7 +1103,7 @@ class Request(MutableMapping):
             args |= set(getfullargspec(super_cls.__init__).args)
         else:
             raise ValueError('Request was not a super class of '
-                             '{0!r}'.format(cls))
+                             '{!r}'.format(cls))
         args -= {'self'}
         old_kwargs = set(kwargs)
         # all kwargs defined above but not in args indicate 'kwargs' mode
@@ -1149,7 +1154,7 @@ class Request(MutableMapping):
         """Implement dict interface."""
         return self._params[key]
 
-    def __setitem__(self, key: str, value):
+    def __setitem__(self, key: str, value) -> None:
         """Set MediaWiki API request parameter.
 
         :param value: param value(s)
@@ -1176,7 +1181,7 @@ class Request(MutableMapping):
             else:
                 self._params[key] = list(value)
 
-    def __delitem__(self, key):
+    def __delitem__(self, key) -> None:
         """Implement dict interface."""
         del self._params[key]
 
@@ -1184,7 +1189,7 @@ class Request(MutableMapping):
         """Implement dict interface."""
         return list(self._params.keys())
 
-    def __contains__(self, key):
+    def __contains__(self, key) -> bool:
         """Implement dict interface."""
         return key in self._params
 
@@ -1192,7 +1197,7 @@ class Request(MutableMapping):
         """Implement dict interface."""
         return iter(self._params)
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Implement dict interface."""
         return len(self._params)
 
@@ -1233,10 +1238,10 @@ class Request(MutableMapping):
                 uiprop = self._params.get('uiprop', [])
                 uiprop = set(uiprop + ['blockinfo', 'hasmsg'])
                 self['uiprop'] = sorted(uiprop)
-            if 'prop' in self._params:
-                if self.site.has_extension('ProofreadPage'):
-                    prop = set(self['prop'] + ['proofread'])
-                    self['prop'] = sorted(prop)
+            if 'prop' in self._params \
+               and self.site.has_extension('ProofreadPage'):
+                prop = set(self['prop'] + ['proofread'])
+                self['prop'] = sorted(prop)
             # When neither 'continue' nor 'rawcontinue' is present and the
             # version number is at least 1.25wmf5 we add a dummy rawcontinue
             # parameter. Querying siteinfo is save as it adds 'continue'
@@ -1254,9 +1259,9 @@ class Request(MutableMapping):
             raise TypeError(
                 "Query format '{}' cannot be parsed.".format(self['format']))
 
-        self.__defaulted = True
+        self.__defaulted = True  # skipcq: PTC-W0037
 
-    def _encoded_items(self):
+    def _encoded_items(self) -> Dict[str, Union[str, bytes]]:
         """
         Build a dict of params with minimal encoding needed for the site.
 
@@ -1270,7 +1275,6 @@ class Request(MutableMapping):
         are not supported.
 
         :return: Parameters either in the site encoding, or ASCII strings
-        :rtype: dict with values of either str or bytes
         """
         params = {}
         for key, values in self._params.items():
@@ -1310,19 +1314,19 @@ class Request(MutableMapping):
 
         URL encodes the parameters provided by _encoded_items()
 
-        :note: Not all parameters are sorted, therefore for two given
-            CachedRequest objects with equal _params, the result of
-            _http_param_string() is not necessarily equal.
+        .. note:: Not all parameters are sorted, therefore for two given
+           CachedRequest objects with equal _params, the result of
+           _http_param_string() is not necessarily equal.
         """
         return encode_url(self._encoded_items())
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation."""
         return unquote(self.site.scriptpath()
                        + '/api.php?'
                        + self._http_param_string())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return internal representation."""
         return '{}.{}<{}->{!r}>'.format(self.__class__.__module__,
                                         self.__class__.__name__,
@@ -1332,9 +1336,8 @@ class Request(MutableMapping):
         """Simulate action."""
         if action and config.simulate and (
                 self.write or action in config.actions_to_block):
-            pywikibot.output(color_format(
-                '{black;yellow}SIMULATION: {} action blocked.{default}',
-                action))
+            pywikibot.output('<<black;yellow>>SIMULATION: {} action blocked.'
+                             '<<default>>'.format(action))
             # for more realistic simulation
             if config.simulate is not True:
                 pywikibot.sleep(float(config.simulate))
@@ -1342,8 +1345,9 @@ class Request(MutableMapping):
                 action: {'result': 'Success', 'nochange': ''},
 
                 # wikibase results
-                'pageinfo': {'lastrevid': -1},
                 'entity': {'lastrevid': -1},
+                'pageinfo': {'lastrevid': -1},
+                'reference': {'hash': -1},
             }
         return None
 
@@ -1430,7 +1434,7 @@ class Request(MutableMapping):
 
         :param params: HTTP request params
         :param mime_params: HTTP request parts which must be sent in the body
-        :type mime_params: dict of (content, keytype, headers)
+        :type mime_params: dict of (content, keytype, headers)  # noqa: DAR103
         :return: HTTP request headers and body
         """
         # construct a MIME message containing all API key/values
@@ -1471,8 +1475,7 @@ class Request(MutableMapping):
 
         pywikibot.debug('API request to {} (uses get: {}):\n'
                         'Headers: {!r}\nURI: {!r}\nBody: {!r}'
-                        .format(self.site, use_get, headers, uri, body),
-                        _logger)
+                        .format(self.site, use_get, headers, uri, body))
         return use_get, uri, body, headers
 
     def _http_request(self, use_get: bool, uri: str, data, headers,
@@ -1496,7 +1499,7 @@ class Request(MutableMapping):
                 pywikibot.warning('Caught HTTP 414 error, although not '
                                   'using GET.')
                 raise
-        except FatalServerError:
+        except (ConnectionError, FatalServerError):
             # This error is not going to be fixed by just waiting
             pywikibot.error(traceback.format_exc())
             raise
@@ -1539,7 +1542,7 @@ The text message is:
             # Do not retry for AutoFamily but raise a SiteDefinitionError
             # Note: family.AutoFamily is a function to create that class
             if self.site.family.__class__.__name__ == 'AutoFamily':
-                pywikibot.debug(msg, _logger)
+                pywikibot.debug(msg)
                 raise SiteDefinitionError('Invalid AutoFamily({!r})'
                                           .format(self.site.family.domain))
 
@@ -1559,13 +1562,13 @@ The text message is:
         self.wait()
         return None
 
-    def _relogin(self, message=''):
+    def _relogin(self, message: str = '') -> None:
         """Force re-login and inform user."""
         pywikibot.error('{}{}Forcing re-login.'.format(message,
                                                        ' ' if message else ''))
         self.site._relogin()
 
-    def _userinfo_query(self, result):
+    def _userinfo_query(self, result) -> bool:
         """Handle userinfo query."""
         if self.action == 'query' and 'userinfo' in result.get('query', ()):
             # if we get passed userinfo in the query result, we can confirm
@@ -1580,29 +1583,65 @@ The text message is:
                 return True
         return False
 
-    def _handle_warnings(self, result):
-        if 'warnings' in result:
-            for mod, warning in result['warnings'].items():
-                if mod == 'info':
-                    continue
-                if '*' in warning:
-                    text = warning['*']
-                elif 'html' in warning:
-                    # bug T51978
-                    text = warning['html']['*']
-                else:
-                    pywikibot.warning(
-                        'API warning ({}) of unknown format: {}'.
-                        format(mod, warning))
-                    continue
-                # multiple warnings are in text separated by a newline
-                for single_warning in text.splitlines():
-                    if (not callable(self._warning_handler)
-                            or not self._warning_handler(mod, single_warning)):
+    def _handle_warnings(self, result: Dict[str, Any]) -> bool:
+        """Handle warnings; return True to retry request, False to resume.
+
+        .. versionchanged:: 7.2
+           Return True to retry the current request and Falso to resume.
+        """
+        retry = False
+        if 'warnings' not in result:
+            return retry
+
+        for mod, warning in result['warnings'].items():
+            if mod == 'info':
+                continue
+            if '*' in warning:
+                text = warning['*']
+            elif 'html' in warning:
+                # bug T51978
+                text = warning['html']['*']
+            else:
+                pywikibot.warning('API warning ({}) of unknown format: {}'
+                                  .format(mod, warning))
+                continue
+
+            # multiple warnings are in text separated by a newline
+            for single_warning in text.splitlines():
+                if (not callable(self._warning_handler)
+                        or not self._warning_handler(mod, single_warning)):
+                    handled = self._default_warning_handler(mod,
+                                                            single_warning)
+                    if handled is None:
                         pywikibot.warning('API warning ({}): {}'
                                           .format(mod, single_warning))
+                    else:
+                        retry = retry or handled
+        return retry
 
-    def _logged_in(self, code):
+    def _default_warning_handler(self, mode: str, msg: str) -> Optional[bool]:
+        """A default warning handler to handle specific warnings.
+
+        Return True to retry the request, False to resume and None if
+        the warning is not handled.
+
+        .. versionadded:: 7.2
+        """
+        warnings = {
+            'purge': ("You've exceeded your rate limit. "
+                      'Please wait some time and try again.',
+                      '_ratelimited', True),
+        }
+        warning, handler, retry = warnings.get(mode, (None, None, None))
+        if handler and msg == warning:
+            # Only show the first warning part
+            pywikibot.warning(msg.split('.')[0] + '.')
+            # call the handler
+            getattr(self, handler)()
+            return retry
+        return None
+
+    def _logged_in(self, code) -> bool:
         """Check whether user is logged in.
 
         Older wikis returned an error instead of a warning when the request
@@ -1629,7 +1668,7 @@ The text message is:
         self._relogin(message)
         return False
 
-    def _internal_api_error(self, code, error, result):
+    def _internal_api_error(self, code, error, result) -> bool:
         """Check for internal_api_error_ or readonly and retry.
 
         :raises pywikibot.exceptions.APIMWError: internal_api_error or readonly
@@ -1649,6 +1688,7 @@ The text message is:
         # TODO: T154011: 'ReadOnlyError' seems replaced by 'readonly'
         retry = class_name in ['DBConnectionError',  # T64974
                                'DBQueryError',  # T60158
+                               'DBQueryTimeoutError',  # T297708
                                'ReadOnlyError',  # T61227
                                'readonly',  # T154011
                                ]
@@ -1668,7 +1708,7 @@ The text message is:
         self.wait()
         return True
 
-    def _ratelimited(self):
+    def _ratelimited(self) -> None:
         """Handle ratelimited warning."""
         ratelimits = self.site.userinfo['ratelimits']
         delay = None
@@ -1766,7 +1806,8 @@ The text message is:
             if self._userinfo_query(result):
                 continue
 
-            self._handle_warnings(result)
+            if self._handle_warnings(result):
+                continue
 
             if 'error' not in result:
                 return result
@@ -1849,6 +1890,17 @@ The text message is:
                 self.wait()
                 continue
 
+            if code in ('search-title-disabled', 'search-text-disabled'):
+                prefix = 'gsr' if 'gsrsearch' in self._params else 'sr'
+                del self._params[prefix + 'what']
+                # use intitle: search instead
+                if code == 'search-title-disabled' \
+                   and self.site.has_extension('CirrusSearch'):
+                    key = prefix + 'search'
+                    self._params[key] = ['intitle:' + search
+                                         for search in self._params[key]]
+                continue
+
             if code == 'urlshortener-blocked':  # T244062
                 # add additional informations to result['error']
                 result['error']['current site'] = self.site
@@ -1896,7 +1948,7 @@ class CachedRequest(Request):
 
     """Cached request."""
 
-    def __init__(self, expiry, *args, **kwargs):
+    def __init__(self, expiry, *args, **kwargs) -> None:
         """Initialize a CachedRequest object.
 
         :param expiry: either a number of days or a datetime.timedelta object
@@ -1924,7 +1976,7 @@ class CachedRequest(Request):
         :return: base directory path for cache entries
         """
         path = os.path.join(config.base_dir,
-                            'apicache-py{0:d}'.format(PYTHON_VERSION[0]))
+                            'apicache-py{:d}'.format(PYTHON_VERSION[0]))
         cls._make_dir(path)
         cls._get_cache_dir = classmethod(lambda c: path)  # cache the result
         return path
@@ -1933,13 +1985,14 @@ class CachedRequest(Request):
     def _make_dir(dir_name: str) -> str:
         """Create directory if it does not exist already.
 
-        The directory name (dir_name) is returned unmodified.
+        .. versionchanged:: 7.0
+           Only `FileExistsError` is ignored but other OS exceptions can
+           be still raised
 
         :param dir_name: directory path
-        :return: directory name
+        :return: unmodified directory name for test purpose
         """
-        with suppress(OSError):  # directory already exists
-            os.makedirs(dir_name)
+        os.makedirs(dir_name, exist_ok=True)
         return dir_name
 
     def _uniquedescriptionstr(self) -> str:
@@ -1964,12 +2017,8 @@ class CachedRequest(Request):
         request_key = repr(sorted(self._encoded_items().items()))
         return '{!r}{}{}'.format(self.site, user_key, request_key)
 
-    def _create_file_name(self):
-        """
-        Return a unique ascii identifier for the cache entry.
-
-        :rtype: str (hexadecimal; i.e. characters 0-9 and a-f only)
-        """
+    def _create_file_name(self) -> str:
+        """Return a unique ascii identifier for the cache entry."""
         return hashlib.sha256(
             self._uniquedescriptionstr().encode('utf-8')
         ).hexdigest()
@@ -1999,16 +2048,16 @@ class CachedRequest(Request):
                 return False
             pywikibot.debug('{}: cache hit ({}) for API request: {}'
                             .format(self.__class__.__name__, filename,
-                                    uniquedescr), _logger)
+                                    uniquedescr))
             return True
-        except IOError:
+        except OSError:
             # file not found
             return False
         except Exception as e:
             pywikibot.output('Could not load cache: {!r}'.format(e))
             return False
 
-    def _write_cache(self, data):
+    def _write_cache(self, data) -> None:
         """Write data to self._cachefile_path()."""
         data = (self._uniquedescriptionstr(), data, datetime.datetime.utcnow())
         with open(self._cachefile_path(), 'wb') as f:
@@ -2042,6 +2091,9 @@ class _RequestWrapper:
         kwargs['parameters'].update(mw_api_args)
         return kwargs
 
+    def set_maximum_items(self, value: Union[int, str, None]) -> None:
+        raise NotImplementedError
+
 
 class APIGenerator(_RequestWrapper):
 
@@ -2054,8 +2106,14 @@ class APIGenerator(_RequestWrapper):
     after iterating that many values.
     """
 
-    def __init__(self, action: str, continue_name: str = 'continue',
-                 limit_name: str = 'limit', data_name: str = 'data', **kwargs):
+    def __init__(
+        self,
+        action: str,
+        continue_name: str = 'continue',
+        limit_name: str = 'limit',
+        data_name: str = 'data',
+        **kwargs
+    ) -> None:
         """
         Initialize an APIGenerator object.
 
@@ -2082,7 +2140,7 @@ class APIGenerator(_RequestWrapper):
         self.request = self.request_class(**kwargs)
         self.request[self.limit_name] = self.query_increment
 
-    def set_query_increment(self, value: int):
+    def set_query_increment(self, value: int) -> None:
         """
         Set the maximum number of items to be retrieved per API query.
 
@@ -2094,10 +2152,9 @@ class APIGenerator(_RequestWrapper):
         self.query_increment = int(value)
         self.request[self.limit_name] = self.query_increment
         pywikibot.debug('{}: Set query_increment to {}.'
-                        .format(self.__class__.__name__,
-                                self.query_increment), _logger)
+                        .format(type(self).__name__, self.query_increment))
 
-    def set_maximum_items(self, value: Union[int, str, None]):
+    def set_maximum_items(self, value: Union[int, str, None]) -> None:
         """
         Set the maximum number of items to be retrieved from the wiki.
 
@@ -2112,11 +2169,9 @@ class APIGenerator(_RequestWrapper):
             if self.query_increment and self.limit < self.query_increment:
                 self.request[self.limit_name] = self.limit
                 pywikibot.debug('{}: Set request item limit to {}'
-                                .format(self.__class__.__name__, self.limit),
-                                _logger)
+                                .format(type(self).__name__, self.limit))
             pywikibot.debug('{}: Set limit (maximum_items) to {}.'
-                            .format(self.__class__.__name__, self.limit),
-                            _logger)
+                            .format(type(self).__name__, self.limit))
 
     def __iter__(self):
         """
@@ -2129,28 +2184,25 @@ class APIGenerator(_RequestWrapper):
         while True:
             self.request[self.continue_name] = offset
             pywikibot.debug('{}: Request: {}'
-                            .format(self.__class__.__name__, self.request),
-                            _logger)
+                            .format(type(self).__name__, self.request))
             data = self.request.submit()
 
             n_items = len(data[self.data_name])
             pywikibot.debug('{}: Retrieved {} items'
-                            .format(self.__class__.__name__, n_items),
-                            _logger)
+                            .format(type(self).__name__, n_items))
             if n_items > 0:
                 for item in data[self.data_name]:
                     yield item
                     n += 1
                     if self.limit is not None and n >= self.limit:
-                        pywikibot.debug('%s: Stopped iterating due to '
-                                        'exceeding item limit.' %
-                                        self.__class__.__name__, _logger)
+                        pywikibot.debug('{}: Stopped iterating due to '
+                                        'exceeding item limit.'
+                                        .format(type(self).__name__))
                         return
                 offset += n_items
             else:
                 pywikibot.debug('{}: Stopped iterating due to empty list in '
-                                'response.'.format(self.__class__.__name__),
-                                _logger)
+                                'response.'.format(type(self).__name__))
                 break
 
 
@@ -2183,7 +2235,7 @@ class QueryGenerator(_RequestWrapper):
     # set_namespace call. Only to be used by _check_result_namespace.
     _namespaces = None
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """
         Initialize a QueryGenerator object.
 
@@ -2283,7 +2335,7 @@ class QueryGenerator(_RequestWrapper):
         self.continuekey = self.modules
         self._add_slots()
 
-    def _add_slots(self):
+    def _add_slots(self) -> None:
         """Add slots to params if the site supports multi-content revisions.
 
         On MW 1.32+ the following query parameters require slots to be given
@@ -2335,7 +2387,7 @@ class QueryGenerator(_RequestWrapper):
                 if not set(request) & deprecated_params:
                     request['adrslots'] = '*'
 
-    def set_query_increment(self, value):
+    def set_query_increment(self, value) -> None:
         """Set the maximum number of items to be retrieved per API query.
 
         If not called, the default is to ask for "max" items and let the
@@ -2349,10 +2401,9 @@ class QueryGenerator(_RequestWrapper):
         else:
             self.query_limit = min(self.api_limit, limit)
         pywikibot.debug('{}: Set query_limit to {}.'
-                        .format(self.__class__.__name__,
-                                self.query_limit), _logger)
+                        .format(type(self).__name__, self.query_limit))
 
-    def set_maximum_items(self, value: Union[int, str, None]):
+    def set_maximum_items(self, value: Union[int, str, None]) -> None:
         """Set the maximum number of items to be retrieved from the wiki.
 
         If not called, most queries will continue as long as there is
@@ -2369,7 +2420,7 @@ class QueryGenerator(_RequestWrapper):
         if value is not None:
             self.limit = int(value)
 
-    def _update_limit(self):
+    def _update_limit(self) -> None:
         """Set query limit for self.module based on api response."""
         param = self.site._paraminfo.parameter('query+' + self.limited_module,
                                                'limit')
@@ -2379,10 +2430,8 @@ class QueryGenerator(_RequestWrapper):
             limit = int(param['max'])
         if self.api_limit is None or limit < self.api_limit:
             self.api_limit = limit
-            pywikibot.debug(
-                '{}: Set query_limit to {}.'.format(self.__class__.__name__,
-                                                    self.api_limit),
-                _logger)
+            pywikibot.debug('{}: Set query_limit to {}.'
+                            .format(type(self).__name__, self.api_limit))
 
     def support_namespace(self) -> bool:
         """Check if namespace is a supported parameter on this query.
@@ -2452,7 +2501,7 @@ class QueryGenerator(_RequestWrapper):
 
         return None
 
-    def _query_continue(self):
+    def _query_continue(self) -> bool:
         if all(key not in self.data[self.continue_name]
                for key in self.continuekey):
             pywikibot.log(
@@ -2464,11 +2513,11 @@ class QueryGenerator(_RequestWrapper):
             self._add_continues(query_continue_pair)
         return False  # a new request with query-continue is needed
 
-    def _continue(self):
+    def _continue(self) -> bool:
         self._add_continues(self.data['continue'])
         return False  # a new request with continue is needed
 
-    def _add_continues(self, continue_pair):
+    def _add_continues(self, continue_pair) -> None:
         for key, value in continue_pair.items():
             # query-continue can return ints (continue too?)
             if isinstance(value, int):
@@ -2477,7 +2526,7 @@ class QueryGenerator(_RequestWrapper):
 
     def _handle_query_limit(self, prev_limit, new_limit, had_data):
         """Handle query limit."""
-        if self.query_limit is None:
+        if self.query_limit is None or self.limited_module is None:
             return prev_limit, new_limit
 
         prev_limit = new_limit
@@ -2518,8 +2567,7 @@ class QueryGenerator(_RequestWrapper):
                         new=new_limit,
                         count=self._count,
                         prefix=self.prefix,
-                        value=self.request[self.prefix + 'limit']),
-                _logger)
+                        value=self.request[self.prefix + 'limit']))
         return prev_limit, new_limit
 
     def _get_resultdata(self):
@@ -2538,18 +2586,17 @@ class QueryGenerator(_RequestWrapper):
                 resultdata = [resultdata[k]
                               for k in sorted(resultdata.keys())]
         pywikibot.debug('{name} received {keys}; limit={limit}'
-                        .format(name=self.__class__.__name__,
-                                keys=keys, limit=self.limit),
-                        _logger)
+                        .format(name=type(self).__name__, keys=keys,
+                                limit=self.limit))
         return resultdata
 
     def _extract_results(self, resultdata):
         """Extract results from resultdata."""
         for item in resultdata:
             result = self.result(item)
-            if self._namespaces:
-                if not self._check_result_namespace(result):
-                    continue
+            if self._namespaces and not self._check_result_namespace(result):
+                continue
+
             yield result
             if isinstance(item, dict) \
                     and set(self.continuekey) & set(item.keys()):
@@ -2585,9 +2632,9 @@ class QueryGenerator(_RequestWrapper):
             if not self.data or not isinstance(self.data, dict):
                 pywikibot.debug(
                     '{}: stopped iteration because no dict retrieved from api.'
-                    .format(self.__class__.__name__),
-                    _logger)
+                    .format(type(self).__name__))
                 return
+
             if 'query' in self.data and self.resultkey in self.data['query']:
                 resultdata = self._get_resultdata()
                 if 'normalized' in self.data['query']:
@@ -2642,7 +2689,12 @@ class PageGenerator(QueryGenerator):
 
     """
 
-    def __init__(self, generator: str, g_content=False, **kwargs):
+    def __init__(
+        self,
+        generator: str,
+        g_content: bool = False,
+        **kwargs
+    ) -> None:
         """
         Initializer.
 
@@ -2655,7 +2707,7 @@ class PageGenerator(QueryGenerator):
 
         """
         # If possible, use self.request after __init__ instead of appendParams
-        def append_params(params, key, value):
+        def append_params(params, key, value) -> None:
             if key in params:
                 params[key] += '|' + value
             else:
@@ -2715,7 +2767,7 @@ class PropertyGenerator(QueryGenerator):
 
     """
 
-    def __init__(self, prop: str, **kwargs):
+    def __init__(self, prop: str, **kwargs) -> None:
         """
         Initializer.
 
@@ -2762,7 +2814,7 @@ class PropertyGenerator(QueryGenerator):
                 del self._previous_dicts[prev_title]
 
     @staticmethod
-    def _update_old_result_dict(old_dict, new_dict):
+    def _update_old_result_dict(old_dict, new_dict) -> None:
         """Update old result dict with new_dict."""
         for k, v in new_dict.items():
             if k not in old_dict:
@@ -2791,7 +2843,7 @@ class ListGenerator(QueryGenerator):
 
     """
 
-    def __init__(self, listaction: str, **kwargs):
+    def __init__(self, listaction: str, **kwargs) -> None:
         """
         Initializer.
 
@@ -2812,7 +2864,7 @@ class LogEntryListGenerator(ListGenerator):
     Yields LogEntry objects instead of dicts.
     """
 
-    def __init__(self, logtype=None, **kwargs):
+    def __init__(self, logtype=None, **kwargs) -> None:
         """Initializer."""
         super().__init__('logevents', **kwargs)
 
@@ -2883,13 +2935,13 @@ class LoginManager(login.LoginManager):
         takes care of all the cookie stuff. Throws exception on failure.
         """
         self.below_mw_1_27 = False
-        if hasattr(self, '_waituntil'):
-            if datetime.datetime.now() < self._waituntil:
-                diff = self._waituntil - datetime.datetime.now()
-                pywikibot.warning(
-                    'Too many tries, waiting {} seconds before retrying.'
-                    .format(diff.seconds))
-                pywikibot.sleep(diff.seconds)
+        if hasattr(self, '_waituntil') \
+           and datetime.datetime.now() < self._waituntil:
+            diff = self._waituntil - datetime.datetime.now()
+            pywikibot.warning(
+                'Too many tries, waiting {} seconds before retrying.'
+                .format(diff.seconds))
+            pywikibot.sleep(diff.seconds)
 
         self.site._loginstatus = LoginStatus.IN_PROGRESS
 
@@ -2986,13 +3038,11 @@ class LoginManager(login.LoginManager):
 
 
 def encode_url(query) -> str:
-    """
-    Encode parameters to pass with a url.
+    """Encode parameters to pass with a url.
 
     Reorder parameters so that token parameters go last and call wraps
-    :py:obj:`urlencode`. Return an HTTP URL query fragment which complies with
-    https://www.mediawiki.org/wiki/API:Edit#Parameters
-    (See the 'token' bullet.)
+    :py:obj:`urlencode`. Return an HTTP URL query fragment which
+    complies with :api:`Edit#Parameters` (See the 'token' bullet.)
 
     :param query: keys and values to be uncoded for passing with a url
     :type query: mapping object or a sequence of two-element tuples
@@ -3016,11 +3066,10 @@ def _update_pageid(page, pagedict: dict):
         page._pageid = 0  # Non-existent page
     else:
         # Something is wrong.
-        if page.site.sametitle(page.title(), pagedict['title']):
-            if 'invalid' in pagedict:
-                raise InvalidTitleError('{}: {}'
-                                        .format(page,
-                                                pagedict['invalidreason']))
+        if page.site.sametitle(page.title(), pagedict['title']) \
+           and 'invalid' in pagedict:
+            raise InvalidTitleError('{}: {}'
+                                    .format(page, pagedict['invalidreason']))
         if int(pagedict['ns']) < 0:
             raise UnsupportedPageError(page)
         raise RuntimeError(
@@ -3028,7 +3077,7 @@ def _update_pageid(page, pagedict: dict):
             .format(pagedict['title']))
 
 
-def _update_contentmodel(page, pagedict: dict):
+def _update_contentmodel(page, pagedict: dict) -> None:
     """Update page content model."""
     page._contentmodel = pagedict.get('contentmodel')  # can be None
 
@@ -3039,7 +3088,7 @@ def _update_contentmodel(page, pagedict: dict):
         page._quality_text = pagedict['proofread']['quality_text']
 
 
-def _update_protection(page, pagedict: dict):
+def _update_protection(page, pagedict: dict) -> None:
     """Update page protection."""
     if 'restrictiontypes' in pagedict:
         page._applicable_protections = set(pagedict['restrictiontypes'])
@@ -3049,13 +3098,19 @@ def _update_protection(page, pagedict: dict):
                         for item in pagedict['protection']}
 
 
-def _update_revisions(page, revisions):
+def _update_revisions(page, revisions) -> None:
     """Update page revisions."""
     for rev in revisions:
-        page._revisions[rev['revid']] = pywikibot.page.Revision(**rev)
+        revid = rev['revid']
+        revision = pywikibot.page.Revision(**rev)
+        # do not overwrite an existing Revision if there is no content
+        if revid in page._revisions and revision.text is None:
+            pass
+        else:
+            page._revisions[revid] = revision
 
 
-def _update_templates(page, templates):
+def _update_templates(page, templates) -> None:
     """Update page templates."""
     templ_pages = [pywikibot.Page(page.site, tl['title']) for tl in templates]
     if hasattr(page, '_templates'):
@@ -3064,7 +3119,7 @@ def _update_templates(page, templates):
         page._templates = templ_pages
 
 
-def _update_langlinks(page, langlinks):
+def _update_langlinks(page, langlinks) -> None:
     """Update page langlinks."""
     links = [pywikibot.Link.langlinkUnsafe(link['lang'], link['*'],
                                            source=page.site)
@@ -3076,7 +3131,7 @@ def _update_langlinks(page, langlinks):
         page._langlinks = links
 
 
-def _update_coordinates(page, coordinates):
+def _update_coordinates(page, coordinates) -> None:
     """Update page coordinates."""
     coords = []
     for co in coordinates:
@@ -3168,15 +3223,3 @@ def update_page(page, pagedict: dict, props=None):
         page._lintinfo.pop('pageid')
         page._lintinfo.pop('title')
         page._lintinfo.pop('ns')
-
-
-wrapper = ModuleDeprecationWrapper(__name__)
-wrapper.add_deprecated_attr(
-    'APIError', replacement_name='pywikibot.exceptions.APIError',
-    since='20210423')
-wrapper.add_deprecated_attr(
-    'UploadWarning', replacement_name='pywikibot.exceptions.UploadError',
-    since='20210423')
-wrapper.add_deprecated_attr(
-    'APIMWException', replacement_name='pywikibot.exceptions.APIMWError',
-    since='20210423')

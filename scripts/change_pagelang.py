@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This script changes the content language of pages.
 
@@ -15,16 +15,19 @@ Furthermore, the following command line parameters are supported:
 
 -never            If a language is already set for a page, never change it to
                   the one set in -setlang (keep the current language).
+
+.. note:: This script is a
+   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   can be set within a settings file which is scripts.ini by default.
 """
 #
-# (C) Pywikibot team, 2018-2021
+# (C) Pywikibot team, 2018-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import pywikibot
 from pywikibot import pagegenerators
-from pywikibot.bot import SingleSiteBot
-from pywikibot.tools.formatter import color_format
+from pywikibot.bot import ConfigParserBot, SingleSiteBot
 
 
 docuReplacements = {  # noqa: N816
@@ -32,22 +35,26 @@ docuReplacements = {  # noqa: N816
 }
 
 
-class ChangeLangBot(SingleSiteBot):
+class ChangeLangBot(ConfigParserBot, SingleSiteBot):
 
-    """Change page language bot."""
+    """Change page language bot.
+
+    .. versionchanged:: 7.0
+       ChangeLangBot is a ConfigParserBot
+    """
 
     update_options = {
         'never': False,
         'setlang': '',
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Initializer."""
         super().__init__(**kwargs)
         assert not (self.opt.always and self.opt.never), \
             'Either "always" or "never" must be set but not both'
 
-    def changelang(self, page):
+    def changelang(self, page) -> None:
         """Set page language.
 
         :param page: The page to update and save
@@ -58,14 +65,13 @@ class ChangeLangBot(SingleSiteBot):
                       'title': page.title(),
                       'lang': self.opt.setlang,
                       'token': token}
-        r = self.site._simple_request(**parameters)
+        r = self.site.simple_request(**parameters)
         r.submit()
-        pywikibot.output(color_format(
-            '{lightpurple}{0}{default}: Setting '
-            'page language to {green}{1}{default}',
-            page.title(as_link=True), self.opt.setlang))
+        pywikibot.output('<<lightpurple>>{}<<default>>: Setting '
+                         'page language to <<green>>{}<<default>>'
+                         .format(page.title(as_link=True), self.opt.setlang))
 
-    def treat(self, page):
+    def treat(self, page) -> None:
         """Treat a page.
 
         :param page: The page to treat
@@ -76,7 +82,7 @@ class ChangeLangBot(SingleSiteBot):
                       'prop': 'info',
                       'titles': page.title(),
                       'meta': 'siteinfo'}
-        r = self.site._simple_request(**parameters)
+        r = self.site.simple_request(**parameters)
         langcheck = r.submit()['query']
 
         currentlang = ''
@@ -85,25 +91,25 @@ class ChangeLangBot(SingleSiteBot):
         sitelang = langcheck['general']['lang']
 
         if self.opt.setlang == currentlang:
-            pywikibot.output(color_format(
-                '{lightpurple}{0}{default}: This page is already set to '
-                '{green}{1}{default}; skipping.',
-                page.title(as_link=True), self.opt.setlang))
+            pywikibot.output('<<lightpurple>>{}<<default>>: This page is '
+                             'already set to <<green>>{}<<default>>; skipping.'
+                             .format(page.title(as_link=True),
+                                     self.opt.setlang))
         elif currentlang == sitelang or self.opt.always:
             self.changelang(page)
         elif self.opt.never:
-            pywikibot.output(color_format(
-                '{lightpurple}{0}{default}: This page already has a '
-                'different content language {yellow}{1}{default} set; '
-                'skipping.', page.title(as_link=True), currentlang))
+            pywikibot.output(
+                '<<lightpurple>>{}<<default>>: This page already has a '
+                'different content language <<yellow>>{}<<default>> set; '
+                'skipping.'.format(page.title(as_link=True), currentlang))
         else:
-            pywikibot.output(color_format(
-                '\n\n>>> {lightpurple}{0}{default} <<<', page.title()))
-            choice = pywikibot.input_choice(color_format(
+            pywikibot.output('\n\n>>> <<lightpurple>>{}<<default>> <<<'
+                             .format(page.title()))
+            choice = pywikibot.input_choice(
                 'The content language for this page is already set to '
-                '{yellow}{0}{default}, which is different from the '
-                'default ({1}). Change it to {green}{2}{default} anyway?',
-                currentlang, sitelang, self.opt.setlang),
+                '<<yellow>>{}<<default>>, which is different from the '
+                'default ({}). Change it to <<green>>{}<<default>> anyway?'
+                .format(currentlang, sitelang, self.opt.setlang),
                 [('Always', 'a'), ('Yes', 'y'), ('No', 'n'),
                  ('Never', 'v')], default='Y')
             if choice == 'a':

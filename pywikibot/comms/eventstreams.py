@@ -7,15 +7,14 @@ This module requires sseclient to be installed::
 
     pip install sseclient
 
-*New in version 3.0.*
+.. versionadded:: 3.0
 """
 #
-# (C) Pywikibot team, 2017-2021
+# (C) Pywikibot team, 2017-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import json
-import socket
 from functools import partial
 from typing import Optional
 
@@ -25,7 +24,7 @@ from requests.packages.urllib3.exceptions import ProtocolError
 from requests.packages.urllib3.util.response import httplib
 
 from pywikibot import Site, Timestamp, config, debug, warning
-from pywikibot.tools import deprecated_args
+from pywikibot.tools import cached
 
 
 try:
@@ -38,9 +37,6 @@ if parse_version(requests_version) < parse_version('2.20.1'):
     raise ImportError(
         'requests >= 2.20.1 is required for EventStreams;\n'
         "install it with 'pip install \"requests>=2.20.1\"'\n")
-
-
-_logger = 'pywikibot.eventstreams'
 
 
 class EventStreams:
@@ -76,8 +72,7 @@ class EventStreams:
     >>> del stream
     """
 
-    @deprecated_args(stream='streams')
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Initializer.
 
         :keyword site: a project site object. Used when no url is given
@@ -127,7 +122,7 @@ class EventStreams:
         kwargs.setdefault('timeout', config.socket_timeout)
         self.sse_kwargs = kwargs
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Return representation string."""
         kwargs = self.sse_kwargs.copy()
         if self._site != Site():
@@ -143,25 +138,22 @@ class EventStreams:
             '{}={!r}'.format(k, v) for k, v in kwargs.items()))
 
     @property
+    @cached
     def url(self):
         """Get the EventStream's url.
 
         :raises NotImplementedError: no stream types specified
         """
-        if not hasattr(self, '_url'):
-            if self._streams is None:
-                raise NotImplementedError(
-                    'No streams specified for class {}'
-                    .format(self.__class__.__name__))
-            self._url = ('{host}{path}/{streams}{since}'
-                         .format(host=self._site.eventstreams_host(),
-                                 path=self._site.eventstreams_path(),
-                                 streams=self._streams,
-                                 since=('?since={}'.format(self._since)
-                                        if self._since else '')))
-        return self._url
+        if self._streams is None:
+            raise NotImplementedError('No streams specified for class {}'
+                                      .format(self.__class__.__name__))
+        return '{host}{path}/{streams}{since}'.format(
+            host=self._site.eventstreams_host(),
+            path=self._site.eventstreams_path(),
+            streams=self._streams,
+            since='?since={}'.format(self._since) if self._since else '')
 
-    def set_maximum_items(self, value: int):
+    def set_maximum_items(self, value: int) -> None:
         """
         Set the maximum number of items to be retrieved from the stream.
 
@@ -174,7 +166,7 @@ class EventStreams:
         if value is not None:
             self._total = int(value)
             debug('{}: Set limit (maximum_items) to {}.'
-                  .format(self.__class__.__name__, self._total), _logger)
+                  .format(self.__class__.__name__, self._total))
 
     def register_filter(self, *args, **kwargs):
         """Register a filter.
@@ -297,7 +289,7 @@ class EventStreams:
                         "Install it with 'pip install \"sseclient>=0.0.18\"'")
             try:
                 event = next(self.source)
-            except (ProtocolError, socket.error, httplib.IncompleteRead) as e:
+            except (ProtocolError, OSError, httplib.IncompleteRead) as e:
                 warning('Connection error: {}.\n'
                         'Try to re-establish connection.'.format(e))
                 del self.source
@@ -325,7 +317,7 @@ class EventStreams:
                 warning('Unknown event {} occurred.'.format(event.event))
 
         debug('{}: Stopped iterating due to exceeding item limit.'
-              .format(self.__class__.__name__), _logger)
+              .format(self.__class__.__name__))
         del self.source
 
 

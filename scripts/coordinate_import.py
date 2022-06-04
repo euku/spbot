@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 r"""
 Coordinate importing script.
 
@@ -31,28 +31,40 @@ Example:
 
 The following command line parameters are supported:
 
+-always           If used, the bot won't ask if it should add the specified
+                  text
+
 -create           Create items for pages without one.
+
+.. note:: This script is a
+   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   can be set within a settings file which is scripts.ini by default.
 
 &params;
 """
 #
-# (C) Pywikibot team, 2013-2021
+# (C) Pywikibot team, 2013-2022
 #
 # Distributed under the terms of MIT License.
 #
 from typing import Optional
 
 import pywikibot
-from pywikibot import WikidataBot, pagegenerators
+from pywikibot import pagegenerators
+from pywikibot.bot import ConfigParserBot, WikidataBot
 from pywikibot.exceptions import CoordinateGlobeUnknownError
 
 
 docuReplacements = {'&params;': pagegenerators.parameterHelp}  # noqa: N816
 
 
-class CoordImportRobot(WikidataBot):
+class CoordImportRobot(ConfigParserBot, WikidataBot):
 
-    """A bot to import coordinates to Wikidata."""
+    """A bot to import coordinates to Wikidata.
+
+    .. versionchanged:: 7.0
+       CoordImportRobot is a ConfigParserBot
+    """
 
     use_from_page = None
 
@@ -106,9 +118,9 @@ class CoordImportRobot(WikidataBot):
         if page is None:
             # running over items, search in linked pages
             for page in item.iterlinks():
-                if page.site.has_extension('GeoData'):
-                    if self.try_import_coordinates_from_page(page, item):
-                        break
+                if page.site.has_extension('GeoData') \
+                   and self.try_import_coordinates_from_page(page, item):
+                    break
             return
 
         self.try_import_coordinates_from_page(page, item)

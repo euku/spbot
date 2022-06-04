@@ -1,11 +1,24 @@
 codecov:
   bot: jayvdb
+  max_report_age: 48
+  strict_yaml_branch: master
 
 coverage:
+  round: up
+  range: 75..95
   status:
     project:
       default:
         enabled: yes
+      framework:
+        flags:
+          - framework
+      tests:
+        flags:
+          - tests
+      scripts:
+        flags:
+          - scripts
     patch:
       default:
         enabled: yes
@@ -17,15 +30,15 @@ coverage:
     - pywikibot/backports.py
     - pywikibot/daemonize.py
     - pywikibot/families/__init__.py
-    - scripts/archive/
-    - scripts/userscripts/
+    - pywikibot/scripts/version.py
+    - pywikibot/userinterfaces/win32_unicode.py
+    - scripts/dataextend.py
     - scripts/maintenance/colors.py
     - scripts/maintenance/make_i18n_dict.py
     - scripts/maintenance/preload_sites.py
     - scripts/maintenance/sorting_order.py
-    - scripts/maintenance/update_linktrails.py
     - scripts/maintenance/wikimedia_sites.py
-    - tests/archive/
+    - scripts/userscripts/
     - tests/pwb/
 
   notify:
@@ -37,3 +50,19 @@ coverage:
     gitter:
       default:
         url: https://webhooks.gitter.im/e/f312b840da1c40d9f4be
+
+flags:
+  framework:
+    carryforward: true
+    paths:
+      - pywikibot
+
+  tests:
+    carryforward: true
+    paths:
+      - tests
+
+  scripts:
+    carryforward: true
+    paths:
+      - scripts

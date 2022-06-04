@@ -1,10 +1,11 @@
 """Classes for detecting a MediaWiki site."""
 #
-# (C) Pywikibot team, 2010-2021
+# (C) Pywikibot team, 2010-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import json
+import re
 from contextlib import suppress
 from html.parser import HTMLParser
 from http import HTTPStatus
@@ -29,7 +30,7 @@ class MWSite:
 
     """Minimal wiki site class."""
 
-    def __init__(self, fromurl, **kwargs):
+    def __init__(self, fromurl, **kwargs) -> None:
         """
         Initializer.
 
@@ -89,7 +90,7 @@ class MWSite:
                 raise RuntimeError('Unable to determine articlepath: '
                                    '{}'.format(self.fromurl))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{}("{}")'.format(
             self.__class__.__name__, self.fromurl)
 
@@ -107,7 +108,7 @@ class MWSite:
         return [wiki for wiki in iw['query']['interwikimap']
                 if 'language' in wiki]
 
-    def _fetch_old_version(self):
+    def _fetch_old_version(self) -> None:
         """Extract the version from API help with ?version enabled."""
         if self.version is None:
             try:
@@ -127,7 +128,7 @@ class MWSite:
             else:
                 self.version = MediaWikiVersion(self.version)
 
-    def _parse_site(self):
+    def _parse_site(self) -> None:
         """Parse siteinfo data."""
         response = fetch(self.api + '?action=query&meta=siteinfo&format=json')
         check_response(response)
@@ -189,7 +190,7 @@ class WikiHTMLPageParser(HTMLParser):
 
     """Wiki HTML page parser."""
 
-    def __init__(self, url):
+    def __init__(self, url) -> None:
         """Initializer."""
         super().__init__(convert_charrefs=True)
         self.url = urlparse(url)
@@ -199,14 +200,14 @@ class WikiHTMLPageParser(HTMLParser):
         self.server = None
         self.scriptpath = None
 
-    def set_version(self, value):
+    def set_version(self, value) -> None:
         """Set highest version."""
         if self.version and value < self.version:
             return
 
         self.version = value
 
-    def set_api_url(self, url):
+    def set_api_url(self, url) -> None:
         """Set api_url."""
         url = url.split('.php', 1)[0]
         try:
@@ -239,9 +240,9 @@ class WikiHTMLPageParser(HTMLParser):
         else:
             if self._parsed_url:
                 # allow upgrades to https, but not downgrades
-                if self._parsed_url.scheme == 'https':
-                    if new_parsed_url.scheme != self._parsed_url.scheme:
-                        return
+                if self._parsed_url.scheme == 'https' \
+                   and new_parsed_url.scheme != self._parsed_url.scheme:
+                    return
 
                 # allow http://www.brickwiki.info/ vs http://brickwiki.info/
                 if (new_parsed_url.netloc in self._parsed_url.netloc
@@ -256,7 +257,7 @@ class WikiHTMLPageParser(HTMLParser):
             self._parsed_url.scheme, self._parsed_url.netloc)
         self.scriptpath = self._parsed_url.path
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag, attrs) -> None:
         """Handle an opening tag."""
         attrs = dict(attrs)
         if tag == 'meta':
@@ -275,10 +276,23 @@ class WikiHTMLPageParser(HTMLParser):
 def check_response(response):
     """Raise ServerError if the response indicates a server error.
 
-    *New in version 3.0.*
+    .. versionadded:: 3.0
+    .. versionchanged:: 7.0
+       Raise a generic ServerError if http status code is not
+       IANA-registered but unofficial code
+
+
     """
     if response.status_code >= HTTPStatus.INTERNAL_SERVER_ERROR:
-        raise ServerError(HTTPStatus(response.status_code).phrase)
+        try:
+            msg = HTTPStatus(response.status_code).phrase
+        except ValueError as err:
+            m = re.search(r'\d{3}', err.args[0], flags=re.ASCII)
+            if not m:
+                raise err
+            msg = 'Generic Server Error ({})'.format(m.group())
+
+        raise ServerError(msg)
 
     if response.status_code == HTTPStatus.OK \
        and SERVER_DB_ERROR_MSG in response.text:

@@ -102,13 +102,42 @@ The contents of the package
     +----------------------------+------------------------------------------------------+
     | page                       | Module with classes for MediaWiki page content       |
     +============================+======================================================+
-    | __init__.py                | Objects representing MediaWiki pages                 |
+    | __init__.py                | Interface representing MediaWiki pages               |
     +----------------------------+------------------------------------------------------+
     | _collections.py            | Structures holding data for Wikibase entities        |
     +----------------------------+------------------------------------------------------+
     | _decorators.py             | Decorators used by page objects                      |
     +----------------------------+------------------------------------------------------+
+    | _filepage.py               | Objects representing MediaWiki File: pages           |
+    +----------------------------+------------------------------------------------------+
+    | _links.py                  | Objects representing link objects                    |
+    +----------------------------+------------------------------------------------------+
+    | _pages.py                  | Objects representing MediaWiki pages                 |
+    +----------------------------+------------------------------------------------------+
     | _revision.py               | Object representing page revision                    |
+    +----------------------------+------------------------------------------------------+
+    | _user.py                   | Object representing a wiki user                      |
+    +----------------------------+------------------------------------------------------+
+    | _wikibase.py               | Objects representing wikibase structures             |
+    +----------------------------+------------------------------------------------------+
+
+
+    +----------------------------+------------------------------------------------------+
+    | scripts                    | Framework helper scripts and entry points            |
+    +============================+======================================================+
+    | generate_family_file.py    | Creates a new family file                            |
+    +----------------------------+------------------------------------------------------+
+    | generate_user_files.py     | Creates user-config.py or user-fixes.py              |
+    +----------------------------+------------------------------------------------------+
+    | pwb.py                     | Code entry wrapper script (site-package only)        |
+    +----------------------------+------------------------------------------------------+
+    | shell.py                   | Spawns an interactive Python shell with pywikibot    |
+    |                            | imported                                             |
+    +----------------------------+------------------------------------------------------+
+    | version.py                 | Outputs Pywikibot's revision number, Python's        |
+    |                            | version and OS used.                                 |
+    +----------------------------+------------------------------------------------------+
+    | i18n (folder)              | Contains i18n translations (site-package only)       |
     +----------------------------+------------------------------------------------------+
 
 

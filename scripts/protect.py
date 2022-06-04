@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This script can be used to protect and unprotect pages en masse.
 
@@ -8,17 +8,6 @@ These command line parameters can be used to specify which pages to work on:
 &params;
 
 Furthermore, the following command line parameters are supported:
-
--always           Don't prompt to protect pages, just do it.
-
--summary:         Supply a custom edit summary. Tries to generate summary from
-                  the page selector. If no summary is supplied or couldn't
-                  determine one from the selector it'll ask for one.
-
--expiry:          Supply a custom protection expiry, which defaults to
-                  indefinite. Any string understandable by MediaWiki, including
-                  relative and absolute, is acceptable. See:
-                  https://www.mediawiki.org/wiki/API:Protect#Parameters
 
 -unprotect        Acts like "default:all"
 
@@ -34,6 +23,21 @@ For all protection types (edit, move, etc.) it chooses the default protection
 level. This is "sysop" or "all" if -unprotect was selected. If multiple
 parameters -unprotect or -default are used, only the last occurrence
 is applied.
+
+This script is a :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`.
+The following options can be set within a settings file which is scripts.ini
+by default::
+
+-always           Don't prompt to protect pages, just do it.
+
+-summary:         Supply a custom edit summary. Tries to generate summary from
+                  the page selector. If no summary is supplied or couldn't
+                  determine one from the selector it'll ask for one.
+
+-expiry:          Supply a custom protection expiry, which defaults to
+                  indefinite. Any string understandable by MediaWiki, including
+                  relative and absolute, is acceptable. See:
+                  :api:`Protect#Parameters`
 
 Usage:
 
@@ -53,13 +57,13 @@ Unprotect all pages listed in text file 'unprotect.txt' without prompting:
 #
 # Created by modifying delete.py
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import pywikibot
 from pywikibot import i18n, pagegenerators
-from pywikibot.bot import CurrentPageBot, SingleSiteBot
+from pywikibot.bot import ConfigParserBot, CurrentPageBot, SingleSiteBot
 
 
 # This is required for the text that is shown when you run this script
@@ -67,16 +71,20 @@ from pywikibot.bot import CurrentPageBot, SingleSiteBot
 docuReplacements = {'&params;': pagegenerators.parameterHelp}  # noqa: N816
 
 
-class ProtectionRobot(SingleSiteBot, CurrentPageBot):
+class ProtectionRobot(SingleSiteBot, ConfigParserBot, CurrentPageBot):
 
-    """This bot allows protection of pages en masse."""
+    """This bot allows protection of pages en masse.
+
+    .. versionchanged:: 7.0
+       CheckerBot is a ConfigParserBot
+    """
 
     update_options = {
         'summary': '',
         'expiry': '',
     }
 
-    def __init__(self, protections, **kwargs):
+    def __init__(self, protections, **kwargs) -> None:
         """
         Create a new ProtectionRobot.
 
@@ -87,7 +95,7 @@ class ProtectionRobot(SingleSiteBot, CurrentPageBot):
         super().__init__(**kwargs)
         self.protections = protections
 
-    def treat_page(self):
+    def treat_page(self) -> None:
         """Run the bot's action on each page.
 
         treat_page treats every page given by the generator and applies
@@ -107,11 +115,10 @@ class ProtectionRobot(SingleSiteBot, CurrentPageBot):
                                   protections=protections)
 
 
-def check_protection_level(operation, level, levels, default=None):
+def check_protection_level(operation, level, levels, default=None) -> str:
     """Check if the protection level is valid or ask if necessary.
 
     :return: a valid protection level
-    :rtype: str
     """
     if level in levels:
         return level

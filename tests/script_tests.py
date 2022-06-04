@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Test that each script can be compiled and executed."""
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -8,6 +9,7 @@ import os
 import sys
 import unittest
 from contextlib import suppress
+from importlib import import_module
 
 from pywikibot.tools import has_module
 from tests import join_root_path, unittest_print
@@ -15,7 +17,9 @@ from tests.aspects import DefaultSiteTestCase, MetaTestCaseClass, PwbTestCase
 from tests.utils import execute_pwb
 
 
+ci_test_run = os.environ.get('PYWIKIBOT_TESTS_RUNNING', '0') == '1'
 scripts_path = join_root_path('scripts')
+framework_scripts = ['shell']
 
 # These dependencies are not always the package name which is in setup.py.
 # Here, the name given to the module which will be imported is required.
@@ -54,11 +58,8 @@ def list_scripts(path, exclude=None):
     return scripts
 
 
-script_list = (['login']
-               + list_scripts(scripts_path, 'login.py'))
-
-runnable_script_list = (
-    ['login'] + sorted(set(script_list) - {'login'} - unrunnable_script_set))
+script_list = ['login'] + list_scripts(scripts_path,
+                                       exclude='login.py') + framework_scripts
 
 script_input = {
     'interwiki': 'Test page that should not exist\n',
@@ -78,13 +79,14 @@ auto_run_script_list = [
     'category_redirect',
     'checkimages',
     'clean_sandbox',
+    'delinker',
     'login',
     'misspelling',
-    'revertbot',
     'noreferences',
     'nowcommons',
     'parser_function_count',
     'patrol',
+    'revertbot',
     'shell',
     'unusedfiles',
     'upload',
@@ -99,6 +101,7 @@ no_args_expected_results = {
     # TODO: until done here, remember to set editor = None in user-config.py
     'change_pagelang': 'No -setlang parameter given',
     'checkimages': 'Execution time: 0 seconds',
+    'dataextend': 'No item page specified',
     'harvest_template': 'ERROR: Please specify',
     # script_input['interwiki'] above lists a title that should not exist
     'interwiki': 'does not exist. Skipping.',
@@ -120,6 +123,11 @@ no_args_expected_results = {
     # the timeout of 5 seconds.
     'revertbot': 'Fetching new batch of contributions',
     'upload': 'ERROR: Upload error',
+}
+
+# skip test if result is unexpected in this way
+skip_on_results = {
+    'speedy_delete': 'No user is logged in on site'  # T301555
 }
 
 
@@ -164,6 +172,18 @@ def collector(loader=unittest.loader.defaultTestLoader):
     test_list += ['tests.script_tests.TestScriptSimulate.' + name
                   for name in tests]
 
+    tests = (['test__login']
+             + ['test_' + name
+                 for name in sorted(script_list)
+                 if name != 'login'
+                 and name not in failed_dep_script_set
+                 and name not in unrunnable_script_set
+                 and (enable_autorun_tests or name not in auto_run_script_list)
+                ])
+
+    test_list += ['tests.script_tests.TestScriptGenerator.' + name
+                  for name in tests]
+
     tests = loader.loadTestsFromNames(test_list)
     suite = unittest.TestSuite()
     suite.addTests(tests)
@@ -174,6 +194,17 @@ def load_tests(loader=unittest.loader.defaultTestLoader,
                tests=None, pattern=None):
     """Load the default modules."""
     return collector(loader)
+
+
+def import_script(script_name: str):
+    """Import script for coverage only (T305795)."""
+    if not ci_test_run:
+        return
+    if script_name in framework_scripts:
+        prefix = 'pywikibot.scripts.'
+    else:
+        prefix = 'scripts.'
+    import_module(prefix + script_name)
 
 
 class TestScriptMeta(MetaTestCaseClass):
@@ -195,16 +226,25 @@ class TestScriptMeta(MetaTestCaseClass):
                     'PYWIKIBOT_TEST_AUTORUN=1 to enable) "{}"'
                     .format(script_name))
 
-            def testScript(self):
-                global_args = 'For global options use -help:global or run pwb'
+            def test_script(self):
+                global_args_msg = \
+                    'For global options use -help:global or run pwb'
+                global_args = ['-pwb_close_matches:1']
 
-                cmd = [script_name] + args
+                cmd = global_args + [script_name] + args
                 data_in = script_input.get(script_name)
-                timeout = 5 if is_autorun else None
+                if isinstance(self._timeout, bool):
+                    do_timeout = self._timeout
+                else:
+                    do_timeout = script_name in self._timeout
+                timeout = 5 if do_timeout else None
 
                 stdout, error = None, None
-                if self._results and script_name in self._results:
-                    error = self._results[script_name]
+                if self._results:
+                    if isinstance(self._results, dict):
+                        error = self._results.get(script_name)
+                    else:
+                        error = self._results
                     if isinstance(error, tuple):
                         stdout, error = error
 
@@ -218,27 +258,22 @@ class TestScriptMeta(MetaTestCaseClass):
 
                 err_result = result['stderr']
                 out_result = result['stdout']
-
-                stderr_sleep, stderr_other = [], []
-                for line in err_result.splitlines():
-                    if line.startswith('Sleeping for '):
-                        stderr_sleep.append(line)
-                    else:
-                        stderr_other.append(line)
-
-                if stderr_sleep:
-                    unittest_print('\n'.join(stderr_sleep))
+                stderr_other = err_result.splitlines()
 
                 if result['exit_code'] == -9:
                     unittest_print(' killed', end='  ')
 
+                skip_result = self._skip_results.get(script_name)
+                if skip_result and skip_result in err_result:
+                    self.skipTest(skip_result)
+
                 if error:
-                    self.assertIn(error, result['stderr'])
+                    self.assertIn(error, err_result)
                     exit_codes = [0, 1, 2, -9]
 
                 elif not is_autorun:
                     if not stderr_other:
-                        self.assertIn(global_args, out_result)
+                        self.assertIn(global_args_msg, out_result)
                     else:
                         self.assertIn('Use -help for further information.',
                                       stderr_other)
@@ -267,7 +302,7 @@ class TestScriptMeta(MetaTestCaseClass):
                 self.assertNotIn('deprecated', err_result.lower())
 
                 # If stdout doesn't include global help..
-                if global_args not in out_result:
+                if global_args_msg not in out_result:
                     # Specifically look for deprecated
                     self.assertNotIn('deprecated', out_result.lower())
                     # But also complain if there is any stdout
@@ -281,11 +316,13 @@ class TestScriptMeta(MetaTestCaseClass):
 
             if not enable_autorun_tests and is_autorun:
                 return test_skip_script
-            return testScript
+            return test_script
 
         arguments = dct['_arguments']
 
         for script_name in script_list:
+            import_script(script_name)
+
             # force login to be the first, alphabetically, so the login
             # message does not unexpectedly occur during execution of
             # another script.
@@ -319,7 +356,7 @@ class TestScriptMeta(MetaTestCaseClass):
                 dct[test_name] = unittest.expectedFailure(dct[test_name])
                 dct[test_name].__test__ = False
 
-        return super(TestScriptMeta, cls).__new__(cls, name, bases, dct)
+        return super().__new__(cls, name, bases, dct)
 
 
 class TestScriptHelp(PwbTestCase, metaclass=TestScriptMeta):
@@ -338,14 +375,16 @@ class TestScriptHelp(PwbTestCase, metaclass=TestScriptMeta):
 
     _arguments = '-help'
     _results = None
+    _skip_results = {}
+    _timeout = False
 
 
 class TestScriptSimulate(DefaultSiteTestCase, PwbTestCase,
                          metaclass=TestScriptMeta):
 
-    """Test cases for scripts.
+    """Test cases for running scripts with -siumlate.
 
-    This class sets the'user' attribute on every test, thereby ensuring
+    This class sets the 'user' attribute on every test, thereby ensuring
     that the test runner has a username for the default site, and so that
     Site.login() is called in the test runner, which means that the scripts
     run in pwb can automatically login using the saved cookies.
@@ -366,6 +405,65 @@ class TestScriptSimulate(DefaultSiteTestCase, PwbTestCase,
 
     _arguments = '-simulate'
     _results = no_args_expected_results
+    _skip_results = skip_on_results
+    _timeout = auto_run_script_list
+
+
+class TestScriptGenerator(DefaultSiteTestCase, PwbTestCase,
+                          metaclass=TestScriptMeta):
+
+    """Test cases for running scripts with a generator."""
+
+    login = True
+
+    _expected_failures = {
+        'add_text',
+        'archivebot',
+        'category',
+        'change_pagelang',
+        'claimit',
+        'dataextend',
+        'data_ingestion',
+        'delete',
+        'djvutext',
+        'download_dump',
+        'harvest_template',
+        'interwiki',
+        'listpages',
+        'movepages',
+        'pagefromfile',
+        'protect',
+        'redirect',
+        'reflinks',
+        'replicate_wiki',
+        'speedy_delete',
+        'template',
+        'templatecount',
+        'transferbot',
+    }
+
+    _allowed_failures = [
+        'basic',
+        'commonscat',
+        'commons_information',
+        'coordinate_import',
+        'cosmetic_changes',
+        'fixing_redirects',
+        'illustrate_wikidata',
+        'image',
+        'imagetransfer',
+        'interwikidata',
+        'newitem',
+        'replace',
+        'solve_disambiguation',
+        'touch',
+        'weblinkchecker',
+    ]
+
+    _arguments = '-simulate -page:Foo -always'
+    _results = ("Working on 'Foo", 'Script terminated successfully')
+    _skip_results = {}
+    _timeout = True
 
 
 if __name__ == '__main__':  # pragma: no cover

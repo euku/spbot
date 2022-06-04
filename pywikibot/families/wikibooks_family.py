@@ -1,6 +1,6 @@
 """Family module for Wikibooks."""
 #
-# (C) Pywikibot team, 2005-2021
+# (C) Pywikibot team, 2005-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -15,7 +15,7 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     name = 'wikibooks'
 
     closed_wikis = [
-        # See https://noc.wikimedia.org/conf/highlight.php?file=dblists/closed.dblist  # noqa
+        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/closed.dblist
         'aa', 'ak', 'ang', 'as', 'ast', 'ay', 'bi', 'bm', 'bo', 'ch', 'co',
         'ga', 'gn', 'got', 'gu', 'ie', 'kn', 'ks', 'lb', 'ln', 'lv', 'mi',
         'mn', 'my', 'na', 'nah', 'nds', 'ps', 'qu', 'rm', 'se', 'simple', 'su',
@@ -24,18 +24,18 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
     ]
 
     removed_wikis = [
-        # See https://noc.wikimedia.org/conf/highlight.php?file=dblists/deleted.dblist  # noqa
+        # https://noc.wikimedia.org/conf/highlight.php?file=dblists/deleted.dblist
         'als', 'dk', 'tokipona',
     ]
 
     languages_by_size = [
         'en', 'hu', 'de', 'fr', 'it', 'pt', 'ja', 'vi', 'es', 'nl', 'pl', 'id',
-        'he', 'fi', 'zh', 'sq', 'az', 'fa', 'ru', 'ca', 'eu', 'da', 'ko', 'ba',
-        'sv', 'th', 'gl', 'cs', 'sr', 'uk', 'hi', 'hr', 'no', 'tr', 'sa', 'ar',
-        'ta', 'eo', 'sk', 'is', 'ro', 'bn', 'si', 'ms', 'bg', 'mk', 'ka', 'tt',
-        'lt', 'el', 'li', 'sl', 'tl', 'ur', 'km', 'la', 'te', 'kk', 'et', 'be',
-        'ia', 'mr', 'ml', 'oc', 'hy', 'ne', 'cv', 'pa', 'tg', 'ku', 'fy', 'bs',
-        'cy', 'af', 'mg', 'ky',
+        'he', 'fi', 'zh', 'sq', 'az', 'fa', 'ru', 'ca', 'eu', 'th', 'da', 'ko',
+        'ba', 'sv', 'gl', 'cs', 'sr', 'hi', 'uk', 'hr', 'no', 'tr', 'sa', 'ar',
+        'ta', 'eo', 'sk', 'is', 'bn', 'ro', 'si', 'bg', 'ms', 'mk', 'ka', 'tt',
+        'lt', 'el', 'li', 'sl', 'tl', 'et', 'ur', 'km', 'la', 'kk', 'te', 'be',
+        'ia', 'mr', 'ml', 'oc', 'ne', 'hy', 'cv', 'pa', 'tg', 'ku', 'fy', 'af',
+        'bs', 'cy', 'mg', 'ky',
     ]
 
     category_redirect_templates = {

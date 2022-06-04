@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Used to find expensive templates that are subject to be converted to Lua.
 
@@ -43,7 +44,7 @@ Should you specify neither first nor atleast, all templates using parser
 functions will be listed.
 """
 #
-# (C) Pywikibot team, 2013-2021
+# (C) Pywikibot team, 2013-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -59,13 +60,14 @@ from collections import Counter
 
 import pywikibot
 from pywikibot import pagegenerators
-from pywikibot.bot import ExistingPageBot, NoRedirectPageBot, SingleSiteBot
+from pywikibot.bot import ExistingPageBot, SingleSiteBot
 
 
-class ParserFunctionCountBot(SingleSiteBot,
-                             ExistingPageBot, NoRedirectPageBot):
+class ParserFunctionCountBot(SingleSiteBot, ExistingPageBot):
 
     """Bot class used for obtaining Parser function Count."""
+
+    use_redirects = False
 
     update_options = {
         'atleast': None,
@@ -76,7 +78,7 @@ class ParserFunctionCountBot(SingleSiteBot,
         'upload': None,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Initializer."""
         super().__init__(**kwargs)
         editcomment = {
@@ -120,7 +122,7 @@ class ParserFunctionCountBot(SingleSiteBot,
                 gen, self.site.doc_subpage, quantifier='none')
         return gen
 
-    def setup(self):
+    def setup(self) -> None:
         """Setup magic words, regex and result counter."""
         pywikibot.output('Hold on, this will need some time. '
                          'You will be notified by 50 templates.')
@@ -130,13 +132,13 @@ class ParserFunctionCountBot(SingleSiteBot,
         self.regex = re.compile(r'#({}):'.format('|'.join(magicwords)), re.I)
         self.results = Counter()
 
-    def treat(self, page):
+    def treat(self, page) -> None:
         """Process a single template."""
         title = page.title()
-        if (self._treat_counter + 1) % 50 == 0:
+        if (self.counter['read'] + 1) % 50 == 0:
             # Don't let the poor user panic in front of a black screen.
             pywikibot.output('{}th template is being processed: {}'
-                             .format(self._treat_counter + 1, title))
+                             .format(self.counter['read'] + 1, title))
 
         text = page.text
         functions = self.regex.findall(text)
@@ -148,7 +150,7 @@ class ParserFunctionCountBot(SingleSiteBot,
            and len(self.results) >= self.opt.first:
             self.stop()
 
-    def teardown(self):
+    def teardown(self) -> None:
         """Final processing."""
         resultlist = '\n'.join(
             '# [[{result[0]}]] ({result[1]})'
@@ -166,8 +168,8 @@ class ParserFunctionCountBot(SingleSiteBot,
                 with codecs.open(
                         self.opt.save, encoding='utf-8', mode='a') as f:
                     f.write(resultlist)
-            except OSError:
-                pywikibot.exception()
+            except OSError as e:
+                pywikibot.error(e)
 
         if self.opt.upload:
             page = pywikibot.Page(self.site, self.opt.upload)

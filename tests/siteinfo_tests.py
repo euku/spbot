@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for the site module."""
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -8,10 +9,10 @@ import re
 import unittest
 from contextlib import suppress
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 
 import pywikibot
 from pywikibot import async_request, page_put_queue
-from tests import MagicMock, patch
 from tests.aspects import DefaultDrySiteTestCase, DefaultSiteTestCase
 from tests.utils import entered_loop
 
@@ -21,6 +22,11 @@ class TestSiteInfo(DefaultSiteTestCase):
     """Test cases for Site metadata and capabilities."""
 
     cached = True
+
+    def setUp(self):
+        """Clear siteinfo cache."""
+        super().setUp()
+        self.site.siteinfo.clear()
 
     def test_siteinfo(self):
         """Test the siteinfo property."""
@@ -68,7 +74,7 @@ class TestSiteInfo(DefaultSiteTestCase):
         if 'fileextensions' in self.site.siteinfo._cache:
             del self.site.siteinfo._cache['fileextensions']
         self.site.siteinfo.get('fileextensions', cache=False)
-        self.assertNotIn('fileextensions', self.site.siteinfo)
+        self.assertFalse(self.site.siteinfo.is_cached('fileextensions'))
 
     def test_not_exists(self):
         """Test accessing a property not in siteinfo."""
@@ -84,6 +90,13 @@ class TestSiteInfo(DefaultSiteTestCase):
         self.assertFalse(
             entered_loop(mysite.siteinfo.get(not_exists).values()))
         self.assertFalse(entered_loop(mysite.siteinfo.get(not_exists).keys()))
+
+    def test_container(self):
+        """Test Siteinfo container methods."""
+        self.assertFalse(self.site.siteinfo.is_cached('general'))
+        self.assertIn('general', self.site.siteinfo)
+        self.assertTrue(self.site.siteinfo.is_cached('general'))
+        self.assertNotIn('### key not in siteinfo ###', self.site.siteinfo)
 
 
 class TestSiteinfoDry(DefaultDrySiteTestCase):
@@ -109,10 +122,10 @@ class TestSiteinfoAsync(DefaultSiteTestCase):
     def test_async_request(self):
         """Test async request."""
         self.assertTrue(page_put_queue.empty())
-        self.assertNotIn('statistics', self.site.siteinfo)
+        self.assertFalse(self.site.siteinfo.is_cached('statistics'))
         async_request(self.site.siteinfo.get, 'statistics')
         page_put_queue.join()
-        self.assertIn('statistics', self.site.siteinfo)
+        self.assertTrue(self.site.siteinfo.is_cached('statistics'))
 
 
 if __name__ == '__main__':  # pragma: no cover

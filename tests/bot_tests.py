@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Bot tests."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -10,7 +11,6 @@ from contextlib import suppress
 import pywikibot
 import pywikibot.bot
 from pywikibot import i18n
-
 from tests.aspects import (
     DefaultSiteTestCase,
     SiteAttributeTestCase,
@@ -30,80 +30,6 @@ class TWNBotTestCase(TestCase):
             raise unittest.SkipTest("i18n messages package '{}' not available."
                                     .format(i18n._messages_package_name))
         super().setUpClass()
-
-
-class FakeSaveBotTestCase(TestCase):
-
-    """
-    An abstract test case which patches the bot class to not actually write.
-
-    It redirects the bot's _save_page to it's own ``bot_save`` method.
-    Currently userPut, put_current and user_edit_entity call it. By
-    default it'll call the original method but replace the function
-    called to actually save the page by ``page_save``. It patches the
-    bot class as soon as this class' attribute bot is defined. It also
-    sets the bot's 'always' option to True to avoid user interaction.
-
-    The ``bot_save`` method compares the save counter before the call and
-    asserts that it has increased by one after the call. It also stores
-    locally in ``save_called`` if ``page_save`` has been called. If
-    ``bot_save`` or ``page_save`` are implemented they should call
-    super's method at some point to make sure these assertions work. At
-    ``tearDown`` it checks that the pages are saved often enough. The
-    attribute ``default_assert_saves`` defines the number of saves which
-    must happen and compares it to the difference using the save counter.
-    It is possible to define ``assert_saves`` after ``setUp`` to
-    overwrite the default value for certain tests. By default the number
-    of saves it asserts are 1. Additionally ``save_called`` increases by
-    1 on each call of ``page_save`` and should be equal to
-    ``assert_saves``.
-
-    This means if the bot class actually does other writes, like using
-    :py:obj:`pywikibot.page.Page.save` manually, it'll still write.
-    """
-
-    @property
-    def bot(self):
-        """Get the current bot."""
-        return self._bot
-
-    @bot.setter
-    def bot(self, value):
-        """Set and patch the current bot."""
-        assert value._save_page != self.bot_save, 'bot may not be patched.'
-        self._bot = value
-        self._bot.opt.always = True
-        self._original = self._bot._save_page
-        self._bot._save_page = self.bot_save
-        self._old_counter = self._bot._save_counter
-
-    def setUp(self):
-        """Set up test by resetting the counters."""
-        super().setUp()
-        self.assert_saves = getattr(self, 'default_assert_saves', 1)
-        self.save_called = 0
-
-    def tearDown(self):
-        """Tear down by asserting the counters."""
-        self.assertEqual(self._bot._save_counter,
-                         self._old_counter + self.assert_saves)
-        self.assertEqual(self.save_called, self.assert_saves)
-        super().tearDown()
-
-    def bot_save(self, page, func, *args, **kwargs):
-        """Handle when bot's userPut was called."""
-        self.assertGreaterEqual(self._bot._save_counter, 0)
-        old_counter = self._bot._save_counter
-        old_local_cnt = self.save_called
-        result = self._original(page, self.page_save, *args, **kwargs)
-        self.assertEqual(self._bot._save_counter, old_counter + 1)
-        self.assertEqual(self.save_called, old_local_cnt + 1)
-        self.assertGreater(self._bot._save_counter, self._old_counter)
-        return result
-
-    def page_save(self, *args, **kwargs):
-        """Handle when bot calls the page's save method."""
-        self.save_called += 1
 
 
 class TestBotTreatExit:
@@ -168,8 +94,8 @@ class TestBotTreatExit:
                 # assertions as they are invalid anyway and hide the actual
                 # failed assertion
                 return
-            self.assertEqual(self.bot._treat_counter, treated)
-            self.assertEqual(self.bot._save_counter, written)
+            self.assertEqual(self.bot.counter['read'], treated)
+            self.assertEqual(self.bot.counter['write'], written)
             if exception:
                 self.assertIs(exc, exception)
             else:
@@ -269,7 +195,7 @@ class TestDrySiteBot(TestBotTreatExit, SiteAttributeTestCase):
                                       pywikibot.Page(self.en, 'Page 2'),
                                       pywikibot.Page(self.de, 'Page 3')],
                                      post_treat)
-        self.bot.exit = self._exit(2, exception=ValueError)
+        self.bot.exit = self._exit(3, exception=ValueError)
         with self.assertRaisesRegex(ValueError, 'Whatever'):
             self.bot.run()
 
@@ -286,7 +212,7 @@ class TestDrySiteBot(TestBotTreatExit, SiteAttributeTestCase):
                                       pywikibot.Page(self.de, 'Page 3')],
                                      post_treat)
 
-        self.bot.exit = self._exit(2, exception=None)
+        self.bot.exit = self._exit(3, exception=None)
         self.bot.run()
 
 

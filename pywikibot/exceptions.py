@@ -153,19 +153,24 @@ UserWarning: warnings targeted at users
   - ArgumentDeprecationWarning: command line argument problems
   - FamilyMaintenanceWarning: missing information in family definition
 
-*Changed in version 6.0:* exceptions were renamed and are ending with "Error".
+.. versionchanged:: 6.0
+   exceptions were renamed and are ending with "Error".
+
+.. versionchanged:: 7.0
+   All Pywikibot Error exceptions must be imported from
+   ``pywikibot.exceptions``. Deprecated exceptions identifiers were
+   removed.
 """
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import re
-import sys
 from typing import Any, Optional, Union
 
 import pywikibot
-from pywikibot.tools import ModuleDeprecationWrapper, issue_deprecation_warning
+from pywikibot.tools import issue_deprecation_warning
 from pywikibot.tools._deprecate import _NotImplementedWarning
 
 
@@ -276,7 +281,7 @@ class PageRelatedError(Error):
     # Override this in subclasses.
     message = ''
 
-    def __init__(self, page: 'pywikibot.page.Page',
+    def __init__(self, page: 'pywikibot.page.BasePage',
                  message: Optional[str] = None) -> None:
         """
         Initializer.
@@ -298,7 +303,7 @@ class PageRelatedError(Error):
         elif re.search(r'%\(\w+\)s', self.message):
             issue_deprecation_warning("'%' style messages are deprecated, "
                                       'please use str.format() style instead',
-                                      since='20210504')
+                                      since='6.2.0')
             msg = self.message % self.__dict__
         elif '%s' in self.message:
             msg = self.message % page
@@ -321,7 +326,7 @@ class OtherPageSaveError(PageSaveRelatedError):
 
     message = 'Edit to page {title} failed:\n{reason}'
 
-    def __init__(self, page: 'pywikibot.page.Page',
+    def __init__(self, page: 'pywikibot.page.BasePage',
                  reason: Union[str, Exception]) -> None:
         """Initializer.
 
@@ -374,7 +379,7 @@ class InconsistentTitleError(PageLoadRelatedError):
 
     """Page receives a title inconsistent with query."""
 
-    def __init__(self, page: 'pywikibot.page.Page', actual: str) -> None:
+    def __init__(self, page: 'pywikibot.page.BasePage', actual: str) -> None:
         """Initializer.
 
         :param page: Page that caused the exception
@@ -450,8 +455,8 @@ class InterwikiRedirectPageError(PageRelatedError):
                'Page: {page}\n'
                'Target page: {target_page} on {target_site}.')
 
-    def __init__(self, page: 'pywikibot.page.Page',
-                 target_page: 'pywikibot.page.Page') -> None:
+    def __init__(self, page: 'pywikibot.page.BasePage',
+                 target_page: 'pywikibot.page.BasePage') -> None:
         """Initializer.
 
         :param target_page: Target page of the redirect.
@@ -465,10 +470,10 @@ class InvalidPageError(PageLoadRelatedError):
 
     """Missing page history.
 
-    *New in version 6.2.*
+    .. versionadded:: 6.2
     """
 
-    message = 'Page %s is invalid.'
+    message = 'Page {} is invalid.'
 
 
 class InvalidTitleError(Error):
@@ -500,8 +505,6 @@ class CascadeLockedPageError(LockedPageError):
 class SectionError(Error):
 
     """The section specified by # does not exist."""
-
-    pass
 
 
 class NoCreateError(PageSaveRelatedError):
@@ -544,14 +547,12 @@ class AbuseFilterDisallowedError(PageSaveRelatedError):
 
     """Page save failed because the AbuseFilter disallowed it."""
 
-    message = ('Edit to page %(title)s disallowed by the AbuseFilter.\n'
-               '%(info)s')
+    message = ('Edit to page {title} disallowed by the AbuseFilter.\n'
+               '{info}')
 
-    def __init__(self, page: 'pywikibot.page.Page', info: str,
-                 other: str) -> None:
+    def __init__(self, page: 'pywikibot.page.BasePage', info: str) -> None:
         """Initializer."""
         self.info = info
-        self.other = other
         super().__init__(page)
 
 
@@ -562,7 +563,7 @@ class SpamblacklistError(PageSaveRelatedError):
     message = ('Edit to page {title} rejected by spam filter due to '
                'content:\n{url}')
 
-    def __init__(self, page: 'pywikibot.page.Page', url: str) -> None:
+    def __init__(self, page: 'pywikibot.page.BasePage', url: str) -> None:
         """Initializer."""
         self.url = url
         super().__init__(page)
@@ -680,39 +681,3 @@ class TimeoutError(Error):
 class MaxlagTimeoutError(TimeoutError):
 
     """Request failed with a maxlag timeout error."""
-
-
-DEPRECATED_EXCEPTIONS = {
-    'NoUsername': 'NoUsernameError',
-    'NoPage': 'NoPageError',
-    'UnsupportedPage': 'UnsupportedPageError',
-    'NoMoveTarget': 'NoMoveTargetError',
-    'InconsistentTitleReceived': 'InconsistentTitleError',
-    'UnknownSite': 'UnknownSiteError',
-    'UnknownFamily': 'UnknownFamilyError',
-    'UnknownExtension': 'UnknownExtensionError',
-    'IsRedirectPage': 'IsRedirectPageError',
-    'IsNotRedirectPage': 'IsNotRedirectPageError',
-    'CircularRedirect': 'CircularRedirectError',
-    'InterwikiRedirectPage': 'InterwikiRedirectPageError',
-    'InvalidTitle': 'InvalidTitleError',
-    'LockedPage': 'LockedPageError',
-    'LockedNoPage': 'LockedNoPageError',
-    'CascadeLockedPage': 'CascadeLockedPageError',
-    'EditConflict': 'EditConflictError',
-    'PageDeletedConflict': 'PageDeletedConflictError',
-    'PageCreatedConflict': 'PageCreatedConflictError',
-    'ArticleExistsConflict': 'ArticleExistsConflictError',
-    'AutoblockUser': 'AutoblockUserError',
-    'NoWikibaseEntity': 'NoWikibaseEntityError',
-    'CoordinateGlobeUnknownException': 'CoordinateGlobeUnknownError',
-    'EntityTypeUnknownException': 'EntityTypeUnknownError',
-}
-
-wrapper = ModuleDeprecationWrapper(__name__)
-module = sys.modules[__name__]
-
-for old_name, new_name in DEPRECATED_EXCEPTIONS.items():
-    setattr(module, old_name, getattr(module, new_name))
-    wrapper.add_deprecated_attr(old_name, replacement_name=new_name,
-                                since='20210423')

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 Bot to add images to Wikidata items.
 
@@ -13,7 +13,7 @@ Usage:
 &params;
 """
 #
-# (C) Pywikibot team, 2013-2021
+# (C) Pywikibot team, 2013-2022
 #
 # Distributed under the terms of MIT License.
 #
@@ -28,11 +28,10 @@ class IllustrateRobot(WikidataBot):
 
     """A bot to add Wikidata image claims."""
 
-    def __init__(self, wdproperty='P18', **kwargs) -> None:
+    def __init__(self, wdproperty: str = 'P18', **kwargs) -> None:
         """Initializer.
 
         :param wdproperty: The property to add. Should be of type commonsMedia
-        :type wdproperty: str
         """
         super().__init__(**kwargs)
         self.wdproperty = wdproperty
@@ -58,7 +57,7 @@ class IllustrateRobot(WikidataBot):
             return
 
         newclaim = pywikibot.Claim(self.repo, self.wdproperty)
-        commonssite = pywikibot.Site('commons', 'commons')
+        commonssite = pywikibot.Site('commons')
         imagelink = pywikibot.Link(imagename, source=commonssite,
                                    default_namespace=6)
         image = pywikibot.FilePage(imagelink)

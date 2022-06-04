@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 This script creates new items on Wikidata based on certain criteria.
 
@@ -20,7 +20,7 @@ This script understands various command-line arguments:
 
 """
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -30,7 +30,7 @@ from textwrap import fill
 import pywikibot
 from pywikibot import pagegenerators
 from pywikibot.backports import Set
-from pywikibot.bot import NoRedirectPageBot, WikidataBot
+from pywikibot.bot import WikidataBot
 from pywikibot.exceptions import (
     LockedPageError,
     NoCreateError,
@@ -42,10 +42,11 @@ from pywikibot.exceptions import (
 DELETION_TEMPLATES = ('Q4847311', 'Q6687153', 'Q21528265')
 
 
-class NewItemRobot(WikidataBot, NoRedirectPageBot):
+class NewItemRobot(WikidataBot):
 
     """A bot to create new items."""
 
+    use_redirect = False
     treat_missing_item = True
     update_options = {
         'always': True,
@@ -88,9 +89,8 @@ class NewItemRobot(WikidataBot, NoRedirectPageBot):
         except LockedPageError:
             pywikibot.error('Page {} is locked.'.format(
                 page.title(as_link=True)))
-        except PageSaveRelatedError:
-            pywikibot.error('Page {} not saved.'.format(
-                page.title(as_link=True)))
+        except PageSaveRelatedError as e:
+            pywikibot.error('Page {} not saved:\n{}'.format(page, e.args))
 
     def _callback(self, page, exc) -> None:
         if exc is None and self.opt.touch:
@@ -139,6 +139,9 @@ class NewItemRobot(WikidataBot, NoRedirectPageBot):
 
     def skip_page(self, page) -> bool:
         """Skip pages which are unwanted to treat."""
+        if super().skip_page(page):
+            return True
+
         if page.editTime() > self.lastEditBefore:
             pywikibot.output(
                 'Last edit on {page} was on {page.latest_revision.timestamp}.'
@@ -170,7 +173,7 @@ class NewItemRobot(WikidataBot, NoRedirectPageBot):
                              % (page, template))
             return True
 
-        return super().skip_page(page)
+        return False
 
     def treat_page_and_item(self, page, item) -> None:
         """Treat page/item."""

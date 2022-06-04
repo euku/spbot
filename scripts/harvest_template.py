@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 r"""
 Template harvesting script.
 
@@ -21,6 +21,9 @@ These command line parameters can be used to specify which pages to work on:
 &params;
 
 You can also use additional parameters:
+
+-always             If used, the bot won't ask if it should add the specified
+                    text
 
 -create             Create missing items before importing.
 
@@ -85,9 +88,13 @@ will not add duplicate claims for the same member:
     python pwb.py harvest_template -lang:en -family:wikipedia -namespace:0 \
         -template:"Infobox musical artist" current_members P527 -exists:p \
         -multi
+
+.. note:: This script is a
+   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   can be set within a settings file which is scripts.ini by default.
 """
 #
-# (C) Pywikibot team, 2013-2021
+# (C) Pywikibot team, 2013-2022
 #
 # Distributed under the terms of MIT License.
 #
@@ -99,7 +106,7 @@ import pywikibot
 from pywikibot import pagegenerators as pg
 from pywikibot import textlib
 from pywikibot.backports import List
-from pywikibot.bot import OptionHandler, WikidataBot
+from pywikibot.bot import ConfigParserBot, OptionHandler, WikidataBot
 from pywikibot.exceptions import InvalidTitleError, NoPageError
 
 
@@ -132,9 +139,13 @@ class PropertyOptionHandler(OptionHandler):
     }
 
 
-class HarvestRobot(WikidataBot):
+class HarvestRobot(ConfigParserBot, WikidataBot):
 
-    """A bot to add Wikidata claims."""
+    """A bot to add Wikidata claims.
+
+    .. versionchanged:: 7.0
+       HarvestRobot is a ConfigParserBot
+    """
 
     update_options = {
         'always': True,
@@ -324,7 +335,7 @@ class HarvestRobot(WikidataBot):
                         continue
                     claim.setTarget(match.group('url'))
                 elif claim.type == 'commonsMedia':
-                    commonssite = pywikibot.Site('commons', 'commons')
+                    commonssite = pywikibot.Site('commons')
                     imagelink = pywikibot.Link(
                         value, source=commonssite, default_namespace=6)
                     image = pywikibot.FilePage(imagelink)
@@ -383,7 +394,7 @@ def main(*args: str) -> None:
                 if needs_second:
                     break  # will stop below
 
-                arg, sep, value = arg[1:].partition(':')
+                arg, _, value = arg[1:].partition(':')
                 if len(current_args) == 0:
                     assert not fields
                     options[arg] = value or True

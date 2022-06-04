@@ -1,12 +1,9 @@
-"""Tests for BasePage subclasses."""
+"""BasePage tests subclasses."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
-import unittest
-from contextlib import suppress
-
 from pywikibot.page import BasePage
 from tests.aspects import TestCase
 
@@ -56,6 +53,7 @@ class BasePageLoadRevisionsCachingTestBase(BasePageTestBase):
         custom_text = self.custom_text
         page.text = custom_text
 
+        page._revisions = {}
         self.site.loadrevisions(page, total=1)
 
         self.assertTrue(hasattr(page, '_revid'))
@@ -69,7 +67,6 @@ class BasePageLoadRevisionsCachingTestBase(BasePageTestBase):
 
         self.assertFalse(hasattr(page, '_text'))
         self.assertIsNone(page._revisions[page._revid].text)
-        self.assertFalse(hasattr(page, '_text'))
         self.assertIsNone(page._latest_cached_revision())
 
         page.text = custom_text
@@ -137,8 +134,3 @@ class BasePageMethodsTestBase(BasePageTestBase):
         self.assertEqual(self._page.templates(), [])
         self.assertFalse(self._page.isCategoryRedirect())
         self.assertTrue(self._page.botMayEdit())
-
-
-if __name__ == '__main__':  # pragma: no cover
-    with suppress(SystemExit):
-        unittest.main()

@@ -1,12 +1,11 @@
 """Character based helper functions (not wiki-dependent)."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
 import re
 import sys
-
 from contextlib import suppress
 from typing import Union
 from urllib.parse import unquote_to_bytes
@@ -29,7 +28,7 @@ def contains_invisible(text):
 
 def replace_invisible(text):
     """Replace invisible characters by '<codepoint>'."""
-    def replace(match):
+    def replace(match) -> str:
         match = match.group()
         if sys.maxunicode < 0x10ffff and len(match) == 2:
             mask = (1 << 10) - 1
@@ -38,13 +37,16 @@ def replace_invisible(text):
             codepoint = (ord(match[0]) & mask) << 10 | (ord(match[1]) & mask)
         else:
             codepoint = ord(match)
-        return '<{0:x}>'.format(codepoint)
+        return '<{:x}>'.format(codepoint)
 
     return INVISIBLE_REGEX.sub(replace, text)
 
 
 def string_to_ascii_html(string: str) -> str:
-    """Convert unicode chars of str to HTML entities if chars are not ASCII."""
+    """Convert unicode chars of str to HTML entities if chars are not ASCII.
+
+    :param string: String to update
+    """
     html = []
     for c in string:
         cord = ord(c)

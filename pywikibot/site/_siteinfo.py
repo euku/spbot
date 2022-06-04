@@ -1,6 +1,6 @@
 """Objects representing site info data contents."""
 #
-# (C) Pywikibot team, 2008-2020
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -9,14 +9,11 @@ import datetime
 import re
 from collections.abc import Container
 from contextlib import suppress
-from typing import Optional
+from typing import Any, Optional, Union
 
 import pywikibot
 from pywikibot.exceptions import APIError
 from pywikibot.tools import EMPTY_DEFAULT
-
-
-_logger = 'wiki.siteinfo'
 
 
 class Siteinfo(Container):
@@ -58,10 +55,17 @@ class Siteinfo(Container):
         ],
     }
 
-    def __init__(self, site):
+    def __init__(self, site) -> None:
         """Initialise it with an empty cache."""
         self._site = site
         self._cache = {}
+
+    def clear(self) -> None:
+        """Remove all items from Siteinfo.
+
+        .. versionadded: 7.1
+        """
+        self._cache.clear()
 
     @staticmethod
     def _get_default(key: str):
@@ -95,13 +99,13 @@ class Siteinfo(Container):
         return EMPTY_DEFAULT
 
     @staticmethod
-    def _post_process(prop, data):
+    def _post_process(prop, data) -> None:
         """Do some default handling of data. Directly modifies data."""
         # Be careful with version tests inside this here as it might need to
         # query this method to actually get the version number
 
         # Convert boolean props from empty strings to actual boolean values
-        if prop in Siteinfo.BOOLEAN_PROPS.keys():
+        if prop in Siteinfo.BOOLEAN_PROPS:
             # siprop=namespaces and
             # magicwords has properties per item in result
             if prop in ('namespaces', 'magicwords'):
@@ -123,6 +127,8 @@ class Siteinfo(Container):
         returned when a property doesn't exists, it queries each property
         independetly if a property is invalid.
 
+        .. seealso:: :api:Siteinfo
+
         :param prop: The property names of the siteinfo.
         :type prop: str or iterable
         :param expiry: The expiry date of the cached request.
@@ -130,9 +136,8 @@ class Siteinfo(Container):
         :return: A dictionary with the properties of the site. Each entry in
             the dictionary is a tuple of the value and a boolean to save if it
             is the default value.
-        :see: https://www.mediawiki.org/wiki/API:Meta#siteinfo_.2F_si
         """
-        def warn_handler(mod, message):
+        def warn_handler(mod, message) -> bool:
             """Return True if the warning is handled."""
             matched = Siteinfo.WARNING_REGEX.match(message)
             if mod == 'siteinfo' and matched:
@@ -221,7 +226,7 @@ class Siteinfo(Container):
         :rtype: various (the value), bool (if the default value is used)
         """
         if 'general' not in self._cache:
-            pywikibot.debug('general siteinfo not loaded yet.', _logger)
+            pywikibot.debug('general siteinfo not loaded yet.')
             force = True
             props = ['namespaces', 'namespacealiases']
         else:
@@ -232,7 +237,7 @@ class Siteinfo(Container):
             if props:
                 pywikibot.debug(
                     "Load siteinfo properties '{}' along with 'general'"
-                    .format("', '".join(props)), _logger)
+                    .format("', '".join(props)))
             props += ['general']
             default_info = self._get_siteinfo(props, expiry)
             for prop in props:
@@ -247,8 +252,13 @@ class Siteinfo(Container):
         """Return a siteinfo property, caching and not forcing it."""
         return self.get(key, False)  # caches and doesn't force it
 
-    def get(self, key: str, get_default: bool = True, cache: bool = True,
-            expiry=False):
+    def get(
+        self,
+        key: str,
+        get_default: bool = True,
+        cache: bool = True,
+        expiry: Union[datetime.datetime, float, bool] = False
+    ) -> Any:
         """
         Return a siteinfo property.
 
@@ -261,10 +271,7 @@ class Siteinfo(Container):
             this method won't query the server.
         :param expiry: If the cache is older than the expiry it ignores the
             cache and queries the server to get the newest value.
-        :type expiry: int/float (days), :py:obj:`datetime.timedelta`,
-            False (never expired), True (always expired)
         :return: The gathered property
-        :rtype: various
         :raises KeyError: If the key is not a valid siteinfo property and the
             get_default option is set to False.
         :see: :py:obj:`_get_siteinfo`
@@ -316,10 +323,26 @@ class Siteinfo(Container):
             return self._cache[key]
         raise KeyError(key)
 
-    def __contains__(self, key: str) -> bool:
-        """Return whether the value is cached."""
+    def is_cached(self, key: str) -> bool:
+        """Return whether the value is cached.
+
+        .. versionadded:: 7.1
+        """
         try:
             self._get_cached(key)
+        except KeyError:
+            return False
+        else:
+            return True
+
+    def __contains__(self, key: str) -> bool:
+        """Return whether the value is in Siteinfo container.
+
+        .. versionchanged:: 7.1
+           Previous implementation only checked for cached keys.
+        """
+        try:
+            self[key]
         except KeyError:
             return False
         else:

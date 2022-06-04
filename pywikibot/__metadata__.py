@@ -1,9 +1,9 @@
 """Pywikibot metadata file.
 
-*New in version 4.0.*
+.. versionadded:: 4.0
 """
 #
-# (C) Pywikibot team, 2020-2021
+# (C) Pywikibot team, 2020-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -11,7 +11,7 @@ from time import strftime
 
 
 __name__ = 'pywikibot'
-__version__ = '6.6.1'
+__version__ = '7.3.0'
 __description__ = 'Python MediaWiki Bot Framework'
 __maintainer__ = 'The Pywikibot team'
 __maintainer_email__ = 'pywikibot@lists.wikimedia.org'

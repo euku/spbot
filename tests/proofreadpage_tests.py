@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for the proofreadpage module."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -20,6 +21,7 @@ from tests.basepage import (
     BasePageLoadRevisionsCachingTestBase,
     BasePageMethodsTestBase,
 )
+from tests.utils import skipping
 
 
 class TestProofreadPageInvalidSite(TestCase):
@@ -304,19 +306,19 @@ class TestProofreadPageValidSite(TestCase):
         self.assertEqual(json.loads(page_text), json.loads(loaded_text))
 
     @require_modules('bs4')
-    @unittest.skip('T181913 and T114318')
     def test_url_image(self):
         """Test fetching of url image of the scan of ProofreadPage."""
         page = ProofreadPage(self.site, self.valid['title'])
         self.assertEqual(page.url_image, self.valid['url_image'])
 
-        page = ProofreadPage(self.site, self.valid_redlink['title'])
-        self.assertEqual(page.url_image, self.valid_redlink['url_image'])
-
         page = ProofreadPage(self.site, self.existing_unlinked['title'])
         # test Exception in property.
         with self.assertRaises(ValueError):
             page.url_image
+
+        page = ProofreadPage(self.site, self.valid_redlink['title'])
+        with skipping(ValueError, msg='T181913, T114318'):
+            self.assertEqual(page.url_image, self.valid_redlink['url_image'])
 
 
 class TestPageQuality(TestCase):
@@ -371,6 +373,11 @@ class TestPageOCR(BS4TestCase):
                            'year 1872,\nBy D. APPLETON & CO.,\nIn the '
                            'Office of the Librarian of Congress, at '
                            'Washington.\n\u000c'),
+            'wmfOCR': (False, 'Estee, according to Act of Congress, in the '
+                              'year 1872,\n'
+                              'By D. APPLETON & CO.,\n'
+                              'In the Office of the Librarian of Congress, '
+                              'at Washington.'),
             'googleOCR': (False, 'ENTERED, according to Act of Congress, in '
                                  'the year 1572,\nBY D. APPLETON & CO.\n'
                                  'In the Office of the Librarian of '
@@ -409,6 +416,16 @@ class TestPageOCR(BS4TestCase):
         s = difflib.SequenceMatcher(None, text, ref_text)
         self.assertGreater(s.ratio(), 0.9)
 
+    def test_do_ocr_wmfocr(self):
+        """Test page._do_ocr(ocr_tool='wmfOCR')."""
+        error, text = self.page._do_ocr(ocr_tool='wmfOCR')
+        if error:
+            self.skipTest(text)
+        ref_error, ref_text = self.data['wmfOCR']
+        self.assertEqual(error, ref_error)
+        s = difflib.SequenceMatcher(None, text, ref_text)
+        self.assertGreater(s.ratio(), 0.9)
+
     def test_do_ocr_googleocr(self):
         """Test page._do_ocr(ocr_tool='googleOCR')."""
         error, text = self.page._do_ocr(ocr_tool='googleOCR')
@@ -419,14 +436,14 @@ class TestPageOCR(BS4TestCase):
         s = difflib.SequenceMatcher(None, text, ref_text)
         self.assertGreater(s.ratio(), 0.9)
 
-    def test_ocr_googleocr(self):
-        """Test page.ocr(ocr_tool='googleOCR')."""
+    def test_ocr_wmfocr(self):
+        """Test page.ocr(ocr_tool='wmfOCR')."""
         try:
-            text = self.page.ocr(ocr_tool='googleOCR')
+            text = self.page.ocr(ocr_tool='wmfOCR')
         except Exception as exc:
             self.assertIsInstance(exc, ValueError)
         else:
-            ref_error, ref_text = self.data['googleOCR']
+            _error, ref_text = self.data['wmfOCR']
             s = difflib.SequenceMatcher(None, text, ref_text)
             self.assertGreater(s.ratio(), 0.9)
 
@@ -599,7 +616,6 @@ class TestLoadRevisionsCachingIndexPage(BS4TestCase,
             references='<references/>', div_end=div)
 
 
-@unittest.skip('T181913 and T114318')
 class TestIndexPageMappings(BS4TestCase):
 
     """Test IndexPage class."""
@@ -664,7 +680,7 @@ class TestIndexPageMappings(BS4TestCase):
         data = self.sites[key]
         index_page = IndexPage(self.site, self.sites[key]['index'])
 
-        num, title_num, label = data['get_label']
+        num, _title_num, label = data['get_label']
         self.assertIs(index_page._cached, False)
         fetched_label = index_page.get_label_from_page_number(num)
 
@@ -747,7 +763,7 @@ class TestIndexPageMappings(BS4TestCase):
     def test_page_gen(self, key):
         """Test Index page generator."""
         data = self.sites[key]
-        num, title_num, label = data['get_label']
+        num, title_num, _label = data['get_label']
 
         index_page = IndexPage(self.site, self.sites[key]['index'])
         page_title = self.sites[key]['page'].format(title_num)

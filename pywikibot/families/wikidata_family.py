@@ -1,6 +1,6 @@
 """Family module for Wikidata."""
 #
-# (C) Pywikibot team, 2012-2020
+# (C) Pywikibot team, 2012-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -41,15 +41,15 @@ class Family(family.WikimediaFamily):
         'wikidata': ('wikidata', 'test', 'beta')
     })
 
-    def interface(self, code):
+    def interface(self, code) -> str:
         """Return 'DataSite'."""
         return 'DataSite'
 
-    def calendarmodel(self, code):
+    def calendarmodel(self, code) -> str:
         """Default calendar model for WbTime datatype."""
         return 'http://www.wikidata.org/entity/Q1985727'
 
-    def default_globe(self, code):
+    def default_globe(self, code) -> str:
         """Default globe for Coordinate datatype."""
         return 'earth'
 

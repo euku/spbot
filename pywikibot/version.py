@@ -1,6 +1,6 @@
 """Module to determine the pywikibot version (tag, revision and date)."""
 #
-# (C) Pywikibot team, 2007-2021
+# (C) Pywikibot team, 2007-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -22,13 +22,9 @@ from warnings import warn
 
 import pywikibot
 from pywikibot import config
-from pywikibot.backports import cache
+from pywikibot.backports import cache, Dict, List, Tuple
 from pywikibot.comms.http import fetch
 from pywikibot.exceptions import VersionParseError
-from pywikibot.tools import ModuleDeprecationWrapper, deprecated
-
-
-_logger = 'version'
 
 
 def _get_program_dir():
@@ -40,7 +36,7 @@ def _get_program_dir():
 def get_toolforge_hostname() -> Optional[str]:
     """Get hostname of the current Toolforge host.
 
-    *New in version 3.0.*
+    .. versionadded:: 3.0
 
     :return: The hostname of the currently running host,
              if it is in Wikimedia Toolforge; otherwise return None.
@@ -79,7 +75,7 @@ def getversion(online: bool = True) -> str:
 
 
 @cache
-def getversiondict():
+def getversiondict() -> Dict[str, str]:
     """Get version info for the package.
 
     :return:
@@ -87,7 +83,6 @@ def getversiondict():
         - rev (current revision identifier),
         - date (date of current revision),
         - hash (git hash for the current revision)
-    :rtype: ``dict`` of four ``str``
     """
     _program_dir = _get_program_dir()
     exceptions = {}
@@ -115,7 +110,7 @@ def getversiondict():
     # Git and SVN can silently fail, as it may be a nightly.
     if exceptions:
         pywikibot.debug('version algorithm exceptions:\n{!r}'
-                        .format(exceptions), _logger)
+                        .format(exceptions))
 
     if isinstance(date, str):
         datestring = date
@@ -170,7 +165,7 @@ def svn_rev_info(path):  # pragma: no cover
         cur.execute("""select
 local_relpath, repos_path, revision, changed_date, checksum from nodes
 order by revision desc, changed_date desc""")
-        name, tag, rev, date, checksum = cur.fetchone()
+        _name, tag, rev, date, _checksum = cur.fetchone()
         cur.execute('select root from repository')
         tag, = cur.fetchone()
 
@@ -246,7 +241,7 @@ def getversion_git(path=None):
         # some Windows git versions provide git.cmd instead of git.exe
         cmd = 'git.cmd'
 
-    with open(os.path.join(_program_dir, '.git/config'), 'r') as f:
+    with open(os.path.join(_program_dir, '.git/config')) as f:
         tag = f.read()
     # Try 'origin' and then 'gerrit' as remote name; bail if can't find either.
     remote_pos = tag.find('[remote "origin"]')
@@ -267,7 +262,7 @@ def getversion_git(path=None):
                            '--date=iso'],
                           cwd=_program_dir,
                           stdout=subprocess.PIPE)
-    info, stderr = dp.communicate()
+    info, _ = dp.communicate()
     info = info.decode(config.console_encoding).split('|')
     date = info[0][:-6]
     date = time.strptime(date.strip('"'), '%Y-%m-%d %H:%M:%S')
@@ -306,7 +301,7 @@ def getversion_nightly(path=None):  # pragma: no cover
     return (tag, rev, date, hsh)
 
 
-def getversion_package(path=None):
+def getversion_package(path=None) -> Tuple[str, str, str, str]:
     """Get version info for an installed package.
 
     :param path: Unused argument
@@ -315,7 +310,6 @@ def getversion_package(path=None):
         - rev: '-1 (unknown)'
         - date (date the package was installed locally),
         - hash (git hash for the current revision of 'pywikibot/__init__.py')
-    :rtype: ``tuple`` of four ``str``
     """
     hsh = ''
     date = get_module_mtime(pywikibot).timetuple()
@@ -326,7 +320,7 @@ def getversion_package(path=None):
     return (tag, rev, date, hsh)
 
 
-def getversion_onlinerepo(path='branches/master'):
+def getversion_onlinerepo(path: str = 'branches/master'):
     """Retrieve current framework git hash from Gerrit."""
     from pywikibot.comms import http
 
@@ -340,21 +334,6 @@ def getversion_onlinerepo(path='branches/master'):
         return hsh
     except Exception as e:
         raise VersionParseError('{!r} while parsing {!r}'.format(e, buf))
-
-
-@deprecated('pywikibot.__version__', since='20201003')
-def get_module_version(module) -> Optional[str]:  # pragma: no cover
-    """
-    Retrieve __version__ variable from an imported module.
-
-    :param module: The module instance.
-    :type module: module
-    :return: The version hash without the surrounding text. If not present
-        return None.
-    """
-    if hasattr(module, '__version__'):
-        return module.__version__
-    return None
 
 
 def get_module_filename(module) -> Optional[str]:
@@ -395,18 +374,19 @@ def get_module_mtime(module):
     return None
 
 
-def package_versions(modules=None, builtins=False, standard_lib=None):
+def package_versions(
+    modules: Optional[List[str]] = None,
+    builtins: Optional[bool] = False,
+    standard_lib: Optional[bool] = None
+):
     """Retrieve package version information.
 
     When builtins or standard_lib are None, they will be included only
     if a version was found in the package.
 
     :param modules: Modules to inspect
-    :type modules: list of strings
     :param builtins: Include builtins
-    :type builtins: Boolean, or None for automatic selection
     :param standard_lib: Include standard library packages
-    :type standard_lib: Boolean, or None for automatic selection
     """
     if not modules:
         modules = sys.modules.keys()
@@ -499,12 +479,3 @@ def package_versions(modules=None, builtins=False, standard_lib=None):
             del data[name]
 
     return data
-
-
-ParseError = VersionParseError
-
-wrapper = ModuleDeprecationWrapper(__name__)
-wrapper.add_deprecated_attr(
-    'ParseError',
-    replacement_name='pywikibot.exceptions.VersionParseError',
-    since='20210423')

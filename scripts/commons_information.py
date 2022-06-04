@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Insert a language template into the description field."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -10,7 +10,6 @@ import copy
 import pywikibot
 from pywikibot import i18n, pagegenerators
 from pywikibot.bot import ExistingPageBot, SingleSiteBot
-from pywikibot.tools.formatter import color_format
 
 
 try:
@@ -36,9 +35,9 @@ class InformationBot(SingleSiteBot, ExistingPageBot):
                'appropriate language template')
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Initialzer."""
-        super(InformationBot, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         lang_tmp_cat = pywikibot.Category(self.site, self.lang_tmp_cat)
         self.lang_tmps = lang_tmp_cat.articles(namespaces=[10])
 
@@ -59,7 +58,7 @@ class InformationBot(SingleSiteBot, ExistingPageBot):
             return langdetect.detect_langs(text)
         return None
 
-    def process_desc_template(self, template):
+    def process_desc_template(self, template) -> bool:
         """Process description template."""
         tmp_page = pywikibot.Page(self.site, template.name.strip(), ns=10)
         if tmp_page in self.lang_tmps and len(template.params) == 1 \
@@ -70,12 +69,12 @@ class InformationBot(SingleSiteBot, ExistingPageBot):
                 tmp_page2 = pywikibot.Page(self.site, langs[0].lang, ns=10)
                 if tmp_page2 != tmp_page:
                     pywikibot.output(
-                        '\03{{lightblue}}The language template {before!r} '
+                        '<<lightblue>>The language template {before!r} '
                         'was found, but langdetect thinks {after!r} is the '
                         'most appropriate with a probability of {prob}:'
-                        '\03{{default}}\n{text}'
-                        .format(before=tmp_page.title(withNamespace=False),
-                                after=tmp_page2.title(withNamespace=False),
+                        '<<default>>\n{text}'
+                        .format(before=tmp_page.title(with_ns=False),
+                                after=tmp_page2.title(with_ns=False),
                                 prob=langs[0].prob,
                                 text=lang_tmp_val))
                     choice = pywikibot.input_choice(
@@ -95,7 +94,7 @@ class InformationBot(SingleSiteBot, ExistingPageBot):
         return False
 
     @staticmethod
-    def replace_value(param, value):
+    def replace_value(param, value) -> None:
         """Replace param with given value."""
         lstrip = param.value.lstrip()
         lspaces = param.value[:len(param.value) - len(lstrip)]
@@ -107,7 +106,7 @@ class InformationBot(SingleSiteBot, ExistingPageBot):
         if isinstance(mwparserfromhell, Exception):
             raise mwparserfromhell
 
-    def treat_page(self):
+    def treat_page(self) -> None:
         """Treat current page."""
         page = self.current_page
         code = mwparserfromhell.parse(page.text)
@@ -132,12 +131,12 @@ class InformationBot(SingleSiteBot, ExistingPageBot):
             pywikibot.output(value)
             langs = self.detect_langs(value)
             if langs:
-                pywikibot.output(color_format(
-                    '{lightblue}Hints from langdetect:{default}'))
+                pywikibot.output(
+                    '<<lightblue>>Hints from langdetect:<<default>>')
                 for language in langs:
-                    pywikibot.output(color_format(
-                        '{{lightblue}}{obj.lang}: {obj.prob}{{default}}',
-                        obj=language))
+                    pywikibot.output(
+                        '<<lightblue>>{obj.lang}: {obj.prob}<<default>>'
+                        .format(obj=language))
             lang = pywikibot.input(
                 'Enter the language of the displayed text:').strip()
             if lang != '':

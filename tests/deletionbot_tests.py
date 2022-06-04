@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for scripts/delete.py."""
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -8,7 +9,6 @@ import unittest
 from contextlib import suppress
 
 import pywikibot
-import pywikibot.page
 from scripts import delete
 from tests.aspects import ScriptMainTestCase
 from tests.utils import empty_sites
@@ -21,7 +21,7 @@ class TestDeletionBotWrite(ScriptMainTestCase):
     family = 'wikipedia'
     code = 'test'
 
-    sysop = True
+    rights = 'undelete'
     write = True
 
     def test_delete(self):
@@ -29,7 +29,7 @@ class TestDeletionBotWrite(ScriptMainTestCase):
         site = self.get_site()
         cat = pywikibot.Category(site, 'Pywikibot Delete Test')
         delete.main('-cat:Pywikibot_Delete_Test', '-always')
-        self.assertEmpty(list(cat.members()))
+        self.assertIsEmpty(list(cat.members()))
         delete.main('-page:User:Unicodesnowman/DeleteTest1', '-always',
                     '-undelete', '-summary=pywikibot unit tests')
         delete.main('-page:User:Unicodesnowman/DeleteTest2', '-always',
@@ -49,12 +49,11 @@ class TestDeletionBotWrite(ScriptMainTestCase):
 
 class TestDeletionBotUser(ScriptMainTestCase):
 
-    """Test deletionbot as a user (not sysop)."""
+    """Test deletionbot as a user (no 'deletion' right)."""
 
     family = 'wikipedia'
     code = 'test'
 
-    login = True
     write = True
 
     def test_delete_mark(self):
@@ -115,6 +114,7 @@ def delete_dummy(self, reason, prompt, mark, automatic_quit):
     """Dummy delete method."""
     TestDeletionBot.delete_args = [self.title(as_link=True), reason, prompt,
                                    mark, automatic_quit]
+    return 0
 
 
 def undelete_dummy(self, reason):

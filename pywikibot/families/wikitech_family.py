@@ -1,6 +1,6 @@
 """Family module for Wikitech."""
 #
-# (C) Pywikibot team, 2005-2020
+# (C) Pywikibot team, 2005-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -15,6 +15,6 @@ class Family(family.WikimediaOrgFamily):
     name = 'wikitech'
     code = 'en'
 
-    def protocol(self, code):
+    def protocol(self, code) -> str:
         """Return the protocol for this family."""
         return 'https'

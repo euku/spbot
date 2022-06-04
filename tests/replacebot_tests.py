@@ -1,6 +1,7 @@
+#!/usr/bin/python3
 """Tests for the replace script and ReplaceRobot class."""
 #
-# (C) Pywikibot team, 2015-2021
+# (C) Pywikibot team, 2015-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -9,9 +10,8 @@ from contextlib import suppress
 
 import pywikibot
 from pywikibot import fixes
-from pywikibot.tools import suppress_warnings
 from scripts import replace
-from tests import WARN_SITE_OBJ, join_data_path
+from tests import join_data_path
 from tests.bot_tests import TWNBotTestCase
 from tests.utils import empty_sites
 
@@ -89,26 +89,22 @@ class TestReplacementsMain(TWNBotTestCase):
     def _run(self, *args):
         """Run the :py:obj:`replace.main` with the given args.
 
-        It also adds -site and -page parameter.
+        It also adds -site and -page parameters:
+            -page to not have an empty generator
+            -site as it will use Site() otherwise
         """
-        # -page to not have an empty generator
-        # -site as it will use Site() otherwise
-        with suppress_warnings(WARN_SITE_OBJ, category=UserWarning):
-            return replace.main(*(args + ('-site:wikipedia:test',
-                                          '-page:TEST')))
+        return replace.main(*(args + ('-site:wikipedia:test', '-page:TEST')))
 
     def test_invalid_replacements(self):
         """Test invalid command line replacement configurations."""
-        # old and new need to be together
-        self.assertFalse(self._run('foo', '-pairsfile:/dev/null', 'bar'))
-
-        self.assertEqual([
-            '-pairsfile used between a pattern replacement pair.',
-        ], pywikibot.bot.ui.pop_output())
+        # old and new no longer need to be together but pairsfile must exist
+        self._run('foo', '-pairsfile:/dev/null', 'bar')
+        self.assertIn('Error loading /dev/null:',
+                      pywikibot.bot.ui.pop_output()[0])
 
         # only old provided
         with empty_sites():
-            self.assertFalse(self._run('foo'))
+            self._run('foo')
             self.assertEqual([
                 'Incomplete command line pattern replacement pair.',
             ], pywikibot.bot.ui.pop_output())
@@ -145,7 +141,7 @@ class TestReplacementsMain(TWNBotTestCase):
 
     def _get_bot(self, only_confirmation, *args):
         """Run with arguments, assert and return one bot."""
-        self.assertIsNone(self._run(*args))
+        self._run(*args)
         self.assertLength(self.bots, 1)
         bot = self.bots[0]
         if only_confirmation is not None:

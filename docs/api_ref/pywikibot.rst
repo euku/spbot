@@ -3,8 +3,8 @@ pywikibot package
 
 .. automodule:: pywikibot
 
-Subpackages
------------
+Pywikibot Subpackages
+---------------------
 
 .. toctree::
 
@@ -29,6 +29,7 @@ pywikibot.bot module
 --------------------
 
 .. automodule:: pywikibot.bot
+  :member-order: bysource
 
 pywikibot.bot\_choice module
 ----------------------------
@@ -106,6 +107,7 @@ pywikibot.logging module
 ------------------------
 
 .. automodule:: pywikibot.logging
+   :member-order: bysource
 
 pywikibot.login module
 ----------------------

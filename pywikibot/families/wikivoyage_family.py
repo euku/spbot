@@ -1,6 +1,6 @@
 """Family module for Wikivoyage."""
 #
-# (C) Pywikibot team, 2012-2020
+# (C) Pywikibot team, 2012-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -16,7 +16,8 @@ class Family(family.SubdomainFamily, family.WikimediaFamily):
 
     languages_by_size = [
         'en', 'de', 'pl', 'it', 'fa', 'fr', 'ru', 'zh', 'nl', 'pt', 'es', 'he',
-        'vi', 'fi', 'sv', 'el', 'eo', 'uk', 'ro', 'bn', 'ja', 'tr', 'ps', 'hi',
+        'vi', 'fi', 'sv', 'el', 'eo', 'uk', 'bn', 'ro', 'ja', 'tr', 'ps',
+        'shn', 'hi',
     ]
 
     category_redirect_templates = {

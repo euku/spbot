@@ -1,6 +1,6 @@
 """Object representing page revision."""
 #
-# (C) Pywikibot team, 2008-2021
+# (C) Pywikibot team, 2008-2022
 #
 # Distributed under the terms of the MIT license.
 #
@@ -26,14 +26,14 @@ class Revision(Mapping):
     'Sample for Revision access'
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         """Initializer."""
         self._data = kwargs
         self._upcast_dict(self._data)
         super().__init__()
 
     @staticmethod
-    def _upcast_dict(map_):
+    def _upcast_dict(map_) -> None:
         """Upcast dictionary values."""
         with suppress(KeyError):  # enable doctest
             map_['timestamp'] = Timestamp.fromISOformat(map_['timestamp'])
@@ -79,11 +79,11 @@ class Revision(Mapping):
         """Provide Revision data as iterator."""
         return iter(self._data)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """String representation of Revision."""
         return '{}({})'.format(self.__class__.__name__, self._data)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Printable representation of Revision data."""
         return str(self._data)
 
@@ -103,7 +103,7 @@ class Revision(Mapping):
                              .format(self.__class__.__name__, key))
 
     @property
-    @deprecated('parentid property', since='20200802')
+    @deprecated('parentid property', since='4.0.0')
     def parent_id(self) -> int:
         """DEPRECATED. Return id of parent/previous revision.
 
@@ -115,7 +115,7 @@ class Revision(Mapping):
         return self.parentid
 
     @property
-    @deprecated('contentmodel', since='20200802')
+    @deprecated('contentmodel', since='4.0.0')
     def content_model(self) -> str:
         """DEPRECATED. Return content model of the revision.
 
