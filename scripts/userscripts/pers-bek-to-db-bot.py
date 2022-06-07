@@ -243,7 +243,7 @@ class PBBot(Bot):
 		db = wppb.Database(database=pb_db_config.db_name)
 
 		generator = [pywikibot.Page(self._site, workList)]
-		generator = pagegenerators.PreloadingGenerator(generator, groupsize = 1, lookahead=1)
+		generator = pagegenerators.PreloadingGenerator(generator, groupsize = 1)
 		# variables for concatenating a reasonable edit summary
 		commentLongAdded = ""
 		commentLongRefused = ""
@@ -262,7 +262,7 @@ class PBBot(Bot):
 		rawText = page.get()
 		newRawText = rawText
 
-		if not page.canBeEdited():
+		if not page.botMayEdit():
 		   output("Seite gesperrt")
 		   pywikibot.stopme()
 

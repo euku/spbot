@@ -12,7 +12,7 @@ import sys              # To not have wikipedia and this in one dir we'll import
 import re               # Used for regular expressions
 import os               # used for os.getcwd()
 import pywikibot        # pywikibot framework
-from pywikibot import config2, pagegenerators, Bot, textlib
+from pywikibot import config, pagegenerators, Bot, textlib
 import locale			# German
 
 from time import localtime, strftime, mktime    # strftime-Function and related
@@ -28,7 +28,7 @@ mentorTemplRegEx = "\{\{[Bb]enutzer(?:in)?\ *\:\ *([^\r\n|}]+?)\/(?:Vorlage[ _\/
 
 wpOptInList = "Wikipedia:Mentorenprogramm/Projektorganisation/Opt-in-Liste"
 wpOptInListRegEx = "\[\[(?:[uU]ser|[bB]enutzer)(?:in)?\:(?P<username>[^\|\]]+)(?:\|[^\]]+)?\]\]"
-mentorenProgrammMeldungen = "Benutzer_Diskussion:Euk" # "Wikipedia Diskussion:Mentorenprogramm"
+mentorenProgrammMeldungen = "Benutzer_Diskussion:Euku" # "Wikipedia Diskussion:Mentorenprogramm"
 mentorenProgrammMenteeliste = "Wikipedia:Mentorenprogramm/Projektorganisation/In Betreuung"
 anzahlAllerBereutenMentees = "Wikipedia:Mentorenprogramm/Projektorganisation/Anzahl bisheriger Mentees"
 anzahlAllerZurzeitBereuendenMentoren = "Wikipedia:Mentorenprogramm/Projektorganisation/Anzahl betreuender Mentoren"
@@ -297,7 +297,7 @@ def writeMenteeArchive(db, mentorenFromServer):
 					page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, "Update", False, minor=True, force=True)
 				else:
 					output("keine Änderung im WP-Archiv nötig: " + str(currYear) + " " + monthDic[currMon-1])
-			except pywikibot.NoPage:
+			except pywikibot.exception.NoPageError:
 				# create a new page
 				page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, "neues Archiv", False, minor=True, force=True)
 	

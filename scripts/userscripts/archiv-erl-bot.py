@@ -624,7 +624,7 @@ class WikiDocument:
         # first, check if we can edit the origin page at all
         if bot.savePages:
             originPage = pywikibot.Page(bot.site, self.name)
-            if not originPage.canBeEdited():
+            if not originPage.botMayEdit():
                 pywikibot.output('Skipping %s because it is protected "edit:sysop"' % (self.name))
                 return
 
