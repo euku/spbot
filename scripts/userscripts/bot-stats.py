@@ -15,7 +15,7 @@ import time
 botStatusInactiveThreshold = 3*356/12
 mysite = pywikibot.Site()  # ohne Parameter, falls de-wiki default-Einstellung ist
 
-formerBotNames = ["ArchivBot", "LinkFA-Bot", "RevoBot"]
+formerBotNames = ["ArchivBot", "LinkFA-Bot", "RevoBot", "MerlBot", "KLBot2", "Luckas-bot", "Sebbot", "Beitragszahlen", "CopperBot", "ZéroBot", "TXiKiBoT", "Thijs!bot", "MerlIwBot"]
 
 userDic = {}
 userDic["AkaBot"] = "2004-11-30"
