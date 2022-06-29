@@ -12,6 +12,7 @@ import locale			# German
 from time import localtime, strftime, mktime    # strftime-Function and related
 import time
 import pymysql
+import traceback
 
 sys.path.append('/data/project/pb/pb/pyapi') # TODO make this a relative path
 import wppb
@@ -61,12 +62,6 @@ def search(text, regex):
 	  return ""
 
 def output(text):
-# OLD:
-#	fd = open(localLogFile, 'a')
-#	writeMe = text + "\n" 
-#	writeMe = writeMe.encode('utf-8')
-#	fd.write(writeMe)
-#	fd.close()
 	pywikibot.output(text)
 
 
@@ -214,8 +209,12 @@ def addConfirmation(db, certifier, certified, comment, year, month, day, hours, 
 		try:
 			db.add_confirmation(bestaetigerID, bestaetigterID, comment, timestamp)
 		except pymysql.IntegrityError:
+			#output(traceback.print_exc())
 			output("Bestaetigung schon vorhanden")
 			return
+		except:
+			output(traceback.print_exc())
+			raise
 	
 	### check if 'bestaetigterName' is allowed to write ACKs now and leave a message on his/her talk page
 	if db.get_cf_count_by_confirmed(bestaetigterID) == 3:
@@ -281,9 +280,6 @@ class PBBot(Bot):
 				if not DONOTSAVEDB:
 					db.add_user(currentName, timestamp)
 			except pymysql.IntegrityError:
-				# already in ... TODO change the edit comment
-				output("user " + currentName + " already in")
-			except pymysql.CollatedWarningsError:
 				# already in ... TODO change the edit comment
 				output("user " + currentName + " already in")
 			newRawText = textlib.replaceExcept(newRawText, entry, "", ["comment", "nowiki"])

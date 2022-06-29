@@ -297,7 +297,7 @@ def writeMenteeArchive(db, mentorenFromServer):
 					page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, "Update", False, minor=True, force=True)
 				else:
 					output("keine Änderung im WP-Archiv nötig: " + str(currYear) + " " + monthDic[currMon-1])
-			except pywikibot.exception.NoPageError:
+			except pywikibot.exceptions.NoPageError:
 				# create a new page
 				page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, "neues Archiv", False, minor=True, force=True)
 	
