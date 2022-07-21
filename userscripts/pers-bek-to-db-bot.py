@@ -51,6 +51,9 @@ monthDic["Okt."] = 10
 monthDic["Nov."] = 11
 monthDic["Dez."] = 12
 
+class ConfirmationNotStored(Exception):
+	'''If the confirmation was not stored in the DB'''
+
 def isIn(text, regex):
 	return re.search(regex, text, re.UNICODE)
 	
@@ -185,10 +188,7 @@ def divideIntoTasks(pageText):
 """
    sends information to the DB API skript
 """
-def addConfirmation(db, certifier, certified, comment, year, month, day, hours, minutes):
-	bestaetigerName = certifier
-	bestaetigterName = certified
-
+def addConfirmation(db, bestaetigerName, bestaetigterName, comment, year, month, day, hours, minutes):
 	bestaetigerID = -1
 	bestaetigterID = -1
 	bestaetigerCfCount = -1
@@ -200,7 +200,8 @@ def addConfirmation(db, certifier, certified, comment, year, month, day, hours, 
 		return
 
 	if (bestaetigerCfCount < 3):
-		return # user is not allowed
+		output("Darf noch nicht bestätigen")
+		return
 
 	###### write to DB
 	output("send it to DB API...")
@@ -208,9 +209,12 @@ def addConfirmation(db, certifier, certified, comment, year, month, day, hours, 
 	if not DONOTSAVEDB:
 		try:
 			db.add_confirmation(bestaetigerID, bestaetigterID, comment, timestamp)
+			if not db.has_confirmed(bestaetigerID, bestaetigterID):
+				output("Bestätigung wurde nicht übertragen!")
+				raise ConfirmationNotStored('Bestätigung %s -> %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName))
 		except pymysql.IntegrityError:
 			#output(traceback.print_exc())
-			output("Bestaetigung schon vorhanden")
+			output("Bestätigung schon vorhanden")
 			return
 		except:
 			output(traceback.print_exc())
