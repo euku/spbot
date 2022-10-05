@@ -208,15 +208,19 @@ def addConfirmation(db, bestaetigerName, bestaetigterName, comment, year, month,
 	timestamp = "%s-%02d-%02d %02d:%02d:00" % (year, month, day, hours, minutes)
 	if not DONOTSAVEDB:
 		try:
-			db.add_confirmation(bestaetigerID, bestaetigterID, comment, timestamp)
+			if not db.add_confirmation(bestaetigerID, bestaetigterID, comment, timestamp):
+				output("Validierung schlug fehl!")
+				raise ConfirmationNotStored('Bestätigung %s -> %s zu %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName, timestamp))
+			output("bestaetigerID %s, bestaetigterID %s" % (bestaetigerID, bestaetigterID))
 			if not db.has_confirmed(bestaetigerID, bestaetigterID):
 				output("Bestätigung wurde nicht übertragen!")
-				raise ConfirmationNotStored('Bestätigung %s -> %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName))
+				raise ConfirmationNotStored('Bestätigung %s -> %s zu %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName, timestamp))
 		except pymysql.IntegrityError:
 			#output(traceback.print_exc())
 			output("Bestätigung schon vorhanden")
 			return
 		except:
+			output("Unexpected error: %s" % sys.exc_info()[0])
 			output(traceback.print_exc())
 			raise
 	
