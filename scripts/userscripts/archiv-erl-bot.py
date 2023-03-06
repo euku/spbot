@@ -373,6 +373,12 @@ class Discussion:
         def getJaMonth(monthCount):
             return monthCount + "月"
 
+        def getViMonthShort(monthCount):
+            return "Tháng " + monthCount
+        
+        def getViMonthLong(monthCount):
+            return "Tháng " + (["Một", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Mười Hai"][int(monthCount) -1])
+        
         if (useTimeComparatorCleared):
              stamp = localtime(self.timestampClearedFlag)
         else:
@@ -380,15 +386,14 @@ class Discussion:
 
         isExceptionDate = stamp[0]==2014 and stamp[1]==12 and stamp[2]>=29
         exceptionYear = "2014"
-        exceptionMonth = "12"
         if bot.currentProject in ["dewikip", "dewiktionary", "dewikisource", 'dewikiversity']:
             # German
-            replStrings = [( "((Jahr))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
-                       ( "((Monat:Lang))"        , (getGermMonthLong(strftime("%B", stamp)), "Dezember")[isExceptionDate]),
-                       ( "((Monat:Kurz))"        , (getGermMonthShort(strftime("%b", stamp)), "Dez")[isExceptionDate] ),
-                       ( "((Monat:##))"          , (strftime("%m", stamp), "12")[isExceptionDate] ),
-                       ( "((Woche:##))"          , ("%02d" % int(strftime("%V", stamp)), "01")[isExceptionDate] ),
-                       ( "((Woche))"             , (strftime("%V", stamp), "1")[isExceptionDate] ),
+            replStrings = [( "((Jahr))"          , strftime("%Y", stamp) if not isExceptionDate else exceptionYear), # exception
+                       ( "((Monat:Lang))"        , getGermMonthLong(strftime("%B", stamp)) if not isExceptionDate else "Dezember"),
+                       ( "((Monat:Kurz))"        , getGermMonthShort(strftime("%b", stamp)) if not isExceptionDate else "Dez"),
+                       ( "((Monat:##))"          , strftime("%m", stamp) if not isExceptionDate else "12"),
+                       ( "((Woche:##))"          , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"),
+                       ( "((Woche))"             , strftime("%V", stamp) if not isExceptionDate else "1"),
                        ( "((Tag:##))"            , "%02d" % int(strftime("%d", stamp))),
                        ( "((fullpagename))"      , self.pageOrigin),
                        ( "((Fullpagename))"      , self.pageOrigin),
@@ -408,8 +413,8 @@ class Discussion:
                        ( "((Halbjahr:I))"        , getHalfyearName(stamp, True, False).upper() )]
         elif bot.currentProject in ['cswikip', 'jawikip']:
            replStrings = [( "((year))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
-                       ( "((month:long))"       , (getJaMonth(strftime("%m", stamp)), "December")[isExceptionDate] ),
-                       ( "((month:short))"      , (getJaMonth(strftime("%m", stamp)), "Dec")[isExceptionDate] ),
+                       ( "((month:long))"       , (getJaMonth(strftime("%m", stamp)), getJaMonth(12))[isExceptionDate] ),
+                       ( "((month:short))"      , (getJaMonth(strftime("%m", stamp)), getJaMonth(12))[isExceptionDate] ),
                        ( "((month:##))"         , (strftime("%m", stamp), "12")[isExceptionDate] ),
                        ( "((week:##))"          , ("%02d" % int(strftime("%V", stamp)), "01")[isExceptionDate] ),
                        ( "((week))"             , (strftime("%V", stamp), "1")[isExceptionDate] ),
@@ -427,10 +432,10 @@ class Discussion:
                        ( "((half-year:I))"       , getHalfyearName(stamp, True, False).upper() )]
         elif bot.currentProject == 'kowikip':
            replStrings = [( "((년))"            , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception # year
-                       ( "((월))"               , (strftime("%m", stamp), "12")[isExceptionDate] ), # month
-                       ( "((월:##))"            , ("%02d" % int(strftime("%m", stamp)), "12")[isExceptionDate] ), # month:##
-                       ( "((주))"               , (strftime("%V", stamp), "1")[isExceptionDate] ), # week
-                       ( "((주:##))"            , ("%02d" % int(strftime("%V", stamp)), "01")[isExceptionDate] ), # week:##
+                       ( "((월))"               , strftime("%m", stamp) if not isExceptionDate else "12"), # month
+                       ( "((월:##))"            , "%02d" % int(strftime("%m", stamp)) if not isExceptionDate else "12"), # month:##
+                       ( "((주))"               , strftime("%V", stamp) if not isExceptionDate else "1"), # week
+                       ( "((주:##))"            , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"), # week:##
                        ( "((일:##))"            , "%02d" % int(strftime("%d", stamp))), # day
                        ( "((fullpagename))"     , self.pageOrigin),
                        ( "((Fullpagename))"     , self.pageOrigin),
@@ -443,14 +448,33 @@ class Discussion:
                        ( "((반년:##))"           , getHalfyearName(stamp, False, True) ),	#half-year
                        ( "((반년:i))"            , getHalfyearName(stamp, True, False) ),	#half-year
                        ( "((반년:I))"            , getHalfyearName(stamp, True, False).upper() )]	#half-year
+        elif bot.currentProject in ['viwikip']:
+           replStrings = [( "((year))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
+                       ( "((month:long))"       , getViMonthLong(strftime("%m", stamp)) if not isExceptionDate else getViMonthLong(12)),
+                       ( "((month:short))"      , getViMonthShort(strftime("%m", stamp)) if not isExceptionDate else getViMonthShort(12)),
+                       ( "((month:##))"         , strftime("%m", stamp) if not isExceptionDate else "12"),
+                       ( "((week:##))"          , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"),
+                       ( "((week))"             , strftime("%V", stamp) if not isExceptionDate else "1"),
+                       ( "((day:##))"            , "%02d" % int(strftime("%d", stamp))),
+                       ( "((fullpagename))"      , self.pageOrigin),
+                       ( "((Fullpagename))"      , self.pageOrigin),
+                       ( "((FULLPAGENAME))"      , self.pageOrigin),
+                       ( "((quarter))"           , getQuarterName(stamp, False, False) ),
+                       ( "((quarter:##))"        , getQuarterName(stamp, False, True) ),
+                       ( "((quarter:i))"         , getQuarterName(stamp, True, False) ),
+                       ( "((quarter:I))"         , getQuarterName(stamp, True, False).upper() ),
+                       ( "((half-year))"         , getHalfyearName(stamp, False, False) ),
+                       ( "((half-year:##))"      , getHalfyearName(stamp, False, True) ),
+                       ( "((half-year:i))"       , getHalfyearName(stamp, True, False) ),
+                       ( "((half-year:I))"       , getHalfyearName(stamp, True, False).upper() )]
         else:
            # English
            replStrings = [( "((year))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
-                       ( "((month:long))"       , (strftime("%B", stamp), "December")[isExceptionDate] ),
-                       ( "((month:short))"      , (strftime("%b", stamp), "Dec")[isExceptionDate] ),
-                       ( "((month:##))"         , (strftime("%m", stamp), "12")[isExceptionDate] ),
-                       ( "((week:##))"          , ("%02d" % int(strftime("%V", stamp)), "01")[isExceptionDate] ),
-                       ( "((week))"             , (strftime("%V", stamp), "1")[isExceptionDate] ),
+                       ( "((month:long))"       , strftime("%B", stamp) if not isExceptionDate else "December"),
+                       ( "((month:short))"      , strftime("%b", stamp) if not isExceptionDate else "Dec"),
+                       ( "((month:##))"         , strftime("%m", stamp) if not isExceptionDate else "12"),
+                       ( "((week:##))"          , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"),
+                       ( "((week))"             , strftime("%V", stamp) if not isExceptionDate else "1"),
                        ( "((day:##))"            , "%02d" % int(strftime("%d", stamp))),
                        ( "((fullpagename))"      , self.pageOrigin),
                        ( "((Fullpagename))"      , self.pageOrigin),
@@ -853,12 +877,14 @@ class ArchiveRobot:
                     pywikibot.output(arg + " wurde ignoriert")
         
         if self.currentProject[:2] == "ja":
-    	    self.timeStampRegEx = "(?P<yyyy>\d{4})年(?P<MM>\d{1,2})月(?P<dd>\d{1,2})日\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(UTC\)"
+            self.timeStampRegEx = "(?P<yyyy>\d{4})年(?P<MM>\d{1,2})月(?P<dd>\d{1,2})日\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(UTC\)"
         elif self.currentProject[:2] == "ko":
             self.timeStampRegEx = "(?P<yyyy>\d{4})년\ (?P<MM>\d{1,2})월\ (?P<dd>\d{1,2})일\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(KST\)"
         elif self.currentProject[:2] == "cs":
             self.timeStampRegEx = "(?P<dd>[0-9]{1,2})\.\ (?P<MM>\d{1,2})\.\ (?P<yyyy>[0-9]{4}),\ (?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2})\ \((?:CE[S]?T)\)"
-        else:
+        elif self.currentProject[:2] == "vi":
+            self.timeStampRegEx = "(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ ngày\ (?P<dd>[0-9]{1,2})\ [Tt]háng\ (?P<MM>\d{1,2})\ năm\ (?P<yyyy>[0-9]{4})\ \(UTC\)"
+        else: # de, en
             self.timeStampRegEx = "(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ (?P<dd>[0-9]{1,2})\.?\ (?P<MM>[a-zA-Zä]{3,10})\.?\ (?P<yyyy>[0-9]{4})\ \((?:CE[S]?T|ME[S]?Z|UTC)\)"
 	    
         # localization
@@ -868,7 +894,6 @@ class ArchiveRobot:
                 self.headTemplate   = "{{Archiv}}"      # Headtemplate to insert into new archivpages
                 self.excludeList = (
                        "Vorlage:Erledigt",
-                       "Benutzer:SpBot",
                        "Portal:Philosophie/Qualitätssicherung",
                        "Wikipedia Diskussion:Hauptseite/Artikel des Tages/Chronologie der Artikel des Tages"
                        )
@@ -992,6 +1017,38 @@ class ArchiveRobot:
                 self.sectResolved1P=":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1</small>"
                 self.sectResolved2P=":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1 \\7</small>"
 
+        elif self.currentProject == 'viwikip':
+                self.archiveTemplateName = "Bản mẫu:Autoarchive resolved section"
+                self.headTemplate   = "{{Talkarchive}}"
+                self.excludeList = ( self.archiveTemplateName, f"{{self.archiveTemplateName}}/doc" )
+                self.errorCategory = "Thể loại:Bản mẫu lưu trữ thảo luận sử dụng tham số sai"
+                self.errorText = "== Lưu trữ không thành công ==\n"
+                self.errorText += "Lưu trữ tại ~~~~~ không thành công vì bản mẫu " + self.archiveTemplateName + " chứa tham số sai. %s"
+                self.errorText += "Xin hãy xem lại [[" + self.archiveTemplateName + "|documentation]] và sửa các lỗi có trong bản mẫu. Trân trọng! --~~~~"
+                self.errorText += "\n\n[[" + self.errorCategory + "]]<!-- xin hãy xóa dòng này nếu vấn đề đã được giải quyết -->"
+                self.errorTextSummary = "reporting an error"
+                # template parameters
+                self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>.*?)\}\}"
+                self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]'
+                self.paramAge = 'AGE'
+                self.paramArchive = 'ARCHIVE'
+                self.paramLevel = 'LEVEL'
+                self.paramTimeComparator = 'TIMECOMAPARE'
+                self.paramTimeComparatorCleared = 'resolved'
+                self.paramTimeout = 'TIMEOUT'
+                # edit summaries
+                self.archiveSumTargetS = "Lưu trữ một đề mục từ [[%s]]"
+                self.archiveSumTargetP = "Lưu trữ %d đề mục từ [[%s]]"
+                self.archiveSumOriginS = "1 đề mục"
+                self.archiveSumOriginP = "%d đề mục"
+                self.archiveSumOriginMulti  = "%d tới [[%s]]"
+                self.archiveSumLastEdit= " - sửa đổi trước đó: [[User:%s|%s]], %s"
+                self.archiveSumArchive = "lưu trữ %s: %s"
+
+                self.sectResolvedRegEx = "(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
+                self.sectResolved1P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1</small>"
+                self.sectResolved2P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1 \\7</small>"
+        
         elif self.currentProject in ['commons', 'wikidata', 'species', 'meta', 'enwikisource', 'wikimania']:
             self.archiveTemplateName = "Template:Autoarchive resolved section"
             if self.currentProject == 'meta':
