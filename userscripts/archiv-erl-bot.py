@@ -371,10 +371,10 @@ class Discussion:
             return enMonth
                 
         def getJaMonth(monthCount):
-            return monthCount + "月"
+            return f"{monthCount} 月"
 
         def getViMonthShort(monthCount):
-            return "Tháng " + monthCount
+            return f"Tháng {monthCount}"
         
         def getViMonthLong(monthCount):
             return "Tháng " + (["Một", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy", "Tám", "Chín", "Mười", "Mười Một", "Mười Hai"][int(monthCount) -1])
@@ -391,6 +391,7 @@ class Discussion:
             replStrings = [( "((Jahr))"          , strftime("%Y", stamp) if not isExceptionDate else exceptionYear), # exception
                        ( "((Monat:Lang))"        , getGermMonthLong(strftime("%B", stamp)) if not isExceptionDate else "Dezember"),
                        ( "((Monat:Kurz))"        , getGermMonthShort(strftime("%b", stamp)) if not isExceptionDate else "Dez"),
+                       ( "((Monat:#))"           , strftime("%-m", stamp) if not isExceptionDate else "12"),
                        ( "((Monat:##))"          , strftime("%m", stamp) if not isExceptionDate else "12"),
                        ( "((Woche:##))"          , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"),
                        ( "((Woche))"             , strftime("%V", stamp) if not isExceptionDate else "1"),
@@ -415,6 +416,7 @@ class Discussion:
            replStrings = [( "((year))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
                        ( "((month:long))"       , (getJaMonth(strftime("%m", stamp)), getJaMonth(12))[isExceptionDate] ),
                        ( "((month:short))"      , (getJaMonth(strftime("%m", stamp)), getJaMonth(12))[isExceptionDate] ),
+                       ( "((month:#))"          , strftime("%-m", stamp) if not isExceptionDate else "12"),
                        ( "((month:##))"         , (strftime("%m", stamp), "12")[isExceptionDate] ),
                        ( "((week:##))"          , ("%02d" % int(strftime("%V", stamp)), "01")[isExceptionDate] ),
                        ( "((week))"             , (strftime("%V", stamp), "1")[isExceptionDate] ),
@@ -452,6 +454,7 @@ class Discussion:
            replStrings = [( "((year))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
                        ( "((month:long))"       , getViMonthLong(strftime("%m", stamp)) if not isExceptionDate else getViMonthLong(12)),
                        ( "((month:short))"      , getViMonthShort(strftime("%m", stamp)) if not isExceptionDate else getViMonthShort(12)),
+                       ( "((month:#))"          , strftime("%-m", stamp) if not isExceptionDate else "12"),
                        ( "((month:##))"         , strftime("%m", stamp) if not isExceptionDate else "12"),
                        ( "((week:##))"          , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"),
                        ( "((week))"             , strftime("%V", stamp) if not isExceptionDate else "1"),
@@ -472,6 +475,7 @@ class Discussion:
            replStrings = [( "((year))"          , (strftime("%Y", stamp), exceptionYear)[isExceptionDate] ), # exception
                        ( "((month:long))"       , strftime("%B", stamp) if not isExceptionDate else "December"),
                        ( "((month:short))"      , strftime("%b", stamp) if not isExceptionDate else "Dec"),
+                       ( "((month:#))"          , strftime("%-m", stamp) if not isExceptionDate else "12"),
                        ( "((month:##))"         , strftime("%m", stamp) if not isExceptionDate else "12"),
                        ( "((week:##))"          , "%02d" % int(strftime("%V", stamp)) if not isExceptionDate else "01"),
                        ( "((week))"             , strftime("%V", stamp) if not isExceptionDate else "1"),
