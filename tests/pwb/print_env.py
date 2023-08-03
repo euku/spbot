@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Script that forms part of pwb_tests."""
 #
 # (C) Pywikibot team, 2015-2022
@@ -25,7 +25,7 @@ def main() -> None:
         # This only appears in subprocesses
         if k == 'PYWIKIBOT_DIR_PWB':
             continue
-        print('{}: {}'.format(k, v))
+        print(f'{k}: {v}')
 
     print('sys.path:')
     for path in sys.path:

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 This bot uploads text from djvu files onto pages in the "Page" namespace.
 
@@ -20,7 +20,7 @@ The following parameters are supported:
                      A   -> just page A
                      -B  -> pages 1 until B
 
-This script is a :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`.
+This script is a :py:obj:`ConfigParserBot <bot.ConfigParserBot>`.
 The following options can be set within a settings file which is scripts.ini
 by default:
 
@@ -107,10 +107,7 @@ class DjVuTextBot(SingleSiteBot):
     def generator(self):
         """Generate pages from specified page interval."""
         for page_number in self.page_number_gen():
-            title = '{page_ns}:{prefix}/{number}'.format(
-                page_ns=self._page_ns,
-                prefix=self._prefix,
-                number=page_number)
+            title = f'{self._page_ns}:{self._prefix}/{page_number}'
             page = ProofreadPage(self._index.site, title)
             page.page_number = page_number  # remember page number in djvu file
             yield page
@@ -124,7 +121,7 @@ class DjVuTextBot(SingleSiteBot):
         new_text = page.text
 
         if page.exists() and not self.opt.force:
-            pywikibot.output(
+            pywikibot.info(
                 'Page {} already exists, not adding!\n'
                 'Use -force option to overwrite the output page.'
                 .format(page))
@@ -160,7 +157,7 @@ def main(*args: str) -> None:
         elif opt in ('-force', '-always'):
             options[opt[1:]] = True
         else:
-            pywikibot.output('Unknown argument ' + arg)
+            pywikibot.info('Unknown argument ' + arg)
 
     # index is mandatory.
     if not index:
@@ -181,7 +178,7 @@ def main(*args: str) -> None:
     djvu = DjVuFile(djvu_path)
 
     if not djvu.has_text():
-        pywikibot.error('No text layer in djvu file {}'.format(djvu.file))
+        pywikibot.error(f'No text layer in djvu file {djvu.file}')
         return
 
     # Parse pages param.
@@ -194,8 +191,7 @@ def main(*args: str) -> None:
 
     site = pywikibot.Site()
     if not site.has_extension('ProofreadPage'):
-        pywikibot.error('Site {} must have ProofreadPage extension.'
-                        .format(site))
+        pywikibot.error(f'Site {site} must have ProofreadPage extension.')
         return
 
     index_page = pywikibot.Page(site, index, ns=site.proofread_index_ns)
@@ -203,8 +199,7 @@ def main(*args: str) -> None:
     if not index_page.exists():
         raise NoPageError(index)
 
-    pywikibot.output('uploading text from {} to {}'
-                     .format(djvu.file, index_page.title(as_link=True)))
+    pywikibot.info(f'uploading text from {djvu.file} to {index_page}')
 
     bot = DjVuTextBot(djvu, index_page, pages=pages, site=site, **options)
     bot.run()

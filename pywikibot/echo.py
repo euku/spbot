@@ -21,13 +21,13 @@ class Notification:
         """Initialize an empty Notification object."""
         self.site = site
 
-        self.event_id = None  # type: Optional[int]
+        self.event_id: Optional[int] = None
         self.type = None
         self.category = None
         self.timestamp = None
         self.page = None
         self.agent = None
-        self.read = None  # type: Optional[bool]
+        self.read: Optional[bool] = None
         self.content = None
         self.revid = None
 
@@ -59,8 +59,8 @@ class Notification:
         except KeyError:
             notif.read = False
 
-        notif.content = data.get('*', None)
-        notif.revid = data.get('revid', None)
+        notif.content = data.get('*')
+        notif.revid = data.get('revid')
         return notif
 
     def mark_as_read(self) -> bool:

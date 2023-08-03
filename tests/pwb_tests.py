@@ -1,13 +1,7 @@
-#!/usr/bin/python3
-"""
-Test pwb.py.
-
-If pwb.py does not load python files as expected, more tests from coverage
-should be added locally.
-https://bitbucket.org/ned/coveragepy/src/default/tests/test_execfile.py
-"""
+#!/usr/bin/env python3
+"""Test pwb.py."""
 #
-# (C) Pywikibot team, 2007-2022
+# (C) Pywikibot team, 2007-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -25,16 +19,18 @@ join_pwb_tests_path = create_path_func(join_tests_path, 'pwb')
 
 class TestPwb(PwbTestCase):
 
-    """
-    Test pwb.py functionality.
+    """Test pwb.py functionality.
 
-    This is registered as a Site test because it will not run
-    without a user-config.py
+    This is registered as a Site test because it will not run without a
+    user config file.
+
+    .. note::
+       ``site`` must be explicitly set for pwb tests. This test does not
+       require network access, because tests/pwb/print_locals.py does
+       not use handle_args, etc. so version.py doesn't talk on the
+       network.
     """
 
-    # site must be explicitly set for pwb tests. This test does not require
-    # network access, because tests/pwb/print_locals.py does not use
-    # handle_args, etc. so version.py doesn't talk on the network.
     site = False
     net = False
 
@@ -120,7 +116,7 @@ class TestPwb(PwbTestCase):
             text = stderr.readline().strip()
             self.assertTrue(
                 text.startswith(result[1]),
-                msg='"{}" does not start with "{}"'.format(text, result[1]))
+                msg=f'"{text}" does not start with "{result[1]}"')
         with self.subTest(line=2):
             self.assertEqual(stderr.readline().strip(), result[2])
 

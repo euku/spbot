@@ -1,6 +1,6 @@
 """Configuration file for Sphinx."""
 #
-# (C) Pywikibot team, 2014-2022
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -18,24 +18,22 @@
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
+# documentation root, use Path.resolve() to make it absolute, like shown here.
 #
 import os
 import re
 import sys
 import warnings
-from os.path import abspath, dirname, join
+from pathlib import Path
 
 
-# Deprecated classes will generate warnings as Sphinx processes them. Ignoring
-# them.
+# Deprecated classes will generate warnings as Sphinx processes them.
+# Ignoring them.
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-docs_dir = dirname(__file__)
-repo_dir = abspath(join(docs_dir, '..'))
-sys.path.insert(0, repo_dir)
-os.chdir(repo_dir)
+repo_dir = Path(__file__).resolve().parents[1]
+sys.path = [str(repo_dir), str(repo_dir / 'pywikibot')] + sys.path
 
 os.environ['PYWIKIBOT_NO_USER_CONFIG'] = '1'
 import pywikibot  # noqa: E402
@@ -45,7 +43,7 @@ import pywikibot  # noqa: E402
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-needs_sphinx = '4.1'
+needs_sphinx = '6.2.1'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -53,15 +51,15 @@ needs_sphinx = '4.1'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosectionlabel',
+    'sphinx.ext.autosummary',
     'sphinx.ext.extlinks',
+    # 'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
+    'sphinxext.opengraph',
 ]
 
-# Allow lines like "Example:" to be followed by a code block
-napoleon_use_admonition_for_examples = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,19 +67,20 @@ templates_path = ['_templates']
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = ['.rst', '.md']
+# source_suffix = ['.rst', '.md']
+source_suffix = '.rst'
 
 # The encoding of source files.
 #
 # source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+root_doc = 'index'
 
 # General information about the project.
 project = pywikibot.__name__.title()
 project_copyright = pywikibot.__copyright__  # alias since Python 3.5
-# author = 'test'
+author = 'Pywikibot Team'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -97,7 +96,7 @@ release = pywikibot.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -116,7 +115,7 @@ exclude_patterns = ['_build']
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
 #
-default_role = 'code'
+default_role = 'py:obj'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #
@@ -133,7 +132,8 @@ default_role = 'code'
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'default'
+
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -142,7 +142,7 @@ pygments_style = 'sphinx'
 # keep_warnings = False
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-# todo_include_todos = False
+todo_include_todos = True
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -150,13 +150,13 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'nature'
+html_theme = 'furo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -173,18 +173,25 @@ html_theme = 'nature'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-html_logo = 'Pywikibot_MW_gear_icon.svg'
+html_logo = '_static/Pywikibot_MW_gear_icon.svg'
+
+# Use a PNG version of the logo in OpenGraph social cards
+# (needed because SVG is not supported)
+
+ogp_social_cards = {
+    'image': '_static/Pywikibot_MW_gear_icon.png',
+}
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs. This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #
-html_favicon = 'Pywikibot.ico'
+html_favicon = '_static/Pywikibot.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = ['_static']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -217,7 +224,99 @@ html_favicon = 'Pywikibot.ico'
 
 # If true, the index is split into individual pages for each letter.
 #
-# html_split_index = False
+html_split_index = True
+
+docs_url = 'https://gerrit.wikimedia.org/g/pywikibot/core/%2B/HEAD/docs/'
+
+# HTML Theme Colors
+# changed to match the palette as described on
+# https://meta.wikimedia.org/wiki/Brand/colours
+
+color_primary_blue = '#0C57A8'
+color_blue_bg_light = '#0C57A81B'
+color_blue_bg_dark = '#0C57A822'
+
+color_blue_text_dark = '#94D5FF'
+
+color_primary_red = '#990000'
+color_red_bg_light = '#99000011'
+color_red_bg_dark = '#99000014'
+
+color_red_text_dark = '#FF5151'
+
+color_primary_green = '#339966'
+color_green_bg_light = '#33996612'
+color_green_bg_dark = '#33996633'
+
+color_yellow = '#F0BC00'
+color_yellow_bg = '#F0BC0022'
+
+color_brightblue = '#049DFF'
+color_brightblue_bg = '#049DFF22'
+
+color_purple = '#5748B5'
+color_purple_bg = '#5748B52A'
+
+html_theme_options = {
+    'source_edit_link': docs_url + '{filename}',
+    'navigation_with_keys': True,
+    'light_css_variables': {
+        'color-brand-primary': color_primary_blue,
+        'color-link': color_primary_blue,
+        'color-link--hover': color_primary_blue,
+        'color-problematic': color_primary_red,
+        'color-admonition-title--note': color_primary_blue,
+        'color-admonition-title-background--note': color_blue_bg_light,
+        'color-admonition-title--seealso': color_primary_blue,
+        'color-admonition-title-background--seealso': color_blue_bg_light,
+        'color-admonition-title--caution': color_yellow,
+        'color-admonition-title-background--caution': color_yellow_bg,
+        'color-admonition-title--warning': color_yellow,
+        'color-admonition-title-background--warning': color_yellow_bg,
+        'color-admonition-title--danger': color_primary_red,
+        'color-admonition-title-background--danger': color_red_bg_light,
+        'color-admonition-title--error': color_primary_red,
+        'color-admonition-title-background--error': color_red_bg_light,
+        'color-admonition-title--attention': color_primary_red,
+        'color-admonition-title-background--attention': color_red_bg_light,
+        'color-admonition-title--hint': color_primary_green,
+        'color-admonition-title-background--hint': color_green_bg_light,
+        'color-admonition-title--tip': color_primary_green,
+        'color-admonition-title-background--tip': color_green_bg_light,
+        'color-admonition-title--important': color_brightblue,
+        'color-admonition-title-background--important': color_brightblue_bg,
+        'color-admonition-title': color_purple,
+        'color-admonition-title-background': color_purple_bg,
+    },
+    'dark_css_variables': {
+        'color-brand-primary': color_blue_text_dark,
+        'color-link': color_blue_text_dark,
+        'color-link--hover': color_blue_text_dark,
+        'color-problematic': color_red_text_dark,
+        'color-admonition-title--note': color_primary_blue,
+        'color-admonition-title-background--note': color_blue_bg_dark,
+        'color-admonition-title--seealso': color_primary_blue,
+        'color-admonition-title-background--seealso': color_blue_bg_dark,
+        'color-admonition-title--caution': color_yellow,
+        'color-admonition-title-background--caution': color_yellow_bg,
+        'color-admonition-title--warning': color_yellow,
+        'color-admonition-title-background--warning': color_yellow_bg,
+        'color-admonition-title--danger': color_primary_red,
+        'color-admonition-title-background--danger': color_red_bg_dark,
+        'color-admonition-title--error': color_primary_red,
+        'color-admonition-title-background--error': color_red_bg_dark,
+        'color-admonition-title--attention': color_primary_red,
+        'color-admonition-title-background--attention': color_red_bg_dark,
+        'color-admonition-title--hint': color_primary_green,
+        'color-admonition-title-background--hint': color_green_bg_dark,
+        'color-admonition-title--tip': color_primary_green,
+        'color-admonition-title-background--tip': color_green_bg_dark,
+        'color-admonition-title--important': color_brightblue,
+        'color-admonition-title-background--important': color_brightblue_bg,
+        'color-admonition-title': color_purple,
+        'color-admonition-title-background': color_purple_bg,
+    }
+}
 
 # If true, links to the reST sources are added to the pages.
 #
@@ -259,7 +358,7 @@ html_favicon = 'Pywikibot.ico'
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Pywikibotdoc'
+htmlhelp_basename = project + release.replace('.', '')
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -285,8 +384,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ('index', 'Pywikibot.tex', 'Pywikibot Documentation',
-     'Pywikibot team', 'manual'),
+    (root_doc, 'Pywikibot.tex', 'Pywikibot Documentation',
+     author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -316,8 +415,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pywikibot', 'Pywikibot Documentation',
-     ['Pywikibot team'], 1)
+    (root_doc, project, 'Pywikibot Documentation',
+     [author], 1)
 ]
 
 manpages_url = 'https://www.mediawiki.org/wiki/Manual:Pywikibot/{path}'
@@ -332,8 +431,8 @@ manpages_url = 'https://www.mediawiki.org/wiki/Manual:Pywikibot/{path}'
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'Pywikibot', 'Pywikibot Documentation',
-     'Pywikibot team', 'Pywikibot', 'One line description of project.',
+    (root_doc, project, 'Pywikibot Documentation',
+     author, project, 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -353,8 +452,35 @@ texinfo_documents = [
 #
 # texinfo_no_detailmenu = False
 
+# If false, do not generate in manual @ref nodes.
+#
+# texinfo_cross_references = False
+
+numfig = True
+
 # Other settings
+show_authors = True
+todo_include_todos = True
 autodoc_typehints = 'description'
+# autosectionlabel_prefix_document = True
+suppress_warnings = ['autosectionlabel.*']
+toc_object_entries_show_parents = 'hide'
+
+# Napoleon settings
+napoleon_use_admonition_for_examples = True
+napoleon_use_admonition_for_notes = True
+napoleon_use_admonition_for_references = True
+napoleon_custom_sections = ['Advice', 'Advices', 'Hints', 'Rights', 'Tips']
+
+python_use_unqualified_type_names = True
+modindex_common_prefix = ['pywikibot.scripts.']
+
+# Pywikibot theme style
+html_permalinks_icon = '#'
+html_css_files = [
+    'css/pywikibot.css',
+]
+
 
 extlinks = {
     # MediaWiki API
@@ -377,74 +503,16 @@ extlinks = {
 }
 
 
-TOKENS_WITH_PARAM = [
-    # sphinx
-    'param', 'parameter', 'arg', 'argument', 'key', 'keyword',
-    'type',
-    'raises', 'raise', 'except', 'exception',
-    'var', 'ivar', 'cvar',
-    'vartype',
-    'meta',
-    # epytext
-    'todo',
-]
-
-TOKENS = [
-    # sphinx
-    'return', 'returns', 'rtype',
-    # epytext
-    'attention', 'author', 'bug',
-    'change', 'changed',
-    'contact',
-    'copyright', '(c)',
-    'deprecated',
-    'invariant', 'license', 'note',
-    'organization', 'org',
-    'permission',
-    'postcondition', 'postcond',
-    'precondition', 'precond',
-    'requires', 'require', 'requirement',
-    'see', 'seealso',
-    'since', 'status', 'summary', 'todo',
-    'version',
-    'warn', 'warning',
-]
-
-
-def pywikibot_epytext_to_sphinx(app, what, name, obj, options, lines):
-    """Convert epytext tokens to sphinx."""
-    result = []
-    for line in lines:
-        line = re.sub(r'(\A *)@({}) '.format('|'.join(TOKENS_WITH_PARAM)),
-                      r'\1:\2 ', line)  # tokens with parameter
-        line = re.sub(r'(\A *)@({}):'.format('|'.join(TOKENS)),
-                      r'\1:\2:', line)  # short token
-        line = re.sub(r'(\A *)@(?:kwarg|kwparam) ',
-                      r'\1:keyword ', line)  # keyword
-        line = re.sub(r'(\A| )L\{([^}]*)\}', r'\1:py:obj:`\2`', line)  # Link
-        line = re.sub(r'(\A| )B\{([^}]*)\}', r'\1**\2**', line)  # Bold
-        line = re.sub(r'(\A| )I\{([^}]*)\}', r'\1*\2*', line)  # Italic
-        line = re.sub(r'(\A| )C\{([^}]*)\}', r'\1``\2``', line)  # Code
-        line = re.sub(r'(\A| )U\{([^}]*)\}', r'\1\2', line)  # Url
-        result.append(line)
-    lines[:] = result[:]  # assignment required in this way
-
-
-def pywikibot_fix_phab_tasks(app, what, name, obj, options, lines):
-    """Convert Phabricator tasks id to a link using sphinx.ext.extlinks."""
-    result = []
-    for line in lines:
-        line = re.sub(r'(?<!:phab:`)(T\d{5,6})', r':phab:`\1`', line)
-        result.append(line)
-    lines[:] = result[:]
-
-
 def pywikibot_docstring_fixups(app, what, name, obj, options, lines):
-    """Fixup docstrings."""
+    """Remove plain 'Initializer.' or 'Allocator.' docstring.
+
+    .. versionchanged:: 8.2
+       remove 'Allocator.' docstring too.
+    """
     if what not in ('class', 'exception'):
         return
 
-    if lines and lines[0] == 'Initializer.':
+    if lines and lines[0] in ('Initializer.', 'Allocator.'):
         lines[:] = lines[2:]
 
 
@@ -460,22 +528,27 @@ def pywikibot_script_docstring_fixups(app, what, name, obj, options, lines):
 
     length = 0
     for index, line in enumerate(lines):
+        # highlight the first line
         if index == 0:  # highlight the first line
-            lines[0] = '**{}**'.format(line.strip('.'))
+            lines[0] = f"**{line.strip('.')}**"
+
+        # add link for pagegenerators options
         elif line == '&params;':
             lines[index] = ('This script supports use of '
-                            ':py:mod:`pywikibot.pagegenerators` arguments.')
+                            ':py:mod:`pagegenerators` arguments.')
+
+        # add link for fixes
         elif name == 'scripts.replace' and line == '&fixes-help;':
             lines[index] = ('                  The available fixes are listed '
                             'in :py:mod:`pywikibot.fixes`.')
+
+        # replace cosmetic changes warning
         elif name == 'scripts.cosmetic_changes' and line == '&warning;':
             lines[index] = warning
-        elif name == 'scripts.login' and '*' in line:
-            # Escape star wildcard in scripts/login.py
-            lines[index] = line.replace('*', '\\*')
+
+        # Initiate code block except pagegenerator arguments follows
         elif (line.endswith(':') and not line.lstrip().startswith(':')
                 and 'Traceback (most recent call last)' not in line):
-            # Initiate code block except pagegenerator arguments follows
             for afterline in lines[index + 1:]:
                 if not afterline:
                     continue
@@ -483,11 +556,12 @@ def pywikibot_script_docstring_fixups(app, what, name, obj, options, lines):
                     lines[index] = line + ':'
                 break
 
+        # adjust options
         if line.startswith('-'):
             # Indent options
             match = re.match(r'-[^ ]+? +', line)
             if match:
-                length = len(match.group(0))
+                length = len(match[0])
             lines[index] = ' ' + line
         elif length and line.startswith(' ' * length):
             # Indent descriptions of options (as options are indented)
@@ -495,24 +569,6 @@ def pywikibot_script_docstring_fixups(app, what, name, obj, options, lines):
         elif line:
             # Reset length
             length = 0
-
-        if '|' in line:
-            # Escape vertical bars
-            lines[index] = line.replace('|', '\\|')
-
-
-def pywikibot_skip_members(app, what, name, obj, skip, options):
-    """Skip certain members from documentation."""
-    inclusions = ()
-    exclusions = ()
-    if name in inclusions and len(str.splitlines(obj.__doc__ or '')) >= 3:
-        return False
-    if name.startswith('__') and name.endswith('__'):
-        return True
-    if obj.__doc__ is not None \
-       and ('DEPRECATED' in obj.__doc__ or 'Deprecated' in obj.__doc__):
-        return True
-    return skip or name in exclusions
 
 
 def pywikibot_family_classproperty_getattr(obj, name, *defargs):
@@ -541,11 +597,8 @@ def pywikibot_family_classproperty_getattr(obj, name, *defargs):
 
 def setup(app):
     """Implicit Sphinx extension hook."""
-    app.connect('autodoc-process-docstring', pywikibot_epytext_to_sphinx)
-    app.connect('autodoc-process-docstring', pywikibot_fix_phab_tasks)
     app.connect('autodoc-process-docstring', pywikibot_docstring_fixups)
     app.connect('autodoc-process-docstring', pywikibot_script_docstring_fixups)
-    app.connect('autodoc-skip-member', pywikibot_skip_members)
     app.add_autodoc_attrgetter(type, pywikibot_family_classproperty_getattr)
 
 
@@ -553,6 +606,6 @@ autoclass_content = 'both'
 autodoc_default_options = {
     'members': True,
     'undoc-members': True,
-    'special-members': True,
+    'special-members': False,
     'show-inheritance': True,
 }

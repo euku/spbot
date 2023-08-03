@@ -1,11 +1,12 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the site module."""
 #
-# (C) Pywikibot team, 2018-2022
+# (C) Pywikibot team, 2018-2023
 #
 # Distributed under the terms of the MIT license.
 #
 import unittest
+from contextlib import suppress
 
 import pywikibot
 from pywikibot.tools import suppress_warnings
@@ -152,7 +153,5 @@ class TestInterwikiMapPrefix(TestCase):
 
 
 if __name__ == '__main__':  # pragma: no cover
-    try:
+    with suppress(SystemExit):
         unittest.main()
-    except SystemExit:
-        pass

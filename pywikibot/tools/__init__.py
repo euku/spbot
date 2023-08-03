@@ -1,36 +1,32 @@
 """Miscellaneous helper functions (not wiki-dependent)."""
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
-import collections
+import abc
+import bz2
 import gzip
 import hashlib
 import ipaddress
-import itertools
+import lzma
 import os
-import queue
 import re
 import stat
 import subprocess
 import sys
-import threading
-import time
-from collections.abc import Container, Iterable, Iterator, Mapping, Sized
 from contextlib import suppress
 from functools import total_ordering, wraps
 from importlib import import_module
-from itertools import chain, zip_longest
 from types import TracebackType
-from typing import Any, Optional, Type
+from typing import Any, Optional, Type, Union
 from warnings import catch_warnings, showwarning, warn
 
 import pkg_resources
 
 import pywikibot  # T306760
 from pywikibot.backports import Callable
-from pywikibot.tools._deprecate import (  # noqa: F401 skipcq: PY-W2000
+from pywikibot.tools._deprecate import (
     ModuleDeprecationWrapper,
     add_decorated_full_name,
     add_full_name,
@@ -48,20 +44,44 @@ from pywikibot.tools._unidata import _first_upper_exception
 
 pkg_Version = pkg_resources.packaging.version.Version  # noqa: N816
 
-try:
-    import bz2
-except ImportError as bz2_import_error:
-    try:
-        import bz2file as bz2
-        warn('package bz2 was not found; using bz2file', ImportWarning)
-    except ImportError:
-        warn('package bz2 and bz2file were not found', ImportWarning)
-        bz2 = bz2_import_error
 
-try:
-    import lzma
-except ImportError as lzma_import_error:
-    lzma = lzma_import_error
+__all__ = (
+    # deprecating functions
+    'ModuleDeprecationWrapper',
+    'add_decorated_full_name',
+    'add_full_name',
+    'deprecate_arg',
+    'deprecated',
+    'deprecated_args',
+    'get_wrapper_depth',
+    'issue_deprecation_warning',
+    'manage_wrapping',
+    'redirect_func',
+    'remove_last_args',
+
+    # other tools
+    'PYTHON_VERSION',
+    'as_filename',
+    'is_ip_address',
+    'has_module',
+    'classproperty',
+    'suppress_warnings',
+    'ComparableMixin',
+    'first_lower',
+    'first_upper',
+    'strtobool',
+    'normalize_username',
+    'Version',
+    'MediaWikiVersion',
+    'SelfCallMixin',
+    'SelfCallDict',
+    'SelfCallString',
+    'open_archive',
+    'merge_unique_dicts',
+    'file_mode_checker',
+    'compute_file_hash',
+    'cached',
+)
 
 
 PYTHON_VERSION = sys.version_info[:3]
@@ -97,7 +117,7 @@ def has_module(module, version=None) -> bool:
         return False
     if version:
         if not hasattr(m, '__version__'):
-            return False
+            return False  # pragma: no cover
 
         required_version = pkg_resources.parse_version(version)
         module_version = pkg_resources.parse_version(m.__version__)
@@ -207,12 +227,21 @@ class suppress_warnings(catch_warnings):  # noqa: N801
 
 
 # From http://python3porting.com/preparing.html
-class ComparableMixin:
+class ComparableMixin(abc.ABC):
 
     """Mixin class to allow comparing to other objects which are comparable.
 
     .. versionadded:: 3.0
     """
+
+    @abc.abstractmethod
+    def _cmpkey(self) -> Any:
+        """Abstract method to return key for comparison of objects.
+
+        This ensures that ``_cmpkey`` method is defined in subclass.
+
+        .. versionadded:: 8.1.2
+        """
 
     def __lt__(self, other):
         """Compare if self is less than other."""
@@ -239,122 +268,16 @@ class ComparableMixin:
         return other != self._cmpkey()
 
 
-# Collection is not provided with Python 3.5; use Container, Iterable, Sized
-class SizedKeyCollection(Container, Iterable, Sized):
-
-    """Structure to hold values where the key is given by the value itself.
-
-    A structure like a defaultdict but the key is given by the value
-    itself and cannot be assigned directly. It returns the number of all
-    items with len() but not the number of keys.
-
-    Samples:
-
-        >>> from pywikibot.tools import SizedKeyCollection
-        >>> data = SizedKeyCollection('title')
-        >>> data.append('foo')
-        >>> data.append('bar')
-        >>> data.append('Foo')
-        >>> list(data)
-        ['foo', 'Foo', 'bar']
-        >>> len(data)
-        3
-        >>> 'Foo' in data
-        True
-        >>> 'foo' in data
-        False
-        >>> data['Foo']
-        ['foo', 'Foo']
-        >>> list(data.keys())
-        ['Foo', 'Bar']
-        >>> data.remove_key('Foo')
-        >>> list(data)
-        ['bar']
-        >>> data.clear()
-        >>> list(data)
-        []
-
-    .. versionadded:: 6.1
-    """
-
-    def __init__(self, keyattr: str) -> None:
-        """Initializer.
-
-        :param keyattr: an attribute or method of the values to be hold
-            with this collection which will be used as key.
-        """
-        self.keyattr = keyattr
-        self.clear()
-
-    def __contains__(self, key) -> bool:
-        return key in self.data
-
-    def __getattr__(self, key):
-        """Delegate Mapping methods to self.data."""
-        if key in ('keys', 'values', 'items'):
-            return getattr(self.data, key)
-        return super().__getattr__(key)
-
-    def __getitem__(self, key) -> list:
-        return self.data[key]
-
-    def __iter__(self):
-        """Iterate through all items of the tree."""
-        yield from chain.from_iterable(self.data.values())
-
-    def __len__(self) -> int:
-        """Return the number of all values."""
-        return self.size
-
-    def __repr__(self) -> str:
-        return str(self.data).replace('defaultdict', self.__class__.__name__)
-
-    def append(self, value) -> None:
-        """Add a value to the collection."""
-        key = getattr(value, self.keyattr)
-        if callable(key):
-            key = key()
-        if key not in self.data:
-            self.data[key] = []
-        self.data[key].append(value)
-        self.size += 1
-
-    def remove(self, value) -> None:
-        """Remove a value from the container."""
-        key = getattr(value, self.keyattr)
-        if callable(key):
-            key = key()
-        with suppress(ValueError):
-            self.data[key].remove(value)
-            self.size -= 1
-
-    def remove_key(self, key) -> None:
-        """Remove all values for a given key."""
-        with suppress(KeyError):
-            self.size -= len(self.data[key])
-            del self.data[key]
-
-    def clear(self) -> None:
-        """Remove all elements from SizedKeyCollection."""
-        self.data = {}  # defaultdict fails (T282865)
-        self.size = 0
-
-    def filter(self, key):
-        """Iterate over items for a given key."""
-        with suppress(KeyError):
-            yield from self.data[key]
-
-    def iter_values_len(self):
-        """Yield key, len(values) pairs."""
-        for key, values in self.data.items():
-            yield key, len(values)
-
-
 def first_lower(string: str) -> str:
     """
     Return a string with the first character uncapitalized.
 
     Empty strings are supported. The original string is not changed.
+
+    **Example**:
+
+    >>> first_lower('Hello World')
+    'hello World'
 
     .. versionadded:: 3.0
     """
@@ -367,16 +290,60 @@ def first_upper(string: str) -> str:
 
     Empty strings are supported. The original string is not changed.
 
-    .. versionadded:: 3.0
+    **Example**:
 
-    .. note:: MediaWiki doesn't capitalize
-       some characters the same way as Python.
-       This function tries to be close to
-       MediaWiki's capitalize function in
-       title.php. See T179115 and T200357.
+    >>> first_upper('hello World')
+    'Hello World'
+
+    .. versionadded:: 3.0
+    .. note:: MediaWiki doesn't capitalize some characters the same way
+       as Python. This function tries to be close to MediaWiki's
+       capitalize function in title.php. See :phab:`T179115` and
+       :phab:`T200357`.
     """
     first = string[:1]
     return (_first_upper_exception(first) or first.upper()) + string[1:]
+
+
+def as_filename(string: str, repl: str = '_') -> str:
+    r"""Return a string with characters are valid for filenames.
+
+    Replace characters that are not possible in file names on some
+    systems, but still are valid in MediaWiki titles:
+
+        - Unix: ``/``
+        - MediaWiki: ``/:\\``
+        - Windows: ``/:\\"?*``
+
+    Spaces are possible on most systems, but are bad for URLs.
+
+    **Example**:
+
+    >>> as_filename('How are you?')
+    'How_are_you_'
+    >>> as_filename('Say: "Hello"')
+    'Say___Hello_'
+    >>> as_filename('foo*bar', '')
+    'foobar'
+    >>> as_filename('foo', 'bar')
+    Traceback (most recent call last):
+    ...
+    ValueError: Invalid repl parameter 'bar'
+    >>> as_filename('foo', '?')
+    Traceback (most recent call last):
+    ...
+    ValueError: Invalid repl parameter '?'
+
+    .. versionadded:: 8.0
+
+    :param string: the string to be modified
+    :param repl: the replacement character
+    :raises ValueError: Invalid repl parameter
+    """
+    pattern = r':*?/\\" '
+    if len(repl) > 1 or len(repl) == 1 and repl in pattern:
+        raise ValueError(f'Invalid repl parameter {repl!r}')
+    return re.sub(f'[{pattern}]', repl, string)
 
 
 def strtobool(val: str) -> bool:
@@ -384,6 +351,17 @@ def strtobool(val: str) -> bool:
 
     This is a reimplementation of distutils.util.strtobool due to
     :pep:`632#Migration Advice`
+
+    **Example**:
+
+    >>> strtobool('yes')
+    True
+    >>> strtobool('Off')
+    False
+    >>> strtobool('aye')
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid truth value 'aye'
 
     .. versionadded:: 7.1
 
@@ -396,7 +374,7 @@ def strtobool(val: str) -> bool:
         return True
     if val in ('n', 'no', 'f', 'false', 'off', '0'):
         return False
-    raise ValueError('invalid truth value {!r}'.format(val))
+    raise ValueError(f'invalid truth value {val!r}')
 
 
 def normalize_username(username) -> Optional[str]:
@@ -470,7 +448,7 @@ class MediaWikiVersion:
     """
 
     MEDIAWIKI_VERSION = re.compile(
-        r'(\d+(?:\.\d+)+)(-?wmf\.?(\d+)|alpha|beta(\d+)|-?rc\.?(\d+)|.*)?$')
+        r'(\d+(?:\.\d+)+)(-?wmf\.?(\d+)|alpha|beta(\d+)|-?rc\.?(\d+)|.*)?')
 
     def __init__(self, version_str: str) -> None:
         """
@@ -481,37 +459,37 @@ class MediaWikiVersion:
         self._parse(version_str)
 
     def _parse(self, version_str: str) -> None:
-        version_match = MediaWikiVersion.MEDIAWIKI_VERSION.match(version_str)
+        version_match = MediaWikiVersion.MEDIAWIKI_VERSION.fullmatch(
+            version_str)
 
         if not version_match:
-            raise ValueError('Invalid version number "{}"'.format(version_str))
+            raise ValueError(f'Invalid version number "{version_str}"')
 
-        components = [int(n) for n in version_match.group(1).split('.')]
+        components = [int(n) for n in version_match[1].split('.')]
 
         # The _dev_version numbering scheme might change. E.g. if a stage
         # between 'alpha' and 'beta' is added, 'beta', 'rc' and stable releases
         # are reassigned (beta=3, rc=4, stable=5).
 
-        if version_match.group(3):  # wmf version
-            self._dev_version = (0, int(version_match.group(3)))
-        elif version_match.group(4):
-            self._dev_version = (2, int(version_match.group(4)))
-        elif version_match.group(5):
-            self._dev_version = (3, int(version_match.group(5)))
-        elif version_match.group(2) in ('alpha', '-alpha'):
+        if version_match[3]:  # wmf version
+            self._dev_version = (0, int(version_match[3]))
+        elif version_match[4]:
+            self._dev_version = (2, int(version_match[4]))
+        elif version_match[5]:
+            self._dev_version = (3, int(version_match[5]))
+        elif version_match[2] in ('alpha', '-alpha'):
             self._dev_version = (1, )
         else:
             for handled in ('wmf', 'alpha', 'beta', 'rc'):
                 # if any of those pops up here our parser has failed
-                assert handled not in version_match.group(2), \
-                    'Found "{}" in "{}"'.format(handled,
-                                                version_match.group(2))
-            if version_match.group(2):
-                pywikibot.logging.debug('Additional unused version part '
-                                        '"{}"'.format(version_match.group(2)))
+                assert handled not in version_match[2], \
+                    f'Found "{handled}" in "{version_match[2]}"'
+            if version_match[2]:
+                pywikibot.logging.debug(
+                    'Additional unused version part {version_match[2]!r}')
             self._dev_version = (4, )
 
-        self.suffix = version_match.group(2) or ''
+        self.suffix = version_match[2] or ''
         self.version = tuple(components)
 
     @staticmethod
@@ -548,513 +526,6 @@ class MediaWikiVersion:
         if self.version != other.version:
             return self.version < other.version
         return self._dev_version < other._dev_version
-
-
-class RLock:
-    """Context manager which implements extended reentrant lock objects.
-
-    This RLock is implicit derived from threading.RLock but provides a
-    locked() method like in threading.Lock and a count attribute which
-    gives the active recursion level of locks.
-
-    Usage:
-
-    >>> from pywikibot.tools import RLock
-    >>> lock = RLock()
-    >>> lock.acquire()
-    True
-    >>> with lock: print(lock.count)  # nested lock
-    2
-    >>> lock.locked()
-    True
-    >>> lock.release()
-    >>> lock.locked()
-    False
-
-    .. versionadded:: 6.2
-    """
-
-    def __init__(self, *args, **kwargs) -> None:
-        """Initializer."""
-        self._lock = threading.RLock(*args, **kwargs)
-        self._block = threading.Lock()
-
-    def __enter__(self):
-        """Acquire lock and call atenter."""
-        return self._lock.__enter__()
-
-    def __exit__(self, *exc):
-        """Call atexit and release lock."""
-        return self._lock.__exit__(*exc)
-
-    def __getattr__(self, name):
-        """Delegate attributes and methods to self._lock."""
-        return getattr(self._lock, name)
-
-    def __repr__(self) -> str:
-        """Representation of tools.RLock instance."""
-        return repr(self._lock).replace(
-            '_thread.RLock',
-            '{cls.__module__}.{cls.__class__.__name__}'.format(cls=self))
-
-    @property
-    def count(self):
-        """Return number of acquired locks."""
-        with self._block:
-            counter = re.search(r'count=(\d+) ', repr(self))
-            return int(counter.group(1))
-
-    def locked(self):
-        """Return true if the lock is acquired."""
-        with self._block:
-            status = repr(self).split(maxsplit=1)[0][1:]
-            assert status in ('locked', 'unlocked')
-            return status == 'locked'
-
-
-class ThreadedGenerator(threading.Thread):
-
-    """Look-ahead generator class.
-
-    Runs a generator in a separate thread and queues the results; can
-    be called like a regular generator.
-
-    Subclasses should override self.generator, *not* self.run
-
-    Important: the generator thread will stop itself if the generator's
-    internal queue is exhausted; but, if the calling program does not use
-    all the generated values, it must call the generator's stop() method to
-    stop the background thread. Example usage:
-
-    >>> gen = ThreadedGenerator(target=range, args=(20,))
-    >>> try:
-    ...     data = list(gen)
-    ... finally:
-    ...     gen.stop()
-    >>> data
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-
-    ..versionadded:: 3.0
-    """
-
-    def __init__(self, group=None, target=None, name: str = 'GeneratorThread',
-                 args=(), kwargs=None, qsize: int = 65536) -> None:
-        """Initializer. Takes same keyword arguments as threading.Thread.
-
-        target must be a generator function (or other callable that returns
-        an iterable object).
-
-        :param qsize: The size of the lookahead queue. The larger the qsize,
-            the more values will be computed in advance of use (which can eat
-            up memory and processor time).
-        """
-        if kwargs is None:
-            kwargs = {}
-        if target:
-            self.generator = target
-        if not hasattr(self, 'generator'):
-            raise RuntimeError('No generator for ThreadedGenerator to run.')
-        self.args, self.kwargs = args, kwargs
-        super().__init__(group=group, name=name)
-        self.queue = queue.Queue(qsize)
-        self.finished = threading.Event()
-
-    def __iter__(self):
-        """Iterate results from the queue."""
-        if not self.is_alive() and not self.finished.is_set():
-            self.start()
-        # if there is an item in the queue, yield it, otherwise wait
-        while not self.finished.is_set():
-            try:
-                yield self.queue.get(True, 0.25)
-            except queue.Empty:
-                pass
-            except KeyboardInterrupt:
-                self.stop()
-
-    def stop(self) -> None:
-        """Stop the background thread."""
-        self.finished.set()
-
-    def run(self) -> None:
-        """Run the generator and store the results on the queue."""
-        iterable = any(hasattr(self.generator, key)
-                       for key in ('__iter__', '__getitem__'))
-        if iterable and not self.args and not self.kwargs:
-            self.__gen = self.generator
-        else:
-            self.__gen = self.generator(*self.args, **self.kwargs)
-        for result in self.__gen:
-            while True:
-                if self.finished.is_set():
-                    return
-                try:
-                    self.queue.put_nowait(result)
-                except queue.Full:
-                    time.sleep(0.25)
-                    continue
-                break
-        # wait for queue to be emptied, then kill the thread
-        while not self.finished.is_set() and not self.queue.empty():
-            time.sleep(0.25)
-        self.stop()
-
-
-def itergroup(iterable, size: int):
-    """Make an iterator that returns lists of (up to) size items from iterable.
-
-    Example:
-
-    >>> i = itergroup(range(25), 10)
-    >>> print(next(i))
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    >>> print(next(i))
-    [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-    >>> print(next(i))
-    [20, 21, 22, 23, 24]
-    >>> print(next(i))
-    Traceback (most recent call last):
-     ...
-    StopIteration
-    """
-    group = []
-    for item in iterable:
-        group.append(item)
-        if len(group) == size:
-            yield group
-            group = []
-    if group:
-        yield group
-
-
-def islice_with_ellipsis(iterable, *args, marker: str = '…'):
-    """
-    Generator which yields the first n elements of the iterable.
-
-    If more elements are available and marker is True, it returns an extra
-    string marker as continuation mark.
-
-    Function takes the
-    and the additional keyword marker.
-
-    :param iterable: the iterable to work on
-    :type iterable: iterable
-    :param args: same args as:
-        - ``itertools.islice(iterable, stop)``
-        - ``itertools.islice(iterable, start, stop[, step])``
-    :param marker: element to yield if iterable still contains elements
-        after showing the required number. Default value: '…'
-    """
-    s = slice(*args)
-    _iterable = iter(iterable)
-    yield from itertools.islice(_iterable, *args)
-    if marker and s.stop is not None:
-        with suppress(StopIteration):
-            next(_iterable)
-            yield marker
-
-
-class ThreadList(list):
-
-    """A simple threadpool class to limit the number of simultaneous threads.
-
-    Any threading.Thread object can be added to the pool using the append()
-    method. If the maximum number of simultaneous threads has not been reached,
-    the Thread object will be started immediately; if not, the append() call
-    will block until the thread is able to start.
-
-    >>> pool = ThreadList(limit=10)
-    >>> def work():
-    ...     time.sleep(1)
-    ...
-    >>> for x in range(20):
-    ...     pool.append(threading.Thread(target=work))
-    ...
-
-    """
-
-    def __init__(self, limit: int = 128, wait_time: float = 2, *args) -> None:
-        """Initializer.
-
-        :param limit: the number of simultaneous threads
-        :param wait_time: how long to wait if active threads exceeds limit
-        """
-        self.limit = limit
-        self.wait_time = wait_time
-        super().__init__(*args)
-        for item in self:
-            if not isinstance(item, threading.Thread):
-                raise TypeError("Cannot add '{}' to ThreadList"
-                                .format(type(item)))
-
-    def active_count(self):
-        """Return the number of alive threads and delete all non-alive ones."""
-        cnt = 0
-        for item in self[:]:
-            if item.is_alive():
-                cnt += 1
-            else:
-                self.remove(item)
-        return cnt
-
-    def append(self, thd):
-        """Add a thread to the pool and start it."""
-        if not isinstance(thd, threading.Thread):
-            raise TypeError("Cannot append '{}' to ThreadList"
-                            .format(type(thd)))
-
-        while self.active_count() >= self.limit:
-            time.sleep(self.wait_time)
-
-        super().append(thd)
-        thd.start()
-        pywikibot.logging.debug("thread {} ('{}') started"
-                                .format(len(self), type(thd)))
-
-
-def intersect_generators(*iterables, allow_duplicates: bool = False):
-    """Generator of intersect iterables.
-
-    Yield items only if they are yielded by all iterables. zip_longest
-    is used to retrieve items from all iterables in parallel, so that
-    items can be yielded before iterables are exhausted.
-
-    Generator is stopped when all iterables are exhausted. Quitting
-    before all iterables are finished is attempted if there is no more
-    chance of finding an item in all of them.
-
-    Sample:
-
-    >>> iterables = 'mississippi', 'missouri'
-    >>> list(intersect_generators(*iterables))
-    ['m', 'i', 's']
-    >>> list(intersect_generators(*iterables, allow_duplicates=True))
-    ['m', 'i', 's', 's', 'i']
-
-
-    .. versionadded:: 3.0
-
-    .. versionchanged:: 5.0
-       Avoid duplicates (:phab:`T263947`).
-
-    .. versionchanged:: 6.4
-       ``genlist`` was renamed to ``iterables``; consecutive iterables
-       are to be used as iterables parameters or '*' to unpack a list
-
-    .. deprecated:: 6.4
-       ``allow_duplicates`` as positional argument,
-       ``iterables`` as list type
-
-    .. versionchanged:: 7.0
-       Reimplemented without threads which is up to 10'000 times faster
-
-    :param iterables: page generators
-    :param allow_duplicates: optional keyword argument to allow duplicates
-        if present in all generators
-    """
-    # 'allow_duplicates' must be given as keyword argument
-    if iterables and iterables[-1] in (True, False):
-        allow_duplicates = iterables[-1]
-        iterables = iterables[:-1]
-        issue_deprecation_warning("'allow_duplicates' as positional argument",
-                                  'keyword argument "allow_duplicates={}"'
-                                  .format(allow_duplicates),
-                                  since='6.4.0')
-
-    # iterables must not be given as tuple or list
-    if len(iterables) == 1 and isinstance(iterables[0], (list, tuple)):
-        iterables = iterables[0]
-        issue_deprecation_warning("'iterables' as list type",
-                                  "consecutive iterables or use '*' to unpack",
-                                  since='6.4.0')
-
-    if not iterables:
-        return
-
-    if len(iterables) == 1:
-        yield from iterables[0]
-        return
-
-    # If any iterable is empty, no pages are going to be returned
-    for source in iterables:
-        if not source:
-            pywikibot.logging.debug('At least one iterable ({!r}) is empty '
-                                    'and execution was skipped immediately.'
-                                    .format(source))
-            return
-
-    # Item is cached to check that it is found n_gen times
-    # before being yielded.
-    cache = collections.defaultdict(collections.Counter)
-    n_gen = len(iterables)
-
-    ones = collections.Counter(range(n_gen))
-    active_iterables = set(range(n_gen))
-    seen = set()
-
-    # Get items from iterables in a round-robin way.
-    sentinel = object()
-    for items in zip_longest(*iterables, fillvalue=sentinel):
-        for index, item in enumerate(items):
-
-            if item is sentinel:
-                active_iterables.discard(index)
-                continue
-
-            if not allow_duplicates and hash(item) in seen:
-                continue
-
-            # Each cache entry is a Counter of iterables' index
-            cache[item][index] += 1
-
-            if len(cache[item]) == n_gen:
-                yield item
-
-                # Remove item from cache if possible or decrease Counter entry
-                if not allow_duplicates:
-                    del cache[item]
-                    seen.add(hash(item))
-                elif cache[item] == ones:
-                    del cache[item]
-                else:
-                    cache[item] -= ones
-
-        # We can quit if an iterable is exceeded and cached iterables is
-        # a subset of active iterables.
-        if len(active_iterables) < n_gen:
-            cached_iterables = set(
-                chain.from_iterable(v.keys() for v in cache.values()))
-            if cached_iterables <= active_iterables:
-                return
-
-
-def roundrobin_generators(*iterables):
-    """Yield simultaneous from each iterable.
-
-    Sample:
-
-    >>> tuple(roundrobin_generators('ABC', range(5)))
-    ('A', 0, 'B', 1, 'C', 2, 3, 4)
-
-    .. versionadded:: 3.0
-    .. versionchanged:: 6.4
-       A sentinel variable is used to determine the end of an iterable
-       instead of None.
-
-    :param iterables: any iterable to combine in roundrobin way
-    :type iterables: iterable
-    :return: the combined generator of iterables
-    :rtype: generator
-    """
-    sentinel = object()
-    return (item
-            for item in itertools.chain.from_iterable(
-                zip_longest(*iterables, fillvalue=sentinel))
-            if item is not sentinel)
-
-
-def filter_unique(iterable, container=None, key=None, add=None):
-    """
-    Yield unique items from an iterable, omitting duplicates.
-
-    By default, to provide uniqueness, it puts the generated items into a
-    set created as a local variable. It only yields items which are not
-    already present in the local set.
-
-    For large collections, this is not memory efficient, as a strong reference
-    to every item is kept in a local set which cannot be cleared.
-
-    Also, the local set can't be re-used when chaining unique operations on
-    multiple generators.
-
-    To avoid these issues, it is advisable for the caller to provide their own
-    container and set the key parameter to be the function
-    :py:obj:`hash`, or use a :py:obj:`weakref` as the key.
-
-    The container can be any object that supports __contains__.
-    If the container is a set or dict, the method add or __setitem__ will be
-    used automatically. Any other method may be provided explicitly using the
-    add parameter.
-
-    Beware that key=id is only useful for cases where id() is not unique.
-
-    Note: This is not thread safe.
-
-    .. versionadded: 3.0
-
-    :param iterable: the source iterable
-    :type iterable: collections.abc.Iterable
-    :param container: storage of seen items
-    :type container: type
-    :param key: function to convert the item to a key
-    :type key: callable
-    :param add: function to add an item to the container
-    :type add: callable
-    """
-    if container is None:
-        container = set()
-
-    if not add:
-        if hasattr(container, 'add'):
-            def container_add(x) -> None:
-                container.add(key(x) if key else x)
-
-            add = container_add
-        else:
-            def container_setitem(x) -> None:
-                container.__setitem__(key(x) if key else x,
-                                      True)
-
-            add = container_setitem
-
-    for item in iterable:
-        try:
-            if (key(item) if key else item) not in container:
-                add(item)
-                yield item
-        except StopIteration:
-            return
-
-
-class CombinedError(KeyError, IndexError):
-
-    """An error that gets caught by both KeyError and IndexError.
-
-    .. versionadded:: 3.0
-    """
-
-
-class EmptyDefault(str, Mapping):
-
-    """
-    A default for a not existing siteinfo property.
-
-    It should be chosen if there is no better default known. It acts like an
-    empty collections, so it can be iterated through it safely if treated as a
-    list, tuple, set or dictionary. It is also basically an empty string.
-
-    Accessing a value via __getitem__ will result in a combined KeyError and
-    IndexError.
-
-    .. versionadded:: 3.0
-    .. versionchanged:: 6.2
-       ``empty_iterator()`` was removed in favour of ``iter()``.
-    """
-
-    def __init__(self) -> None:
-        """Initialise the default as an empty string."""
-        str.__init__(self)
-
-    def __iter__(self):
-        """An iterator which does nothing and drops the argument."""
-        return iter(())
-
-    def __getitem__(self, key):
-        """Raise always a :py:obj:`CombinedError`."""
-        raise CombinedError(key)
-
-
-EMPTY_DEFAULT = EmptyDefault()
 
 
 class SelfCallMixin:
@@ -1095,29 +566,6 @@ class SelfCallString(SelfCallMixin, str):
     """
 
 
-class DequeGenerator(Iterator, collections.deque):
-
-    """A generator that allows items to be added during generating.
-
-    .. versionadded:: 3.0
-    .. versionchanged:: 6.1
-       Provide a representation string.
-    """
-
-    def __next__(self):
-        """Iterator method."""
-        if self:
-            return self.popleft()
-        raise StopIteration
-
-    def __repr__(self) -> str:
-        """Provide an object representation without clearing the content."""
-        items = list(self)
-        result = '{}({})'.format(self.__class__.__name__, items)
-        self.extend(items)
-        return result
-
-
 def open_archive(filename: str, mode: str = 'rb', use_extension: bool = True):
     """
     Open a file and uncompress it if needed.
@@ -1148,9 +596,6 @@ def open_archive(filename: str, mode: str = 'rb', use_extension: bool = True):
         immediately raise that error but only on reading it.
     :raises lzma.LZMAError: When error occurs during compression or
         decompression or when initializing the state with lzma or xz.
-    :raises ImportError: When file is compressed with bz2 but neither bz2 nor
-        bz2file is importable, or when file is compressed with lzma or xz but
-        lzma is not importable.
     :return: A file-like object returning the uncompressed data in binary mode.
     :rtype: file-like object
     """
@@ -1166,7 +611,7 @@ def open_archive(filename: str, mode: str = 'rb', use_extension: bool = True):
     if mode in ('r', 'a', 'w'):
         mode += 'b'
     elif mode not in ('rb', 'ab', 'wb'):
-        raise ValueError('Invalid mode: "{}"'.format(mode))
+        raise ValueError(f'Invalid mode: "{mode}"')
 
     if use_extension:
         # if '.' not in filename, it'll be 1 character long but otherwise
@@ -1186,14 +631,12 @@ def open_archive(filename: str, mode: str = 'rb', use_extension: bool = True):
             extension = ''
 
     if extension == 'bz2':
-        if isinstance(bz2, ImportError):
-            raise bz2
-        return bz2.BZ2File(filename, mode)
+        binary = bz2.BZ2File(filename, mode)
 
-    if extension == 'gz':
-        return gzip.open(filename, mode)
+    elif extension == 'gz':
+        binary = gzip.open(filename, mode)
 
-    if extension == '7z':
+    elif extension == '7z':
         if mode != 'rb':
             raise NotImplementedError('It is not possible to write a 7z file.')
 
@@ -1203,25 +646,25 @@ def open_archive(filename: str, mode: str = 'rb', use_extension: bool = True):
                                        stderr=subprocess.PIPE,
                                        bufsize=65535)
         except OSError:
-            raise ValueError('7za is not installed or cannot '
-                             'uncompress "{}"'.format(filename))
-        else:
-            stderr = process.stderr.read()
-            process.stderr.close()
-            if stderr != b'':
-                process.stdout.close()
-                raise OSError(
-                    'Unexpected STDERR output from 7za {}'.format(stderr))
-            return process.stdout
+            raise ValueError(
+                f'7za is not installed or cannot uncompress "{filename}"')
 
-    if extension in ('lzma', 'xz'):
-        if isinstance(lzma, ImportError):
-            raise lzma
+        stderr = process.stderr.read()
+        process.stderr.close()
+        if stderr != b'':
+            process.stdout.close()
+            raise OSError(
+                f'Unexpected STDERR output from 7za {stderr}')
+        binary = process.stdout
+
+    elif extension in ('lzma', 'xz'):
         lzma_fmts = {'lzma': lzma.FORMAT_ALONE, 'xz': lzma.FORMAT_XZ}
-        return lzma.open(filename, mode, format=lzma_fmts[extension])
+        binary = lzma.open(filename, mode, format=lzma_fmts[extension])
 
-    # assume it's an uncompressed file
-    return open(filename, 'rb')
+    else:  # assume it's an uncompressed file
+        binary = open(filename, 'rb')
+
+    return binary
 
 
 def merge_unique_dicts(*args, **kwargs):
@@ -1231,7 +674,7 @@ def merge_unique_dicts(*args, **kwargs):
     The positional arguments are the dictionaries to be merged. It is also
     possible to define an additional dict using the keyword arguments.
 
-    .. versionadded: 3.0
+    .. versionadded:: 3.0
     """
     args = list(args) + [dict(kwargs)]
     conflicts = set()
@@ -1254,7 +697,7 @@ def file_mode_checker(
 ):
     """Check file mode and update it, if needed.
 
-    .. versionadded: 3.0
+    .. versionadded:: 3.0
 
     :param filename: filename path
     :param mode: requested file mode
@@ -1278,40 +721,48 @@ def file_mode_checker(
             warn(warn_str.format(filename, st_mode - stat.S_IFREG, mode))
 
 
-def compute_file_hash(filename: str, sha: str = 'sha1', bytes_to_read=None):
+def compute_file_hash(filename: Union[str, os.PathLike],
+                      sha: Union[str, Callable[[], Any]] = 'sha1',
+                      bytes_to_read: Optional[int] = None) -> str:
     """Compute file hash.
 
     Result is expressed as hexdigest().
 
-    .. versionadded: 3.0
+    .. versionadded:: 3.0
+    .. versionchanged:: 8.2
+       *sha* may be  also a hash constructor, or a callable that returns
+       a hash object.
+
 
     :param filename: filename path
-    :param sha: hashing function among the following in hashlib:
-        md5(), sha1(), sha224(), sha256(), sha384(), and sha512()
-        function name shall be passed as string, e.g. 'sha1'.
-    :param bytes_to_read: only the first bytes_to_read will be considered;
-        if file size is smaller, the whole file will be considered.
-    :type bytes_to_read: None or int
-
+    :param sha: hash algorithm available with hashlib: ``sha1()``,
+        ``sha224()``, ``sha256()``, ``sha384()``, ``sha512()``,
+        ``blake2b()``, and ``blake2s()``. Additional algorithms like
+        ``md5()``, ``sha3_224()``, ``sha3_256()``, ``sha3_384()``,
+        ``sha3_512()``, ``shake_128()`` and ``shake_256()`` may also be
+        available. *sha* must either be a hash algorithm name as a str
+        like ``'sha1'`` (default), a hash constructor like
+        ``hashlib.sha1``, or a callable that returns a hash object like
+        ``lambda: hashlib.sha1()``.
+    :param bytes_to_read: only the first bytes_to_read will be
+        considered; if file size is smaller, the whole file will be
+        considered.
     """
-    size = os.path.getsize(filename)
-    if bytes_to_read is None:
-        bytes_to_read = size
-    else:
-        bytes_to_read = min(bytes_to_read, size)
-    step = 1 << 20
-
-    shas = ['md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512']
-    assert sha in shas
-    sha = getattr(hashlib, sha)()  # sha instance
-
     with open(filename, 'rb') as f:
-        while bytes_to_read > 0:
-            read_bytes = f.read(min(bytes_to_read, step))
-            assert read_bytes  # make sure we actually read bytes
-            bytes_to_read -= len(read_bytes)
-            sha.update(read_bytes)
-    return sha.hexdigest()
+        if PYTHON_VERSION < (3, 11) or bytes_to_read is not None:
+            digest = sha() if callable(sha) else hashlib.new(sha)
+            size = os.path.getsize(filename)
+            bytes_to_read = min(bytes_to_read or size, size)
+            step = 1 << 20
+            while bytes_to_read > 0:
+                read_bytes = f.read(min(bytes_to_read, step))
+                assert read_bytes  # make sure we actually read bytes
+                bytes_to_read -= len(read_bytes)
+                digest.update(read_bytes)
+        else:
+            digest = hashlib.file_digest(f, sha)
+
+    return digest.hexdigest()
 
 
 def cached(*arg: Callable) -> Any:
@@ -1359,3 +810,64 @@ def cached(*arg: Callable) -> Any:
             return val
 
     return wrapper
+
+
+# Deprecate objects which has to be imported from tools.collections instead
+wrapper = ModuleDeprecationWrapper(__name__)
+wrapper.add_deprecated_attr(
+    'CombinedError',
+    replacement_name='pywikibot.tools.collections.CombinedError',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'DequeGenerator',
+    replacement_name='pywikibot.tools.collections.DequeGenerator',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'EmptyDefault',
+    replacement_name='pywikibot.tools.collections.EmptyDefault',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'SizedKeyCollection',
+    replacement_name='pywikibot.tools.collections.SizedKeyCollection',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'EMPTY_DEFAULT',
+    replacement_name='pywikibot.tools.collections.EMPTY_DEFAULT',
+    since='7.6.0')
+
+# Deprecate objects which has to be imported from tools.itertools instead
+wrapper.add_deprecated_attr(
+    'itergroup',
+    # new replacement in 8.2
+    replacement_name='pywikibot.backports.batched',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'islice_with_ellipsis',
+    replacement_name='pywikibot.tools.itertools.islice_with_ellipsis',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'intersect_generators',
+    replacement_name='pywikibot.tools.itertools.intersect_generators',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'roundrobin_generators',
+    replacement_name='pywikibot.tools.itertools.roundrobin_generators',
+    since='7.6.0')
+wrapper.add_deprecated_attr(
+    'filter_unique',
+    replacement_name='pywikibot.tools.itertools.filter_unique',
+    since='7.6.0')
+
+# Deprecate objects which has to be imported from tools.threading instead
+wrapper.add_deprecated_attr(
+    'RLock',
+    replacement_name='pywikibot.tools.threading.RLock',
+    since='7.7.0')
+wrapper.add_deprecated_attr(
+    'ThreadedGenerator',
+    replacement_name='pywikibot.tools.threading.ThreadedGenerator',
+    since='7.7.0')
+wrapper.add_deprecated_attr(
+    'ThreadList',
+    replacement_name='pywikibot.tools.threading.ThreadList',
+    since='7.7.0')

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 r"""
 This script can be used for reverting certain edits.
 
@@ -35,7 +35,7 @@ and override its `callback` method. Here is a sample:
 
 """
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -43,6 +43,7 @@ from typing import Union
 
 import pywikibot
 from pywikibot import i18n
+from pywikibot.backports import Container
 from pywikibot.bot import OptionHandler
 from pywikibot.date import format_date, formatYear
 from pywikibot.exceptions import APIError, Error
@@ -81,13 +82,14 @@ class BaseRevertBot(OptionHandler):
             if callback(item):
                 result = self.revert(item)
                 if result:
-                    self.log('{}: {}'.format(item['title'], result))
+                    pywikibot.info(f"{item['title']}: {result}")
                 else:
-                    self.log('Skipped {}'.format(item['title']))
+                    pywikibot.info(f"Skipped {item['title']}")
             else:
-                self.log('Skipped {} by callback'.format(item['title']))
+                pywikibot.info(f"Skipped {item['title']} by callback")
 
-    def callback(self, item) -> bool:
+    @staticmethod
+    def callback(item: Container) -> bool:
         """Callback function."""
         return 'top' in item
 
@@ -110,10 +112,9 @@ class BaseRevertBot(OptionHandler):
 
         rev = history[1]
 
-        pywikibot.output('\n\n>>> <<lightpurple>>{0}<<default>> <<<'
-                         .format(page.title(as_link=True,
-                                            force_interwiki=True,
-                                            textlink=True)))
+        pywikibot.info('\n\n>>> <<lightpurple>>{}<<default>> <<<'
+                       .format(page.title(as_link=True, force_interwiki=True,
+                                          textlink=True)))
 
         if not self.opt.rollback:
             comment = i18n.twtranslate(
@@ -140,15 +141,11 @@ class BaseRevertBot(OptionHandler):
         except Error:
             pass
         else:
-            return 'The edit(s) made in {} by {} was rollbacked'.format(
-                page.title(), self.user)
+            return (f'The edit(s) made in {page.title()} by {self.user}'
+                    ' was rollbacked')
 
         pywikibot.exception(exc_info=False)
         return False
-
-    def log(self, msg) -> None:
-        """Log the message msg."""
-        pywikibot.output(msg)
 
 
 # for compatibility only

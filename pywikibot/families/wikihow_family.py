@@ -1,9 +1,9 @@
-"""Family module for Wikihow Wiki.
+"""Family module for wikiHow wiki.
 
 .. versionadded:: 3.0
 """
 #
-# (C) Pywikibot team, 2020-2022
+# (C) Pywikibot team, 2020-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -13,7 +13,7 @@ from pywikibot.tools import classproperty
 
 class Family(family.SubdomainFamily):
 
-    """Family class for Wikihow Wiki.
+    """Family class for wikiHow Wiki.
 
     .. versionadded:: 3.0
     """
@@ -21,10 +21,10 @@ class Family(family.SubdomainFamily):
     name = 'wikihow'
     domain = 'wikihow.com'
 
-    codes = (
+    codes = [
         'ar', 'cs', 'de', 'en', 'es', 'fr', 'hi', 'id', 'it', 'ja', 'ko', 'nl',
         'pt', 'ru', 'th', 'tr', 'vi', 'zh',
-    )
+    ]
 
     removed_wikis = ['ca', 'cy', 'fa', 'he', 'pl', 'ur']
 
@@ -33,7 +33,7 @@ class Family(family.SubdomainFamily):
 
     @classproperty
     def domains(cls):
-        """List of domains used by family wikihow."""
+        """List of domains used by family wikiHow."""
         return [
             cls.domain,
             'wikihow.cz',  # cs
@@ -60,7 +60,3 @@ class Family(family.SubdomainFamily):
     def scriptpath(self, code) -> str:
         """Return the script path for this family."""
         return ''
-
-    def protocol(self, code) -> str:
-        """Return 'https' as the protocol."""
-        return 'https'

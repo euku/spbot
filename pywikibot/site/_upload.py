@@ -1,6 +1,6 @@
 """Objects representing API upload to MediaWiki site."""
 #
-# (C) Pywikibot team, 2009-2022
+# (C) Pywikibot team, 2009-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -11,11 +11,7 @@ from typing import Optional
 from warnings import warn
 
 import pywikibot
-from pywikibot.exceptions import (
-    APIError,
-    Error,
-    UploadError,
-)
+from pywikibot.exceptions import APIError, Error, UploadError
 from pywikibot.tools import compute_file_hash
 
 
@@ -51,9 +47,10 @@ class Uploader:
         codes for which an equivalent callable would return True if all
         UploadError codes are in thet list. If the result is False it'll
         not continue uploading the file and otherwise disable any warning
-        and reattempt to upload the file. NOTE: If report_success is True
-        or None it'll raise an UploadError exception if the static
-        boolean is False.
+        and reattempt to upload the file.
+
+        .. note:: If report_success is True or None it'll raise an
+           UploadError exception if the static boolean is False.
     :type ignore_warnings: bool or callable or iterable of str
     :param report_success: If the upload was successful it'll print a
         success message and if ignore_warnings is set to False it'll
@@ -61,6 +58,30 @@ class Uploader:
         (default) it'll be True if ignore_warnings is a bool and False
         otherwise. If it's True or None ignore_warnings must be a bool.
     """
+
+    upload_warnings = {
+        # map API warning codes to user error messages
+        # {msg} will be replaced by message string from API response
+        'duplicate-archive':
+            'The file is a duplicate of a deleted file {msg}.',
+        'was-deleted': 'The file {msg} was previously deleted.',
+        'empty-file': 'File {msg} is empty.',
+        'exists': 'File {msg} already exists.',
+        'duplicate': 'Uploaded file is a duplicate of {msg}.',
+        'badfilename': 'Target filename is invalid.',
+        'filetype-unwanted-type': 'File {msg} type is unwanted type.',
+        'exists-normalized':
+            'File exists with different extension as {msg!r}.',
+        'bad-prefix': 'Target filename has a bad prefix {msg}.',
+        'page-exists':
+            'Target filename exists but with a different file {msg}.',
+
+        # API-returned message string will be timestamps, not much use here
+        'no-change': 'The upload is an exact duplicate of the current version '
+                     'of this file.',
+        'duplicate-version': 'The upload is an exact duplicate of older '
+                             'version(s) of this file.',
+    }
 
     def __init__(self,
                  site: 'pywikibot.site.APISite',
@@ -111,6 +132,16 @@ class Uploader:
 
         return self._upload(self.ignore_warnings, self.report_success)
 
+    @classmethod
+    def create_warnings_list(cls, response, file_key):
+        """Create a list of upload errors."""
+        return [UploadError(warning,
+                            cls.upload_warnings.get(warning, '{msg}')
+                            .format(msg=data),
+                            file_key,
+                            response['offset'])
+                for warning, data in response['warnings'].items()]
+
     def _upload(self, ignore_warnings, report_success,
                 file_key=None, offset=0) -> bool:
         """Recursive Upload method.
@@ -124,48 +155,8 @@ class Uploader:
             default starts at 0.
         :return: Whether the upload was successful.
         """
-
-        def create_warnings_list(response):
-            return [
-                UploadError(
-                    warning,
-                    upload_warnings.get(warning, '{msg}').format(msg=data),
-                    file_key, response['offset'])
-                for warning, data in response['warnings'].items()]
-
-        # some warning keys have been changed
-        warning_keys = {
-            'nochange': 'no-change',
-            'duplicateversions': 'duplicate-version',
-            'emptyfile': 'empty-file',
-        }
-
-        upload_warnings = {
-            # map API warning codes to user error messages
-            # {msg} will be replaced by message string from API response
-            'duplicate-archive':
-                'The file is a duplicate of a deleted file {msg}.',
-            'was-deleted': 'The file {msg} was previously deleted.',
-            'empty-file': 'File {msg} is empty.',
-            'exists': 'File {msg} already exists.',
-            'duplicate': 'Uploaded file is a duplicate of {msg}.',
-            'badfilename': 'Target filename is invalid.',
-            'filetype-unwanted-type': 'File {msg} type is unwanted type.',
-            'exists-normalized': 'File exists with different extension as '
-                                 '"{msg}".',
-            'bad-prefix': 'Target filename has a bad prefix {msg}.',
-            'page-exists':
-                'Target filename exists but with a different file {msg}.',
-
-            # API-returned message string will be timestamps, not much use here
-            'no-change': 'The upload is an exact duplicate of the current '
-                         'version of this file.',
-            'duplicate-version': 'The upload is an exact duplicate of older '
-                                 'version(s) of this file.',
-        }
-
         # An offset != 0 doesn't make sense without a file key
-        assert(offset == 0 or file_key is not None)
+        assert offset == 0 or file_key is not None
 
         if report_success is None:
             report_success = isinstance(ignore_warnings, bool)
@@ -180,7 +171,7 @@ class Uploader:
 
         ignore_all_warnings = not callable(ignore_warnings) and ignore_warnings
 
-        token = self.site.tokens['edit']
+        token = self.site.tokens['csrf']
         result = None
         file_page_title = self.filepage.title(with_ns=False)
         file_size = None
@@ -190,8 +181,7 @@ class Uploader:
             if os.path.isfile(self.filename):
                 file_size = os.path.getsize(self.filename)
             elif offset is not False:
-                raise ValueError("File '{}' does not exist."
-                                 .format(self.filename))
+                raise ValueError(f"File '{self.filename}' does not exist.")
 
         # Verify the stash when a file key and offset is given:
         # requests the SHA1 and file size uploaded and compares it to
@@ -218,7 +208,7 @@ class Uploader:
                                  'using a file name.')
             props = ['size']
             if verify_stash:
-                props += ['sha1']
+                props.append('sha1')
             stash_info = self.site.stash_info(file_key, props)
             if offset is True:
                 offset = stash_info['size']
@@ -237,7 +227,7 @@ class Uploader:
             if verify_stash:
                 # The SHA1 was also requested so calculate and compare it
                 assert 'sha1' in stash_info, \
-                    'sha1 not in stash info: {}'.format(stash_info)
+                    f'sha1 not in stash info: {stash_info}'
                 sha1 = compute_file_hash(self.filename, bytes_to_read=offset)
                 if sha1 != stash_info['sha1']:
                     raise ValueError(
@@ -249,9 +239,10 @@ class Uploader:
         if file_key and file_size is None:
             assert offset is False
 
+        data = {}
         if file_key and offset is False or offset == file_size:
-            pywikibot.log('Reused already upload file using filekey "{}"'
-                          .format(file_key))
+            pywikibot.log(
+                f'Reused already upload file using filekey "{file_key}"')
             # TODO: Use sessionkey instead of filekey if necessary
             final_request = self.site._request(
                 parameters={
@@ -278,8 +269,7 @@ class Uploader:
                         'filename': file_page_title, 'comment': self.comment})
                 if chunked_upload:
                     if offset > 0:
-                        pywikibot.log('Continuing upload from byte {}'
-                                      .format(offset))
+                        pywikibot.log(f'Continuing upload from byte {offset}')
                     poll = False
                     while True:
 
@@ -326,12 +316,9 @@ class Uploader:
 
                         try:
                             data = req.submit()['upload']
-                            self.site._uploaddisabled = False
                         except APIError as error:
                             # TODO: catch and process foreseeable errors
-                            if error.code == 'uploaddisabled':
-                                self.site._uploaddisabled = True
-                            elif error.code == 'stashfailed' \
+                            if error.code == 'stashfailed' \
                                     and 'offset' in error.other:
                                 # TODO: Ask MediaWiki to change this
                                 # ambiguous error code.
@@ -363,8 +350,8 @@ class Uploader:
                         # Polls may not contain file key in response
                         file_key = data.get('filekey', file_key)
                         if data['result'] == 'Warning':
-                            assert('warnings' in data
-                                   and not ignore_all_warnings)
+                            assert ('warnings' in data
+                                    and not ignore_all_warnings)
                             if callable(ignore_warnings):
                                 restart = False
                                 if 'offset' not in data:
@@ -375,7 +362,8 @@ class Uploader:
                                     # T112416 and T112405#1637544
                                     restart = True
                                     data['offset'] = True
-                                if ignore_warnings(create_warnings_list(data)):
+                                if ignore_warnings(self.create_warnings_list(
+                                        data, file_key)):
                                     # Future warnings of this run
                                     # can be ignored
                                     if restart:
@@ -418,8 +406,8 @@ class Uploader:
                             final_request['async'] = self.asynchronous
                             break
                         else:
-                            raise Error(
-                                'Unrecognized result: %s' % data['result'])
+                            raise Error('Unrecognized result: {result}'
+                                        .format_map(data))
 
                 else:  # not chunked upload
                     if file_key:
@@ -442,23 +430,31 @@ class Uploader:
                 action='upload', filename=file_page_title, url=self.url,
                 comment=self.comment, text=self.text, token=token)
 
+        return self.submit(final_request, result, data.get('result'),
+                           ignore_warnings, ignore_all_warnings,
+                           report_success, file_key)
+
+    def submit(self, request, result, data_result: Optional[str],
+               ignore_warnings, ignore_all_warnings, report_success,
+               file_key) -> bool:
+        """Submit request and return whether upload was successful."""
+        # some warning keys have been changed
+        warning_keys = {
+            'nochange': 'no-change',
+            'duplicateversions': 'duplicate-version',
+            'emptyfile': 'empty-file',
+        }
+
+        token = request['token']
         while True:
             if not result:
-                final_request['watch'] = self.watch
-                final_request['ignorewarnings'] = ignore_all_warnings
-                try:
-                    result = final_request.submit()
-                    self.site._uploaddisabled = False
-                except APIError as error:
-                    # TODO: catch and process foreseeable errors
-                    if error.code == 'uploaddisabled':
-                        self.site._uploaddisabled = True
-                    raise error
-                result = result['upload']
+                request['watch'] = self.watch
+                request['ignorewarnings'] = ignore_all_warnings
+                result = request.submit()['upload']
                 pywikibot.debug(result)
 
             if 'result' not in result:
-                raise Error('Upload: unrecognized response: {}'.format(result))
+                raise Error(f'Upload: unrecognized response: {result}')
 
             if result['result'] == 'Warning':
                 assert 'warnings' in result and not ignore_all_warnings
@@ -481,7 +477,8 @@ class Uploader:
                 if not report_success:
                     result.setdefault('offset', bool(self.filename))
                     offset = result['offset'] if self.filename else False
-                    if ignore_warnings(create_warnings_list(result)):
+                    if ignore_warnings(self.create_warnings_list(result,
+                                                                 file_key)):
                         return self._upload(ignore_warnings=True,
                                             report_success=False,
                                             file_key=file_key,
@@ -497,7 +494,7 @@ class Uploader:
                 message = result['warnings'][warning]
                 warning = warning_keys.get(warning, warning)
                 raise UploadError(warning,
-                                  upload_warnings[warning]
+                                  self.upload_warnings[warning]
                                   .format(msg=message),
                                   file_key=file_key,
                                   offset=result.get('offset', False))
@@ -507,7 +504,7 @@ class Uploader:
                 assert file_key
                 pywikibot.log('Waiting for upload to be published.')
                 result = None
-                final_request = self.site.simple_request(
+                request = self.site.simple_request(
                     action='upload',
                     token=token,
                     filekey=file_key,
@@ -516,11 +513,12 @@ class Uploader:
 
             if result['result'] == 'Success':
                 if report_success:
-                    pywikibot.output('Upload successful.')
+                    pywikibot.info('Upload successful.')
                 # If we receive a nochange, that would mean we're in simulation
                 # mode, don't attempt to access imageinfo
                 if 'nochange' not in result:
                     self.filepage._load_file_revisions([result['imageinfo']])
                 return True
 
-            raise Error('Unrecognized result: %s' % data['result'])
+            raise Error(
+                f"Unrecognized result: {data_result or result['result']}")

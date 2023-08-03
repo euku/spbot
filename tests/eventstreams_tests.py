@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the eventstreams module."""
 #
-# (C) Pywikibot team, 2017-2022
+# (C) Pywikibot team, 2017-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -10,12 +10,11 @@ import unittest
 from contextlib import suppress
 from unittest import mock
 
-from pywikibot import config, Site
+from pywikibot import Site, config
 from pywikibot.comms.eventstreams import EventSource, EventStreams
 from pywikibot.family import WikimediaFamily
-from pywikibot.tools import PYTHON_VERSION
-
 from tests.aspects import DefaultSiteTestCase, TestCase, require_modules
+from tests.utils import skipping
 
 
 @mock.patch('pywikibot.comms.eventstreams.EventSource', new=mock.MagicMock())
@@ -44,10 +43,9 @@ class TestEventStreamsUrlTests(TestCase):
         self.assertEqual(e._url, e.sse_kwargs.get('url'))
         self.assertIsNone(e._total)
         self.assertIsNone(e._streams)
-        if PYTHON_VERSION >= (3, 6):
-            self.assertEqual(repr(e),
-                             "EventStreams(url='{}')"
-                             .format(self.sites[key]['hostname']))
+        self.assertEqual(repr(e),
+                         "EventStreams(url='{}')"
+                         .format(self.sites[key]['hostname']))
 
     def test_url_from_site(self, key):
         """Test EventStreams with url from site."""
@@ -60,12 +58,10 @@ class TestEventStreamsUrlTests(TestCase):
         self.assertEqual(e._url, e.sse_kwargs.get('url'))
         self.assertIsNone(e._total)
         self.assertEqual(e._streams, streams)
-        if PYTHON_VERSION >= (3, 6):
-            site_repr = 'site={}, '.format(
-                repr(site)) if site != Site() else ''
-            self.assertEqual(repr(e),
-                             "EventStreams({}streams='{}')"
-                             .format(site_repr, streams))
+        site_repr = f'site={repr(site)}, ' if site != Site() else ''
+        self.assertEqual(repr(e),
+                         "EventStreams({}streams='{}')"
+                         .format(site_repr, streams))
 
 
 @mock.patch('pywikibot.comms.eventstreams.EventSource', new=mock.MagicMock())
@@ -284,7 +280,7 @@ class EventStreamsTestClass(EventStreams):
                 n += 1
                 try:
                     element = json.loads(event.data)
-                except ValueError as e:
+                except ValueError as e:  # pragma: no cover
                     self.source.resp.close()  # close SSLSocket
                     del self.source
                     raise ValueError(
@@ -309,10 +305,8 @@ class TestEventSource(TestCase):
         ValueError 'Unterminated string' when json.load is processed
         if the limit is high enough.
         """
-        try:
+        with skipping(NotImplementedError):
             self.es = EventStreamsTestClass(streams='recentchange')
-        except NotImplementedError as e:
-            self.skipTest(e)
         limit = 50
         self.es.set_maximum_items(limit)
         self.assertLength(list(self.es), limit)

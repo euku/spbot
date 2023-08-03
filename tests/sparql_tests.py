@@ -1,10 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Test cases for the SPARQL API."""
 #
 # (C) Pywikibot team, 2016-2022
 #
 # Distributed under the terms of the MIT license.
 #
+import json
 import unittest
 from contextlib import suppress
 from unittest.mock import patch
@@ -89,6 +90,10 @@ class Container:
     def __init__(self, value):
         """Create container."""
         self.text = value
+
+    def json(self):
+        """Simulate Response.json()."""  # noqa: D402
+        return json.loads(self.text)
 
 
 class TestSparql(WikidataTestCase):

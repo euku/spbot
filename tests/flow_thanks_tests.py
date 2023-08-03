@@ -1,11 +1,12 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for thanks-related code."""
 #
-# (C) Pywikibot team, 2016-2022
+# (C) Pywikibot team, 2016-2023
 #
 # Distributed under the terms of the MIT license.
 #
 import unittest
+from contextlib import suppress
 
 from pywikibot.flow import Topic
 from tests.aspects import TestCase
@@ -45,13 +46,7 @@ class TestThankFlowPost(TestCase):
         post.thank()
         log_entries = site.logevents(logtype='thanks', total=5, page=user,
                                      start=before_time, reverse=True)
-        try:
-            next(iter(log_entries))
-        except StopIteration:
-            found_log = False
-        else:
-            found_log = True
-        self.assertTrue(found_log)
+        self.assertTrue(bool(next(log_entries, None)))
 
     def test_self_thank(self):
         """Test that thanking one's own Flow post causes an error."""
@@ -62,7 +57,5 @@ class TestThankFlowPost(TestCase):
 
 
 if __name__ == '__main__':  # pragma: no cover
-    try:
+    with suppress(SystemExit):
         unittest.main()
-    except SystemExit:
-        pass

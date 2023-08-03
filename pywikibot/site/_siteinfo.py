@@ -13,7 +13,7 @@ from typing import Any, Optional, Union
 
 import pywikibot
 from pywikibot.exceptions import APIError
-from pywikibot.tools import EMPTY_DEFAULT
+from pywikibot.tools.collections import EMPTY_DEFAULT
 
 
 class Siteinfo(Container):
@@ -29,7 +29,7 @@ class Siteinfo(Container):
     """
 
     WARNING_REGEX = re.compile(r'Unrecognized values? for parameter '
-                               r'["\']siprop["\']: (.+?)\.?$')
+                               r'["\']siprop["\']: (.+?)\.?')
 
     # Until we get formatversion=2, we have to convert empty-string properties
     # into booleans so they are easier to use.
@@ -63,7 +63,7 @@ class Siteinfo(Container):
     def clear(self) -> None:
         """Remove all items from Siteinfo.
 
-        .. versionadded: 7.1
+        .. versionadded:: 7.1
         """
         self._cache.clear()
 
@@ -77,11 +77,11 @@ class Siteinfo(Container):
          - 'semiprotectedlevels': 'autoconfirmed'
          - 'levels': '' (everybody), 'autoconfirmed', 'sysop'
          - 'types': 'create', 'edit', 'move', 'upload'
-        Otherwise it returns :py:obj:`pywikibot.tools.EMPTY_DEFAULT`.
+        Otherwise it returns :py:obj:`tools.EMPTY_DEFAULT`.
 
         :param key: The property name
         :return: The default value
-        :rtype: dict or :py:obj:`pywikibot.tools.EmptyDefault`
+        :rtype: dict or :py:obj:`tools.EmptyDefault`
         """
         if key == 'restrictions':
             # implemented in b73b5883d486db0e9278ef16733551f28d9e096d
@@ -139,10 +139,10 @@ class Siteinfo(Container):
         """
         def warn_handler(mod, message) -> bool:
             """Return True if the warning is handled."""
-            matched = Siteinfo.WARNING_REGEX.match(message)
+            matched = Siteinfo.WARNING_REGEX.fullmatch(message)
             if mod == 'siteinfo' and matched:
                 invalid_properties.extend(
-                    prop.strip() for prop in matched.group(1).split(','))
+                    prop.strip() for prop in matched[1].split(','))
                 return True
             return False
 
@@ -169,7 +169,7 @@ class Siteinfo(Container):
             if e.code == 'siunknown_siprop':
                 if len(props) == 1:
                     pywikibot.log(
-                        "Unable to get siprop '{}'".format(props[0]))
+                        f"Unable to get siprop '{props[0]}'")
                     return {props[0]: (Siteinfo._get_default(props[0]), False)}
                 pywikibot.log('Unable to get siteinfo, because at least '
                               "one property is unknown: '{}'".format(
@@ -238,7 +238,7 @@ class Siteinfo(Container):
                 pywikibot.debug(
                     "Load siteinfo properties '{}' along with 'general'"
                     .format("', '".join(props)))
-            props += ['general']
+            props.append('general')
             default_info = self._get_siteinfo(props, expiry)
             for prop in props:
                 self._cache[prop] = default_info[prop]
@@ -265,6 +265,8 @@ class Siteinfo(Container):
         It will never throw an APIError if it only stated, that the siteinfo
         property doesn't exist. Instead it will use the default value.
 
+        .. seealso:: :py:obj:`_get_siteinfo`
+
         :param key: The name of the siteinfo property.
         :param get_default: Whether to throw an KeyError if the key is invalid.
         :param cache: Caches the result internally so that future accesses via
@@ -274,7 +276,6 @@ class Siteinfo(Container):
         :return: The gathered property
         :raises KeyError: If the key is not a valid siteinfo property and the
             get_default option is set to False.
-        :see: :py:obj:`_get_siteinfo`
         """
         # If expiry is True, convert it to 0 to be coherent with
         # _get_siteinfo() and _get_general() docstring.

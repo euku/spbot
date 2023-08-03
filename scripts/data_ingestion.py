@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 r"""
 A generic bot to do data ingestion (batch uploading) of photos or other files.
 
@@ -50,18 +50,18 @@ information about files to upload.
 
 Example 'Data ingestion' template
 =================================
-.. code::
+.. code-block:: python
 
-    {{Data ingestion
-    |sourceFormat=csv
-    |csvFile=csv_ingestion.csv
-    |sourceFileKey=%(StockNumber)
-    |csvDialect=
-    |csvDelimiter=,
-    |csvEncoding=utf8
-    |formattingTemplate=Template:Data ingestion test configuration
-    |titleFormat=%(name)s - %(set)s.%(_ext)s
-    }}
+   {{Data ingestion
+   |sourceFormat=csv
+   |csvFile=csv_ingestion.csv
+   |sourceFileKey=%(StockNumber)
+   |csvDialect=
+   |csvDelimiter=,
+   |csvEncoding=utf8
+   |formattingTemplate=Template:Data ingestion test configuration
+   |titleFormat=%(name)s - %(set)s.%(_ext)s
+   }}
 
 
 Csv file
@@ -76,22 +76,20 @@ csv field Headers::
 
 Usage
 =====
-.. code::
+.. code-block:: python
 
-    python pwb.py data_ingestion -csvdir:<local_dir/> -page:<cfg_page_on_wiki>
+   python pwb.py data_ingestion -csvdir:<local_dir/> -page:<cfg_page_on_wiki>
 
 
 Example
 =======
-Warning! Put it in one line, otherwise it won't work correctly.
+.. code-block:: python
 
-.. code::
+   pwb.py data_ingestion -csvdir:"test/data" -page:"User:<Your-Username>/data_ingestion_test_template"
 
-    python pwb.py data_ingestion \
-        -csvdir:"test/data" \
-        -page:"User:<Your-Username>/data_ingestion_test_template"
+.. warning:: Put it in one line, otherwise it won't work correctly.
 
-"""
+"""  # noqa: E501
 #
 # (C) Pywikibot team, 2012-2022
 #
@@ -174,8 +172,8 @@ class Photo(pywikibot.FilePage):
         """
         Populate format string with %(name)s entries using metadata.
 
-        Note: this does not clean the title, so it may be unusable as
-        a MediaWiki page title, and cause an API exception when used.
+        .. note:: this does not clean the title, so it may be unusable as
+           a MediaWiki page title, and cause an API exception when used.
 
         :param fmt: format string
         :return: formatted string
@@ -193,8 +191,7 @@ class Photo(pywikibot.FilePage):
         for key in sorted(params.keys()):
             value = params[key]
             if not key.startswith('_'):
-                description += '|{}={}\n'.format(
-                    key, self._safe_template_value(value))
+                description += f'|{key}={self._safe_template_value(value)}\n'
         description += '}}'
 
         return description
@@ -236,7 +233,7 @@ class DataIngestionBot(pywikibot.Bot):
         """
         duplicates = page.find_duplicate_images()
         if duplicates:
-            pywikibot.output('Skipping duplicate of {!r}'.format(duplicates))
+            pywikibot.info(f'Skipping duplicate of {duplicates!r}')
             return
 
         title = page.get_title(self.titlefmt)
@@ -321,7 +318,7 @@ def main(*args: str) -> None:
         try:
             config_page.get()
         except NoPageError:
-            pywikibot.error('{} does not exist'.format(config_page))
+            pywikibot.error(f'{config_page} does not exist')
             continue
 
         configuration = DataIngestionBot.parse_configuration_page(config_page)
@@ -330,7 +327,7 @@ def main(*args: str) -> None:
         try:
             f = codecs.open(filename, 'r', configuration['csvEncoding'])
         except OSError as e:
-            pywikibot.error('{} could not be opened: {}'.format(filename, e))
+            pywikibot.error(f'{filename} could not be opened: {e}')
         else:
             with f:
                 files = CSVReader(f, urlcolumn='url',

@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Test logentries module."""
 #
-# (C) Pywikibot team, 2015-2022
+# (C) Pywikibot team, 2015-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -19,6 +19,7 @@ from pywikibot.logentries import (
 )
 from tests import unittest_print
 from tests.aspects import MetaTestCaseClass, TestCase
+from tests.utils import skipping
 
 
 class TestLogentriesBase(TestCase):
@@ -28,9 +29,9 @@ class TestLogentriesBase(TestCase):
 
     It uses the German Wikipedia for a current representation of the
     log entries and the test Wikipedia for the future representation.
-    It also tests on a wiki with MW < 1.25 to check that it can still
-    read the older format. It currently uses portalwiki which as of this
-    commit uses 1.23.16.
+    It also tests on a wiki with MW <= 1.27 to check that the module
+    works with older wikis. It currently uses infogalacticwiki which as
+    of this commit uses 1.27.1.
     """
 
     sites = {
@@ -50,8 +51,8 @@ class TestLogentriesBase(TestCase):
             'target': None,
         },
         'old': {
-            'family': AutoFamily('portalwiki',
-                                 'https://theportalwiki.com/wiki/Main_Page'),
+            'family': AutoFamily('infogalactic',
+                                 'https://infogalactic.com/info/Main_Page'),
             'code': 'en',
             'target': None,
         }
@@ -63,11 +64,11 @@ class TestLogentriesBase(TestCase):
             # This is an assertion as the tests don't make sense with newer
             # MW versions and otherwise it might not be visible that the test
             # isn't run on an older wiki.
-            self.assertLess(self.site.mw_version, '1.25')
-        try:
-            le = next(iter(self.site.logevents(logtype=logtype, total=1)))
-        except StopIteration:
-            self.skipTest('No entry found for {!r}'.format(logtype))
+            self.assertEqual(self.site.mw_version, '1.27.1')
+
+        with skipping(StopIteration,
+                      msg=f'No entry found for {logtype!r}'):
+            le = next(self.site.logevents(logtype=logtype, total=1))
         return le
 
     def _test_logevent(self, logtype):
@@ -79,21 +80,20 @@ class TestLogentriesBase(TestCase):
         if logtype not in LogEntryFactory._logtypes:
             self.assertIsInstance(logentry, OtherLogEntry)
 
-        if self.site_key == 'old':
-            self.assertNotIn('params', logentry.data)
-        else:
-            self.assertNotIn(logentry.type(), logentry.data)
-
+        # check that we only have the new implementation
+        self.assertNotIn(logentry.type(), logentry.data)
         self.assertIsInstance(logentry.action(), str)
 
         try:
             self.assertIsInstance(logentry.comment(), str)
-        except HiddenKeyError as e:
+            self.assertIsInstance(logentry.user(), str)
+            self.assertEqual(logentry.user(), logentry['user'])
+        except HiddenKeyError as e:  # pragma: no cover
             self.assertRegex(
                 str(e),
-                r"Log entry \([^)]+\) has a hidden 'comment' key and you "
+                r"Log entry \([^)]+\) has a hidden '\w+' key and you "
                 r"don't have permission to view it")
-        except KeyError as e:
+        except KeyError as e:  # pragma: no cover
             self.assertRegex(str(e), "Log entry ([^)]+) has no 'comment' key")
         else:
             self.assertEqual(logentry.comment(), logentry['comment'])
@@ -120,21 +120,19 @@ class TestLogentriesBase(TestCase):
                 self.assertIsInstance(logentry.page(), pywikibot.FilePage)
             else:
                 self.assertIsInstance(logentry.page(), pywikibot.Page)
-        else:
+        else:  # pragma: no cover
             with self.assertRaises(KeyError):
                 logentry.page()
 
         self.assertEqual(logentry.type(), logtype)
-        self.assertIsInstance(logentry.user(), str)
         self.assertGreaterEqual(logentry.logid(), 0)
 
         # test new UserDict style
         self.assertEqual(logentry.type(), logentry['type'])
-        self.assertEqual(logentry.user(), logentry['user'])
         self.assertEqual(logentry.logid(), logentry['logid'])
 
 
-class TestLogentriesMeta(MetaTestCaseClass):
+class LogentriesTestMeta(MetaTestCaseClass):
 
     """Test meta class for TestLogentries."""
 
@@ -145,21 +143,25 @@ class TestLogentriesMeta(MetaTestCaseClass):
                 """Test a single logtype entry."""
                 site = self.sites[key]['site']
                 if logtype not in site.logtypes:
-                    self.skipTest('{}: "{}" logtype not available on {}.'
-                                  .format(key, logtype, site))
+                    self.skipTest(
+                        f'{key}: {logtype!r} logtype not available on {site}.')
+                if logtype == 'upload' and key == 'old':
+                    self.skipTest(f'{key}: frequently timeouts for '
+                                  f'{logtype!r} logtype on {site} (T334729).')
+
                 self._test_logevent(logtype)
 
             return test_logevent
 
         # create test methods for the support logtype classes
         for logtype in LogEntryFactory._logtypes:
-            cls.add_method(dct, 'test_{}Entry'.format(logtype.title()),
+            cls.add_method(dct, f'test_{logtype.title()}Entry',
                            test_method(logtype))
 
         return super().__new__(cls, name, bases, dct)
 
 
-class TestLogentries(TestLogentriesBase, metaclass=TestLogentriesMeta):
+class TestLogentries(TestLogentriesBase, metaclass=LogentriesTestMeta):
 
     """Test general LogEntry properties."""
 
@@ -177,13 +179,13 @@ class TestSimpleLogentries(TestLogentriesBase):
                             - set(LogEntryFactory._logtypes)):
             if not simple_type:
                 # paraminfo also reports an empty string as a type
-                continue
+                continue  # pragma: no cover
             try:
                 self._test_logevent(simple_type)
-            except StopIteration:
+            except StopIteration:  # pragma: no cover
                 unittest_print(
-                    'Unable to test "{}" on "{}" because there are no log '
-                    'entries with that type.'.format(simple_type, key))
+                    f'Unable to test "{simple_type}" on "{key}" because there'
+                    ' are no log entries with that type.')
 
 
 class TestLogentryParams(TestLogentriesBase):
@@ -221,6 +223,9 @@ class TestLogentryParams(TestLogentriesBase):
     def test_move_entry(self, key):
         """Test MoveEntry methods."""
         logentry = self._get_logentry('move')
+        if 'actionhidden' in logentry:
+            self.skipTest(
+                f'move action was hidden due to {logentry.comment()}')
         self.assertIsInstance(logentry.target_ns, pywikibot.site.Namespace)
         self.assertEqual(logentry.target_page.namespace(),
                          logentry.target_ns.id)
@@ -271,11 +276,11 @@ class TestLogentryParams(TestLogentriesBase):
         """Test equality of LogEntry instances."""
         site = self.get_site('dewp')
         other_site = self.get_site('tewp')
-        gen1 = iter(site.logevents(reverse=True, total=2))
-        gen2 = iter(site.logevents(reverse=True, total=2))
+        gen1 = site.logevents(reverse=True, total=2)
+        gen2 = site.logevents(reverse=True, total=2)
         le1 = next(gen1)
         le2 = next(gen2)
-        le3 = next(iter(other_site.logevents(reverse=True, total=1)))
+        le3 = next(other_site.logevents(reverse=True, total=1))
         le4 = next(gen1)
         le5 = next(gen2)
         self.assertEqual(le1, le2)

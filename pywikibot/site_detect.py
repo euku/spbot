@@ -1,6 +1,6 @@
 """Classes for detecting a MediaWiki site."""
 #
-# (C) Pywikibot team, 2010-2022
+# (C) Pywikibot team, 2010-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -15,15 +15,22 @@ from urllib.parse import urljoin, urlparse
 from requests.exceptions import RequestException
 
 import pywikibot
+from pywikibot.backports import removesuffix
 from pywikibot.comms.http import fetch
-from pywikibot.exceptions import ServerError
+from pywikibot.exceptions import ClientError, ServerError
 from pywikibot.tools import MediaWikiVersion
+
+
+try:
+    from requests import JSONDecodeError
+except ImportError:  # requests < 2.27.0
+    from json import JSONDecodeError
 
 
 SERVER_DB_ERROR_MSG = \
     '<h1>Sorry! This site is experiencing technical difficulties.</h1>'
 
-MIN_VERSION = MediaWikiVersion('1.23')
+MIN_VERSION = MediaWikiVersion('1.27')
 
 
 class MWSite:
@@ -37,16 +44,15 @@ class MWSite:
         :raises pywikibot.exceptions.ServerError: a server error occurred
             while loading the site
         :raises Timeout: a timeout occurred while loading the site
-        :raises RuntimeError: Version not found or version less than 1.23
+        :raises RuntimeError: Version not found or version less than 1.27
         """
-        if fromurl.endswith('$1'):
-            fromurl = fromurl[:-2]
+        fromurl = removesuffix(fromurl, '$1')
 
         r = fetch(fromurl, **kwargs)
         check_response(r)
 
         if fromurl != r.url:
-            pywikibot.log('{} redirected to {}'.format(fromurl, r.url))
+            pywikibot.log(f'{fromurl} redirected to {r.url}')
             fromurl = r.url
 
         self.fromurl = fromurl
@@ -67,16 +73,16 @@ class MWSite:
             except (ServerError, RequestException):
                 raise
             except Exception as e:
-                pywikibot.log('MW detection failed: {!r}'.format(e))
+                pywikibot.log(f'MW detection failed: {e!r}')
 
             if not self.version:
                 self._fetch_old_version()
 
         if not self.api:
-            raise RuntimeError('Unsupported url: {}'.format(self.fromurl))
+            raise RuntimeError(f'Unsupported url: {self.fromurl}')
 
         if not self.version or self.version < MIN_VERSION:
-            raise RuntimeError('Unsupported version: {}'.format(self.version))
+            raise RuntimeError(f'Unsupported version: {self.version}')
 
         if not self.articlepath:
             if self.private_wiki:
@@ -87,12 +93,11 @@ class MWSite:
                         'Unable to determine articlepath because the wiki is '
                         'private. Use the Main Page URL instead of the API.')
             else:
-                raise RuntimeError('Unable to determine articlepath: '
-                                   '{}'.format(self.fromurl))
+                raise RuntimeError(
+                    f'Unable to determine articlepath: {self.fromurl}')
 
     def __repr__(self) -> str:
-        return '{}("{}")'.format(
-            self.__class__.__name__, self.fromurl)
+        return f'{type(self).__name__}("{self.fromurl}")'
 
     @property
     def langs(self):
@@ -101,10 +106,12 @@ class MWSite:
             self.api
             + '?action=query&meta=siteinfo&siprop=interwikimap'
               '&sifilteriw=local&format=json')
-        iw = json.loads(response.text)
-        if 'error' in iw:
-            raise RuntimeError('{} - {}'.format(iw['error']['code'],
-                                                iw['error']['info']))
+        iw = response.json()
+
+        error = iw.get('error')
+        if error:
+            raise RuntimeError(f"{error['code']} - {error['info']}")
+
         return [wiki for wiki in iw['query']['interwikimap']
                 if 'language' in wiki]
 
@@ -112,12 +119,12 @@ class MWSite:
         """Extract the version from API help with ?version enabled."""
         if self.version is None:
             try:
-                d = fetch(self.api + '?version&format=json').text
+                r = fetch(self.api + '?version&format=json')
                 try:
-                    d = json.loads(d)
-                except ValueError:
+                    d = r.json()
+                except JSONDecodeError:
                     # Fallback for old versions which didn't wrap help in json
-                    d = {'error': {'*': d}}
+                    d = {'error': {'*': r.text}}
 
                 self.version = list(filter(
                     lambda x: x.startswith('MediaWiki'),
@@ -138,16 +145,15 @@ class MWSite:
         self.private_wiki = ('error' in info
                              and info['error']['code'] == 'readapidenied')
         if self.private_wiki:
-            # user-config.py is not loaded because PYWIKIBOT_NO_USER_CONFIG
+            # user config is not loaded because PYWIKIBOT_NO_USER_CONFIG
             # is set to '2' by generate_family_file.py.
             # Prepare a temporary config for login.
             username = pywikibot.input(
                 'Private wiki detected. Login is required.\n'
                 'Please enter your username?')
             # Setup a dummy family so that we can create a site object
-            fam = pywikibot.family.AutoFamily(
-                'temporary_family',
-                self.api[:-8])
+            fam = pywikibot.family.AutoFamily('temporary_family',
+                                              self.server + self.scriptpath)
             site = pywikibot.Site(fam.code, fam, username)
             site.version = lambda: str(self.version)
             # Now the site object is able to login
@@ -253,8 +259,8 @@ class WikiHTMLPageParser(HTMLParser):
                     self._parsed_url, new_parsed_url)
 
         self._parsed_url = new_parsed_url
-        self.server = '{}://{}'.format(
-            self._parsed_url.scheme, self._parsed_url.netloc)
+        self.server = '{url.scheme}://{url.netloc}'.format(
+            url=self._parsed_url)
         self.scriptpath = self._parsed_url.path
 
     def handle_starttag(self, tag, attrs) -> None:
@@ -274,25 +280,31 @@ class WikiHTMLPageParser(HTMLParser):
 
 
 def check_response(response):
-    """Raise ServerError if the response indicates a server error.
+    """Raise ClientError or ServerError depending on http status.
 
     .. versionadded:: 3.0
     .. versionchanged:: 7.0
-       Raise a generic ServerError if http status code is not
-       IANA-registered but unofficial code
-
-
+       Raise a generic :class:`exceptions.ServerError` if http status
+       code is not IANA-registered but unofficial code
+    .. versionchanged:: 8.1
+       Raise a :class:`exceptions.ClientError` if status code is 4XX
     """
-    if response.status_code >= HTTPStatus.INTERNAL_SERVER_ERROR:
-        try:
-            msg = HTTPStatus(response.status_code).phrase
-        except ValueError as err:
-            m = re.search(r'\d{3}', err.args[0], flags=re.ASCII)
-            if not m:
-                raise err
-            msg = 'Generic Server Error ({})'.format(m.group())
+    for status_code, err_class, err_type in [
+        (HTTPStatus.INTERNAL_SERVER_ERROR, ServerError, 'Server'),
+        (HTTPStatus.BAD_REQUEST, ClientError, 'Client')
+    ]:  # highest http status code first
+        if response.status_code >= status_code:
+            try:
+                status = HTTPStatus(response.status_code)
+            except ValueError as err:
+                m = re.search(r'\d{3}', err.args[0], flags=re.ASCII)
+                if not m:
+                    raise err
+                msg = f'Generic {err_type} Error ({m.group()})'
+            else:
+                msg = f'({status}) {status.description}'
 
-        raise ServerError(msg)
+            raise err_class(msg)
 
     if response.status_code == HTTPStatus.OK \
        and SERVER_DB_ERROR_MSG in response.text:

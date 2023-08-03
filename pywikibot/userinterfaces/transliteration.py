@@ -4,6 +4,7 @@
 #
 # Distributed under the terms of the MIT license.
 #
+#: Non latin digits used by the framework
 NON_LATIN_DIGITS = {
     'bn': '০১২৩৪৫৬৭৮৯',
     'ckb': '٠١٢٣٤٥٦٧٨٩',
@@ -18,6 +19,7 @@ NON_LATIN_DIGITS = {
     'pa': '੦੧੨੩੪੫੬੭੮੯',
     'te': '౦౧౨౩౪౫౬౭౮౯',
 }
+
 
 _trans = {
     'À': 'A', 'Á': 'A', 'Â': 'A', 'Ầ': 'A', 'Ấ': 'A', 'Ẫ': 'A', 'Ẩ': 'A',
@@ -1075,6 +1077,18 @@ _trans = {
     'ઞ': 'nya', 'ଣ': 'nna', 'ധ': 'dha', 'મ': 'ma', 'ଳ': 'lla', 'ഷ': 'ssa',
     'ਹ': 'ha', 'ਗ਼': 'ghha', 'ા': 'aa', 'ୃ': 'r', 'േ': 'ee', 'ൗ': 'mark',
     'ଢ଼': 'rha', 'ୣ': 'll', '୳': 'half',
+    # Avestan
+    # https://www.wikidata.org/w/index.php?title=MediaWiki%3AGadget-SimpleTransliterate.js&type=revision&diff=1540400404&oldid=1376818617
+    '𐬀': 'a', '𐬁': 'aa', '𐬂': 'ao', '𐬃': 'aao', '𐬄': 'an', '𐬅': 'aan',
+    '𐬆': 'ae', '𐬇': 'aee', '𐬈': 'e', '𐬉': 'ee', '𐬊': 'o', '𐬋': 'oo',
+    '𐬌': 'i', '𐬍': 'ii', '𐬎': 'u', '𐬏': 'uu', '𐬐': 'ke', '𐬑': 'xe',
+    '𐬒': 'xye', '𐬓': 'xve', '𐬔': 'ge', '𐬕': 'gge', '𐬖': 'ghe',
+    '𐬗': 'ce', '𐬘': 'je', '𐬙': 'te', '𐬚': 'the', '𐬛': 'de', '𐬜': 'dhe',
+    '𐬝': 'tte', '𐬞': 'pe', '𐬟': 'fe', '𐬠': 'be', '𐬡': 'bhe', '𐬢': 'nge',
+    '𐬣': 'ngye', '𐬤': 'ngve', '𐬥': 'ne', '𐬦': 'nye', '𐬧': 'nne',
+    '𐬨': 'me', '𐬩': 'hme', '𐬪': 'yye', '𐬫': 'ye', '𐬌𐬌': 'i', '𐬬': 've',
+    '𐬎𐬎': 'u', '𐬭': 're', '𐬯': 'se', '𐬰': 'ze', '𐬱': 'she', '𐬲': 'zhe',
+    '𐬳': 'shye', '𐬴': 'sshe', '𐬵': 'he',
 }
 
 for digits in NON_LATIN_DIGITS.values():

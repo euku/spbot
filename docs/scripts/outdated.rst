@@ -1,5 +1,6 @@
+***********************
 Outdated compat scripts
-=======================
+***********************
 
 This list contains outdated scripts from :term:`compat` banch which
 haven't ported to the :term:`core` branch of Pywikibot.
@@ -136,7 +137,7 @@ on for example Japanese.
 
 splitwarning script
 -------------------
-**Splits a interwiki.log file into chunks of warnings separated by language**
+**Splits an interwiki.log file into chunks of warnings separated by language**
 
 
 standardize\_notes script
@@ -174,6 +175,6 @@ warnfile script
 
 **Script creates backlinks from a log file**
 
-A robot to implement backlinks from a interwiki.log file without checking
+A robot to implement backlinks from an interwiki.log file without checking
 them against the live wikipedia.
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Script to check language links for general pages.
 
@@ -317,7 +317,7 @@ Some configuration option can be used to change the working of this bot:
 
  without_interwiki:  save file with local articles without interwikis
 
-All these options can be changed through the user-config.py configuration file.
+All these options can be changed through the user configuration file.
 
 If interwiki.py is terminated before it is finished, it will write a dump file
 to the interwiki-dumps subdirectory. The program will read it if invoked with
@@ -328,7 +328,7 @@ that you have to break it off, use "-continue" next time.
 
 """
 #
-# (C) Pywikibot team, 2003-2022
+# (C) Pywikibot team, 2003-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -339,6 +339,7 @@ import sys
 from collections import Counter, defaultdict
 from contextlib import suppress
 from textwrap import fill
+from typing import Optional
 
 import pywikibot
 from pywikibot import (
@@ -349,6 +350,7 @@ from pywikibot import (
     textlib,
     titletranslate,
 )
+from pywikibot.backports import Iterable
 from pywikibot.bot import ListOption, OptionHandler, StandardOption
 from pywikibot.cosmetic_changes import moved_links
 from pywikibot.exceptions import (
@@ -365,7 +367,8 @@ from pywikibot.exceptions import (
     SpamblacklistError,
     UnknownSiteError,
 )
-from pywikibot.tools import SizedKeyCollection, first_upper
+from pywikibot.tools import first_upper
+from pywikibot.tools.collections import SizedKeyCollection
 
 
 docuReplacements = {
@@ -457,17 +460,16 @@ class InterwikiBotConfig:
     summary = ''
     repository = False
 
-    def note(self, text) -> None:
+    def note(self, text: str) -> None:
         """Output a notification message with.
 
         The text will be printed only if conf.quiet isn't set.
         :param text: text to be shown
-        :type text: str
         """
         if not self.quiet:
-            pywikibot.output('NOTE: ' + text)
+            pywikibot.info('NOTE: ' + text)
 
-    def readOptions(self, option) -> bool:
+    def readOptions(self, option: str) -> bool:
         """Read all commandline parameters for the global container."""
         arg, _, value = option.partition(':')
         if not arg.startswith('-'):
@@ -702,11 +704,12 @@ class Subject(interwiki_graph.Subject):
             for page in tree.filter(site):
                 # -hintsonly: before we have an origin page, any namespace will
                 # do.
-                if self.origin and page.namespace() == self.origin.namespace():
-                    if page.exists() \
-                       and not page.isRedirectPage() \
-                       and not page.isCategoryRedirect():
-                        return page
+                if self.origin \
+                   and page.namespace() == self.origin.namespace() \
+                   and page.exists() \
+                   and not page.isRedirectPage() \
+                   and not page.isCategoryRedirect():
+                    return page
         return None
 
     def translate(self, hints=None, keephintedsites: bool = False) -> None:
@@ -757,9 +760,8 @@ class Subject(interwiki_graph.Subject):
         # Bug-check: Isn't there any work still in progress? We can't work on
         # different sites at a time!
         if self.pending:
-            raise RuntimeError(
-                "BUG: Can't start to work on {}; still working on {}"
-                .format(site, self.pending))
+            raise RuntimeError(f"BUG: Can't start to work on {site}; still "
+                               f'working on {self.pending}')
         # Prepare a list of suitable pages
         result = []
         for page in self.todo.filter(site):
@@ -795,10 +797,9 @@ class Subject(interwiki_graph.Subject):
         # cannot check backlink before we have an origin page
         if self.conf.nobackonly and self.origin and page == self.origin:
             try:
-                pywikibot.output('{} has a backlink from {}.'
-                                 .format(page, linkingPage))
+                pywikibot.info(f'{page} has a backlink from {linkingPage}.')
             except UnicodeDecodeError:
-                pywikibot.output('Found a backlink for a page.')
+                pywikibot.info('Found a backlink for a page.')
             self.makeForcedStop(counter)
             return False
 
@@ -841,7 +842,7 @@ class Subject(interwiki_graph.Subject):
                 return False
 
             if self.conf.autonomous:
-                pywikibot.output(
+                pywikibot.info(
                     'NOTE: Ignoring link from page {} in namespace'
                     ' {} to page {} in namespace {}.'
                     .format(linkingPage, linkingPage.namespace(), linkedPage,
@@ -852,7 +853,7 @@ class Subject(interwiki_graph.Subject):
 
             preferredPage = self.getFoundInCorrectNamespace(linkedPage.site)
             if preferredPage:
-                pywikibot.output(
+                pywikibot.info(
                     'NOTE: Ignoring link from page {} in namespace {} to '
                     'page {} in namespace {} because page {} in the '
                     'correct namespace has already been found.'
@@ -887,9 +888,8 @@ class Subject(interwiki_graph.Subject):
                             # add the page that was entered by the user
                             self.addIfNew(alternativePage, counter, None)
                 else:
-                    pywikibot.output(
-                        'NOTE: ignoring {} and its interwiki links'
-                        .format(linkedPage))
+                    pywikibot.info(
+                        f'NOTE: ignoring {linkedPage} and its interwiki links')
                 return True
 
         # same namespaces, no problem
@@ -900,14 +900,14 @@ class Subject(interwiki_graph.Subject):
         """Check for ignoring pages."""
         if self.origin and self.conf.same == 'wiktionary':
             if page.title().lower() != self.origin.title().lower():
-                pywikibot.output('NOTE: Ignoring {} for {} in wiktionary mode'
-                                 .format(page, self.origin))
+                pywikibot.info(f'NOTE: Ignoring {page} for {self.origin} in '
+                               f'wiktionary mode')
                 return True
 
             if (page.title() != self.origin.title()
                 and self.origin.namespace().case == 'case-sensitive'
                     and page.namespace().case == 'case-sensitive'):
-                pywikibot.output(
+                pywikibot.info(
                     'NOTE: Ignoring {} for {} in wiktionary mode because both '
                     'languages are uncapitalized.'
                     .format(page, self.origin))
@@ -933,13 +933,13 @@ class Subject(interwiki_graph.Subject):
 
         if self.conf.autonomous:
             if self.origin.isDisambig() and not page.isDisambig():
-                pywikibot.output(
+                pywikibot.info(
                     'NOTE: Ignoring link from disambiguation page {} to '
                     'non-disambiguation {}'.format(self.origin, page))
                 return (True, None)
 
             if not self.origin.isDisambig() and page.isDisambig():
-                pywikibot.output(
+                pywikibot.info(
                     'NOTE: Ignoring link from non-disambiguation page {} to '
                     'disambiguation {}'.format(self.origin, page))
                 return (True, None)
@@ -949,7 +949,7 @@ class Subject(interwiki_graph.Subject):
             if self.origin.isDisambig() and not page.isDisambig():
                 disambig = self.getFoundDisambig(page.site)
                 if disambig:
-                    pywikibot.output(
+                    pywikibot.info(
                         'NOTE: Ignoring non-disambiguation page {} for {} '
                         'because disambiguation page {} has already been '
                         'found.'
@@ -967,7 +967,7 @@ class Subject(interwiki_graph.Subject):
             elif not self.origin.isDisambig() and page.isDisambig():
                 nondisambig = self.getFoundNonDisambig(page.site)
                 if nondisambig:
-                    pywikibot.output(
+                    pywikibot.info(
                         'NOTE: Ignoring disambiguation page {} for {} because '
                         'non-disambiguation page {} has already been found.'
                         .format(page, self.origin, nondisambig))
@@ -986,8 +986,8 @@ class Subject(interwiki_graph.Subject):
 
             if choice == 'a':
                 newHint = pywikibot.input(
-                    'Give the alternative for language {}, not using a '
-                    'language code:'.format(page.site.lang))
+                    f'Give the alternative for language {page.site.lang}, '
+                    f'not using a language code:')
                 alternativePage = pywikibot.Page(page.site, newHint)
                 return (True, alternativePage)
 
@@ -1001,26 +1001,23 @@ class Subject(interwiki_graph.Subject):
     def isIgnored(self, page) -> bool:
         """Return True if pages is to be ignored."""
         if page.site.lang in self.conf.neverlink:
-            pywikibot.output('Skipping link {} to an ignored language'
-                             .format(page))
+            pywikibot.info(f'Skipping link {page} to an ignored language')
             return True
 
         if page in self.conf.ignore:
-            pywikibot.output('Skipping link {} to an ignored page'
-                             .format(page))
+            pywikibot.info(f'Skipping link {page} to an ignored page')
             return True
 
         return False
 
     def reportInterwikilessPage(self, page) -> None:
         """Report interwikiless page."""
-        self.conf.note('{} does not have any interwiki links'
-                       .format(self.origin))
+        self.conf.note(f'{self.origin} does not have any interwiki links')
         if config.without_interwiki:
             with codecs.open(
                     pywikibot.config.datafilepath('without_interwiki.txt'),
                     'a', 'utf-8') as f:
-                f.write('# {} \n'.format(page))
+                f.write(f'# {page} \n')
 
     def askForHints(self, counter) -> None:
         """Ask for hints to other sites."""
@@ -1039,7 +1036,7 @@ class Subject(interwiki_graph.Subject):
 
         t = self.conf.showtextlink
         if t:
-            pywikibot.output(self.origin.get()[:t])
+            pywikibot.info(self.origin.get()[:t])
 
         while True:
             newhint = pywikibot.input('Give a hint (? to see pagetext):')
@@ -1049,9 +1046,9 @@ class Subject(interwiki_graph.Subject):
 
             if newhint == '?':
                 t += self.conf.showtextlinkadd
-                pywikibot.output(self.origin.get()[:t])
+                pywikibot.info(self.origin.get()[:t])
             elif ':' not in newhint:
-                pywikibot.output(fill(
+                pywikibot.info(fill(
                     'Please enter a hint in the format language:pagename '
                     'or type nothing if you do not have a hint.'))
             else:
@@ -1077,8 +1074,7 @@ class Subject(interwiki_graph.Subject):
         else:
             return False
 
-        self.conf.note('{} is {}redirect to {}'
-                       .format(page, redir, redirect_target))
+        self.conf.note(f'{page} is {redir}redirect to {redirect_target}')
         if self.origin is None or page == self.origin:
             # the 1st existig page becomes the origin page, if none was
             # supplied
@@ -1098,23 +1094,22 @@ class Subject(interwiki_graph.Subject):
                     counter.minus(site, count)
                 self.todo.clear()
         elif not self.conf.followredirect:
-            self.conf.note('not following {}redirects.'.format(redir))
+            self.conf.note(f'not following {redir}redirects.')
         elif page.isStaticRedirect():
-            self.conf.note('not following static {}redirects.'.format(redir))
+            self.conf.note(f'not following static {redir}redirects.')
         elif (page.site.family == redirect_target.site.family
               and not self.skipPage(page, redirect_target, counter)
               and self.addIfNew(redirect_target, counter, page)
               and config.interwiki_shownew):
-            pywikibot.output('{}: {} gives new {}redirect {}'
-                             .format(self.origin, page, redir,
-                                     redirect_target))
+            pywikibot.info(f'{self.origin}: {page} gives new {redir}redirect '
+                           f'{redirect_target}')
         return True
 
     def check_page(self, page, counter) -> None:
         """Check whether any iw links should be added to the todo list."""
         if not page.exists():
             self.conf.remove.append(str(page))
-            self.conf.note('{} does not exist. Skipping.'.format(page))
+            self.conf.note(f'{page} does not exist. Skipping.')
             if page == self.origin:
                 # The page we are working on is the page that does not
                 # exist. No use in doing any work on it in that case.
@@ -1133,7 +1128,7 @@ class Subject(interwiki_graph.Subject):
         # otherwise a redirect error would be raised
         if page_empty_check(page):
             self.conf.remove.append(str(page))
-            self.conf.note('{} is empty. Skipping.'.format(page))
+            self.conf.note(f'{page} is empty. Skipping.')
             if page == self.origin:
                 for site, count in self.todo.iter_values_len():
                     counter.minus(site, count)
@@ -1143,7 +1138,7 @@ class Subject(interwiki_graph.Subject):
             return
 
         if page.section():
-            self.conf.note('{} is a page section. Skipping.'.format(page))
+            self.conf.note(f'{page} is a page section. Skipping.')
             return
 
         # Page exists, isn't a redirect, and is a plain link (no section)
@@ -1155,13 +1150,12 @@ class Subject(interwiki_graph.Subject):
         try:
             iw = page.langlinks()
         except UnknownSiteError:
-            self.conf.note('site {} does not exist.'.format(page.site))
+            self.conf.note(f'site {page.site} does not exist.')
             return
 
         (skip, alternativePage) = self.disambigMismatch(page, counter)
         if skip:
-            pywikibot.output('NOTE: ignoring {} and its interwiki links'
-                             .format(page))
+            pywikibot.info(f'NOTE: ignoring {page} and its interwiki links')
             self.done.remove(page)
             iw = ()
             if alternativePage:
@@ -1189,9 +1183,8 @@ class Subject(interwiki_graph.Subject):
                 self.workonme = False
 
         elif self.conf.autonomous and duplicate and not skip:
-            pywikibot.output('Stopping work on {} because duplicate pages'
-                             ' {} and {} are found'
-                             .format(self.originP, duplicate, page))
+            pywikibot.info(f'Stopping work on {self.origin} because duplicate '
+                           f'pages {duplicate} and {page} are found')
             self.makeForcedStop(counter)
             try:
                 with codecs.open(
@@ -1203,12 +1196,12 @@ class Subject(interwiki_graph.Subject):
                         filename = interwiki_graph.getFilename(
                             self.origin,
                             extension=config.interwiki_graph_formats[0])
-                        f.write(' [{}{} graph]'
-                                .format(config.interwiki_graph_url, filename))
+                        f.write(
+                            f' [{config.interwiki_graph_url}{filename} graph]')
                     f.write('\n')
             # FIXME: What errors are we catching here?
             except Exception:
-                pywikibot.output(
+                pywikibot.info(
                     'File autonomous_problems.dat open or corrupted! '
                     'Try again with -restore.')
                 sys.exit()
@@ -1217,13 +1210,13 @@ class Subject(interwiki_graph.Subject):
         for link in iw:
             linkedPage = pywikibot.Page(link)
             if self.conf.hintsareright and linkedPage.site in self.hintedsites:
-                pywikibot.output(
+                pywikibot.info(
                     'NOTE: {}: {} extra interwiki on hinted site ignored {}'
                     .format(self.origin, page, linkedPage))
                 break
 
             if not self.skipPage(page, linkedPage, counter) \
-               and self.conf.followinterwiki or page == self.origin \
+               and (self.conf.followinterwiki or page == self.origin) \
                and self.addIfNew(linkedPage, counter, page):
                 # It is new. Also verify whether it is the second on the
                 # same site
@@ -1233,15 +1226,14 @@ class Subject(interwiki_graph.Subject):
                         # Still, this could be "no problem" as
                         # either may be a redirect to the other.
                         # No way to find out quickly!
-                        pywikibot.output(
+                        pywikibot.info(
                             'NOTE: {}: {} gives duplicate interwiki on same '
                             'site {}'.format(self.origin, page, linkedPage))
                         break
                 else:
                     if config.interwiki_shownew:
-                        pywikibot.output(
-                            '{}: {} gives new interwiki {}'
-                            .format(self.origin, page, linkedPage))
+                        pywikibot.info(f'{self.origin}: {page} gives new '
+                                       f'interwiki {linkedPage}')
             if self.forcedStop:
                 break
 
@@ -1296,7 +1288,7 @@ class Subject(interwiki_graph.Subject):
         """Return True if all the work for this subject has completed."""
         return not self.todo
 
-    def problem(self, txt, createneed: bool = True) -> None:
+    def problem(self, txt: str, createneed: bool = True) -> None:
         """Report a problem with the resolution of this subject."""
         pywikibot.error(txt)
         self.confirm = True
@@ -1307,9 +1299,9 @@ class Subject(interwiki_graph.Subject):
         """Report found interlanguage links with conflicts."""
         for page2 in sorted(self.found_in[page]):
             if page2 is None:
-                pywikibot.output(' ' * indent + 'Given as a hint.')
+                pywikibot.info(' ' * indent + 'Given as a hint.')
             else:
-                pywikibot.output(' ' * indent + str(page2))
+                pywikibot.info(' ' * indent + str(page2))
 
     def assemble(self):
         """Assemble language links."""
@@ -1331,22 +1323,19 @@ class Subject(interwiki_graph.Subject):
                 if site != self.origin.site:
                     new[site].append(page)
                 elif page != self.origin:
-                    self.problem('Found link to ' + page)
+                    self.problem(f'Found link to {page}')
                     self.whereReport(page)
                     errorCount += 1
 
         # See if new{} contains any problematic values
-        result = {}
         for site, pages in new.items():
             if len(pages) > 1:
                 errorCount += 1
-                self.problem('Found more than one link for ' + site)
+                self.problem(f'Found more than one link for {site}')
 
         if not errorCount and not self.conf.select:
             # no errors, so all lists have only one item
-            for site, pages in new.items():
-                result[site] = pages[0]
-            return result
+            return {site: pages[0] for site, pages in new.items()}
 
         # There are any errors.
         if config.interwiki_graph:
@@ -1358,16 +1347,16 @@ class Subject(interwiki_graph.Subject):
         if self.conf.autonomous:
             return None
 
+        result = {}
         # First loop over the ones that have more solutions
         for site, pages in new.items():
             if len(pages) <= 1:
                 continue
 
-            pywikibot.output('=' * 30)
-            pywikibot.output('Links to ' + site)
+            pywikibot.info('=' * 30)
+            pywikibot.info(f'Links to {site}')
             for i, page2 in enumerate(pages, 1):
-                pywikibot.output('  ({}) Found link to {} in:'
-                                 .format(i, page2))
+                pywikibot.info(f'  ({i}) Found link to {page2} in:')
                 self.whereReport(page2, indent=8)
 
             # TODO: allow answer to repeat previous or go back after a mistake
@@ -1389,32 +1378,28 @@ class Subject(interwiki_graph.Subject):
                 continue
 
             if not acceptall:
-                pywikibot.output('=' * 30)
+                pywikibot.info('=' * 30)
                 page2 = pages[0]
-                pywikibot.output('Found link to {} in:'.format(page2))
+                pywikibot.info(f'Found link to {page2} in:')
                 self.whereReport(page2, indent=4)
-            while True:
-                if acceptall:
-                    answer = 'a'
-                else:
-                    # TODO: allow answer to repeat previous or go back
-                    # after a mistake
-                    answer = pywikibot.input_choice(
-                        'What should be done?',
-                        [('accept', 'a'), ('reject', 'r'),
-                         ('give up', 'g'), ('accept all', 'l')], 'a',
-                        automatic_quit=False)
-                if answer == 'l':  # accept all
-                    acceptall = True
-                    answer = 'a'
-                if answer == 'a':  # accept this one
-                    result[site] = pages[0]
-                    break
-                if answer == 'g':  # give up
-                    return None
-                if answer == 'r':  # reject
-                    # None acceptable
-                    break
+
+            # TODO: allow answer to repeat previous or go back
+            # after a mistake
+            answer = 'a' if acceptall else pywikibot.input_choice(
+                'What should be done?',
+                [('accept', 'a'), ('reject', 'r'), ('give up', 'g'),
+                 ('accept all', 'l')], 'a', automatic_quit=False)
+
+            if answer == 'l':  # accept all
+                acceptall = True
+                answer = 'a'
+
+            if answer == 'a':  # accept this one
+                result[site] = pages[0]
+            elif answer == 'g':  # give up
+                return None
+            # else reject if None acceptable
+
         return result
 
     def finish(self):
@@ -1437,20 +1422,18 @@ class Subject(interwiki_graph.Subject):
             return
 
         if self.forcedStop:  # autonomous with problem
-            pywikibot.output('======Aborted processing {}======'
-                             .format(self.origin))
+            pywikibot.info(f'======Aborted processing {self.origin}======')
             return
 
         self.post_processing()
 
     def post_processing(self):
         """Some finishing processes to be done."""
-        pywikibot.output('======Post-processing {}======'.format(self.origin))
+        pywikibot.info(f'======Post-processing {self.origin}======')
         # Assemble list of accepted interwiki links
         new = self.assemble()
         if new is None:  # User said give up
-            pywikibot.output('======Aborted processing {}======'
-                             .format(self.origin))
+            pywikibot.info(f'======Aborted processing {self.origin}======')
             return
 
         # Make sure new contains every page link, including the page we are
@@ -1466,7 +1449,7 @@ class Subject(interwiki_graph.Subject):
         # Process all languages here
         self.conf.always = False
         if self.conf.limittwo:
-            self.process_limittwo(new, updatedSites)
+            self.process_limit_two(new, updatedSites)
         else:
             self.process_unlimited(new, updatedSites)
 
@@ -1506,7 +1489,7 @@ class Subject(interwiki_graph.Subject):
                         page = pywikibot.Page(link)
                         old[page.site] = page
                 except NoPageError:
-                    pywikibot.error('{} no longer exists?'.format(new[site]))
+                    pywikibot.error(f'{new[site]} no longer exists?')
                     continue
                 *_, adding, removing, modifying = compareLanguages(
                     old, new, lclSite, self.conf.summary)
@@ -1549,19 +1532,18 @@ class Subject(interwiki_graph.Subject):
 
         if page.section():
             # This is not a page, but a subpage. Do not edit it.
-            pywikibot.output('Not editing {}: not doing interwiki on subpages'
-                             .format(page))
+            pywikibot.info(
+                f'Not editing {page}: not doing interwiki on subpages')
             raise SaveError('Link has a #section')
 
         try:
             pagetext = page.get()
         except NoPageError:
-            pywikibot.output('Not editing {}: page does not exist'
-                             .format(page))
+            pywikibot.info(f'Not editing {page}: page does not exist')
             raise SaveError("Page doesn't exist")
 
         if page_empty_check(page):
-            pywikibot.output('Not editing {}: page is empty'.format(page))
+            pywikibot.info(f'Not editing {page}: page is empty')
             raise SaveError('Page is empty.')
 
         # clone original newPages dictionary, so that we can modify it to the
@@ -1579,11 +1561,11 @@ class Subject(interwiki_graph.Subject):
                    and ignorepage.site != page.site:
                     param = {'to': ignorepage, 'from': page}
                     if ignorepage not in interwikis:
-                        pywikibot.output('Ignoring link to {to} for {from}'
-                                         .format_map(param))
+                        pywikibot.info('Ignoring link to {to} for {from}'
+                                       .format_map(param))
                         new.pop(ignorepage.site)
                     else:
-                        pywikibot.output(
+                        pywikibot.info(
                             'NOTE: Not removing interwiki from {from} to '
                             '{to} (exists both commented and non-commented)'
                             .format_map(param))
@@ -1592,12 +1574,8 @@ class Subject(interwiki_graph.Subject):
         # site.
         pltmp = new[page.site]
         if pltmp != page:
-            s = 'None'
-            if pltmp is not None:
-                s = pltmp
-            pywikibot.output(
-                'BUG>>> {} is not in the list of new links! Found {}.'
-                .format(page, s))
+            pywikibot.error(
+                f'{page} is not in the list of new links! Found {pltmp}.')
             raise SaveError('BUG: sanity check failed')
 
         # Avoid adding an iw link back to itself
@@ -1610,12 +1588,10 @@ class Subject(interwiki_graph.Subject):
                 del new[stmp]
 
         # Put interwiki links into a map
-        old = {}
-        for page2 in interwikis:
-            old[page2.site] = page2
+        old = {p.site: p for p in interwikis}
 
         # Check what needs to get done
-        mods, _comment, _adding, removing, modifying = compareLanguages(
+        mods, mcomment, adding, removing, modifying = compareLanguages(
             old, new, page.site, self.conf.summary)
 
         # When running in autonomous mode without -force switch, make sure we
@@ -1636,18 +1612,13 @@ class Subject(interwiki_graph.Subject):
                         'disambiguation state.'.format(rmPage))
             # Re-Check what needs to get done
             mods, mcomment, adding, removing, modifying = compareLanguages(
-                old,
-                new,
-                page.site,
-                self.conf.summary
-            )
+                old, new, page.site, self.conf.summary)
         if not mods:
-            self.conf.note('No changes needed on page {}'.format(page))
+            self.conf.note(f'No changes needed on page {page}')
             return False
 
-        pywikibot.output('<<lightpurple>>Updating links on page {}.<<default>>'
-                         .format(page))
-        pywikibot.output('Changes to be made: {}'.format(mods))
+        pywikibot.info(f'<<lightpurple>>Updating links on page {page}.')
+        pywikibot.info(f'Changes to be made: {mods}')
         oldtext = page.get()
         template = (page.namespace() == 10)
         newtext = textlib.replaceLanguageLinks(oldtext, new,
@@ -1656,14 +1627,12 @@ class Subject(interwiki_graph.Subject):
         # This is for now. Later there should be different funktions for each
         # kind
         if not botMayEdit(page):
+            pywikibot.info(f'SKIPPING: {page} ', newline=False)
             if template:
-                pywikibot.output(
-                    'SKIPPING: {} should have interwiki links on subpage.'
-                    .format(page))
+                msg = 'should have interwiki links on subpage.'
             else:
-                pywikibot.output(
-                    'SKIPPING: {} is under construction or to be deleted.'
-                    .format(page))
+                msg = 'is under construction or to be deleted.'
+            pywikibot.info(msg)
             return False
 
         if newtext == oldtext:
@@ -1727,45 +1696,42 @@ class Subject(interwiki_graph.Subject):
                 pywikibot.error(e)
                 return False
             except LockedPageError:
-                pywikibot.output('Page {} is locked. Skipping.'
-                                 .format(page))
+                pywikibot.info(f'Page {page} is locked. Skipping.')
                 raise SaveError('Locked')
             except EditConflictError:
-                pywikibot.output(
+                pywikibot.info(
                     'ERROR putting page: An edit conflict occurred. '
                     'Giving up.')
                 raise SaveError('Edit conflict')
             except SpamblacklistError as error:
-                pywikibot.output(
-                    'ERROR putting page: {} blacklisted by spamfilter. '
-                    'Giving up.'.format(error.url))
+                pywikibot.info(f'ERROR putting page: {error.url} blacklisted '
+                               f'by spamfilter. Giving up.')
                 raise SaveError('Spam filter')
             except PageSaveRelatedError as error:
-                pywikibot.output('ERROR putting page: {}'
-                                 .format(error.args,))
+                pywikibot.info(f'ERROR putting page: {error.args}')
                 raise SaveError('PageSaveRelatedError')
             except OSError as error:
                 if timeout > 3600:
                     raise
-                pywikibot.output('ERROR putting page: {}'
-                                 .format(error.args,))
-                pywikibot.output('Sleeping {} seconds before trying again.'
-                                 .format(timeout,))
+                pywikibot.info(f'ERROR putting page: {error.args}')
+                pywikibot.info(
+                    f'Sleeping {timeout} seconds before trying again.')
                 timeout *= 2
                 pywikibot.sleep(timeout)
             except ServerError:
                 if timeout > 3600:
                     raise
-                pywikibot.output('ERROR putting page: ServerError.')
-                pywikibot.output('Sleeping {} seconds before trying again.'
-                                 .format(timeout,))
+                pywikibot.info('ERROR putting page: ServerError.')
+                pywikibot.info(
+                    f'Sleeping {timeout} seconds before trying again.')
                 timeout *= 2
                 pywikibot.sleep(timeout)
             else:
                 break
         return True
 
-    def reportBacklinks(self, new, updatedSites) -> None:
+    @staticmethod
+    def reportBacklinks(new, updatedSites) -> None:
         """
         Report missing back links. This will be called from finish() if needed.
 
@@ -1776,54 +1742,48 @@ class Subject(interwiki_graph.Subject):
         # use sets because searching an element is faster than in lists
         expectedPages = set(new.values())
         expectedSites = set(new)
-        try:
-            for site in expectedSites - set(updatedSites):
-                page = new[site]
-                if page.section():
+
+        for site in expectedSites - set(updatedSites):
+            page = new[site]
+            if page.section():
+                continue
+
+            try:
+                linkedPages = {pywikibot.Page(link)
+                               for link in page.iterlanglinks()}
+            except NoPageError:
+                pywikibot.warning(f'Page {page} does no longer exist?!')
+                break
+
+            # To speed things up, create a dictionary which maps sites
+            # to pages. This assumes that there is only one interwiki
+            # link per language.
+            linkedPagesDict = {p.site: p for p in linkedPages}
+            for expectedPage in expectedPages - linkedPages:
+                if expectedPage == page:
                     continue
-
                 try:
-                    linkedPages = {pywikibot.Page(link)
-                                   for link in page.iterlanglinks()}
-                except NoPageError:
+                    linkedPage = linkedPagesDict[expectedPage.site]
                     pywikibot.warning(
-                        'Page {} does no longer exist?!'.format(page))
-                    break
-
-                # To speed things up, create a dictionary which maps sites
-                # to pages. This assumes that there is only one interwiki
-                # link per language.
-                linkedPagesDict = {}
-                for linkedPage in linkedPages:
-                    linkedPagesDict[linkedPage.site] = linkedPage
-                for expectedPage in expectedPages - linkedPages:
-                    if expectedPage == page:
-                        continue
-                    try:
-                        linkedPage = linkedPagesDict[expectedPage.site]
-                        pywikibot.warning(
-                            '{}: {} does not link to {} but to {}'
-                            .format(page.site.family.name,
-                                    page, expectedPage, linkedPage))
-                    except KeyError:
-                        if not expectedPage.site.is_data_repository():
-                            pywikibot.warning('{}: {} does not link to {}'
-                                              .format(page.site.family.name,
-                                                      page, expectedPage))
-                # Check for superfluous links
-                for linkedPage in linkedPages:
-                    if linkedPage in expectedPages:
-                        continue
-                    # Check whether there is an alternative page on
-                    # that language.
-                    # In this case, it was already reported above.
-                    if linkedPage.site not in expectedSites:
-                        pywikibot.warning('{}: {} links to incorrect {}'
+                        '{}: {} does not link to {} but to {}'
+                        .format(page.site.family.name,
+                                page, expectedPage, linkedPage))
+                except KeyError:
+                    if not expectedPage.site.is_data_repository():
+                        pywikibot.warning('{}: {} does not link to {}'
                                           .format(page.site.family.name,
-                                                  page, linkedPage))
-
-        except OSError:
-            pywikibot.error('could not report backlinks')
+                                                  page, expectedPage))
+            # Check for superfluous links
+            for linkedPage in linkedPages:
+                if linkedPage in expectedPages:
+                    continue
+                # Check whether there is an alternative page on
+                # that language.
+                # In this case, it was already reported above.
+                if linkedPage.site not in expectedSites:
+                    pywikibot.warning('{}: {} links to incorrect {}'
+                                      .format(page.site.family.name,
+                                              page, linkedPage))
 
 
 class InterwikiBot:
@@ -1881,31 +1841,26 @@ class InterwikiBot:
         """
         fs = self.firstSubject()
         if fs:
-            self.conf.note('The first unfinished subject is {}'
-                           .format(fs.origin))
-        pywikibot.output(
+            self.conf.note(f'The first unfinished subject is {fs.origin}')
+        pywikibot.info(
             'NOTE: Number of pages queued is {}, trying to add {} more.'
             .format(len(self.subjects), number))
         for _ in range(number):
             for page in self.pageGenerator:
                 if page in self.conf.skip:
-                    pywikibot.output('Skipping: {} is in the skip list'
-                                     .format(page))
+                    pywikibot.info(f'Skipping: {page} is in the skip list')
                     continue
                 if self.conf.skipauto:
                     dictName, year = page.autoFormat()
                     if dictName is not None:
-                        pywikibot.output(
-                            'Skipping: {} is an auto entry {}({})'
-                            .format(page, dictName, year))
+                        pywikibot.info(f'Skipping: {page} is an auto entry '
+                                       f'{dictName}({year})')
                         continue
-                if self.conf.parenthesesonly:
-                    # Only yield pages that have ( ) in titles
-                    if '(' not in page.title():
-                        continue
+                # Only yield pages that have ( ) in titles
+                if self.conf.parenthesesonly and '(' not in page.title():
+                    continue
                 if page.isTalkPage():
-                    pywikibot.output('Skipping: {} is a talk page'
-                                     .format(page))
+                    pywikibot.info(f'Skipping: {page} is a talk page')
                     continue
                 if page.namespace() == 10:
                     loc = None
@@ -1913,9 +1868,8 @@ class InterwikiBot:
                         tmpl, loc = moved_links[page.site.code]
                         del tmpl
                     if loc is not None and loc in page.title():
-                        pywikibot.output(
-                            'Skipping: {} is a templates subpage'
-                            .format(page.title()))
+                        pywikibot.info(
+                            f'Skipping: {page.title()} is a templates subpage')
                         continue
                 break
             else:  # generator stopped
@@ -1939,11 +1893,9 @@ class InterwikiBot:
         # for loop was exited by break statement
         self.pageGenerator = None
 
-    def firstSubject(self):
+    def firstSubject(self) -> Optional[Subject]:
         """Return the first subject that is still being worked on."""
-        if self.subjects:
-            return self.subjects[0]
-        return None
+        return self.subjects[0] if self.subjects else None
 
     def maxOpenSite(self):
         """
@@ -1986,10 +1938,9 @@ class InterwikiBot:
                         self.generateMore(self.conf.maxquerysize - mycount)
                     except ServerError:
                         # Could not extract allpages special page?
-                        pywikibot.output(
-                            'ERROR: could not retrieve more pages. '
-                            'Will try again in {} seconds'
-                            .format(timeout))
+                        pywikibot.error('could not retrieve more pages. '
+                                        'Will try again in {} seconds'
+                                        .format(timeout))
                         pywikibot.sleep(timeout)
                         timeout *= 2
                     else:
@@ -2011,7 +1962,7 @@ class InterwikiBot:
         # First find the best language to work on
         site = self.selectQuerySite()
         if site is None:
-            pywikibot.output('NOTE: Nothing left to do')
+            pywikibot.info('NOTE: Nothing left to do')
             return False
         # Now assemble a reasonable list of pages to get
         subjectGroup = []
@@ -2028,12 +1979,12 @@ class InterwikiBot:
                     break
 
         if not pageGroup:
-            pywikibot.output('NOTE: Nothing left to do 2')
+            pywikibot.info('NOTE: Nothing left to do 2')
             return False
 
         # Get the content of the assembled list in one blow
         gen = site.preloadpages(pageGroup, templates=True, langlinks=True,
-                                pageprops=True)
+                                pageprops=True, quiet=False)
         for _ in gen:
             # we don't want to do anything with them now. The
             # page contents will be read via the Subject class.
@@ -2053,9 +2004,9 @@ class InterwikiBot:
                 subj.finish()
                 del self.subjects[i]
 
-    def isDone(self):
+    def isDone(self) -> bool:
         """Check whether there is still more work to do."""
-        return not self and self.pageGenerator is None
+        return not self.subjects and self.pageGenerator is None
 
     def plus(self, site, count: int = 1) -> None:
         """Helper routine that the Subject class expects in a counter."""
@@ -2070,10 +2021,6 @@ class InterwikiBot:
         """Start the process until finished."""
         while not self.isDone():
             self.queryStep()
-
-    def __len__(self) -> int:
-        """Return length of subjects."""
-        return len(self.subjects)
 
 
 def compareLanguages(old, new, insite, summary):
@@ -2094,7 +2041,6 @@ def compareLanguages(old, new, insite, summary):
             return str(d[site])
     else:
         # Use short format, just the language code
-
         def fmt(d, site):
             return site.code
 
@@ -2193,7 +2139,10 @@ class InterwikiDumps(OptionHandler):
         :keyword do_continue: If true, continue alphabetically starting at the
             last of the dumped pages.
         """
-        self.site = kwargs.pop('site', pywikibot.Site())
+        try:
+            self.site = kwargs.pop('site')
+        except KeyError:  # T335720
+            self.site = pywikibot.Site()
         super().__init__(**kwargs)
 
         self.restored_files = set()
@@ -2205,7 +2154,7 @@ class InterwikiDumps(OptionHandler):
     def next_page(self):
         """Return next page title string for continue option."""
         if self._next_page == '!':
-            pywikibot.output('Dump file is empty! Starting at the beginning.')
+            pywikibot.info('Dump file is empty! Starting at the beginning.')
         return self._next_page
 
     @property
@@ -2249,10 +2198,10 @@ class InterwikiDumps(OptionHandler):
             filename = os.path.join(self.path, tail)
 
             if not os.path.exists(filename):
-                pywikibot.output(tail + ' does not exist.')
+                pywikibot.info(tail + ' does not exist.')
                 continue
 
-            pywikibot.output('Retrieving pages from dump file ' + tail)
+            pywikibot.info('Retrieving pages from dump file ' + tail)
             for page in pagegenerators.TextIOPageGenerator(filename, site):
                 if site == self.site:
                     self._next_page = page.title(with_ns=False) + '!'
@@ -2266,11 +2215,10 @@ class InterwikiDumps(OptionHandler):
                                           namespace=self.next_namespace,
                                           filterredir=False)
 
-    def write_dump(self, iterable, append: bool = True) -> None:
+    def write_dump(self, iterable: Iterable, append: bool = True) -> None:
         """Write dump file.
 
         :param iterable: an iterable of page titles to be dumped.
-        :type iterable: iterable
         :param append: if a dump already exits, append the page titles to it
             if True else overwrite it.
         """
@@ -2280,8 +2228,8 @@ class InterwikiDumps(OptionHandler):
         with codecs.open(filename, mode[0], 'utf-8') as f:
             f.write('\r\n'.join(iterable))
             f.write('\r\n')
-        pywikibot.output('Dump {site.code} ({site.family.name}) {mode}.'
-                         .format(site=self.site, mode=mode))
+        pywikibot.info(
+            f'Dump {self.site.code} ({self.site.family.name}) {mode}.')
         self.remove(filename)
 
     def delete_dumps(self) -> None:
@@ -2291,10 +2239,10 @@ class InterwikiDumps(OptionHandler):
             try:
                 os.remove(filename)
             except OSError as e:
-                pywikibot.error('Cannot delete {} due to\n{}\nDo it manually.'
-                                .format(tail, e))
+                pywikibot.error(
+                    f'Cannot delete {tail} due to\n{e}\nDo it manually.')
             else:
-                pywikibot.output('Dumpfile {} deleted'.format(tail))
+                pywikibot.info(f'Dumpfile {tail} deleted')
 
 
 def main(*args: str) -> None:
@@ -2429,11 +2377,11 @@ def main(*args: str) -> None:
         bot.run()
     except KeyboardInterrupt:
         dump.write_dump(bot.dump_titles, append)
-    except Exception:
-        pywikibot.exception(exc_info=bool(config.verbose_output))
+    except Exception:  # pragma: no cover
+        pywikibot.exception()
         dump.write_dump(bot.dump_titles, append)
     else:
-        pywikibot.output('Script terminated sucessfully.')
+        pywikibot.info('Script terminated sucessfully.')
     finally:
         dump.delete_dumps()
 

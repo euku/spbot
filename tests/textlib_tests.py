@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Test textlib module."""
 #
-# (C) Pywikibot team, 2011-2022
+# (C) Pywikibot team, 2011-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -484,7 +484,6 @@ class TestTemplateParams(TestCase):
                     self.assertEqual(func(template),
                                      [(name, OrderedDict((('b', 'c'), )))])
 
-    @require_modules('mwparserfromhell')
     def test_extract_templates_params_mwpfh(self):
         """Test using mwparserfromhell."""
         func = textlib.extract_templates_and_params
@@ -506,7 +505,6 @@ class TestTemplateParams(TestCase):
                                ('d', OrderedDict([('1', '')]))
                                ])
 
-    @require_modules('mwparserfromhell')
     def test_extract_templates_params_parser_stripped(self):
         """Test using mwparserfromhell with stripping."""
         func = functools.partial(textlib.extract_templates_and_params,
@@ -538,7 +536,6 @@ class TestTemplateParams(TestCase):
                                ('d', OrderedDict([('1', '')]))
                                ])
 
-    @require_modules('mwparserfromhell')
     def test_extract_templates_params(self):
         """Test that the normal entry point works."""
         func = functools.partial(textlib.extract_templates_and_params,
@@ -630,13 +627,13 @@ class TestTemplateParams(TestCase):
         for pattern in patterns:
             m = func(pattern)
             self.assertIsNotNone(m)
-            self.assertIsNotNone(m.group(0))
-            self.assertIsNone(m.group('name'))
-            self.assertIsNone(m.group(1))
-            self.assertIsNone(m.group('params'))
-            self.assertIsNone(m.group(2))
-            self.assertIsNotNone(m.group('unhandled_depth'))
-            self.assertTrue(m.group(0).endswith('foo {{bar}}'))
+            self.assertIsNotNone(m[0])
+            self.assertIsNone(m['name'])
+            self.assertIsNone(m[1])
+            self.assertIsNone(m['params'])
+            self.assertIsNone(m[2])
+            self.assertIsNotNone(m['unhandled_depth'])
+            self.assertTrue(m[0].endswith('foo {{bar}}'))
 
 
 class TestDisabledParts(DefaultDrySiteTestCase):
@@ -737,7 +734,7 @@ class TestReplaceLinks(TestCase):
                     return pywikibot.Link(
                         '{}#{}'
                         .format(self._count, link.section), link.site)
-                return pywikibot.Link('{}'.format(self._count), link.site)
+                return pywikibot.Link(f'{self._count}', link.site)
 
             return None
 
@@ -895,14 +892,16 @@ class TestReplaceLinks(TestCase):
         # These tests require to get the actual part which is before the title
         # (interwiki and namespace prefixes) which could be then compared
         # case insensitive.
-        self.assertEqual(
-            textlib.replace_links('[[Image:Foobar]]',
-                                  ('File:Foobar', 'File:Foo'), self.wp_site),
-            '[[File:Foo|Image:Foobar]]')
-        self.assertEqual(
-            textlib.replace_links('[[en:File:Foobar]]',
-                                  ('File:Foobar', 'File:Foo'), self.wp_site),
-            '[[File:Foo|en:File:Foobar]]')
+        tests = [
+            ('[[Image:Foobar]]', '[[File:Foo|Image:Foobar]]'),
+            ('[[en:File:Foobar]]', '[[File:Foo|en:File:Foobar]]'),
+        ]
+        for link, result in tests:
+            with self.subTest(link=link):
+                self.assertEqual(
+                    textlib.replace_links(
+                        link, ('File:Foobar', 'File:Foo'), self.wp_site),
+                    result)
 
     def test_linktrails(self):
         """Test that the linktrails are used or applied."""
@@ -941,7 +940,9 @@ class TestReplaceLinks(TestCase):
             if link.title == 'World':
                 # This must be a bytes instance not unicode
                 return b'homeworlder'
-            return None
+
+            # 'World' is the first link and leads to ValueError
+            return None  # pragma: no cover
 
         with self.assertRaisesRegex(ValueError,
                                     r'The result must be str and not bytes\.'):
@@ -1001,15 +1002,14 @@ class TestDigitsConversion(TestCase):
 
     def test_to_local(self):
         """Test converting Latin digits to local digits."""
-        self.assertEqual(textlib.to_local_digits(299792458, 'en'), 299792458)
+        self.assertEqual(textlib.to_local_digits(299792458, 'en'), '299792458')
         self.assertEqual(
             textlib.to_local_digits(299792458, 'fa'), '۲۹۹۷۹۲۴۵۸')
         self.assertEqual(
             textlib.to_local_digits(
                 '299792458 flash', 'fa'), '۲۹۹۷۹۲۴۵۸ flash')
         self.assertEqual(
-            textlib.to_local_digits(
-                '299792458', 'km'), '២៩៩៧៩២៤៥៨')
+            textlib.to_local_digits('299792458', 'km'), '២៩៩៧៩២៤៥៨')
 
     def test_to_latin(self):
         """Test converting local digits to Latin digits."""
@@ -1277,18 +1277,18 @@ class TestReplaceExcept(DefaultDrySiteTestCase):
     def test_replace_tag_category(self):
         """Test replacing not inside category links."""
         for ns_name in self.site.namespaces[14]:
-            self.assertEqual(textlib.replaceExcept('[[{}:x]]'.format(ns_name),
+            self.assertEqual(textlib.replaceExcept(f'[[{ns_name}:x]]',
                                                    'x', 'y', ['category'],
                                                    site=self.site),
-                             '[[{}:x]]'.format(ns_name))
+                             f'[[{ns_name}:x]]')
 
     def test_replace_tag_file(self):
         """Test replacing not inside file links."""
         for ns_name in self.site.namespaces[6]:
-            self.assertEqual(textlib.replaceExcept('[[{}:x]]'.format(ns_name),
+            self.assertEqual(textlib.replaceExcept(f'[[{ns_name}:x]]',
                                                    'x', 'y', ['file'],
                                                    site=self.site),
-                             '[[{}:x]]'.format(ns_name))
+                             f'[[{ns_name}:x]]')
 
         self.assertEqual(
             textlib.replaceExcept(
@@ -1536,7 +1536,7 @@ class TestGetLanguageLinks(SiteAttributeTestCase):
 
     def test_getLanguageLinks(self, key):
         """Test if the function returns the correct titles and sites."""
-        with mock.patch('pywikibot.output') as m:
+        with mock.patch('pywikibot.info') as m:
             lang_links = textlib.getLanguageLinks(self.example_text,
                                                   self.site)
         m.assert_called_once_with(
@@ -1551,18 +1551,21 @@ class TestExtractSections(DefaultDrySiteTestCase):
 
     """Test the extract_sections function."""
 
-    def _extract_sections_tests(self, result, header, sections, footer):
+    def _extract_sections_tests(self, result, header, sections, footer='',
+                                title=''):
         """Test extract_sections function."""
         self.assertIsInstance(result, tuple)
         self.assertIsInstance(result.sections, list)
-        self.assertEqual(result, (header, sections, footer))
         self.assertEqual(result.header, header)
         self.assertEqual(result.sections, sections)
         self.assertEqual(result.footer, footer)
-        if result.sections:
-            for section in sections:
-                self.assertIsInstance(section, tuple)
-                self.assertLength(section, 2)
+        self.assertEqual(result.title, title)
+        self.assertEqual(result, (header, sections, footer))
+        for section in result.sections:
+            self.assertIsInstance(section, tuple)
+            self.assertLength(section, 2)
+            self.assertIsInstance(section.level, int)
+            self.assertEqual(section.title.count('=') // 2, section.level)
 
     def test_no_sections_no_footer(self):
         """Test for text having no sections or footer."""
@@ -1583,7 +1586,7 @@ class TestExtractSections(DefaultDrySiteTestCase):
                 'content')
         result = extract_sections(text, self.site)
         self._extract_sections_tests(
-            result, 'text\n\n', [('==title==', '\ncontent')], '')
+            result, 'text\n\n', [('==title==', '\ncontent')])
 
     def test_with_section_with_footer(self):
         """Test for text having sections and footer."""
@@ -1607,8 +1610,8 @@ class TestExtractSections(DefaultDrySiteTestCase):
         self._extract_sections_tests(
             result,
             'text\n\n',
-            [('=first level=', '\nfoo\n'), ('==title==', '\nbar')],
-            '')
+            [('=first level=', '\nfoo\n'), ('==title==', '\nbar')]
+        )
 
     def test_with_h4_and_h2_sections(self):
         """Test for text having h4 and h2 sections."""
@@ -1621,7 +1624,25 @@ class TestExtractSections(DefaultDrySiteTestCase):
             result,
             'text\n\n',
             [('====title====', '\n'), ('==title 2==', '\ncontent')],
-            '')
+        )
+
+    def test_with_comments(self):
+        """Test section headers surrounded by comments."""
+        text = ('text\n\n'
+                '<!--\n multiline comment\n-->== title ==\n'
+                'content\n\n'
+                '<!-- comment --> == not title ==\n'
+                'foo\n\n'
+                '== title 2 == <!-- trailing comment -->\n'
+                'content 2')
+        result = extract_sections(text, self.site)
+        self._extract_sections_tests(
+            result,
+            'text\n\n<!--\n multiline comment\n-->',
+            [('== title ==',
+              '\ncontent\n\n<!-- comment --> == not title ==\nfoo\n\n'),
+             ('== title 2 ==', ' <!-- trailing comment -->\ncontent 2')]
+        )
 
     def test_long_comment(self):
         r"""Test for text having a long expanse of white space.
@@ -1636,6 +1657,43 @@ class TestExtractSections(DefaultDrySiteTestCase):
         text = '<!--                                         -->'
         result = extract_sections(text, self.site)
         self._extract_sections_tests(result, text, [], '')
+
+    def test_empty_header(self):
+        """Test empty section headers."""
+        text = ('text\n\n'
+                '== ==\n'
+                '=====\n'
+                '=== ===\n')
+        result = extract_sections(text, self.site)
+        self._extract_sections_tests(
+            result,
+            'text\n\n',
+            [('== ==', '\n'), ('=====', '\n'), ('=== ===', '\n')]
+        )
+
+    def test_unbalanced_headers(self):
+        """Test unbalanced section headers."""
+        text = ('text\n\n'
+                '====title===\n'
+                '==title 2===\n'
+                'content')
+        result = extract_sections(text, self.site)
+        self._extract_sections_tests(
+            result,
+            'text\n\n',
+            [('====title===', '\n'), ('==title 2===', '\ncontent')],
+        )
+
+    def test_title(self):
+        """Test title."""
+        text = "Test ''' Pywikibot ''' title."
+        result = extract_sections(text, self.site)
+        self._extract_sections_tests(
+            result,
+            "Test ''' Pywikibot ''' title.",
+            [],
+            title='Pywikibot'
+        )
 
 
 if __name__ == '__main__':  # pragma: no cover

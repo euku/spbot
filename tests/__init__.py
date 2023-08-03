@@ -1,6 +1,6 @@
 """Package tests."""
 #
-# (C) Pywikibot team, 2007-2022
+# (C) Pywikibot team, 2007-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -27,7 +27,7 @@ import requests  # noqa: F401
 
 import pywikibot.data.api
 from pywikibot import config
-from pywikibot.backports import Dict, List
+from pywikibot.backports import Dict, List, removesuffix
 from pywikibot.data.api import CachedRequest
 from pywikibot.data.api import Request as _original_Request
 from pywikibot.tools import PYTHON_VERSION
@@ -47,7 +47,7 @@ def create_path_func(base_func, subpath):
     """Return a function returning a path relative to the given directory."""
     func = functools.partial(base_func, subpath)
     func.path = base_func.path + '/' + subpath
-    func.__doc__ = 'Return a path relative to `{}/`.'.format(func.path)
+    func.__doc__ = f'Return a path relative to `{func.path}/`.'
     return func
 
 
@@ -75,7 +75,6 @@ library_test_modules = {
     'cosmetic_changes',
     'date',
     'datasite',
-    'deprecation',
     'diff',
     'djvu',
     'dry_api',
@@ -90,6 +89,7 @@ library_test_modules = {
     'flow',
     'flow_edit',
     'flow_thanks',
+    'gui',
     'http',
     'i18n',
     'interwiki_graph',
@@ -101,9 +101,9 @@ library_test_modules = {
     'logentries',
     'login',
     'mediawikiversion',
+    'memento',
     'mysql',
     'namespace',
-    'oauth',
     'page',
     'pagegenerators',
     'paraminfo',
@@ -111,20 +111,22 @@ library_test_modules = {
     'proofreadpage',
     'site',
     'site_decorators',
+    'site_generators',
     'site_detect',
+    'site_obsoletesites',
     'siteinfo',
     'sparql',
     'tests',
     'textlib',
     'thanks',
-    'thread',
-    'timestamp',
+    'time',
     'timestripper',
-    'tk',
     'token',
     'tools',
     'tools_chars',
+    'tools_deprecate',
     'tools_formatter',
+    'tools_threading',
     'ui',
     'ui_options',
     'upload',
@@ -132,6 +134,7 @@ library_test_modules = {
     'user',
     'wikibase',
     'wikibase_edit',
+    'wikiblame',
     'wikistats',
     'xmlreader'
 }
@@ -147,8 +150,10 @@ script_test_modules = {
     'fixing_redirects',
     'generate_family_file',
     'generate_user_files',
+    'harvest_template',
     'interwikidata',
     'l10n',
+    'make_dist',
     'patrolbot',
     'protectbot',
     'pwb',
@@ -158,7 +163,6 @@ script_test_modules = {
     'script',
     'template_bot',
     'uploadscript',
-    'weblinkchecker'
 }
 
 disabled_test_modules = {
@@ -167,13 +171,13 @@ disabled_test_modules = {
 }
 
 # remove "# pragma: no cover" below if this set is not empty
-disabled_tests = {}  # type: Dict[str, List[str]]
+disabled_tests: Dict[str, List[str]] = {}
 
 
 def _unknown_test_modules():
     """List tests which are to be executed."""
     dir_list = os.listdir(join_tests_path())
-    all_test_set = {name[0:-9] for name in dir_list  # strip '_tests.py'
+    all_test_set = {removesuffix(name, '_tests.py') for name in dir_list
                     if name.endswith('_tests.py')
                     and not name.startswith('_')}  # skip __init__.py and _*
 
@@ -213,10 +217,9 @@ def collector(loader=unittest.loader.defaultTestLoader):
             'Extra test modules (run after library, before scripts):\n  {}'
             .format(', '.join(extra_test_modules)))
 
-    if disabled_tests:
-        unittest_print(
-            'Skipping tests (to run: python -m unittest ...):\n  {!r}'
-            .format(disabled_tests))
+    if disabled_tests:  # pragma: no cover
+        unittest_print(f'Skipping tests (to run: python -m unittest ...):\n'
+                       f'  {disabled_tests!r}')
 
     modules = (module
                for module in chain(library_test_modules,
@@ -259,7 +262,7 @@ CachedRequest._get_cache_dir = classmethod(
     lambda cls, *args: cls._make_dir(join_cache_path()))
 
 
-# Appveyor and Github action builds are set to retry twice or thrice, which
+# AppVeyor and GitHub action builds are set to retry twice or thrice, which
 # aims to reduce the number of 'red' builds caused by intermittent server
 # problems, while also avoiding the builds taking a long time due to retries.
 # The following allows builds to retry up to three times, but higher default

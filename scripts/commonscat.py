@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 With this tool you can add the template {{commonscat}} to categories.
 
@@ -12,7 +12,7 @@ The following parameters are supported:
 -checkcurrent     Work on all category pages that use the primary commonscat
                   template.
 
-This script is a :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`.
+This script is a :py:obj:`ConfigParserBot <bot.ConfigParserBot>`.
 The following options can be set within a settings file which is scripts.ini
 by default::
 
@@ -38,7 +38,7 @@ For example to go through all categories:
 # *Found one template. Add this template
 # *Found more templates. Ask the user <- still have to implement this
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -282,8 +282,7 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
 
         commonscatLink = self.getCommonscatLink(page)
         if commonscatLink:
-            pywikibot.output('Commonscat template is already on '
-                             + page.title())
+            pywikibot.info('Commonscat template is already on ' + page.title())
             (currentCommonscatTemplate,
              currentCommonscatTarget, LinkText, _note) = commonscatLink
             checkedCommonscatTarget = self.checkCommonscatLink(
@@ -291,9 +290,8 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
 
             if currentCommonscatTarget == checkedCommonscatTarget:
                 # The current commonscat link is good
-                pywikibot.output('Commonscat link at {} to Category:{} is ok'
-                                 .format(page.title(),
-                                         currentCommonscatTarget))
+                pywikibot.info('Commonscat link at {} to Category:{} is ok'
+                               .format(page.title(), currentCommonscatTarget))
                 return
 
             if checkedCommonscatTarget:
@@ -313,16 +311,16 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
             # TODO: if the commonsLink == '', should it be removed?
 
         elif self.skipPage(page):
-            pywikibot.output('Found a template in the skip list. Skipping '
-                             + page.title())
+            pywikibot.info(
+                'Found a template in the skip list. Skipping ' + page.title())
         else:
             commonscatLink = self.find_commons_category(page)
             if commonscatLink:
                 if commonscatLink == page.title():
-                    text_to_add = '{{%s}}' % primaryCommonscat
+                    text_to_add = f'{{{{{primaryCommonscat}}}}}'
                 else:
-                    text_to_add = '{{{{{}|{}}}}}'.format(primaryCommonscat,
-                                                         commonscatLink)
+                    text_to_add = (
+                        f'{{{{{primaryCommonscat}|{commonscatLink}}}}}')
                 summary = self.opt.summary or i18n.twtranslate(
                     page.site, 'add_text-adding', {'adding': text_to_add})
                 self.put_current(add_text(page.text, text_to_add),
@@ -348,8 +346,7 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
         if linktitle and newcat != page.title(with_ns=False):
             newtext = re.sub(r'(?i)\{\{%s\|?[^{}]*(?:\{\{.*\}\})?\}\}'
                              % oldtemplate,
-                             '{{{{{}|{}|{}}}}}'.format(newtemplate, newcat,
-                                                       linktitle),
+                             f'{{{{{newtemplate}|{newcat}|{linktitle}}}}}',
                              page.get())
         elif newcat == page.title(with_ns=False):
             newtext = re.sub(r'(?i)\{\{%s\|?[^{}]*(?:\{\{.*\}\})?\}\}'
@@ -359,7 +356,7 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
         elif oldcat.strip() != newcat:  # strip trailing white space
             newtext = re.sub(r'(?i)\{\{%s\|?[^{}]*(?:\{\{.*\}\})?\}\}'
                              % oldtemplate,
-                             '{{{{{}|{}}}}}'.format(newtemplate, newcat),
+                             f'{{{{{newtemplate}|{newcat}}}}}',
                              page.get())
         else:  # nothing left to do
             return
@@ -395,7 +392,7 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
 
             checkedCommonscat = self.checkCommonscatLink(commonscatLink[1])
             if checkedCommonscat:
-                pywikibot.output(
+                pywikibot.info(
                     'Found link for {} at [[{}:{}]] to {}.'
                     .format(page.title(), ipage.site.code, ipage.title(),
                             checkedCommonscat))
@@ -471,8 +468,8 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
             return ''
 
         if not commonsPage.exists():
-            pywikibot.output('Commons category does not exist. '
-                             'Examining deletion log...')
+            pywikibot.info(
+                'Commons category does not exist. Examining deletion log...')
             logpages = commonsSite.logevents(logtype='delete',
                                              page=commonsPage)
             for logitem in logpages:
@@ -487,16 +484,16 @@ class CommonscatBot(ConfigParserBot, ExistingPageBot):
                 m = re.search(regex, logcomment, flags=re.I)
 
                 if not m:
-                    pywikibot.output(
+                    pywikibot.info(
                         "getCommonscat: {} deleted by {}. Couldn't find "
                         'move target in "{}"'
                         .format(commonsPage, loguser, logcomment))
                     break
 
-                if m.group('newcat1'):
-                    return self.checkCommonscatLink(m.group('newcat1'))
-                if m.group('newcat2'):
-                    return self.checkCommonscatLink(m.group('newcat2'))
+                if m['newcat1']:
+                    return self.checkCommonscatLink(m['newcat1'])
+                if m['newcat2']:
+                    return self.checkCommonscatLink(m['newcat2'])
 
             return ''
 

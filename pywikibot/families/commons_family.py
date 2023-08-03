@@ -1,16 +1,21 @@
 """Family module for Wikimedia Commons."""
 #
-# (C) Pywikibot team, 2005-2022
+# (C) Pywikibot team, 2005-2023
 #
 # Distributed under the terms of the MIT license.
 #
 from pywikibot import family
 
 
-# The Wikimedia Commons family
-class Family(family.WikimediaFamily):
+class Family(family.WikimediaFamily, family.DefaultWikibaseFamily):
 
-    """Family class for Wikimedia Commons."""
+    """Family class for Wikimedia Commons.
+
+    .. versionchanged:: 6.5
+       :meth:`family.WikibaseFamily.interface` was changed  to
+       :class:`DataSite<pywikibot.site._datasite.DataSite>` to enable
+       structured data.
+    """
 
     name = 'commons'
 
@@ -39,9 +44,16 @@ class Family(family.WikimediaFamily):
         '_default': (('/doc', ), ['commons']),
     }
 
-    def interface(self, code) -> str:
-        """Return 'DataSite' to enable structured data.
+    def entity_sources(self, code):
+        if code == 'commons':
+            return {
+                'item': ('wikidata', 'wikidata'),
+                'property': ('wikidata', 'wikidata'),
+            }
+        if code in ('test', 'beta'):
+            return {
+                'item': (code, 'wikidata'),
+                'property': (code, 'wikidata'),
+            }
 
-        .. versionadded 6.5
-        """
-        return 'DataSite'
+        return {}  # default

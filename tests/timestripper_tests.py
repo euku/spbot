@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for archivebot.py/Timestripper."""
 #
-# (C) Pywikibot team, 2014-2022
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -9,7 +9,8 @@ import datetime
 import re
 from contextlib import suppress
 
-from pywikibot.textlib import TimeStripper, tzoneFixedOffset
+from pywikibot.textlib import TimeStripper
+from pywikibot.time import TZoneFixedOffset
 from tests.aspects import TestCase, unittest
 
 
@@ -40,7 +41,7 @@ class TestTimeStripperWithNoDigitsAsMonths(TestTimeStripperCase):
         txt_with_one_match = 'this string has 3000, 1999 and 3000 in it'
         txt_with_two_match = 'this string has 1998, 1999 and 3000 in it'
         txt_with_no_match = 'this string has no match'
-        pat = self.ts.pyearR
+        pat = self.ts.patterns.year
 
         txt, m = self.ts._last_match_and_replace(txt_with_one_match, pat)
         self.assertEqual('this string has 3000, @@@@ and 3000 in it', txt)
@@ -62,7 +63,7 @@ class TestTimeStripperWithNoDigitsAsMonths(TestTimeStripperCase):
         txt_with_two_match = 'this string has XXX, mars and février in it'
         txt_with_three_match = 'this string has avr, mars and février in it'
         txt_with_no_match = 'this string has no match'
-        pat = self.ts.pmonthR
+        pat = self.ts.patterns.month
 
         txt, m = self.ts._last_match_and_replace(txt_with_one_match, pat)
         self.assertEqual('this string has XXX, YYY and @@@@@@@ in it', txt)
@@ -108,7 +109,7 @@ class TestTimeStripperWithDigitsAsMonths(TestTimeStripperCase):
         txt_with_two_match = 'this string has XX. 1. 12. in it'
         txt_with_three_match = 'this string has 1. 1. 12. in it'
         txt_with_no_match = 'this string has no match'
-        pat = self.ts.pmonthR
+        pat = self.ts.patterns.month
 
         txt, m = self.ts._last_match_and_replace(txt_with_one_match, pat)
         self.assertEqual('this string has XX. YY. 12. in it', txt)
@@ -152,7 +153,7 @@ class TestTimeStripperNumberAndDate(TestTimeStripperCase):
             self.ts.timestripper(
                 '2000 people will attend. --12:12, 14 December 2015 (UTC)'),
             datetime.datetime(
-                2015, 12, 14, 12, 12, tzinfo=tzoneFixedOffset(0, 'UTC')))
+                2015, 12, 14, 12, 12, tzinfo=TZoneFixedOffset(0, 'UTC')))
 
 
 class TestTimeStripperLanguage(TestCase):
@@ -224,7 +225,7 @@ class TestTimeStripperLanguage(TestCase):
         """Test that correct date is matched."""
         self.ts = TimeStripper(self.get_site(key))
 
-        tzone = tzoneFixedOffset(self.ts.site.siteinfo['timeoffset'],
+        tzone = TZoneFixedOffset(self.ts.site.siteinfo['timeoffset'],
                                  self.ts.site.siteinfo['timezone'])
 
         txt_match = self.sites[key]['match']
@@ -243,7 +244,7 @@ class TestTimeStripperLanguage(TestCase):
         self.assertEqual(self.ts.timestripper(txt_match), res)
 
         if 'match3' not in self.sites[key]:
-            return
+            return  # pragma: no cover
 
         txt_match = self.sites[key]['match3']
 
@@ -254,11 +255,8 @@ class TestTimeStripperLanguage(TestCase):
     def test_timestripper_nomatch(self, key):
         """Test that correct date is not matched."""
         self.ts = TimeStripper(self.get_site(key))
-
-        if 'nomatch' in self.sites[key]:
-            txt_no_match = self.sites[key]['nomatch']
-        else:
-            txt_no_match = '3 March 2011 19:48 (UTC) 7 March 2010 19:48 (UTC)'
+        txt_no_match = self.sites[key].get(
+            'nomatch', '3 March 2011 19:48 (UTC) 7 March 2010 19:48 (UTC)')
 
         self.assertIsNone(self.ts.timestripper(txt_no_match))
 
@@ -278,7 +276,7 @@ class TestTimeStripperTreatSpecialText(TestTimeStripperCase):
 
     date = '06:57 06 June 2015 (UTC)'
     fake_date = '05:57 06 June 2015 (UTC)'
-    tzone = tzoneFixedOffset(0, 'UTC')
+    tzone = TZoneFixedOffset(0, 'UTC')
     expected_date = datetime.datetime(2015, 6, 6, 6, 57, tzinfo=tzone)
 
     def test_timestripper_match_comment(self):
@@ -287,8 +285,7 @@ class TestTimeStripperTreatSpecialText(TestTimeStripperCase):
 
         txt_match = self.date + '<!--a test comment-->'
         exp_match = 'a test comment'
-        self.assertEqual(ts._comment_pat.search(txt_match).group(1),
-                         exp_match)
+        self.assertEqual(ts._comment_pat.search(txt_match)[1], exp_match)
 
     def test_timestripper_match_hyperlink(self):
         """Test that hyperlinks are correctly matched."""
@@ -306,9 +303,9 @@ class TestTimeStripperTreatSpecialText(TestTimeStripperCase):
         txt_match = '[[wikilink|a wikilink with no date]]'
         exp_match_link = 'wikilink'
         exp_match_anchor = '|a wikilink with no date'
-        self.assertEqual(ts._wikilink_pat.search(txt_match).group('link'),
+        self.assertEqual(ts._wikilink_pat.search(txt_match)['link'],
                          exp_match_link)
-        self.assertEqual(ts._wikilink_pat.search(txt_match).group('anchor'),
+        self.assertEqual(ts._wikilink_pat.search(txt_match)['anchor'],
                          exp_match_anchor)
 
     def test_timestripper_match_comment_with_date(self):
@@ -379,6 +376,16 @@ class TestTimeStripperTreatSpecialText(TestTimeStripperCase):
         txt_match = self.date[:9] + '[[foo]]' + self.date[9:]
         self.assertEqual(ts(txt_match), self.expected_date)
 
+    def test_timestripper_skip_html(self):
+        """Test dates in html are correctly skipped."""
+        ts = self.ts.timestripper
+
+        txt_match = '<div ' + self.fake_date + '>'
+        self.assertIsNone(ts(txt_match))
+
+        txt_match = self.date + '<div ' + self.fake_date + '>'
+        self.assertEqual(ts(txt_match), self.expected_date)
+
 
 class TestTimeStripperDoNotArchiveUntil(TestTimeStripperCase):
 
@@ -394,7 +401,7 @@ class TestTimeStripperDoNotArchiveUntil(TestTimeStripperCase):
     username = '[[User:DoNotArchiveUntil]]'
     date = '06:57 06 June 2015 (UTC)'
     user_and_date = username + ' ' + date
-    tzone = tzoneFixedOffset(0, 'UTC')
+    tzone = TZoneFixedOffset(0, 'UTC')
 
     def test_timestripper_match(self):
         """Test that dates in comments are correctly recognised."""

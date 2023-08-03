@@ -1,6 +1,6 @@
 """Objects with site methods independent of the communication interface."""
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -22,9 +22,9 @@ from pywikibot.exceptions import (
 from pywikibot.site._namespace import Namespace, NamespacesDict
 from pywikibot.throttle import Throttle
 from pywikibot.tools import (
-    cached,
     ComparableMixin,
     SelfCallString,
+    cached,
     first_upper,
     normalize_username,
 )
@@ -48,12 +48,11 @@ class BaseSite(ComparableMixin):
         if code.lower() != code:
             # Note the Site function in __init__ also emits a UserWarning
             # for this condition, showing the callers file and line no.
-            pywikibot.log('BaseSite: code "{}" converted to lowercase'
-                          .format(code))
+            pywikibot.log(f'BaseSite: code "{code}" converted to lowercase')
             code = code.lower()
         if not all(x in pywikibot.family.CODE_CHARACTERS for x in code):
-            pywikibot.log('BaseSite: code "{}" contains invalid characters'
-                          .format(code))
+            pywikibot.log(
+                f'BaseSite: code "{code}" contains invalid characters')
         self.__code = code
         if isinstance(fam, str) or fam is None:
             self.__family = pywikibot.family.Family.load(fam)
@@ -67,8 +66,8 @@ class BaseSite(ComparableMixin):
                 self.__code = self.__family.obsolete[self.__code]
                 # Note the Site function in __init__ emits a UserWarning
                 # for this condition, showing the callers file and line no.
-                pywikibot.log('Site {} instantiated using aliases code of {}'
-                              .format(self, code))
+                pywikibot.log(
+                    f'Site {self} instantiated using aliases code of {code}')
             else:
                 # no such language anymore
                 self.obsolete = True
@@ -186,8 +185,6 @@ class BaseSite(ComparableMixin):
 
     def __getattr__(self, attr):
         """Delegate undefined methods calls to the Family object."""
-        if hasattr(self.__class__, attr):
-            return getattr(self.__class__, attr)
         try:
             method = getattr(self.family, attr)
             if not callable(method):
@@ -197,8 +194,8 @@ class BaseSite(ComparableMixin):
                 f.__doc__ = method.__doc__
             return f
         except AttributeError:
-            raise AttributeError("{} instance has no attribute '{}'"
-                                 .format(self.__class__.__name__, attr))
+            raise AttributeError(f'{type(self).__name__} instance has no '
+                                 f'attribute {attr!r}') from None
 
     def __str__(self) -> str:
         """Return string representing this Site's name and code."""
@@ -211,11 +208,10 @@ class BaseSite(ComparableMixin):
 
     def __repr__(self) -> str:
         """Return internal representation."""
-        return '{}("{}", "{}")'.format(
-            self.__class__.__name__, self.code, self.family)
+        return f'{self.__class__.__name__}("{self.code}", "{self.family}")'
 
     def __hash__(self):
-        """Return hashable key."""
+        """Return hash value of instance."""
         return hash(repr(self))
 
     def languages(self):
@@ -318,27 +314,24 @@ class BaseSite(ComparableMixin):
             try:
                 name = dp.getSitelink(self)
             except NoPageError:
-                raise Error(
-                    'No disambiguation category name found in {repo} '
-                    'for {site}'.format(repo=repo_name, site=self))
+                raise Error(f'No disambiguation category name found in {repo} '
+                            f'for {self}')
 
         else:  # fallback for non WM sites
             try:
-                name = '{}:{}'.format(Namespace.CATEGORY,
-                                      self.family.disambcatname[self.code])
+                name = (f'{Namespace.CATEGORY}:'
+                        f'{self.family.disambcatname[self.code]}')
             except KeyError:
-                raise Error(
-                    'No disambiguation category name found in '
-                    '{site.family.name}_family for {site}'.format(site=self))
+                raise Error(f'No disambiguation category name found in '
+                            f'{self.family.name}_family for {self}')
 
         return pywikibot.Category(pywikibot.Link(name, self))
 
     def isInterwikiLink(self, text):  # noqa: N802
         """Return True if text is in the form of an interwiki link.
 
-        If a link object constructed using "text" as the link text parses as
-        belonging to a different site, this method returns True.
-
+        If a link object constructed using "text" as the link text parses
+        as belonging to a different site, this method returns True.
         """
         linkfam, linkcode = pywikibot.Link(text, self).parse_site()
         return linkfam != self.family.name or linkcode != self.code
@@ -380,8 +373,7 @@ class BaseSite(ComparableMixin):
         # delimiters like spaces and multiple combinations of them with
         # only one delimiter
         sep = self.family.title_delimiter_and_aliases[0]
-        pattern = re.compile('[{}]+'
-                             .format(self.family.title_delimiter_and_aliases))
+        pattern = re.compile(f'[{self.family.title_delimiter_and_aliases}]+')
         title1 = pattern.sub(sep, title1)
         title2 = pattern.sub(sep, title2)
         if title1 == title2:
@@ -413,7 +405,7 @@ class BaseSite(ComparableMixin):
 
     def interwiki_putfirst(self):
         """Return list of language codes for ordering of interwiki links."""
-        return self.family.interwiki_putfirst.get(self.code, None)
+        return self.family.interwiki_putfirst.get(self.code)
 
     def getSite(self, code):  # noqa: N802
         """Return Site object for language 'code' in this Family."""

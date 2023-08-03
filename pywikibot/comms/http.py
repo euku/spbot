@@ -11,18 +11,22 @@ This module is responsible for
     - Basic HTTP error handling
 
 This module creates and uses its own ``requests.Session`` object.
-The session is closed if the module terminates.
-If required you can use your own Session object passing it to the
-``http.session`` variable::
+The session is closed if the module terminates. If required you can use
+your own Session object passing it to the ``http.session`` variable::
 
     from pywikibot.comms import http
     session = requests.Session()
     http.session = session
 
-:py:obj:`flush()` can be called to close the session object.
+To enable access via cookies, assign cookie handling class::
+
+    session.cookies = http.cookie_jar
+
+.. versionchanged:: 8.0
+   Cookies are lazy loaded when logging to site.
 """
 #
-# (C) Pywikibot team, 2007-2022
+# (C) Pywikibot team, 2007-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -30,6 +34,7 @@ import atexit
 import codecs
 import re
 import sys
+import traceback
 from contextlib import suppress
 from http import HTTPStatus, cookiejar
 from string import Formatter
@@ -40,12 +45,13 @@ from warnings import warn
 import requests
 
 import pywikibot
-from pywikibot import config
+from pywikibot import config, tools
 from pywikibot.backports import Tuple
 from pywikibot.exceptions import (
+    Client414Error,
     FatalServerError,
-    Server414Error,
     Server504Error,
+    ServerError,
 )
 from pywikibot.logging import critical, debug, error, log, warning
 from pywikibot.tools import file_mode_checker
@@ -57,32 +63,76 @@ except ImportError as e:
     requests_oauthlib = e
 
 
-# The error message for failed SSL certificate verification
-# 'certificate verify failed' is a commonly detectable string
-SSL_CERT_VERIFY_FAILED_MSG = 'certificate verify failed'
+class PywikibotCookieJar(cookiejar.LWPCookieJar):
 
-cookie_file_path = config.datafilepath('pywikibot.lwp')
-file_mode_checker(cookie_file_path, create=True)
-cookie_jar = cookiejar.LWPCookieJar(cookie_file_path)
-try:
-    cookie_jar.load(ignore_discard=True)
-except cookiejar.LoadError:
-    debug('Loading cookies failed.')
-else:
-    debug('Loaded cookies from file.')
+    """CookieJar which create the filename and checks file permissions.
 
+    .. versionadded:: 8.0
+    """
+
+    def load(self, user: str = '', *args, **kwargs) -> None:
+        """Loads cookies from a file.
+
+        Insert the account name to the cookie filename, set the
+        instance`s filename and load the cookies.
+
+        :param user: account name to be part of the cookie filename.
+        """
+        _user = '-' + tools.as_filename(user) if user else ''
+        self.filename = config.datafilepath(f'pywikibot{_user}.lwp')
+
+        try:
+            super().load(*args, **kwargs)
+        except (cookiejar.LoadError, FileNotFoundError):
+            debug(f'Loading cookies for user {user} failed.')
+        else:
+            debug(f'Loaded cookies for user {user} from file.')
+
+    def save(self, *args, **kwargs) -> None:
+        """Check the file mode and save cookies to a file.
+
+        .. note:: *PywikibotCookieJar* must be loaded previously to set
+           the filename.
+
+        :raises ValueError: a filename was not supplied; :meth:`load`
+            must be called first.
+        """
+        if self.filename:
+            file_mode_checker(self.filename, create=True)
+        super().save(*args, **kwargs)
+
+
+#: global :class:`PywikibotCookieJar` instance.
+cookie_jar = PywikibotCookieJar()
+#: global :class:`requests.Session`.
 session = requests.Session()
 session.cookies = cookie_jar
 
 
-# Prepare flush on quit
 def flush() -> None:  # pragma: no cover
-    """Close the session object. This is called when the module terminates."""
+    """Close the session object. This is called when the module terminates.
+
+    .. versionchanged:: 8.1
+       log the traceback and show the exception value in the critical
+       message
+    """
     log('Closing network session.')
     session.close()
 
     if hasattr(sys, 'last_type'):
-        critical('Exiting due to uncaught exception {}'.format(sys.last_type))
+        log(
+            ''.join(
+                traceback.format_exception(
+                    sys.last_type,
+                    value=sys.last_value,
+                    tb=sys.last_traceback
+                )
+            )
+        )
+        critical(
+            f'Exiting due to uncaught exception {sys.last_type.__name__}: '
+            f'{sys.last_value}'
+        )
 
     log('Network session closed.')
 
@@ -138,28 +188,25 @@ def user_agent_username(username=None):
     return username
 
 
-def user_agent(site=None, format_string: str = None) -> str:
-    """
-    Generate the user agent string for a given site and format.
+def user_agent(site: Optional['pywikibot.site.BaseSite'] = None,
+               format_string: str = '') -> str:
+    """Generate the user agent string for a given site and format.
 
-    :param site: The site for which this user agent is intended. May be None.
-    :type site: BaseSite
-    :param format_string: The string to which the values will be added using
-        str.format. Is using config.user_agent_format when it is None.
+    :param site: The site for which this user agent is intended. May be
+        None.
+    :param format_string: The string to which the values will be added
+        using str.format. Is using config.user_agent_format when it is
+        empty.
     :return: The formatted user agent
     """
     values = USER_AGENT_PRODUCTS.copy()
     values.update(dict.fromkeys(['script', 'script_product'],
                                 pywikibot.bot.calledModuleName()))
+    values.update(dict.fromkeys(['family', 'code', 'lang', 'site'], ''))
 
     script_comments = []
     if config.user_agent_description:
         script_comments.append(config.user_agent_description)
-
-    values['family'] = ''
-    values['code'] = ''
-    values['lang'] = ''  # TODO: use site.lang, if known
-    values['site'] = ''
 
     username = ''
     if site:
@@ -174,7 +221,8 @@ def user_agent(site=None, format_string: str = None) -> str:
         values.update({
             'family': site.family.name,
             'code': site.code,
-            'lang': site.code,  # TODO: use site.lang, if known
+            'lang': (site.lang if site.siteinfo.is_cached('lang')
+                     else f'({site.code})'),
             'site': str(site),
         })
 
@@ -199,7 +247,7 @@ def fake_user_agent() -> str:
     return UserAgent().random
 
 
-def request(site,
+def request(site: 'pywikibot.site.BaseSite',
             uri: Optional[str] = None,
             headers: Optional[dict] = None,
             **kwargs) -> requests.Response:
@@ -211,13 +259,16 @@ def request(site,
     The optional uri is a relative uri from site base uri including the
     document root '/'.
 
+    .. versionchanged:: 8.2
+       a *protocol* parameter can be given which is passed to the
+       :meth:`family.Family.base_url` method.
+
     :param site: The Site to connect to
-    :type site: pywikibot.site.BaseSite
     :param uri: the URI to retrieve
-    :keyword charset: Either a valid charset (usable for str.decode()) or None
-        to automatically chose the charset from the returned header (defaults
-        to latin-1)
-    :type charset: CodecInfo, str, None
+    :keyword Optional[CodecInfo, str] charset: Either a valid charset
+        (usable for str.decode()) or None to automatically chose the
+        charset from the returned header (defaults to latin-1)
+    :keyword Optional[str] protocol: a url scheme
     :return: The received data Response
     """
     kwargs.setdefault('verify', site.verify_SSL_certificate())
@@ -228,7 +279,7 @@ def request(site,
         format_string = headers.get('user-agent')
     headers['user-agent'] = user_agent(site, format_string)
 
-    baseuri = site.base_url(uri)
+    baseuri = site.base_url(uri, protocol=kwargs.pop('protocol', None))
     r = fetch(baseuri, headers=headers, **kwargs)
     site.throttle.retry_after = int(r.headers.get('retry-after', 0))
     return r
@@ -267,14 +318,23 @@ def error_handling_callback(response):
     """
     # TODO: do some error correcting stuff
     if isinstance(response, requests.exceptions.SSLError) \
-       and SSL_CERT_VERIFY_FAILED_MSG in str(response):
+       and 'certificate verify failed' in str(response):
         raise FatalServerError(str(response))
 
     if isinstance(response, requests.ConnectionError):
         msg = str(response)
-        if 'NewConnectionError' in msg \
+        if ('NewConnectionError' in msg or 'NameResolutionError' in msg) \
            and re.search(r'\[Errno (-2|8|11001)\]', msg):
             raise ConnectionError(response)
+
+    # catch requests.ReadTimeout and requests.ConnectTimeout and convert
+    # it to ServerError
+    if isinstance(response, requests.Timeout):
+        raise ServerError(response)
+
+    if isinstance(response, ValueError):
+        # MissingSchema, InvalidSchema, InvalidURL, InvalidHeader
+        raise FatalServerError(str(response))
 
     if isinstance(response, Exception):
         with suppress(Exception):
@@ -282,12 +342,17 @@ def error_handling_callback(response):
             error('An error occurred for uri ' + response.request.url)
         raise response from None
 
-    if response.status_code == HTTPStatus.GATEWAY_TIMEOUT:
-        raise Server504Error('Server {} timed out'
-                             .format(urlparse(response.url).netloc))
-
     if response.status_code == HTTPStatus.REQUEST_URI_TOO_LONG:
-        raise Server414Error('Too long GET request')
+        raise Client414Error(HTTPStatus(response.status_code).description)
+
+    if response.status_code == HTTPStatus.GATEWAY_TIMEOUT:
+        raise Server504Error(
+            f'Server {urlparse(response.url).netloc} timed out')
+
+    if (not response.ok
+            and response.status_code >= HTTPStatus.INTERNAL_SERVER_ERROR):
+        raise ServerError(
+            f'{response.status_code} Server Error: {response.reason}')
 
     # TODO: shall it raise? this might break some code, TBC
     # response.raise_for_status()
@@ -295,7 +360,7 @@ def error_handling_callback(response):
     # HTTP status 207 is also a success status for Webdav FINDPROP,
     # used by the version module.
     if response.status_code not in (HTTPStatus.OK, HTTPStatus.MULTI_STATUS):
-        warning('Http response status {}'.format(response.status_code))
+        warning(f'Http response status {response.status_code}')
 
 
 def fetch(uri: str, method: str = 'GET', headers: Optional[dict] = None,
@@ -369,8 +434,7 @@ def fetch(uri: str, method: str = 'GET', headers: Optional[dict] = None,
     if auth is not None and len(auth) == 4:
         if isinstance(requests_oauthlib, ImportError):
             warn(str(requests_oauthlib), ImportWarning)
-            error('OAuth authentication not supported: {}'
-                  .format(requests_oauthlib))
+            error(f'OAuth authentication not supported: {requests_oauthlib}')
             auth = None
         else:
             auth = requests_oauthlib.OAuth1(*auth)
@@ -410,22 +474,24 @@ def get_charset_from_content_type(content_type: str) -> Optional[str]:
     m = CHARSET_RE.search(content_type)
     if not m:
         return None
-    charset = m.group('charset').strip('"\' ').lower()
+    charset = m['charset'].strip('"\' ').lower()
     # Convert to python correct encoding names
     if re.sub(r'[ _\-]', '', charset) == 'xeucjp':
         charset = 'euc_jp'
     else:
-        # fix cp encodings (T304830, T307760)
+        # fix cp encodings (T304830, T307760, T312230)
         # remove delimiter in front of the code number
         # replace win/windows with cp
         # remove language code in font of win/windows
         charset = re.sub(
-            r'\A(?:cp[ _\-]|(?:[a-z]+[_\-]?)?win(?:dows[_\-]?)?)(\d{3,4})',
+            r'\A(?:cp[ _\-]|(?:[a-z]+[_\-]?)?win(?:dows)?[_\-]?)(\d{3,4})',
             r'cp\1', charset)
     return charset
 
 
-def _get_encoding_from_response_headers(response) -> Optional[str]:
+def _get_encoding_from_response_headers(
+    response: requests.Response
+) -> Optional[str]:
     """Return charset given by the response header."""
     content_type = response.headers.get('content-type')
 
@@ -443,7 +509,7 @@ def _get_encoding_from_response_headers(response) -> Optional[str]:
         m = re.search(
             br'encoding=(["\'])(?P<encoding>.+?)\1', header)
         if m:
-            header_encoding = m.group('encoding').decode('utf-8')
+            header_encoding = m['encoding'].decode('utf-8')
         else:
             header_encoding = 'utf-8'
     else:
@@ -452,9 +518,10 @@ def _get_encoding_from_response_headers(response) -> Optional[str]:
     return header_encoding
 
 
-def _decide_encoding(response, charset) -> Optional[str]:
+def _decide_encoding(response: requests.Response,
+                     charset: Optional[str] = None) -> Optional[str]:
     """Detect the response encoding."""
-    def _try_decode(content, encoding):
+    def _try_decode(content: bytes, encoding: Optional[str]) -> Optional[str]:
         """Helper function to try decoding."""
         if encoding is None:
             return None
@@ -462,10 +529,9 @@ def _decide_encoding(response, charset) -> Optional[str]:
         try:
             content.decode(encoding)
         except LookupError:
-            pywikibot.warning('Unknown or invalid encoding {!r}'
-                              .format(encoding))
+            pywikibot.warning(f'Unknown or invalid encoding {encoding!r}')
         except UnicodeDecodeError as e:
-            pywikibot.warning('{} found in {}'.format(e, content))
+            pywikibot.warning(f'{e} found in {content}')
         else:
             return encoding
 
@@ -480,25 +546,19 @@ def _decide_encoding(response, charset) -> Optional[str]:
 
     # No charset requested, or in request headers or response headers.
     # Defaults to latin1.
-    if charset is None and header_encoding is None:
-        return _try_decode(response.content, 'latin1')
+    if charset is None:
+        return _try_decode(response.content, header_encoding or 'latin1')
 
-    if charset is None and header_encoding is not None:
-        return _try_decode(response.content, header_encoding)
-
-    if charset is not None and header_encoding is None:
+    if header_encoding is None:
         return _try_decode(response.content, charset)
 
     # Both charset and header_encoding are available.
-    try:
+    header_codecs = charset_codecs = None
+    with suppress(LookupError):
         header_codecs = codecs.lookup(header_encoding)
-    except LookupError:
-        header_codecs = None
 
-    try:
+    with suppress(LookupError):
         charset_codecs = codecs.lookup(charset)
-    except LookupError:
-        charset_codecs = None
 
     if header_codecs and charset_codecs and header_codecs != charset_codecs:
         pywikibot.warning(

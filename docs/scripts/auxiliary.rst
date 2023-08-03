@@ -1,20 +1,31 @@
+*****************
 Auxiliary scripts
-=================
+*****************
 
-clean\_sandbox script description
----------------------------------
+clean\_sandbox script
+=====================
 
 .. automodule:: scripts.clean_sandbox
    :no-members:
+   :noindex:
 
-cosmetic\_changes script description
-------------------------------------
+cosmetic\_changes script
+========================
 
 .. automodule:: scripts.cosmetic_changes
    :no-members:
+   :noindex:
 
-transferbot script description
-------------------------------
+transferbot script
+==================
 
 .. automodule:: scripts.transferbot
    :no-members:
+   :noindex:
+
+transwikiimport script
+======================
+
+.. automodule:: scripts.transwikiimport
+   :no-members:
+   :noindex:

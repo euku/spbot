@@ -1,4 +1,4 @@
-﻿**Pywikibot is an open-source project** that cannot exist without your
+**Pywikibot is an open-source project** that cannot exist without your
 contributions. We would therefore like to thank everyone who has
 contributed:
 
@@ -79,6 +79,7 @@ D
     Diwanshu Mittal
     Dmytro Dziuma
     Dr03ramos
+    Draco flavus
     DrTrigon
     Dvorapa
 
@@ -351,6 +352,7 @@ W
     Wikipedian
     WikiWichtel
     William Avery
+    winterheart
     withoutaname
 
 X

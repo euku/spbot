@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the site module."""
 #
 # (C) Pywikibot team, 2018-2022
@@ -21,7 +21,7 @@ class TestLinterPages(DefaultSiteTestCase):
         super().setUp()
         if not self.site.has_extension('Linter'):
             self.skipTest(
-                'The site {} does not use Linter extension'.format(self.site))
+                f'The site {self.site} does not use Linter extension')
 
     def test_linter_pages(self):
         """Test the deprecated site.logpages() method."""

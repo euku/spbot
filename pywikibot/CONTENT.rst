@@ -54,8 +54,6 @@ The contents of the package
     | login.py                   | Log in to an account on your "home" wiki, or check   |
     |                            | login status                                         |
     +----------------------------+------------------------------------------------------+
-    | pagegenerators.py          | Generator pages                                      |
-    +----------------------------+------------------------------------------------------+
     | plural.py                  | Module containing plural rules of various languages  |
     +----------------------------+------------------------------------------------------+
     | proofreadpage.py           | Objects representing objects used with ProofreadPage |
@@ -66,6 +64,8 @@ The contents of the package
     | textlib.py                 | Functions for manipulating wiki-text                 |
     +----------------------------+------------------------------------------------------+
     | throttle.py                | Mechanics to slow down wiki read and/or write rate   |
+    +----------------------------+------------------------------------------------------+
+    | time.py                    | Timesstamp and time functions                        |
     +----------------------------+------------------------------------------------------+
     | titletranslate.py          | Rules and tricks to auto-translate wikipage titles   |
     |                            | articles                                             |
@@ -89,7 +89,19 @@ The contents of the package
     +----------------------------+------------------------------------------------------+
     | data                       | Module providing layers of data access to wiki       |
     +============================+======================================================+
-    | api.py                     | Interface to MediaWiki's api.php                     |
+    | api.py                     | Interface Module to MediaWiki's api                  |
+    |                            +----------------+-------------------------------------+
+    |                            | __init__.py    | Interface to MediaWiki's api.php    |
+    |                            +----------------+-------------------------------------+
+    |                            | _generators.py | API/Query generators                |
+    |                            +----------------+-------------------------------------+
+    |                            | _optionset.py  | Boolean API option                  |
+    |                            +----------------+-------------------------------------+
+    |                            | _paraminfo.py  | API information data object         |
+    |                            +----------------+-------------------------------------+
+    |                            | _requests.py   | API Requests interface              |
+    +----------------------------+----------------+-------------------------------------+
+    | memento.py                 | memento_client 0.6.1 package fix                     |
     +----------------------------+------------------------------------------------------+
     | mysql.py                   | Miscellaneous helper functions for mysql queries     |
     +----------------------------+------------------------------------------------------+
@@ -104,6 +116,10 @@ The contents of the package
     +============================+======================================================+
     | __init__.py                | Interface representing MediaWiki pages               |
     +----------------------------+------------------------------------------------------+
+    | _basepage.py               | Base object for MediaWiki pages                      |
+    +----------------------------+------------------------------------------------------+
+    | _category.py               | Object representing MediaWiki categories             |
+    +----------------------------+------------------------------------------------------+
     | _collections.py            | Structures holding data for Wikibase entities        |
     +----------------------------+------------------------------------------------------+
     | _decorators.py             | Decorators used by page objects                      |
@@ -112,15 +128,26 @@ The contents of the package
     +----------------------------+------------------------------------------------------+
     | _links.py                  | Objects representing link objects                    |
     +----------------------------+------------------------------------------------------+
-    | _pages.py                  | Objects representing MediaWiki pages                 |
+    | _page.py                   | Object representing MediaWiki pages                  |
     +----------------------------+------------------------------------------------------+
     | _revision.py               | Object representing page revision                    |
+    +----------------------------+------------------------------------------------------+
+    | _toolforge.py              | BasePage interface to toolforge tools                |
     +----------------------------+------------------------------------------------------+
     | _user.py                   | Object representing a wiki user                      |
     +----------------------------+------------------------------------------------------+
     | _wikibase.py               | Objects representing wikibase structures             |
     +----------------------------+------------------------------------------------------+
 
+    +----------------------------+------------------------------------------------------+
+    | pagegenerators             | Page generators module                               |
+    +============================+======================================================+
+    | _factory.py                | Generator factory class to handle options            |
+    +----------------------------+------------------------------------------------------+
+    | _filter.py                 | Filter functions                                     |
+    +----------------------------+------------------------------------------------------+
+    | _generators.py             | Generator functions                                  |
+    +----------------------------+------------------------------------------------------+
 
     +----------------------------+------------------------------------------------------+
     | scripts                    | Framework helper scripts and entry points            |
@@ -129,7 +156,11 @@ The contents of the package
     +----------------------------+------------------------------------------------------+
     | generate_user_files.py     | Creates user-config.py or user-fixes.py              |
     +----------------------------+------------------------------------------------------+
-    | pwb.py                     | Code entry wrapper script (site-package only)        |
+    | login.py                   | Script to log the bot in to a wiki account.          |
+    +----------------------------+------------------------------------------------------+
+    | preload_sites.py           | Preload and cache site information for each          |
+    |                            | WikiMedia family within seconds. Useful for bots     |
+    |                            | running on multiple sites.                           |
     +----------------------------+------------------------------------------------------+
     | shell.py                   | Spawns an interactive Python shell with pywikibot    |
     |                            | imported                                             |
@@ -137,7 +168,9 @@ The contents of the package
     | version.py                 | Outputs Pywikibot's revision number, Python's        |
     |                            | version and OS used.                                 |
     +----------------------------+------------------------------------------------------+
-    | i18n (folder)              | Contains i18n translations (site-package only)       |
+    | wrapper.py                 | Code entry wrapper script                            |
+    +----------------------------+------------------------------------------------------+
+    | i18n (folder)              | Contains i18n translations                           |
     +----------------------------+------------------------------------------------------+
 
 
@@ -193,12 +226,18 @@ The contents of the package
     +----------------------------+------------------------------------------------------+
     | _unidata.py                | Helper function which holds data from unicodedata    |
     +----------------------------+------------------------------------------------------+
-    | chars.py                   | Character based helper functions(not wiki-dependent) |
+    | chars.py                   | Character based helper functions                     |
+    +----------------------------+------------------------------------------------------+
+    | collections.py             | Collections datatypes                                |
     +----------------------------+------------------------------------------------------+
     | djvu.py                    | Wrapper around djvulibre to access djvu properties   |
     |                            | and content                                          |
     +----------------------------+------------------------------------------------------+
     | formatter.py               | Various formatting related utilities                 |
+    +----------------------------+------------------------------------------------------+
+    | itertools.py               | Iterator functions                                   |
+    +----------------------------+------------------------------------------------------+
+    | threading.py               | Threading classes                                    |
     +----------------------------+------------------------------------------------------+
 
 
@@ -218,8 +257,6 @@ The contents of the package
     | terminal_interface_win32.py| User interface for Win32 terminals                   |
     +----------------------------+------------------------------------------------------+
     | transliteration.py         | Module to transliterate text                         |
-    +----------------------------+------------------------------------------------------+
-    | win32_unicode.py           | Stdout, stderr and argv support for Unicode          |
     +----------------------------+------------------------------------------------------+
 
 

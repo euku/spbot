@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Script that forms part of pwb_tests."""
 #
 # (C) Pywikibot team, 2013-2022
@@ -17,7 +17,7 @@ def main() -> None:
         if k == '__file__':
             print('__file__: ' + os.path.join('.', os.path.relpath(__file__)))
         else:
-            print('{}: {}'.format(k, v))
+            print(f'{k}: {v}')
 
 
 if __name__ == '__main__':

@@ -1,12 +1,12 @@
 """Objects representing internal or interwiki link in wikitext.
 
-..note::
-  `Link` objects definded here represent a wiki-page's title, while
-  :class:`pywikibot.Page` objects represent the page itself, including
-  its contents.
+.. note::
+   `Link` objects defined here represent a wiki-page's title, while
+   :class:`pywikibot.Page` objects represent the page itself, including
+   its contents.
 """
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -79,9 +79,8 @@ class BaseLink(ComparableMixin):
         assert isinstance(self._items, tuple)
         assert all(isinstance(item, str) for item in self._items)
 
-        attrs = ('{!r}'.format(getattr(self, attr)) for attr in self._items)
-        return 'pywikibot.page.{}({})'.format(type(self).__name__,
-                                              ', '.join(attrs))
+        attrs = (f'{getattr(self, attr)!r}' for attr in self._items)
+        return f"pywikibot.page.{type(self).__name__}({', '.join(attrs)})"
 
     def lookup_namespace(self):
         """
@@ -105,9 +104,8 @@ class BaseLink(ComparableMixin):
                 ns = self.site.namespaces[default_nskey]
             return ns
 
-        raise TypeError(
-            'Invalid type "{}" for Page._nskey. Must be int or str.'
-            .format(type(self._nskey)))
+        raise TypeError(f'Invalid type "{type(self._nskey)}" for Page._nskey.'
+                        ' Must be int or str.')
 
     @property
     def site(self):
@@ -135,8 +133,7 @@ class BaseLink(ComparableMixin):
         """Return full page title, including localized namespace."""
         # Avoid that ':' will be added to the title for Main ns.
         if self.namespace != Namespace.MAIN:
-            return '{}:{}'.format(self.site.namespace(self.namespace),
-                                  self.title)
+            return f'{self.site.namespace(self.namespace)}:{self.title}'
         return self.title
 
     def ns_title(self, onsite=None):
@@ -165,7 +162,7 @@ class BaseLink(ComparableMixin):
                     .format(self.namespace, onsite))
 
         if self.namespace != Namespace.MAIN:
-            return '{}:{}'.format(name, self.title)
+            return f'{name}:{self.title}'
         return self.title
 
     def astext(self, onsite=None) -> str:
@@ -182,14 +179,14 @@ class BaseLink(ComparableMixin):
         if self.namespace != Namespace.MAIN:
             title = onsite.namespace(self.namespace) + ':' + title
         if onsite == self.site:
-            return '[[{}]]'.format(title)
+            return f'[[{title}]]'
         if onsite.family == self.site.family:
-            return '[[{}:{}]]'.format(self.site.code, title)
+            return f'[[{self.site.code}:{title}]]'
         if self.site.family.name == self.site.code:
             # use this form for sites like commons, where the
             # code is the same as the family name
-            return '[[{}:{}]]'.format(self.site.code, title)
-        return '[[{}:{}]]'.format(self.site.sitename, title)
+            return f'[[{self.site.code}:{title}]]'
+        return f'[[{self.site.sitename}:{title}]]'
 
     def _cmpkey(self):
         """
@@ -314,7 +311,7 @@ class Link(BaseLink):
         # This code was adapted from Title.php : secureAndSplit()
         if '\ufffd' in t:
             raise InvalidTitleError(
-                '{!r} contains illegal char {!r}'.format(t, '\ufffd'))
+                fr'{t!r} contains illegal replacement char \ufffd')
 
         # Cleanup whitespace
         sep = self._source.family.title_delimiter_and_aliases[0]
@@ -396,7 +393,7 @@ class Link(BaseLink):
             if ns:
                 if len(self._text) <= colon_position:
                     raise InvalidTitleError(
-                        "'{}' has no title.".format(self._text))
+                        f"'{self._text}' has no title.")
                 self._namespace = ns
                 ns_prefix = True
                 old_position = colon_position
@@ -438,7 +435,7 @@ class Link(BaseLink):
             # 'namespace:' is not a valid title
             if not t:
                 raise InvalidTitleError(
-                    "'{}' has no title.".format(self._text))
+                    f"'{self._text}' has no title.")
 
             if ':' in t and self._namespace >= 0:  # < 0 don't have talk
                 other_ns = self._site.namespaces[self._namespace - 1
@@ -454,8 +451,7 @@ class Link(BaseLink):
         # Reject illegal characters.
         m = Link.illegal_titles_pattern.search(t)
         if m:
-            raise InvalidTitleError('{!r} contains illegal char(s) {!r}'
-                                    .format(t, m.group(0)))
+            raise InvalidTitleError(f'{t!r} contains illegal char(s) {m[0]!r}')
 
         # Pages with "/./" or "/../" appearing in the URLs will
         # often be unreachable due to the way web browsers deal
@@ -467,23 +463,20 @@ class Link(BaseLink):
                          or '/../' in t
                          or t.endswith(('/.', '/..'))):
             raise InvalidTitleError(
-                "(contains . / combinations): '{}'"
-                .format(self._text))
+                f"(contains . / combinations): '{self._text}'")
 
         # Magic tilde sequences? Nu-uh!
         if '~~~' in t:
-            raise InvalidTitleError("(contains ~~~): '{}'"
-                                    .format(self._text))
+            raise InvalidTitleError(f"(contains ~~~): '{self._text}'")
 
         if self._namespace != -1 and len(t) > 255:
-            raise InvalidTitleError("(over 255 bytes): '{}'".format(t))
+            raise InvalidTitleError(f"(over 255 bytes): '{t}'")
 
         # "empty" local links can only be self-links
         # with a fragment identifier.
         if not t.strip(' ') and not self._is_interwiki:  # T197642
             raise InvalidTitleError(
-                'The link [[{}]] does not contain a page title'
-                .format(self._text))
+                f'The link [[{self._text}]] does not contain a page title')
 
         # MediaWiki uses uppercase IP addresses
         if self._namespace in (2, 3) and is_ip_address(t):
@@ -550,7 +543,7 @@ class Link(BaseLink):
             onsite = self._source
         text = super().astext(onsite)
         if self.section:
-            text = '{}#{}]]'.format(text.rstrip(']'), self.section)
+            text = f"{text.rstrip(']')}#{self.section}]]"
 
         return text
 
@@ -826,14 +819,14 @@ def html2unicode(text: str, ignore=None, exceptions=None) -> str:
         if textlib.isDisabled(match.string, match.start(), tags=exceptions):
             # match.string stores original text so we do not need
             # to pass it to handle_entity, ♥ Python
-            return match.group(0)
+            return match[0]
 
-        if match.group('decimal'):
-            unicode_codepoint = int(match.group('decimal'))
-        elif match.group('hex'):
-            unicode_codepoint = int(match.group('hex'), 16)
-        elif match.group('name'):
-            name = match.group('name')
+        if match['decimal']:
+            unicode_codepoint = int(match['decimal'])
+        elif match['hex']:
+            unicode_codepoint = int(match['hex'], 16)
+        elif match['name']:
+            name = match['name']
             unicode_codepoint = name2codepoint.get(name, False)
 
         unicode_codepoint = _ILLEGAL_HTML_ENTITIES_MAPPING.get(
@@ -843,6 +836,6 @@ def html2unicode(text: str, ignore=None, exceptions=None) -> str:
             return chr(unicode_codepoint)
 
         # Leave the entity unchanged
-        return match.group(0)
+        return match[0]
 
     return _ENTITY_SUB(handle_entity, text)

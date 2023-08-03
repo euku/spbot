@@ -1,6 +1,6 @@
 """Date data and manipulation module."""
 #
-# (C) Pywikibot team, 2003-2022
+# (C) Pywikibot team, 2003-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -13,7 +13,6 @@ from functools import singledispatch
 from string import digits as _decimalDigits  # noqa: N812
 from typing import Optional, Union
 
-import pywikibot.site
 from pywikibot import Site
 from pywikibot.backports import (
     Any,
@@ -26,6 +25,7 @@ from pywikibot.backports import (
     Sequence,
     Tuple,
 )
+from pywikibot.site import BaseSite
 from pywikibot.textlib import NON_LATIN_DIGITS
 from pywikibot.tools import first_lower, first_upper
 
@@ -33,12 +33,13 @@ from pywikibot.tools import first_lower, first_upper
 #
 # Different collections of well known formats
 #
+brMonthNames = ['Genver', "C'hwevrer", 'Meurzh', 'Ebrel', 'Mae', 'Mezheven',
+                'Gouere', 'Eost', 'Gwengolo', 'Here', 'Du', 'Kerzu']
 enMonthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November',
                 'December']
 waMonthNames = ['djanvî', 'fevrî', 'måss', 'avri', 'may', 'djun', 'djulete',
                 'awousse', 'setimbe', 'octôbe', 'nôvimbe', 'decimbe']
-
 dayMnthFmts = ['Day_' + str(s) for s in enMonthNames]  # e.g. 'Day_January'
 yrMnthFmts = ['Year_' + str(s) for s in enMonthNames]  # e.g. 'Year_January'
 
@@ -259,14 +260,14 @@ def dh_constVal(value: int, ind: int, match: str) -> str:
     """
     if value == ind:
         return match
-    raise ValueError('unknown value {}'.format(value))
+    raise ValueError(f'unknown value {value}')
 
 
 @dh_constVal.register(str)
 def _(value: str, ind: int, match: str) -> int:
     if value == match:
         return ind
-    raise ValueError('unknown value {}'.format(value))
+    raise ValueError(f'unknown value {value}')
 
 
 def alwaysTrue(x: Any) -> bool:
@@ -338,7 +339,7 @@ _romanNumbers = ['-', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX',
 def intToRomanNum(i: int) -> str:
     """Convert integer to roman numeral."""
     if i >= len(_romanNumbers):
-        raise IndexError('Roman value {} is not defined'.format(i))
+        raise IndexError(f'Roman value {i} is not defined')
     return _romanNumbers[i]
 
 
@@ -349,7 +350,7 @@ def romanNumToInt(v: str) -> int:
 
 # Each tuple must 3 parts: a list of all possible digits (symbols), encoder
 # (from int to a str) and decoder (from str to an int)
-_digitDecoders = {
+_digitDecoders: Dict[str, decoder_type] = {
     # %% is a %
     '%': '%',
     # %d is a decimal
@@ -380,22 +381,20 @@ _digitDecoders = {
     # %T is a year in TH: -- all years are shifted: 2005 => 'พ.ศ. 2548'
     'T': (_decimalDigits, lambda v: str(v + 543),
           lambda v: int(v) - 543),
-}  # type: Dict[str, decoder_type]
+}
 
 # Allows to search for '(%%)|(%d)|(%R)|...", and allows one digit 1-9 to set
 # the size of zero-padding for numbers
-_reParameters = re.compile('|'.join('(%[1-9]?{})'.format(s)
-                                    for s in _digitDecoders))
+_reParameters = re.compile('|'.join(f'(%[1-9]?{s})' for s in _digitDecoders))
 
 # A map of sitecode+pattern to (re matching object and corresponding decoders)
 _escPtrnCache2 = {}
 
 
-def escapePattern2(pattern: str
-                   ) -> Tuple[Pattern[str], str,
-                              List[Union[decoder_type, decoder_type]]]:
-    """
-    Convert a string pattern into a regex expression and cache.
+def escapePattern2(
+    pattern: str
+) -> Tuple[Pattern[str], str, List[decoder_type]]:
+    """Convert a string pattern into a regex expression and cache.
 
     Allows matching of any _digitDecoders inside the string.
     Returns a compiled regex object and a list of digit decoders.
@@ -406,12 +405,12 @@ def escapePattern2(pattern: str
 
         if len(subpattern) == 3:
             # enforce mandatory field size
-            newpattern += '([{}]{{{}}})'.format(dec[0], subpattern[1])
+            newpattern += f'([{dec[0]}]{{{subpattern[1]}}})'
             # add the number of required digits as the last (4th)
             # part of the tuple
             decoders.append(dec + (int(s[1]),))
         else:
-            newpattern += '([{}]+)'.format(dec[0])
+            newpattern += f'([{dec[0]}]+)'
             decoders.append(dec)
 
         # All encoders produce a string for strpattern.
@@ -426,14 +425,14 @@ def escapePattern2(pattern: str
         # Special case for strings that are replaced instead of decoded
         # Keep the original text for strPattern
         assert len(subpattern) < 3, (
-            'Invalid pattern {}: Cannot use zero padding size '
-            'in {}!'.format(pattern, subpattern))
+            f'Invalid pattern {pattern}: Cannot use zero padding size '
+            f'in {subpattern}!')
         return newpattern + re.escape(dec), strpattern + subpattern
 
     if pattern not in _escPtrnCache2:
         newPattern = ''  # match starts at the beginning of the string
         strPattern = ''
-        decoders = []  # type: List[decoder_type]
+        decoders: List[decoder_type] = []
         for s in _reParameters.split(pattern):
             if s is None:
                 continue
@@ -487,7 +486,7 @@ def dh(value: int, pattern: str, encf: encf_type, decf: decf_type,
     # This will be called from outside as well as recursivelly to verify
     # parsed value
     if filter and not filter(value):
-        raise ValueError('value {} is not allowed'.format(value))
+        raise ValueError(f'value {value} is not allowed')
 
     params = encf(value)
 
@@ -500,8 +499,7 @@ def dh(value: int, pattern: str, encf: encf_type, decf: decf_type,
                            for i, param in enumerate(params))
         return strPattern % str_params
     assert len(decoders) == 1, (
-        'A single parameter does not match {} decoders.'
-        .format(len(decoders)))
+        f'A single parameter does not match {len(decoders)} decoders.')
     # convert integer parameter into its textual representation
     assert isinstance(params, int)
     return strPattern % _make_parameter(decoders[0], params)
@@ -514,8 +512,8 @@ def _(value: str, pattern: str, encf: encf_type, decf: decf_type,
     m = compPattern.match(value)
     if m:
         # decode each found value using provided decoder
-        values = [decoder[2](m.group(i + 1))
-                  for i, decoder in enumerate(decoders)]
+        values = [decoder[2](m[i])
+                  for i, decoder in enumerate(decoders, start=1)]
         decValue = decf(values)
 
         assert not isinstance(decValue, str), \
@@ -558,9 +556,7 @@ class MonthNames(abc.Mapping):
 
     # Predefined month names which are needed at import time
     months = {
-        'br': lambda v: slh(v, ['Genver', "C'hwevrer", 'Meurzh', 'Ebrel',
-                                'Mae', 'Mezheven', 'Gouere', 'Eost',
-                                'Gwengolo', 'Here', 'Du', 'Kerzu']),
+        'br': lambda v: slh(v, brMonthNames),
         'en': lambda v: slh(v, enMonthNames),
         'ja': lambda v: slh(v, makeMonthList('%d月')),
         'ko': lambda v: slh(v, makeMonthList('%d월')),
@@ -664,7 +660,7 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
         """
         self.index = index
         self.variant, _, self.month = format_key.partition('_')
-        self.data = {}  # type: Dict[str, Callable[[int], str]]
+        self.data: Dict[str, Callable[[int], str]] = {}
 
     def __getitem__(self, key: str) -> Callable[[int], str]:
         if key not in self.data:
@@ -675,7 +671,7 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
                 pattern, ucase = self.year_formats.get(key, ('{} %d', True))
                 func = 'dh_mnthOfYear'
             else:
-                raise KeyError("Wrong variant '{}'".format(self.variant))
+                raise KeyError(f"Wrong variant '{self.variant}'")
 
             if ucase:
                 f = first_upper
@@ -685,7 +681,7 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
                 f = str
 
             month_pattern = pattern.format(f(monthName(key, self.index)))
-            expression = "lambda v: {}(v, '{}')".format(func, month_pattern)
+            expression = f"lambda v: {func}(v, '{month_pattern}')"
             self.data[key] = eval(expression)
         return self.data[key]
 
@@ -693,8 +689,8 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
         self.data[key] = value
 
     def __delitem__(self, key: str) -> None:
-        raise NotImplementedError("Deleting of key '{}' is not implemented"
-                                  .format(key))
+        raise NotImplementedError(
+            f"Deleting of key '{key}' is not implemented")
 
     def __iter__(self) -> Iterator[str]:
         return iter(self.data)
@@ -703,7 +699,28 @@ class MonthFormat(abc.MutableMapping):  # type: ignore[type-arg]
         return len(self.data)
 
 
-formats = {
+def _en_period(period: str):
+    """Create century and millenium format function for ``en`` language."""
+    return lambda m: multi(m, [
+        (lambda v: dh_centuryAD(v, '%dst ' + period),
+         lambda p: p == 1 or (p > 20 and p % 10 == 1)),
+        (lambda v: dh_centuryAD(v, '%dnd ' + period),
+         lambda p: p == 2 or (p > 20 and p % 10 == 2)),
+        (lambda v: dh_centuryAD(v, '%drd ' + period),
+         lambda p: p == 3 or (p > 20 and p % 10 == 3)),
+        (lambda v: dh_centuryAD(v, '%dth ' + period), alwaysTrue)])
+
+
+def _period_with_pattern(period: str, pattern: str):
+    """Create century and millenium format function with pattern."""
+    return lambda m: multi(m, [
+        (lambda v: dh_constVal(v, 1, period), lambda p: p == 1),
+        (lambda v: dh(v, pattern, lambda i: i - 1, lambda ii: ii[0] + 1),
+         alwaysTrue)])
+
+
+formats: Dict[Union[str, int], Mapping[str, Callable[[int], str]]] = {
+    'MonthName': MonthNames(),
     'Number': {
         'ar': lambda v: dh_number(v, '%d (عدد)'),
         'ary': lambda v: dh_number(v, '%d'),
@@ -1063,14 +1080,7 @@ formats = {
         'el': lambda m: multi(m, [
             (lambda v: dh_centuryAD(v, '%dός αιώνας'), lambda p: p == 20),
             (lambda v: dh_centuryAD(v, '%dος αιώνας'), alwaysTrue)]),
-        'en': lambda m: multi(m, [
-            (lambda v: dh_centuryAD(v, '%dst century'),
-             lambda p: p == 1 or (p > 20 and p % 10 == 1)),
-            (lambda v: dh_centuryAD(v, '%dnd century'),
-             lambda p: p == 2 or (p > 20 and p % 10 == 2)),
-            (lambda v: dh_centuryAD(v, '%drd century'),
-             lambda p: p == 3 or (p > 20 and p % 10 == 3)),
-            (lambda v: dh_centuryAD(v, '%dth century'), alwaysTrue)]),
+        'en': _en_period('century'),
         'eo': lambda v: dh_centuryAD(v, '%d-a jarcento'),
         'es': lambda v: dh_centuryAD(v, 'Siglo %R'),
         'et': lambda v: dh_centuryAD(v, '%d. sajand'),
@@ -1082,12 +1092,7 @@ formats = {
             # Later, it should be replaced with a proper 'fa' titles
             (lambda v: dh_centuryAD(v, 'سده %d (میلادی)'),
              alwaysTrue)]),  # ********** ERROR!!!
-        'fi': lambda m: multi(m, [
-            (lambda v: dh_constVal(v, 1, 'Ensimmäinen vuosisata'),
-             lambda p: p == 1),
-            (lambda v: dh(v, '%d00-luku',
-                          lambda i: i - 1,
-                          lambda ii: ii[0] + 1), alwaysTrue)]),
+        'fi': _period_with_pattern('Ensimmäinen vuosisata', '%d00-luku'),
         'fo': lambda v: dh_centuryAD(v, '%d. øld'),
         'fr': lambda m: multi(m, [
             (lambda v: dh_centuryAD(v, '%Rer siècle'), lambda p: p == 1),
@@ -1144,10 +1149,7 @@ formats = {
         'nan': lambda v: dh_centuryAD(v, '%d sè-kí'),
         'nds': lambda v: dh_centuryAD(v, '%d. Johrhunnert'),
         'nl': lambda v: dh_centuryAD(v, '%de eeuw'),
-        'nn': lambda m: multi(m, [
-            (lambda v: dh_constVal(v, 1, '1. århundret'), lambda p: p == 1),
-            (lambda v: dh(v, '%d00-talet', lambda i: i - 1,
-                          lambda ii: ii[0] + 1), alwaysTrue)]),
+        'nn': _period_with_pattern('1. århundret', '%d00-talet'),
         'nb': lambda v: dh_centuryAD(v, '%d. århundre'),
         'os': lambda v: dh_centuryAD(v, '%R æнус'),
         'pl': lambda v: dh_centuryAD(v, '%R wiek'),
@@ -1191,22 +1193,12 @@ formats = {
         'da': lambda v: dh_centuryBC(v, '%d. århundrede f.Kr.'),
         'de': lambda v: dh_centuryBC(v, '%d. Jahrhundert v. Chr.'),
         'el': lambda v: dh_centuryBC(v, '%dος αιώνας π.Χ.'),
-        'en': lambda m: multi(m, [
-            (lambda v: dh_centuryBC(v, '%dst century BC'),
-             lambda p: p == 1 or (p > 20 and p % 10 == 1)),
-            (lambda v: dh_centuryBC(v, '%dnd century BC'),
-             lambda p: p == 2 or (p > 20 and p % 10 == 2)),
-            (lambda v: dh_centuryBC(v, '%drd century BC'),
-             lambda p: p == 3 or (p > 20 and p % 10 == 3)),
-            (lambda v: dh_centuryBC(v, '%dth century BC'), alwaysTrue)]),
+        'en': _en_period('century BC'),
         'eo': lambda v: dh_centuryBC(v, '%d-a jarcento a.K.'),
         'es': lambda v: dh_centuryBC(v, 'Siglo %R adC'),
         'et': lambda v: dh_centuryBC(v, '%d. aastatuhat eKr'),
-        'fi': lambda m: multi(m, [
-            (lambda v: dh_constVal(v, 1, 'Ensimmäinen vuosisata eaa.'),
-             lambda p: p == 1),
-            (lambda v: dh(v, '%d00-luku eaa.', lambda i: i - 1,
-                          lambda ii: ii[0] + 1), alwaysTrue)]),
+        'fi': _period_with_pattern('Ensimmäinen vuosisata eaa.',
+                                   '%d00-luku eaa.'),
         'fr': lambda m: multi(m, [
             (lambda v: dh_centuryBC(v, '%Rer siècle av. J.-C.'),
              lambda p: p == 1),
@@ -1225,11 +1217,7 @@ formats = {
         'la': lambda v: dh_centuryBC(v, 'Saeculum %d a.C.n.'),
         'lb': lambda v: dh_centuryBC(v, '%d. Joerhonnert v. Chr.'),
         'nl': lambda v: dh_centuryBC(v, '%de eeuw v.Chr.'),
-        'nn': lambda m: multi(m, [
-            (lambda v: dh_constVal(v, 1, '1. århundret fvt.'),
-             lambda p: p == 1),
-            (lambda v: dh(v, '%d00-talet fvt.', lambda i: i - 1,
-                          lambda ii: ii[0] + 1), alwaysTrue)]),
+        'nn': _period_with_pattern('1. århundret fvt.', '%d00-talet fvt.'),
         'nb': lambda v: dh_centuryBC(v, '%d. århundre f.Kr.'),
         'pl': lambda v: dh_centuryBC(v, '%R wiek p.n.e.'),
         'pt': lambda v: dh_centuryBC(v, 'Século %R a.C.'),
@@ -1275,15 +1263,7 @@ formats = {
         'cs': lambda v: dh_millenniumAD(v, '%d. tisíciletí'),
         'de': lambda v: dh_millenniumAD(v, '%d. Jahrtausend'),
         'el': lambda v: dh_millenniumAD(v, '%dη χιλιετία'),
-        'en': lambda m: multi(m, [
-            (lambda v: dh_millenniumAD(v, '%dst millennium'),
-             lambda p: p == 1 or (p > 20 and p % 10 == 1)),
-            (lambda v: dh_millenniumAD(v, '%dnd millennium'),
-             lambda p: p == 2 or (p > 20 and p % 10 == 2)),
-            (lambda v: dh_millenniumAD(v, '%drd millennium'),
-             lambda p: p == 3 or (p > 20 and p % 10 == 3)),
-            (lambda v: dh_millenniumAD(v, '%dth millennium'),
-             alwaysTrue)]),
+        'en': _en_period('millennium'),
         'es': lambda v: dh_millenniumAD(v, '%R milenio'),
 
         'fa': lambda v: dh_millenniumAD(v, 'هزاره %R (میلادی)'),
@@ -1365,11 +1345,8 @@ formats = {
         'el': lambda v: dh_millenniumBC(v, '%dη χιλιετία π.Χ.'),
         'en': lambda v: dh_millenniumBC(v, '%dst millennium BC'),
         'es': lambda v: dh_millenniumBC(v, '%R milenio adC'),
-        'fi': lambda m: multi(m, [
-            (lambda v: dh_constVal(v, 1, 'Ensimmäinen vuosituhat eaa.'),
-             lambda p: p == 1),
-            (lambda v: dh(v, '%d000-vuosituhat eaa.', lambda i: i - 1,
-                          lambda ii: ii[0] + 1), alwaysTrue)]),
+        'fi': _period_with_pattern('Ensimmäinen vuosituhat eaa.',
+                                   '%d000-vuosituhat eaa.'),
         'fr': lambda v: dh_millenniumBC(v, '%Rer millénaire av. J.-C.'),
         'he': lambda m: multi(m, [
             (lambda v: dh_millenniumAD(v, 'האלף הראשון %d לפני הספירה'),
@@ -1674,9 +1651,8 @@ formats = {
         'yo': lambda v: dh_singVal(v, 'Current events'),
         'zh': lambda v: dh_singVal(v, '新闻动态'),
     },
-}  # type: Dict[Union[str, int], Mapping[str, Callable[[int], str]]]
+}
 
-formats['MonthName'] = MonthNames()
 #
 # Add auto-generated empty dictionaries for DayOfMonth and MonthOfYear articles
 #
@@ -1698,16 +1674,16 @@ def addFmt1(lang: str, isMnthOfYear: bool,
 
     :param lang: language code
     """
-    assert len(patterns) == 12, 'pattern %s does not have 12 elements' % lang
+    assert len(patterns) == 12, f'pattern {lang} does not have 12 elements'
 
     for i in range(12):
         if patterns[i] is not None:
             if isMnthOfYear:
                 formats[yrMnthFmts[i]][lang] = eval(
-                    'lambda v: dh_mnthOfYear(v, "{}")'.format(patterns[i]))
+                    f'lambda v: dh_mnthOfYear(v, "{patterns[i]}")')
             else:
                 formats[dayMnthFmts[i]][lang] = eval(
-                    'lambda v: dh_dayOfMnth(v, "{}")'.format(patterns[i]))
+                    f'lambda v: dh_dayOfMnth(v, "{patterns[i]}")')
 
 
 def makeMonthList(pattern: str) -> List[str]:
@@ -1715,23 +1691,20 @@ def makeMonthList(pattern: str) -> List[str]:
     return [pattern % m for m in range(1, 13)]
 
 
-def makeMonthNamedList(lang: str, pattern: str,
+def makeMonthNamedList(lang: str, pattern: str = '%s',
                        makeUpperCase: Optional[bool] = None) -> List[str]:
     """Create a list of 12 elements based on the name of the month.
 
-    The language-dependent month name is used as a formatting argument to the
-    pattern. The pattern must be have one %s that will be replaced by the
-    localized month name.
-    Use %%d for any other parameters that should be preserved.
-
+    The language-dependent month name is used as a formatting argument
+    to the *pattern*. The *pattern* must be have one ``%s`` that will be
+    replaced by the localized month name. Use ``%%`` for any other
+    parameters that should be preserved.
     """
     if makeUpperCase is None:
         return [pattern % monthName(lang, m) for m in range(1, 13)]
-    if makeUpperCase:
-        f = first_upper
-    else:
-        f = first_lower
-    return [pattern % f(monthName(lang, m)) for m in range(1, 13)]
+
+    func = first_upper if makeUpperCase else first_lower
+    return [pattern % func(monthName(lang, m)) for m in range(1, 13)]
 
 
 # Add day of the month formats to the formatting table: "en:May 15"
@@ -1864,13 +1837,11 @@ _vowel_pattern = (
     '(lambda v: dh_dayOfMnth(v, "%d d\' {mname}"), alwaysTrue)])'
 )
 
-# Brazil uses '1añ' for the 1st of every month, and number without suffix for
-# all other days
-brMonthNames = makeMonthNamedList('br', '%s', True)
-
 for i in range(12):
     pattern = _vowel_pattern if i in (3, 7, 9) else _consonant_pattern
     formats[dayMnthFmts[i]]['wa'] = eval(pattern.format(mname=waMonthNames[i]))
+    # Brazil uses '1añ' for the 1st of every month, and number without suffix
+    # for all other days
     formats[dayMnthFmts[i]]['br'] = eval(
         'lambda m: multi(m, ['
         '(lambda v: dh_dayOfMnth(v, "%dañ {mname}"), lambda p: p == 1), '
@@ -1997,7 +1968,7 @@ def getAutoFormat(lang: str, title: str, ignoreFirstLetterCase: bool = True
 
 
 def format_date(month: int, day: int,
-                lang: Union[None, str, 'pywikibot.site.BaseSite'] = None,
+                lang: Union[None, str, BaseSite] = None,
                 year: int = 2000) -> str:
     """Format a date localized to given lang.
 
@@ -2017,8 +1988,7 @@ def format_date(month: int, day: int,
     max_day = calendar.monthrange(year, month)[1]
     if not 1 <= day <= max_day:
         raise ValueError(
-            'Wrong day value {day}; must be 1-{max_day}'
-            .format(day=day, max_day=max_day))
+            f'Wrong day value {day}; must be 1-{max_day}')
     assert isinstance(lang, str)
     return formats[dayMnthFmts[month - 1]][lang](day)
 

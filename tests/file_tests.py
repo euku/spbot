@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """FilePage tests."""
 #
-# (C) Pywikibot team, 2014-2022
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -9,6 +9,7 @@ import os
 import re
 import unittest
 from contextlib import suppress
+from itertools import chain
 
 import pywikibot
 from pywikibot.exceptions import (
@@ -52,9 +53,6 @@ class TestSharedFiles(TestCase):
         commons = self.get_site('commons')
         itwp = self.get_site('itwiki')
         itwp_file = pywikibot.FilePage(itwp, title)
-        for using in itwp_file.usingPages():
-            self.assertIsInstance(using, pywikibot.Page)
-
         commons_file = pywikibot.FilePage(commons, title)
 
         self.assertFalse(itwp_file.exists())
@@ -65,6 +63,9 @@ class TestSharedFiles(TestCase):
         self.assertTrue(commons_file.file_is_shared())
         self.assertTrue(commons_file.file_is_used)
         self.assertTrue(commons_file.get_file_url())
+
+        for using in commons_file.using_pages():
+            self.assertIsInstance(using, pywikibot.Page)
 
         self.assertIn('/wikipedia/commons/', itwp_file.get_file_url())
         with self.assertRaisesRegex(
@@ -81,7 +82,7 @@ class TestSharedFiles(TestCase):
         commons = self.get_site('commons')
         enwp = self.get_site('enwiki')
         enwp_file = pywikibot.FilePage(enwp, title)
-        for using in enwp_file.usingPages():
+        for using in enwp_file.using_pages():
             self.assertIsInstance(using, pywikibot.Page)
 
         commons_file = pywikibot.FilePage(commons, title)
@@ -94,7 +95,7 @@ class TestSharedFiles(TestCase):
         self.assertFalse(commons_file.file_is_shared())
 
         page_doesnt_exist_exc_regex = re.escape(
-            "Page [[commons:{}]] doesn't exist.".format(title))
+            f"Page [[commons:{title}]] doesn't exist.")
 
         with self.assertRaisesRegex(
                 NoPageError,
@@ -113,7 +114,7 @@ class TestSharedFiles(TestCase):
         commons = self.get_site('commons')
         testwp = self.get_site('testwiki')
         testwp_file = pywikibot.FilePage(testwp, title)
-        for using in testwp_file.usingPages():
+        for using in testwp_file.using_pages():
             self.assertIsInstance(using, pywikibot.Page)
 
         commons_file = pywikibot.FilePage(commons, title)
@@ -279,12 +280,44 @@ class TestFilePageDownload(TestCase):
     cached = True
 
     def test_successful_download(self):
-        """Test successful_download."""
+        """Test successful download."""
         page = pywikibot.FilePage(self.site, 'File:Albert Einstein.jpg')
         filename = join_images_path('Albert Einstein.jpg')
         status_code = page.download(filename)
         self.assertTrue(status_code)
-        os.unlink(filename)
+        oldsize = os.stat(filename).st_size
+
+        status_code = page.download(filename, url_height=128)
+        self.assertTrue(status_code)
+        size = os.stat(filename).st_size
+        self.assertLess(size, oldsize)
+
+        status_code = page.download(filename, url_width=120)
+        self.assertTrue(status_code)
+        size = os.stat(filename).st_size
+        self.assertLess(size, oldsize)
+
+        status_code = page.download(filename, url_param='120px')
+        self.assertTrue(status_code)
+        self.assertEqual(size, os.stat(filename).st_size)
+
+        os.remove(filename)
+
+    def test_changed_title(self):
+        """Test changed title."""
+        page = pywikibot.FilePage(self.site, 'Pywikibot MW gear icon.svg')
+        filename = join_images_path('Pywikibot MW gear icon.svg')
+        status_code = page.download(filename)
+        self.assertTrue(status_code)
+        self.assertTrue(os.path.exists(filename))
+
+        status_code = page.download(filename, url_param='120px')
+        self.assertTrue(status_code)
+        new_filename = filename.replace('.svg', '.png')
+        self.assertTrue(os.path.exists(new_filename))
+
+        os.remove(filename)
+        os.remove(new_filename)
 
     def test_not_existing_download(self):
         """Test not existing download."""
@@ -320,6 +353,20 @@ class TestFilePageDataItem(TestCase):
         self.assertEqual('M14634781', item.getID())
         self.assertIsInstance(
             item.labels, pywikibot.page._collections.LanguageDict)
+        self.assertIsInstance(
+            item.statements, pywikibot.page._collections.ClaimCollection)
+        self.assertTrue(item.claims is item.statements)
+
+        all_claims = list(chain.from_iterable(item.statements.values()))
+        self.assertEqual({claim.on_item for claim in all_claims}, {item})
+
+        claims = [claim for claim in all_claims
+                  if isinstance(claim.target, pywikibot.page.WikibaseEntity)]
+        self.assertEqual({str(claim.repo) for claim in claims},
+                         {'wikidata:wikidata'})
+        self.assertEqual({str(claim.target.repo) for claim in claims},
+                         {'wikidata:wikidata'})
+
         del item._file
         self.assertEqual(page, item.file)
 

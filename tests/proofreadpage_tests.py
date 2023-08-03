@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the proofreadpage module."""
 #
-# (C) Pywikibot team, 2015-2022
+# (C) Pywikibot team, 2015-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -13,7 +13,12 @@ from contextlib import suppress
 import pywikibot
 from pywikibot.data import api
 from pywikibot.exceptions import UnknownExtensionError
-from pywikibot.proofreadpage import IndexPage, ProofreadPage
+from pywikibot.proofreadpage import (
+    IndexPage,
+    PagesTagParser,
+    ProofreadPage,
+    TagAttr,
+)
 from pywikibot.tools import has_module
 from tests import unittest_print
 from tests.aspects import TestCase, require_modules
@@ -22,6 +27,97 @@ from tests.basepage import (
     BasePageMethodsTestBase,
 )
 from tests.utils import skipping
+
+
+class TestPagesTagParser(TestCase):
+    """Test TagAttr class."""
+
+    net = False
+
+    def test_tag_attr_int(self):
+        """Test TagAttr for int values."""
+        attr = TagAttr('to', 3)
+        self.assertEqual(repr(attr), "TagAttr('to', 3)")
+        self.assertEqual(str(attr), 'to=3')
+        self.assertEqual(attr.attr, 'to')
+        self.assertEqual(attr.value, 3)
+
+    def test_tag_attr_srt_int(self):
+        """Test TagAttr for str values that can be converted to int."""
+        attr = TagAttr('to', '3')
+        self.assertEqual(repr(attr), "TagAttr('to', '3')")
+        self.assertEqual(str(attr), 'to=3')
+        self.assertEqual(attr.attr, 'to')
+        self.assertEqual(attr.value, 3)
+
+        attr.value = '"3"'
+        self.assertEqual(str(attr), 'to="3"')
+        self.assertEqual(repr(attr), """TagAttr('to', '"3"')""")
+        self.assertEqual(attr.value, 3)
+
+    def test_tag_attr_str(self):
+        """Test TagAttr for str value."""
+        attr = TagAttr('fromsection', 'A123')
+        self.assertEqual(repr(attr), "TagAttr('fromsection', 'A123')")
+        self.assertEqual(str(attr), 'fromsection=A123')
+        self.assertEqual(attr.attr, 'fromsection')
+        self.assertEqual(attr.value, 'A123')
+
+        attr.value = '"A123"'
+        self.assertEqual(repr(attr), """TagAttr('fromsection', '"A123"')""")
+        self.assertEqual(str(attr), 'fromsection="A123"')
+        self.assertEqual(attr.value, 'A123')
+
+        attr.value = "'A123'"
+        self.assertEqual(repr(attr), """TagAttr('fromsection', "'A123'")""")
+        self.assertEqual(str(attr), "fromsection='A123'")
+        self.assertEqual(attr.value, 'A123')
+
+    def test_tag_attr_exceptions(self):
+        """Test TagAttr for Exceptions."""
+        self.assertRaises(ValueError, TagAttr, 'fromsection', 'A123"')
+        self.assertRaises(TypeError, TagAttr, 'fromsection', 3.0)
+
+    def test_pages_tag_parser(self):
+        """Test PagesTagParser."""
+        tp = PagesTagParser('Text: <pages />')
+        self.assertEqual(repr(tp), "PagesTagParser('<pages />')")
+
+        text = 'Text: <pages from="first" to="last" />'
+        tp = PagesTagParser(text)
+        self.assertEqual(
+            repr(tp), """PagesTagParser('<pages from="first" to="last" />')""")
+        self.assertEqual(tp.ffrom, 'first')
+        self.assertEqual(tp.to, 'last')
+
+        tp.index = '"Index.pdf"'
+        self.assertEqual(tp.index, 'Index.pdf')
+
+        tp.ffrom, tp.to = 1, '"3"'
+        self.assertEqual(tp.ffrom, 1)
+        self.assertEqual(tp.to, 3)
+        self.assertEqual(str(tp), '<pages index="Index.pdf" from=1 to="3" />')
+
+        del tp.index
+        self.assertNotIn('index', tp)
+
+        tp.to = "'3'"
+        self.assertEqual(str(tp), """<pages from=1 to='3' />""")
+
+        tp.step = 3
+        self.assertEqual(str(tp), """<pages from=1 to='3' step=3 />""")
+        self.assertIn('step', tp)
+
+    def test_pages_tag_parser_exceptions(self):
+        """Test PagesTagParser Exceptions."""
+        text = """Text: <pages index="Index.pdf />"""
+        self.assertRaises(ValueError, PagesTagParser, text)
+
+        text = """Text: <pages index="Index.pdf' />"""
+        self.assertRaises(ValueError, PagesTagParser, text)
+
+        text = """Text: <pages index="Index.pdf from=C" />"""
+        self.assertRaises(ValueError, PagesTagParser, text)
 
 
 class TestProofreadPageInvalidSite(TestCase):
@@ -296,11 +392,10 @@ class TestProofreadPageValidSite(TestCase):
                                      total=1, **rvargs)
         rvgen.set_maximum_items(-1)  # suppress use of rvlimit parameter
 
-        try:
-            pagedict = next(iter(rvgen))
+        loaded_text = ''
+        with suppress(LookupError, StopIteration, TypeError, ValueError):
+            pagedict = next(rvgen)
             loaded_text = pagedict.get('revisions')[0].get('*')
-        except (StopIteration, TypeError, KeyError, ValueError, IndexError):
-            loaded_text = ''
 
         page_text = page._page_to_json()
         self.assertEqual(json.loads(page_text), json.loads(loaded_text))
@@ -866,17 +961,17 @@ class TestIndexPageHasValidContent(BS4TestCase):
 
     def test_has_valid_content_prefixed(self):
         """Test prefixing Index template is invalid."""
-        self.index.text = 'pre {}'.format(self.valid_template)
+        self.index.text = f'pre {self.valid_template}'
         self.assertFalse(self.index.has_valid_content())
 
     def test_has_valid_content_postfixed(self):
         """Test postfixing Index template is invalid."""
-        self.index.text = '{}post'.format(self.valid_template)
+        self.index.text = f'{self.valid_template}post'
         self.assertFalse(self.index.has_valid_content())
 
     def test_has_valid_content_pre_and_postfixed(self):
         """Test pre- and postfixing Index template is invalid."""
-        self.index.text = 'pre{}post'.format(self.valid_template)
+        self.index.text = f'pre{self.valid_template}post'
         self.assertFalse(self.index.has_valid_content())
 
     def test_has_valid_content_second_template(self):

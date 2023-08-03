@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """API test module."""
 #
-# (C) Pywikibot team, 2007-2022
+# (C) Pywikibot team, 2007-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -22,6 +22,7 @@ from tests.aspects import (
     DefaultDrySiteTestCase,
     DefaultSiteTestCase,
     TestCase,
+    require_version,
 )
 from tests.utils import FakeLoginManager
 
@@ -64,7 +65,7 @@ class TestDryApiFunctions(DefaultDrySiteTestCase):
 
     @suppress_warnings(
         'Instead of using kwargs |Both kwargs and parameters are set',
-        FutureWarning)
+        DeprecationWarning)
     def test_mixed_mode(self):
         """Test if parameters is used with kwargs."""
         req1 = api.Request(site=self.site, action='test', parameters='foo')
@@ -241,9 +242,9 @@ class TestParamInfo(DefaultSiteTestCase):
             self.assertEqual(mod[6:], pi[mod]['name'])
             self.assertEqual(mod, pi[mod]['path'])
 
-        with patch.object(pywikibot, 'warning') as w:
-            with self.assertRaises(KeyError):
-                pi.__getitem__('query+foobar')
+        with patch.object(pywikibot, 'warning') as w, \
+             self.assertRaises(KeyError):
+            pi.__getitem__('query+foobar')
         # The warning message may be different with older MW versions.
         self.assertIn('API warning (paraminfo): ', w.call_args[0][0])
 
@@ -292,13 +293,10 @@ class TestParamInfo(DefaultSiteTestCase):
 
         self.assertIn('query+revisions', pi.prefix_map)
 
+    @require_version('>=1.25wmf4', 'support the new paraminfo api')
     def test_new_mode(self):
         """Test the new modules-only mode explicitly."""
         site = self.get_site()
-        if site.mw_version < '1.25wmf4':
-            self.skipTest(
-                "version {} doesn't support the new paraminfo api"
-                .format(site.mw_version))
         pi = api.ParamInfo(site, modules_only_mode=True)
         pi.fetch(['info'])
         self.assertIn('query+info', pi._paraminfo)
@@ -500,6 +498,7 @@ class TestDryPageGenerator(TestCase):
             with self.subTest(amount=i):
                 self.gen.set_maximum_items(i)
                 self.assertPageTitlesEqual(self.gen, self.titles[:i])
+                self.gen.restart()
 
     def test_limit_zero(self):
         """Test that a limit of zero is the same as limit None."""
@@ -536,11 +535,10 @@ class TestPropertyGenerator(TestCase):
                                     parameters={'titles': '|'.join(titles)})
 
         count = 0
-        for pagedata in gen:
+        for count, pagedata in enumerate(gen, start=1):
             self.assertIsInstance(pagedata, dict)
             self.assertIn('pageid', pagedata)
             self.assertIn('lastrevid', pagedata)
-            count += 1
         self.assertLength(links, count)
 
     def test_one_continuation(self):
@@ -554,12 +552,11 @@ class TestPropertyGenerator(TestCase):
         gen.set_maximum_items(-1)  # suppress use of "rvlimit" parameter
 
         count = 0
-        for pagedata in gen:
+        for count, pagedata in enumerate(gen, start=1):
             self.assertIsInstance(pagedata, dict)
             self.assertIn('pageid', pagedata)
             self.assertIn('revisions', pagedata)
             self.assertIn('revid', pagedata['revisions'][0])
-            count += 1
         self.assertLength(links, count)
 
     def test_two_continuations(self):
@@ -573,12 +570,11 @@ class TestPropertyGenerator(TestCase):
         gen.set_maximum_items(-1)  # suppress use of "rvlimit" parameter
 
         count = 0
-        for pagedata in gen:
+        for count, pagedata in enumerate(gen, start=1):
             self.assertIsInstance(pagedata, dict)
             self.assertIn('pageid', pagedata)
             self.assertIn('revisions', pagedata)
             self.assertIn('revid', pagedata['revisions'][0])
-            count += 1
         self.assertLength(links, count)
 
     def test_many_continuations_limited(self):
@@ -602,35 +598,39 @@ class TestPropertyGenerator(TestCase):
         gen.set_query_increment(5)
 
         count = 0
-        for pagedata in gen:
+        for count, pagedata in enumerate(gen, start=1):
             self.assertIsInstance(pagedata, dict)
             if 'missing' in pagedata:
                 self.assertNotIn('pageid', pagedata)
             else:
                 self.assertIn('pageid', pagedata)
-            count += 1
         self.assertLength(links, count)
 
     def test_two_continuations_limited(self):
         """Test PropertyGenerator with many limited props and continuations."""
+        total = 20
+        increment = total // 4
         mainpage = self.get_mainpage()
-        links = list(self.site.pagelinks(mainpage, total=30))
-        titles = [link.title(with_section=False) for link in links]
+        links = tuple(self.site.pagelinks(mainpage, total=total))
+        titles = (link.title(with_section=False) for link in links)
         gen = api.PropertyGenerator(
-            site=self.site, prop='info|categoryinfo|langlinks|templates',
+            site=self.site,
+            prop='info|categoryinfo|langlinks|templates',
             parameters={'titles': '|'.join(titles)})
         # Force the generator into continuation mode
-        gen.set_query_increment(5)
+        gen.set_query_increment(increment)
 
         count = 0
-        for pagedata in gen:
+        for count, pagedata in enumerate(gen, start=1):
             self.assertIsInstance(pagedata, dict)
             if 'missing' in pagedata:
                 self.assertNotIn('pageid', pagedata)
             else:
                 self.assertIn('pageid', pagedata)
-            count += 1
         self.assertLength(links, count)
+        self.assertGreaterEqual(total, count)
+        # ensure we have enough continuations
+        self.assertGreater(count, total // 2 + 1)
 
 
 class TestDryQueryGeneratorNamespaceParam(TestCase):
@@ -846,15 +846,15 @@ class TestLazyLoginNotExistUsername(TestLazyLoginBase):
     def setUp(self):
         """Patch the LoginManager to avoid UI interaction."""
         super().setUp()
-        self.orig_login_manager = pywikibot.data.api.LoginManager
-        pywikibot.data.api.LoginManager = FakeLoginManager
+        self.orig_login_manager = pywikibot.login.ClientLoginManager
+        pywikibot.login.ClientLoginManager = FakeLoginManager
 
     def tearDown(self):
         """Restore the original LoginManager."""
-        pywikibot.data.api.LoginManager = self.orig_login_manager
+        pywikibot.login.ClientLoginManager = self.orig_login_manager
         super().tearDown()
 
-    @patch.object(pywikibot, 'output')
+    @patch.object(pywikibot, 'info')
     @patch.object(pywikibot, 'warning')
     @patch.object(pywikibot, 'error')
     def test_access_denied_notexist_username(self, error, warning, output):
@@ -964,7 +964,7 @@ class TestLagpattern(DefaultSiteTestCase):
     cached = False
 
     def test_valid_lagpattern(self):
-        """Test whether api.lagpattern is valid."""
+        """Test whether api lagpattern is valid."""
         mysite = self.get_site()
         if ('dbrepllag' not in mysite.siteinfo
                 or mysite.siteinfo['dbrepllag'][0]['lag'] == -1):
@@ -982,9 +982,9 @@ class TestLagpattern(DefaultSiteTestCase):
             req.submit()
         except SystemExit:
             pass  # expected exception from DummyThrottle instance
-        except APIError as e:
+        except APIError as e:  # pragma: no cover
             pywikibot.warning(
-                'Wrong api.lagpattern regex, cannot retrieve lag value')
+                'Wrong api lagpattern regex, cannot retrieve lag value')
             raise e
         self.assertIsInstance(mythrottle._lagvalue, (int, float))
         self.assertGreaterEqual(mythrottle._lagvalue, 0)
@@ -992,7 +992,7 @@ class TestLagpattern(DefaultSiteTestCase):
         self.assertGreaterEqual(mythrottle.retry_after, 0)
 
     def test_individual_patterns(self):
-        """Test api.lagpattern with example patterns."""
+        """Test api lagpattern with example patterns."""
         patterns = {
             'Waiting for 10.64.32.115: 0.14024019241333 seconds lagged':
                 0.14024019241333,
@@ -1000,9 +1000,9 @@ class TestLagpattern(DefaultSiteTestCase):
             'Waiting for 127.0.0.1: 1.7 seconds lagged': 1.7
         }
         for info, time in patterns.items():
-            lag = api.lagpattern.search(info)
+            lag = api._requests.lagpattern.search(info)
             self.assertIsNotNone(lag)
-            self.assertEqual(float(lag.group('lag')), time)
+            self.assertEqual(float(lag['lag']), time)
 
 
 if __name__ == '__main__':  # pragma: no cover

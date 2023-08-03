@@ -1,6 +1,6 @@
 """Test utilities."""
 #
-# (C) Pywikibot team, 2013-2022
+# (C) Pywikibot team, 2013-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -11,24 +11,17 @@ import unittest
 import warnings
 from contextlib import contextmanager
 from subprocess import PIPE, Popen, TimeoutExpired
+from typing import Any, Optional, Union
 
 import pywikibot
 from pywikibot import config
+from pywikibot.backports import Dict, List, Sequence
 from pywikibot.data.api import CachedRequest
 from pywikibot.data.api import Request as _original_Request
 from pywikibot.exceptions import APIError
 from pywikibot.login import LoginStatus
 from pywikibot.site import Namespace
-from pywikibot.tools import PYTHON_VERSION
-
 from tests import _pwb_py
-
-
-try:
-    from cryptography import __version__ as cryptography_version
-    cryptography_version = list(map(int, cryptography_version.split('.')))
-except ImportError:
-    cryptography_version = None
 
 
 OSWIN32 = (sys.platform == 'win32')
@@ -47,7 +40,23 @@ def expected_failure_if(expect):
 
 
 def fixed_generator(iterable):
-    """Return a dummy generator ignoring all parameters."""
+    """Return a dummy generator ignoring all parameters.
+
+    This can be used to overwrite a generator method and yield
+    predefined items:
+
+    >>> from tests.utils import fixed_generator
+    >>> site = pywikibot.Site()
+    >>> page = pywikibot.Page(site, 'Any page')
+    >>> list(page.linkedPages(total=1))
+    []
+    >>> gen = fixed_generator([
+    ...     pywikibot.Page(site, 'User:BobBot/Redir'),
+    ...     pywikibot.Page(site, 'Main Page')])
+    >>> page.linkedPages = gen
+    >>> list(page.linkedPages(total=1))
+    [Page('Benutzer:BobBot/Redir'), Page('Main Page')]
+    """
     def gen(*args, **kwargs):
         yield from iterable
 
@@ -170,16 +179,21 @@ class AssertAPIErrorContextManager:
     object given or calls the callable object.
     """
 
-    def __init__(self, code, info, msg, test_case):
+    def __init__(self, code, info, msg, test_case, regex=None):
         """Create instance expecting the code and info."""
         self.code = code
         self.info = info
         self.msg = msg
         self.test_case = test_case
+        self.regex = regex
 
     def __enter__(self):
         """Enter this context manager and the unittest's context manager."""
-        self.cm = self.test_case.assertRaises(APIError, msg=self.msg)
+        if self.regex:
+            self.cm = self.test_case.assertRaisesRegex(APIError, self.regex,
+                                                       msg=self.msg)
+        else:
+            self.cm = self.test_case.assertRaises(APIError, msg=self.msg)
         self.cm.__enter__()
         return self.cm
 
@@ -204,7 +218,7 @@ class AssertAPIErrorContextManager:
 
 class DryParamInfo(dict):
 
-    """Dummy class to use instead of :py:obj:`pywikibot.data.api.ParamInfo`."""
+    """Dummy class to use instead of :py:obj:`data.api.ParamInfo`."""
 
     def __init__(self, *args, **kwargs):
         """Initializer."""
@@ -230,7 +244,11 @@ class DryParamInfo(dict):
 
 class DummySiteinfo:
 
-    """Dummy class to use instead of :py:obj:`pywikibot.site.Siteinfo`."""
+    """Dummy Siteinfo class.
+
+    To be used instead of :class:`pywikibot.site.Siteinfo
+    <pywikibot.site._siteinfo.Siteinfo>`.
+    """
 
     def __init__(self, cache):
         """Initializer."""
@@ -268,6 +286,13 @@ class DummySiteinfo:
         """Return False."""
         return False
 
+    def is_cached(self, key: str) -> bool:
+        """Return whether the key is cached.
+
+        .. versionadded:: 8.3
+        """
+        return key in self._cache
+
     def is_recognised(self, key):
         """Return None."""
         return None
@@ -279,7 +304,7 @@ class DummySiteinfo:
 
 class DryRequest(CachedRequest):
 
-    """Dummy class to use instead of :py:obj:`pywikibot.data.api.Request`."""
+    """Dummy class to use instead of :py:obj:`data.api.Request`."""
 
     def __init__(self, *args, **kwargs):
         """Initializer."""
@@ -313,7 +338,7 @@ class DrySite(pywikibot.site.APISite):
     def __init__(self, code, fam, user):
         """Initializer."""
         super().__init__(code, fam, user)
-        self._userinfo = pywikibot.tools.EMPTY_DEFAULT
+        self._userinfo = pywikibot.tools.collections.EMPTY_DEFAULT
         self._paraminfo = DryParamInfo()
         self._siteinfo = DummySiteinfo({})
         self._siteinfo._cache['lang'] = (code, True)
@@ -386,6 +411,15 @@ class DrySite(pywikibot.site.APISite):
                                   interface=DryDataSite)
         return None
 
+    def login(self, *args, cookie_only=False, **kwargs):
+        """Overwrite login which is called when a site is initialized.
+
+        .. versionadded: 8.0.4
+        """
+        if cookie_only:
+            return
+        raise Exception(f'Attempting to login with {type(self).__name__}')
+
 
 class DryDataSite(DrySite, pywikibot.site.DataSite):
 
@@ -414,7 +448,7 @@ class DryPage(pywikibot.Page):
         return self._disambig
 
 
-class FakeLoginManager(pywikibot.data.api.LoginManager):
+class FakeLoginManager(pywikibot.login.ClientLoginManager):
 
     """Loads a fake password."""
 
@@ -428,18 +462,14 @@ class FakeLoginManager(pywikibot.data.api.LoginManager):
         """Ignore password changes."""
 
 
-def execute(command, data_in=None, timeout=None, error=None):
-    """
-    Execute a command and capture outputs.
+def execute(command: List[str], data_in=None, timeout=None):
+    """Execute a command and capture outputs.
+
+    .. versionchanged:: 8.2.0
+       *error* parameter was removed.
 
     :param command: executable to run and arguments to use
-    :type command: list of str
     """
-    if PYTHON_VERSION < (3, 6):
-        command.insert(1, '-W ignore::FutureWarning:pywikibot:102')
-    if cryptography_version and cryptography_version < [1, 3, 4]:
-        command.insert(1, '-W ignore:Old version of cryptography:Warning')
-
     env = os.environ.copy()
 
     # Prevent output by test package; e.g. 'max_retries reduced from x to y'
@@ -478,29 +508,30 @@ def execute(command, data_in=None, timeout=None, error=None):
             'stderr': stderr_data.decode(config.console_encoding)}
 
 
-def execute_pwb(args, data_in=None, timeout=None, error=None, overrides=None):
-    """
-    Execute the pwb.py script and capture outputs.
+def execute_pwb(args: List[str],
+                data_in: Optional[Sequence[str]] = None,
+                timeout: Union[int, float, None] = None,
+                overrides: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+    """Execute the pwb.py script and capture outputs.
+
+    .. versionchanged:: 8.2.0
+       the *error* parameter was removed.
 
     :param args: list of arguments for pwb.py
-    :type args: typing.Sequence[str]
     :param overrides: mapping of pywikibot symbols to test replacements
-    :type overrides: dict
     """
     command = [sys.executable]
 
     if overrides:
         command.append('-c')
         overrides = '; '.join(
-            '{} = {}'.format(key, value) for key, value in overrides.items())
+            f'{key} = {value}' for key, value in overrides.items())
         command.append(
-            'import pwb; import pywikibot; {}; pwb.main()'
-            .format(overrides))
+            f'import pwb; import pywikibot; {overrides}; pwb.main()')
     else:
         command.append(_pwb_py)
 
-    return execute(command=command + args,
-                   data_in=data_in, timeout=timeout, error=error)
+    return execute(command=command + args, data_in=data_in, timeout=timeout)
 
 
 @contextmanager
@@ -512,8 +543,38 @@ def empty_sites():
 
 
 @contextmanager
-def skipping(*exceptions, msg=None):
-    """Context manager to skip test on specified exceptions."""
+def skipping(*exceptions: BaseException, msg: Optional[str] = None):
+    """Context manager to skip test on specified exceptions.
+
+    For example Eventstreams raises ``NotImplementedError`` if no
+    ``streams`` parameter was given. Skip the following tests in that
+    case::
+
+        with skipping(NotImplementedError):
+            self.es = comms.eventstreams.EventStreams(streams=None)
+        self.assertIsInstance(self.es, tools.collections.GeneratorWrapper)
+
+    The exception message is used for the ``SkipTest`` reason. To use a
+    custom message, add a ``msg`` parameter::
+
+        with skipping(AssertionError, msg='T304786'):
+            self.assertEqual(self.get_mainpage().oldest_revision.text, text)
+
+    Multiple context expressions may also be used::
+
+        with (
+            skipping(OtherPageSaveError),
+            self.assertRaisesRegex(SpamblacklistError, 'badsite.com'),
+        ):
+            page.save()
+
+    .. note:: The last sample uses Python 3.10 syntax.
+
+    .. versionadded:: 6.2
+
+    :param msg: Optional skipping reason
+    :param exceptions: Exceptions to let test skip
+    """
     try:
         yield
     except exceptions as e:

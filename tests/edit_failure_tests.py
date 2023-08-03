@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Tests for edit failures.
 
@@ -30,6 +30,7 @@ from pywikibot.exceptions import (
     TitleblacklistError,
 )
 from tests.aspects import TestCase, WikibaseTestCase
+from tests.utils import skipping
 
 
 class TestSaveFailure(TestCase):
@@ -55,13 +56,9 @@ class TestSaveFailure(TestCase):
         """Test that spam in content raise the appropriate exception."""
         page = pywikibot.Page(self.site, 'Wikipedia:Sandbox')
         page.text = 'http://badsite.com'
-        try:
-            with self.assertRaisesRegex(
-                    SpamblacklistError,
-                    'badsite.com'):
-                page.save()
-        except OtherPageSaveError as e:
-            self.skipTest(e)
+        with skipping(OtherPageSaveError), self.assertRaisesRegex(
+                SpamblacklistError, 'badsite.com'):
+            page.save()
 
     def test_titleblacklist(self):
         """Test that title blacklist raise the appropriate exception."""
@@ -72,11 +69,9 @@ class TestSaveFailure(TestCase):
     def test_nobots(self):
         """Test that {{nobots}} raise the appropriate exception."""
         page = pywikibot.Page(self.site, 'User:John Vandenberg/nobots')
-        with patch.object(config, 'ignore_bot_templates', False):
-            with self.assertRaisesRegex(
-                    OtherPageSaveError,
-                    'nobots'):
-                page.save()
+        with patch.object(config, 'ignore_bot_templates', False), \
+             self.assertRaisesRegex(OtherPageSaveError, 'nobots'):
+            page.save()
 
     def test_touch(self):
         """Test that Page.touch() does not do a real edit."""

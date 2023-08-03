@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the site module."""
 #
 # (C) Pywikibot team, 2008-2022
@@ -87,7 +87,7 @@ class TestSiteObject(DefaultSiteTestCase):
         self.assertIsInstance(mysite.lang, str)
         self.assertEqual(mysite, pywikibot.Site(self.code, self.family))
         self.assertIsInstance(mysite.user(), (str, type(None)))
-        self.assertEqual(mysite.sitename, '{}:{}'.format(self.family, code))
+        self.assertEqual(mysite.sitename, f'{self.family}:{code}')
         self.assertIsInstance(mysite.linktrail(), str)
         self.assertIsInstance(mysite.redirect(), str)
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the site module."""
 #
 # (C) Pywikibot team, 2008-2022
@@ -72,7 +72,7 @@ class TestSiteInfo(DefaultSiteTestCase):
     def test_no_cache(self):
         """Test siteinfo caching can be disabled."""
         if 'fileextensions' in self.site.siteinfo._cache:
-            del self.site.siteinfo._cache['fileextensions']
+            del self.site.siteinfo._cache['fileextensions']  # pragma: no cover
         self.site.siteinfo.get('fileextensions', cache=False)
         self.assertFalse(self.site.siteinfo.is_cached('fileextensions'))
 

@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the page module."""
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -20,6 +20,7 @@ from pywikibot.exceptions import (
     IsNotRedirectPageError,
     IsRedirectPageError,
     NoPageError,
+    TimeoutError,
     UnknownExtensionError,
 )
 from pywikibot.tools import suppress_warnings
@@ -197,7 +198,7 @@ class TestPageObjectEnglish(TestCase):
         p1 = pywikibot.Page(site, 'Help:Test page#Testing')
         ns_name = 'Help'
         if site.namespaces[12][0] != ns_name:
-            ns_name = site.namespaces[12][0]
+            ns_name = site.namespaces[12][0]  # pragma: no cover
         self.assertEqual(p1.title(), ns_name + ':Test page#Testing')
         self.assertEqual(p1.title(underscore=True),
                          ns_name + ':Test_page#Testing')
@@ -231,7 +232,7 @@ class TestPageObjectEnglish(TestCase):
         p2 = pywikibot.Page(site, 'File:Jean-Léon Gérôme 003.jpg')
         ns_name = 'File'
         if site.namespaces[6][0] != ns_name:
-            ns_name = site.namespaces[6][0]
+            ns_name = site.namespaces[6][0]  # pragma: no cover
         self.assertEqual(p2.title(), 'File:Jean-Léon Gérôme 003.jpg')
         self.assertEqual(p2.title(underscore=True),
                          'File:Jean-Léon_Gérôme_003.jpg')
@@ -461,7 +462,8 @@ class TestPageObject(DefaultSiteTestCase):
         self.assertIsInstance(mainpage.isDisambig(), bool)
         self.assertIsInstance(mainpage.has_permission(), bool)
         self.assertIsInstance(mainpage.botMayEdit(), bool)
-        self.assertIsInstance(mainpage.editTime(), pywikibot.Timestamp)
+        self.assertIsInstance(mainpage.latest_revision.timestamp,
+                              pywikibot.Timestamp)
         self.assertIsInstance(mainpage.permalink(), str)
 
     def test_talk_page(self):
@@ -502,8 +504,9 @@ class TestPageObject(DefaultSiteTestCase):
         for p in mainpage.backlinks(follow_redirects=False, total=10):
             self.assertIsInstance(p, pywikibot.Page)
 
-        for p in mainpage.embeddedin(total=10):
-            self.assertIsInstance(p, pywikibot.Page)
+        with skipping(TimeoutError):
+            for p in mainpage.embeddedin(total=10):
+                self.assertIsInstance(p, pywikibot.Page)
 
     def testLinks(self):
         """Test the different types of links from a page."""
@@ -544,7 +547,7 @@ class TestPageObject(DefaultSiteTestCase):
         for page in site.allpages(filterredir=True, total=1):
             break
         else:
-            self.skipTest('No redirect pages on site {!r}'.format(site))
+            self.skipTest(f'No redirect pages on site {site!r}')
         # This page is already initialised
         self.assertTrue(hasattr(page, '_isredir'))
         # call api.update_page without prop=info
@@ -673,7 +676,7 @@ class TestPageRepr(DefaultDrySiteTestCase):
         """Test to capture actual Python result pre unicode_literals."""
         self.assertEqual(repr(self.page), "Page('Ō')")
         self.assertEqual('%r' % self.page, "Page('Ō')")
-        self.assertEqual('{!r}'.format(self.page), "Page('Ō')")
+        self.assertEqual(f'{self.page!r}', "Page('Ō')")
 
 
 class TestPageBotMayEdit(TestCase):
@@ -1080,7 +1083,6 @@ class TestApplicablePageProtections(TestCase):
         p2 = pywikibot.Page(site, 'User:Unicodesnowman/ProtectTest')
         p3 = pywikibot.Page(site, 'File:Wiki.png')
 
-        # from the API, since 1.25wmf14
         pp1 = p1.applicable_protections()
         pp2 = p2.applicable_protections()
         pp3 = p3.applicable_protections()
@@ -1090,12 +1092,6 @@ class TestApplicablePageProtections(TestCase):
         self.assertNotIn('create', pp2)
         self.assertNotIn('upload', pp2)
         self.assertIn('upload', pp3)
-
-        # inferred
-        site.version = lambda: '1.24'
-        self.assertEqual(pp1, p1.applicable_protections())
-        self.assertEqual(pp2, p2.applicable_protections())
-        self.assertEqual(pp3, p3.applicable_protections())
 
 
 class TestPageProtect(TestCase):

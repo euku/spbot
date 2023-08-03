@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Script that forms part of pwb_tests."""
 #
 # (C) Pywikibot team, 2018-2022
@@ -10,7 +10,7 @@ import pywikibot
 
 def main() -> None:
     """Print umlauts."""
-    pywikibot.output('Häuser')
+    pywikibot.info('Häuser')
     print('Häuser')
 
 

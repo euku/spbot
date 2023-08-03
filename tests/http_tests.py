@@ -1,11 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for http module."""
 #
-# (C) Pywikibot team, 2014-2022
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
-import json
 import re
 import warnings
 from contextlib import suppress
@@ -154,8 +153,8 @@ class TestHttpStatus(HttpbinTestCase):
         """Test invalid scheme."""
         # A InvalidSchema is raised within requests
         with self.assertRaisesRegex(
-                requests.exceptions.InvalidSchema,
-                "No connection adapters were found for u?'invalid://url'"):
+                FatalServerError,
+                "No connection adapters were found for 'invalid://url'"):
             http.fetch('invalid://url')
 
     def test_follow_redirects(self):
@@ -240,6 +239,7 @@ class DefaultUserAgentTestCase(TestCase):
         self.assertIn('Python/' + str(PYTHON_VERSION[0]), http.user_agent())
 
 
+@require_modules('fake_useragent')
 class LiveFakeUserAgentTestCase(HttpbinTestCase):
 
     """Test the usage of fake user agent."""
@@ -256,51 +256,47 @@ class LiveFakeUserAgentTestCase(HttpbinTestCase):
             self.orig_fake_user_agent_exceptions)
         super().tearDown()
 
-    def _test_fetch_use_fake_user_agent(self):
-        """Test `use_fake_user_agent` argument of http.fetch."""
-        # Existing headers
-        r = http.fetch(
-            self.get_httpbin_url('/status/200'),
-            headers={'user-agent': 'EXISTING'})
+    def test_existing_headers(self):
+        """Test fake_user_agent with existing headers."""
+        r = self.fetch(self.get_httpbin_url('/status/200'),
+                       headers={'user-agent': 'EXISTING'})
         self.assertEqual(r.request.headers['user-agent'], 'EXISTING')
 
-        # Argument value changes
-        r = http.fetch(self.get_httpbin_url('/status/200'),
+    def test_argument_values_changes(self):
+        """Test fake_user_agent with argument value changes."""
+        r = self.fetch(self.get_httpbin_url('/status/200'),
                        use_fake_user_agent=True)
         self.assertNotEqual(r.request.headers['user-agent'], http.user_agent())
-        r = http.fetch(self.get_httpbin_url('/status/200'),
+
+        r = self.fetch(self.get_httpbin_url('/status/200'),
                        use_fake_user_agent=False)
         self.assertEqual(r.request.headers['user-agent'], http.user_agent())
-        r = http.fetch(
-            self.get_httpbin_url('/status/200'),
-            use_fake_user_agent='ARBITRARY')
+
+        r = self.fetch(self.get_httpbin_url('/status/200'),
+                       use_fake_user_agent='ARBITRARY')
         self.assertEqual(r.request.headers['user-agent'], 'ARBITRARY')
 
-        # Empty value
-        with self.assertRaisesRegex(
-                ValueError,
-                'Invalid parameter: use_fake_user_agent'):
-            http.fetch(self.get_httpbin_url('/status/200'),
+    def test_empty_valu(self):
+        """Test fake_user_agent with empty value."""
+        with self.assertRaisesRegex(ValueError,
+                                    'Invalid parameter: use_fake_user_agent'):
+            self.fetch(self.get_httpbin_url('/status/200'),
                        use_fake_user_agent='')
 
-        # Parameter wrongly set to None
-        with self.assertRaisesRegex(
-                ValueError,
-                'Invalid parameter: use_fake_user_agent'):
-            http.fetch(self.get_httpbin_url('/status/200'),
+    def test_parameter_set_to_none(self):
+        """Test fake_user_agent with parameter wrongly set to None."""
+        with self.assertRaisesRegex(ValueError,
+                                    'Invalid parameter: use_fake_user_agent'):
+            self.fetch(self.get_httpbin_url('/status/200'),
                        use_fake_user_agent=None)
 
-        # Manually overridden domains
+    def test_overridden_domains(self):
+        """Test fake_user_agent with manually overridden domains."""
         config.fake_user_agent_exceptions = {
             self.get_httpbin_hostname(): 'OVERRIDDEN'}
-        r = http.fetch(
-            self.get_httpbin_url('/status/200'), use_fake_user_agent=False)
+        r = self.fetch(self.get_httpbin_url('/status/200'),
+                       use_fake_user_agent=False)
         self.assertEqual(r.request.headers['user-agent'], 'OVERRIDDEN')
-
-    @require_modules('fake_useragent')
-    def test_fetch_with_fake_useragent(self):
-        """Test method with fake_useragent module."""
-        self._test_fetch_use_fake_user_agent()
 
 
 class CharsetTestCase(TestCase):
@@ -328,84 +324,65 @@ class CharsetTestCase(TestCase):
 
     def test_no_content_type(self):
         """Test decoding without content-type (and then no charset)."""
-        charset = None
         resp = CharsetTestCase._create_response(
             headers={},
             data=CharsetTestCase.LATIN1_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp)
         self.assertEqual('latin1', resp.encoding)
         self.assertEqual(resp.content, CharsetTestCase.LATIN1_BYTES)
         self.assertEqual(resp.text, CharsetTestCase.STR)
 
     def test_no_charset(self):
         """Test decoding without explicit charset."""
-        charset = None
         resp = CharsetTestCase._create_response(
             headers={'content-type': ''},
             data=CharsetTestCase.LATIN1_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp)
         self.assertEqual('latin1', resp.encoding)
         self.assertEqual(resp.content, CharsetTestCase.LATIN1_BYTES)
         self.assertEqual(resp.text, CharsetTestCase.STR)
 
     def test_content_type_application_json_without_charset(self):
         """Test decoding without explicit charset but JSON content."""
-        charset = None
         resp = CharsetTestCase._create_response(
             headers={'content-type': 'application/json'},
             data=CharsetTestCase.UTF8_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp)
         self.assertEqual('utf-8', resp.encoding)
 
     def test_content_type_sparql_json_without_charset(self):
         """Test decoding without explicit charset but JSON content."""
-        charset = None
         resp = CharsetTestCase._create_response(
             headers={'content-type': 'application/sparql-results+json'},
             data=CharsetTestCase.UTF8_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp)
         self.assertEqual('utf-8', resp.encoding)
 
-    def test_content_type_xml_without_charset(self):
-        """Test decoding without explicit charset but xml content."""
-        charset = None
-        resp = CharsetTestCase._create_response(
-            headers={'content-type': 'application/xml'},
-            data=CharsetTestCase.UTF8_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
-        self.assertEqual('utf-8', resp.encoding)
+    def test_content_type_xml(self):
+        """Test xml content with encoding given in content."""
+        tests = [
+            ('Test decoding without explicit charset but xml content',
+             self.UTF8_BYTES, 'utf-8'),
 
-    def test_content_type_xml_with_charset(self):
-        """Test xml content with utf-8 encoding given in content."""
-        charset = None
-        resp = CharsetTestCase._create_response(
-            headers={'content-type': 'application/xml'},
-            data=b'<?xml version="1.0" encoding="UTF-8"?>')
-        resp.encoding = http._decide_encoding(resp, charset)
-        self.assertEqual('UTF-8', resp.encoding)
+            ('Test xml content with utf-8 encoding given in content',
+             b'<?xml version="1.0" encoding="UTF-8"?>', 'UTF-8'),
 
-    def test_content_type_xml_with_charset_and_more_data(self):
-        """Test xml content with utf-8 encoding given in content."""
-        charset = None
-        resp = CharsetTestCase._create_response(
-            headers={'content-type': 'application/xml'},
-            data=b'<?xml version="1.0" encoding="UTF-8" '
-                 b'someparam="ignored"?>')
-        resp.encoding = http._decide_encoding(resp, charset)
-        self.assertEqual('UTF-8', resp.encoding)
+            ('Test xml content with utf-8 encoding given in content',
+             b'<?xml version="1.0" encoding="UTF-8" someparam="ignored"?>',
+             'UTF-8'),
 
-    def test_content_type_xml_with_variant_charset(self):
-        """Test xml content with latin1 encoding given in content."""
-        charset = None
-        resp = CharsetTestCase._create_response(
-            headers={'content-type': 'application/xml'},
-            data=b"<?xml version='1.0' encoding='latin1'?>")
-        resp.encoding = http._decide_encoding(resp, charset)
-        self.assertEqual('latin1', resp.encoding)
+            ('Test xml content with latin1 encoding given in content',
+             b"<?xml version='1.0' encoding='latin1'?>", 'latin1')
+        ]
+        for msg, data, result in tests:
+            with self.subTest(msg=msg):
+                resp = CharsetTestCase._create_response(
+                    headers={'content-type': 'application/xml'}, data=data)
+                resp.encoding = http._decide_encoding(resp)
+                self.assertEqual(resp.encoding, result)
 
     def test_charset_not_last(self):
         """Test charset not last part of content-type header."""
-        charset = None
         resp = CharsetTestCase._create_response(
             headers={
                 'content-type': (
@@ -414,32 +391,29 @@ class CharsetTestCase(TestCase):
                 )
             },
             data=CharsetTestCase.UTF8_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp)
         self.assertEqual('utf-8', resp.encoding)
 
     def test_server_charset(self):
         """Test decoding with server explicit charset."""
-        charset = None
         resp = CharsetTestCase._create_response()
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp)
         self.assertEqual('utf-8', resp.encoding)
         self.assertEqual(resp.content, CharsetTestCase.UTF8_BYTES)
         self.assertEqual(resp.text, CharsetTestCase.STR)
 
     def test_same_charset(self):
         """Test decoding with explicit and equal charsets."""
-        charset = 'utf-8'
         resp = CharsetTestCase._create_response()
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp, 'utf-8')
         self.assertEqual('utf-8', resp.encoding)
         self.assertEqual(resp.content, CharsetTestCase.UTF8_BYTES)
         self.assertEqual(resp.text, CharsetTestCase.STR)
 
     def test_header_charset(self):
         """Test decoding with different charsets and valid header charset."""
-        charset = 'latin1'
         resp = CharsetTestCase._create_response()
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp, 'latin1')
         # Ignore WARNING: Encoding "latin1" requested but "utf-8" received
         with patch('pywikibot.warning'):
             self.assertEqual('utf-8', resp.encoding)
@@ -448,10 +422,9 @@ class CharsetTestCase(TestCase):
 
     def test_code_charset(self):
         """Test decoding with different charsets and invalid header charset."""
-        charset = 'latin1'
         resp = CharsetTestCase._create_response(
             data=CharsetTestCase.LATIN1_BYTES)
-        resp.encoding = http._decide_encoding(resp, charset)
+        resp.encoding = http._decide_encoding(resp, 'latin1')
         # Ignore WARNING: Encoding "latin1" requested but "utf-8" received
         with patch('pywikibot.warning'):
             self.assertEqual('latin1', resp.encoding)
@@ -481,6 +454,8 @@ class CharsetTestCase(TestCase):
         """Test get_charset_from_content_type function."""
         self.assertEqual(
             http.get_charset_from_content_type('charset="cp-1251"'), 'cp1251')
+        self.assertEqual(
+            http.get_charset_from_content_type('charset="win-1251"'), 'cp1251')
         self.assertEqual(
             http.get_charset_from_content_type('charset="ru-win1251"'),
             'cp1251')
@@ -519,8 +494,7 @@ class BinaryTestCase(TestCase):
 
 class QueryStringParamsTestCase(HttpbinTestCase):
 
-    """
-    Test the query string parameter of request methods.
+    """Test the query string parameter of request methods.
 
     The /get endpoint of httpbin returns JSON that can include an
     'args' key with urldecoded query string parameters.
@@ -533,17 +507,15 @@ class QueryStringParamsTestCase(HttpbinTestCase):
 
     def test_no_params(self):
         """Test fetch method with no parameters."""
-        r = http.fetch(self.url, params={})
+        r = self.fetch(self.url, params={})
 
         fail_status = HTTPStatus.SERVICE_UNAVAILABLE
         if r.status_code == fail_status:  # T203637
-            self.skipTest('{status.value}: {status.description} for {url}'
-                          .format(status=fail_status, url=self.url))
+            self.skipTest(f'{fail_status.value}: {fail_status.description} '
+                          f'for {self.url}')
 
         self.assertEqual(r.status_code, HTTPStatus.OK)
-
-        content = json.loads(r.text)
-        self.assertEqual(content['args'], {})
+        self.assertEqual(r.json()['args'], {})
 
     def test_unencoded_params(self):
         """
@@ -552,17 +524,15 @@ class QueryStringParamsTestCase(HttpbinTestCase):
         HTTPBin returns the args in their urldecoded form, so what we put in
         should be the same as what we get out.
         """
-        r = http.fetch(self.url, params={'fish&chips': 'delicious'})
+        r = self.fetch(self.url, params={'fish&chips': 'delicious'})
 
         fail_status = HTTPStatus.SERVICE_UNAVAILABLE
         if r.status_code == fail_status:  # T203637
-            self.skipTest('{status.value}: {status.description} for {url}'
-                          .format(status=fail_status, url=self.url))
+            self.skipTest(f'{fail_status.value}: {fail_status.description} '
+                          f'for {self.url}')
 
         self.assertEqual(r.status_code, HTTPStatus.OK)
-
-        content = json.loads(r.text)
-        self.assertEqual(content['args'], {'fish&chips': 'delicious'})
+        self.assertEqual(r.json()['args'], {'fish&chips': 'delicious'})
 
     def test_encoded_params(self):
         """
@@ -571,17 +541,15 @@ class QueryStringParamsTestCase(HttpbinTestCase):
         HTTPBin returns the args in their urldecoded form, so what we put in
         should be the same as what we get out.
         """
-        r = http.fetch(self.url, params={'fish%26chips': 'delicious'})
+        r = self.fetch(self.url, params={'fish%26chips': 'delicious'})
 
         fail_status = HTTPStatus.SERVICE_UNAVAILABLE
         if r.status_code == fail_status:  # T203637
-            self.skipTest('{status.value}: {status.description} for {url}'
-                          .format(status=fail_status, url=self.url))
+            self.skipTest(f'{fail_status.value}: {fail_status.description} '
+                          f'for {self.url}')
 
         self.assertEqual(r.status_code, HTTPStatus.OK)
-
-        content = json.loads(r.text)
-        self.assertEqual(content['args'], {'fish%26chips': 'delicious'})
+        self.assertEqual(r.json()['args'], {'fish%26chips': 'delicious'})
 
 
 class DataBodyParameterTestCase(HttpbinTestCase):
@@ -595,15 +563,15 @@ class DataBodyParameterTestCase(HttpbinTestCase):
             'X-Amzn-Trace-Id', 'X-B3-Parentspanid', 'X-B3-Spanid',
             'X-B3-Traceid', 'X-Forwarded-Client-Cert',
         )
-        r_data_request = http.fetch(self.get_httpbin_url('/post'),
+        r_data_request = self.fetch(self.get_httpbin_url('/post'),
                                     method='POST',
                                     data={'fish&chips': 'delicious'})
-        r_body_request = http.fetch(self.get_httpbin_url('/post'),
+        r_body_request = self.fetch(self.get_httpbin_url('/post'),
                                     method='POST',
                                     data={'fish&chips': 'delicious'})
 
-        r_data = json.loads(r_data_request.text)
-        r_body = json.loads(r_body_request.text)
+        r_data = r_data_request.json()
+        r_body = r_body_request.json()
 
         # remove tracker ids if present (T243662, T255862)
         for tracker_id in tracker:

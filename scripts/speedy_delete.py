@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Help sysops to quickly check and/or delete pages listed for speedy deletion.
 
@@ -13,15 +13,16 @@ Proposed Deletion (see [[en:WP:PROD]] for more details).  Also, if the article
 text is long, to prevent terminal spamming, it might be a good idea to truncate
 it just to the first so many bytes.
 
-WARNING: This tool shows the contents of the top revision only.  It is possible
-that a vandal has replaced a perfectly good article with nonsense, which has
-subsequently been tagged by someone who didn't realize it was previously a good
-article.  The onus is on you to avoid making these mistakes.
+.. warning:: This tool shows the contents of the top revision only.  It
+   is possible that a vandal has replaced a perfectly good article with
+   nonsense, which has subsequently been tagged by someone who didn't
+   realize it was previously a good article. The onus is on you to avoid
+   making these mistakes.
 
-NOTE: This script currently only works for the Wikipedia project.
+.. note:: This script currently only works for the Wikipedia project.
 """
 #
-# (C) Pywikibot team, 2007-2022
+# (C) Pywikibot team, 2007-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -42,7 +43,7 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
     prompt to decide whether each should be deleted or not.
     """
 
-    LINES = 22
+    LINES = 22  #: maximum lines to extract from wiki page
 
     csd_cat_item = 'Q5964'
 
@@ -56,9 +57,9 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
         'incubator': {'incubator': 'Category:Maintenance:Delete'},
     }
 
-    # If the site has several templates for speedy deletion, it might be
-    # possible to find out the reason for deletion by the template used.
-    # _default will be used if no such semantic template was used.
+    #: If the site has several templates for speedy deletion, it might be
+    #: possible to find out the reason for deletion by the template used.
+    #: _default will be used if no such semantic template was used.
     deletion_messages = {
         'wikipedia': {
             'ar': {
@@ -199,7 +200,7 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
         },
     }
 
-    # Default reason for deleting a talk page.
+    #: Default reason for deleting a talk page.
     talk_deletion_msg = {
         'wikipedia': {
             'ar': 'صفحة نقاش يتيمة',
@@ -221,9 +222,9 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
         }
     }
 
-    # A list of often-used reasons for deletion. Shortcuts are keys, and
-    # reasons are values. If the user enters a shortcut, the associated reason
-    # will be used.
+    #: A list of often-used reasons for deletion. Shortcuts are keys, and
+    #: reasons are values. If the user enters a shortcut, the associated reason
+    #: will be used.
     delete_reasons = {
         'wikipedia': {
             'de': {
@@ -322,8 +323,7 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
     def __init__(self, **kwargs) -> None:
         """Initializer.
 
-        :keyword site: the site to work on
-        :type site: pywikibot.APISite
+        :keyword pywikibot.APISite site: the site to work on
         """
         super().__init__(**kwargs)
         csd_cat = i18n.translate(self.site, self.csd_cat_title)
@@ -331,8 +331,7 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
             self.csd_cat = self.site.page_from_repository(self.csd_cat_item)
             if self.csd_cat is None:
                 raise Error(
-                    'No category for speedy deletion found for {}'
-                    .format(self.site))
+                    f'No category for speedy deletion found for {self.site}')
         else:
             self.csd_cat = pywikibot.Category(self.site, csd_cat)
         self.saved_progress = None
@@ -373,8 +372,8 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
     def get_reason_for_deletion(self, page):
         """Get a reason for speedy deletion from operator."""
         suggested_reason = self.guess_reason_for_deletion(page)
-        pywikibot.output('The suggested reason is: <<lightred>>{}<<default>>'
-                         .format(suggested_reason))
+        pywikibot.info(
+            f'The suggested reason is: <<lightred>>{suggested_reason}')
 
         # We don't use i18n.translate() here because for some languages the
         # entry is intentionally left out.
@@ -382,10 +381,10 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
            and page.site.lang in self.delete_reasons[self.site.family.name]:
             local_reasons = i18n.translate(page.site.lang,
                                            self.delete_reasons)
-            pywikibot.output('')
+            pywikibot.info()
             for key in sorted(local_reasons.keys()):
-                pywikibot.output((key + ':').ljust(8) + local_reasons[key])
-            pywikibot.output('')
+                pywikibot.info((key + ':').ljust(8) + local_reasons[key])
+            pywikibot.info()
             reason = pywikibot.input(fill(
                 'Please enter the reason for deletion, choose a default '
                 'reason, or press enter for the suggested message:'))
@@ -413,7 +412,7 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
                 break
 
             if not self.saved_progress:
-                pywikibot.output(
+                pywikibot.info(
                     '\nThere are no (further) pages to delete.\n'
                     'Waiting for 30 seconds or press Ctrl+C to quit...')
                 try:
@@ -428,10 +427,10 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
         """Process one page."""
         page = self.current_page
 
-        color_line = '<<blue>>{}<<default>>'.format('_' * 80)
-        pywikibot.output(color_line)
-        pywikibot.output(page.extract('wiki', lines=self.LINES))
-        pywikibot.output(color_line)
+        color_line = f"<<blue>>{'_' * 80}<<default>>"
+        pywikibot.info(color_line)
+        pywikibot.info(page.extract('wiki', lines=self.LINES))
+        pywikibot.info(color_line)
 
         choice = pywikibot.input_choice(
             'Input action?',
@@ -444,20 +443,19 @@ class SpeedyBot(SingleSiteBot, ExistingPageBot):
 
         # stop the generator and restart from current title
         elif choice == 'u':
-            pywikibot.output('Updating from CSD category.')
+            pywikibot.info('Updating from CSD category.')
             self.saved_progress = page.title()
             self.stop()
 
         # delete the current page
         elif choice == 'd':
             reason = self.get_reason_for_deletion(page)
-            pywikibot.output('The chosen reason is: <<lightred>>{}<<default>>'
-                             .format(reason))
+            pywikibot.info(f'The chosen reason is: <<lightred>>{reason}')
             page.delete(reason, prompt=False)
 
         # skip this page
         else:
-            pywikibot.output('Skipping page {}'.format(page))
+            pywikibot.info(f'Skipping page {page}')
 
     def setup(self) -> None:
         """Refresh generator."""
@@ -479,10 +477,10 @@ def main(*args: str) -> None:
         bot = SpeedyBot(site=site)
         bot.run()
     elif site.logged_in():
-        pywikibot.output("{} does not have 'delete' right for site {}"
-                         .format(site.username(), site))
+        pywikibot.info("{} does not have 'delete' right for site {}"
+                       .format(site.username(), site))
     else:
-        pywikibot.output('Login first.')
+        pywikibot.info('Login first.')
 
 
 if __name__ == '__main__':

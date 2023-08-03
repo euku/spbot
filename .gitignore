@@ -1,7 +1,7 @@
 throttle.ctrl
-pywikibot.lwp
 user-*.py
 *.bak
+*.lwp
 *.pyc
 *.pyo
 *.*~
@@ -21,5 +21,7 @@ pywikibot.egg-info/
 build
 dist
 docs/_build/
+/scripts/userscripts/*
+!/scripts/userscripts/__init__.py
 .vscode/
-.passwd
+**/.DS_Store

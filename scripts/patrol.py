@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 The bot is meant to mark the edits based on info obtained by whitelist.
 
@@ -42,7 +42,7 @@ Commandline parameters:
 
 """
 #
-# (C) Pywikibot team, 2011-2022
+# (C) Pywikibot team, 2011-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -50,22 +50,18 @@ import time
 from collections import defaultdict
 from contextlib import suppress
 
+import mwparserfromhell
+
 import pywikibot
 from pywikibot import pagegenerators
-from pywikibot.backports import removeprefix
+from pywikibot.backports import Container, removeprefix
 from pywikibot.bot import BaseBot, suggest_help
-
-
-try:
-    import mwparserfromhell
-except ImportError as e:
-    mwparserfromhell = e
 
 
 def verbose_output(string) -> None:
     """Verbose output."""
     if pywikibot.config.verbose_output:
-        pywikibot.output(string)
+        pywikibot.info(string)
 
 
 class PatrolBot(BaseBot):
@@ -135,7 +131,7 @@ class PatrolBot(BaseBot):
                                         self.whitelist_pagename)
 
         if not self.whitelist:
-            pywikibot.output('Loading ' + self.whitelist_pagename)
+            pywikibot.info('Loading ' + self.whitelist_pagename)
 
         try:
             if self.whitelist_ts:
@@ -150,14 +146,14 @@ class PatrolBot(BaseBot):
                     return
 
             if self.whitelist:
-                pywikibot.output('Reloading whitelist')
+                pywikibot.info('Reloading whitelist')
 
             # Fetch whitelist
             wikitext = whitelist_page.get()
             # Parse whitelist
             self.whitelist = self.parse_page_tuples(wikitext, self.user)
             # Record timestamp
-            self.whitelist_ts = whitelist_page.editTime()
+            self.whitelist_ts = whitelist_page.latest_revision.timestamp
             self.whitelist_load_ts = time.time()
         except Exception as e:
             # cascade if there isn't a whitelist to fallback on
@@ -165,7 +161,8 @@ class PatrolBot(BaseBot):
                 raise
             pywikibot.error(str(e))
 
-    def in_list(self, pagelist, title) -> bool:
+    @staticmethod
+    def in_list(pagelist: Container, title: str) -> bool:
         """Check if title present in pagelist."""
         verbose_output('Checking whitelist for: ' + title)
 
@@ -202,58 +199,61 @@ class PatrolBot(BaseBot):
                 if node.tag == 'li':
                     current_user = None
                 continue
+
             if isinstance(node, mwparserfromhell.nodes.text.Text):
                 if node.endswith('\n'):
                     current_user = False
                 continue
-            if isinstance(node, mwparserfromhell.nodes.wikilink.Wikilink):
-                if current_user is False:
-                    pywikibot.debug('Link to "{}" ignored as outside list'
-                                    .format(node.title))
-                    continue
 
-                obj = pywikibot.Link(node.title, self.site)
-                if obj.namespace == -1:
-                    # the parser accepts 'special:prefixindex/' as a wildcard
-                    # this allows a prefix that doesn't match an existing page
-                    # to be a blue link, and can be clicked to see what pages
-                    # will be included in the whitelist
-                    name, _, prefix = obj.title.partition('/')
-                    if name.lower() in self._prefixindex_aliases:
-                        if not prefix:
-                            verbose_output('Whitelist everything')
-                            page = ''
-                        else:
-                            page = prefix
-                            verbose_output('Whitelist prefixindex hack for: '
-                                           + page)
+            if not isinstance(node, mwparserfromhell.nodes.wikilink.Wikilink):
+                continue
 
-                elif obj.namespace == 2 and not current_user:
-                    # if a target user hasn't been found yet, and the link is
-                    # 'user:'
-                    # the user will be the target of subsequent rules
-                    current_user = obj.title
-                    verbose_output('Whitelist user: ' + current_user)
-                    continue
-                else:
-                    page = obj.canonical_title()
+            if current_user is False:
+                pywikibot.debug(
+                    'Link to {node.title!r} ignored as outside list')
+                continue
 
-                if current_user:
-                    if not user or current_user == user:
-                        if self.is_wikisource_author_page(page):
-                            verbose_output('Whitelist author: ' + page)
-                            page = LinkedPagesRule(page)
-                        else:
-                            verbose_output('Whitelist page: ' + page)
-                        verbose_output('Adding {}:{}'
-                                       .format(current_user, page))
-                        whitelist[current_user].add(page)
+            obj = pywikibot.Link(node.title, self.site)
+            if obj.namespace == -1:
+                # the parser accepts 'special:prefixindex/' as a wildcard
+                # this allows a prefix that doesn't match an existing page
+                # to be a blue link, and can be clicked to see what pages
+                # will be included in the whitelist
+                name, _, prefix = obj.title.partition('/')
+                if name.lower() in self._prefixindex_aliases:
+                    if not prefix:
+                        verbose_output('Whitelist everything')
+                        page = ''
                     else:
-                        verbose_output(
-                            'Discarding whitelist page for another user: '
-                            + page)
+                        page = prefix
+                        verbose_output('Whitelist prefixindex hack for: '
+                                       + page)
+
+            elif obj.namespace == 2 and not current_user:
+                # if a target user hasn't been found yet, and the link is
+                # 'user:'
+                # the user will be the target of subsequent rules
+                current_user = obj.title
+                verbose_output('Whitelist user: ' + current_user)
+                continue
+
+            else:
+                page = obj.canonical_title()
+
+            if not current_user:
+                raise Exception('No user set for page ' + page)
+
+            if not user or current_user == user:
+                if self.is_wikisource_author_page(page):
+                    verbose_output('Whitelist author: ' + page)
+                    page = LinkedPagesRule(page)
                 else:
-                    raise Exception('No user set for page ' + page)
+                    verbose_output('Whitelist page: ' + page)
+                verbose_output(f'Adding {current_user}:{page}')
+                whitelist[current_user].add(page)
+            else:
+                verbose_output(
+                    'Discarding whitelist page for another user: ' + page)
 
         return dict(whitelist)
 
@@ -294,21 +294,18 @@ class PatrolBot(BaseBot):
             self.setup()
 
         if pywikibot.config.verbose_output or self.opt.ask:
-            pywikibot.output('User {} has created or modified page {}'
-                             .format(username, title))
+            pywikibot.info(
+                f'User {username} has created or modified page {title}')
 
-        if (self.opt.autopatroluserns
-                and page['ns'] in (2, 3)):
-            # simple rule to whitelist any user editing their own userspace
-            if title.partition(':')[2].split('/')[0].startswith(username):
-                verbose_output('{} is whitelisted to modify {}'
-                               .format(username, title))
-                choice = True
+        # simple rule to whitelist any user editing their own userspace
+        if self.opt.autopatroluserns and page['ns'] in (2, 3) \
+           and title.partition(':')[2].split('/')[0].startswith(username):
+            verbose_output(f'{username} is whitelisted to modify {title}')
+            choice = True
 
         if not choice and username in self.whitelist \
            and self.in_list(self.whitelist[username], title):
-            verbose_output('{} is whitelisted to modify {}'
-                           .format(username, title))
+            verbose_output(f'{username} is whitelisted to modify {title}')
             choice = True
 
         if self.opt.ask:
@@ -319,8 +316,8 @@ class PatrolBot(BaseBot):
         if choice:
             # list() iterates over patrol() which returns a generator
             list(self.site.patrol(rcid))
-            pywikibot.output('Patrolled {} (rcid {}) by user {}'
-                             .format(title, rcid, username))
+            pywikibot.info(
+                f'Patrolled {title} (rcid {rcid}) by user {username}')
         else:
             verbose_output('Skipped')
 
@@ -358,10 +355,10 @@ class LinkedPagesRule:
                 linkedpages.append(linkedpage.title())
 
             self.linkedpages = linkedpages
-            verbose_output('Loaded {} page links'.format(len(linkedpages)))
+            verbose_output(f'Loaded {len(linkedpages)} page links')
 
         for p in self.linkedpages:
-            verbose_output("Checking against '{}'".format(p))
+            verbose_output(f"Checking against '{p}'")
             if page_title.startswith(p):
                 verbose_output('Matched.')
                 return True
@@ -369,8 +366,8 @@ class LinkedPagesRule:
 
 
 def api_feed_repeater(
-    gen,
-    delay: float = 0,
+    gen, *,
+    delay: float = 60,
     repeat: bool = False,
     namespaces=None,
     user=None,
@@ -389,7 +386,7 @@ def api_feed_repeater(
             else:
                 yield page[1]
         if repeat:
-            pywikibot.output('Sleeping for {} seconds'.format(delay))
+            pywikibot.info(f'Sleeping for {delay} seconds')
             pywikibot.sleep(delay)
         else:
             break
@@ -403,44 +400,47 @@ def main(*args: str) -> None:
     usercontribs = None
     recentchanges = False
     newpages = False
-    repeat = False
     options = {}
+    params = {}
+    unknown = []
 
     # Parse command line arguments
     local_args = pywikibot.handle_args(args)
     site = pywikibot.Site()
-    gen_factory = pagegenerators.GeneratorFactory(site)
+    gen_factory = pagegenerators.GeneratorFactory(
+        site, enabled_options=['namespaces'])
+    local_args = gen_factory.handle_args(local_args)
     for arg in local_args:
-        if arg.startswith('-ask'):
-            options['ask'] = True
-        elif arg.startswith('-autopatroluserns'):
-            options['autopatroluserns'] = True
-        elif arg.startswith('-repeat'):
-            repeat = True
-        elif arg.startswith('-newpages'):
+        opt, _, value = arg.partition(':')
+        if opt in ('-always', '-ask', '-autopatroluserns'):
+            options[opt[1:]] = True
+        elif opt == '-repeat':
+            params[opt[1:]] = True
+        elif opt == '-newpages':
             newpages = True
-        elif arg.startswith('-recentchanges'):
+        elif opt == '-recentchanges':
             recentchanges = True
-        elif arg.startswith('-usercontribs:'):
-            usercontribs = arg[14:]
-        elif arg.startswith('-versionchecktime:'):
-            versionchecktime = arg[len('-versionchecktime:'):]
-            options['versionchecktime'] = int(versionchecktime)
-        elif arg.startswith('-whitelist:'):
-            options['whitelist'] = arg[len('-whitelist:'):]
+        elif opt == '-usercontribs':
+            usercontribs = value
+        elif opt == '-versionchecktime':
+            options[opt[1:]] = int(value)
+        elif opt == '-whitelist':
+            options[opt[1:]] = value
         else:
-            generator = gen_factory.handle_arg(arg)
-            if not generator and ':' in arg:
-                m = arg.split(':')
-                options[m[0]] = m[1]
+            unknown.append(arg)
 
+    if suggest_help(unknown_parameters=unknown):
+        return
+
+    params['namespaces'] = gen_factory.namespaces
     if usercontribs:
+        params['user'] = usercontribs
         user = pywikibot.User(site, usercontribs)
         if user.isAnonymous() or user.isRegistered():
-            pywikibot.output('Processing user: {}'.format(usercontribs))
+            pywikibot.info(f'Processing user: {usercontribs}')
         else:
-            pywikibot.warning('User {} does not exist on site {}.'
-                              .format(usercontribs, site))
+            pywikibot.warning(
+                f'User {usercontribs} does not exist on site {site}.')
 
     # default behaviour
     if not any((newpages, recentchanges, usercontribs)):
@@ -449,27 +449,16 @@ def main(*args: str) -> None:
         else:
             recentchanges = True
 
-    if isinstance(mwparserfromhell, ImportError):
-        suggest_help(missing_dependencies=('mwparserfromhell',))
-        return
-
     if newpages or usercontribs:
-        pywikibot.output('Newpages:')
-        gen = site.newpages
-        feed = api_feed_repeater(gen, delay=60, repeat=repeat,
-                                 user=usercontribs,
-                                 namespaces=gen_factory.namespaces,
-                                 recent_new_gen=False)
+        pywikibot.info('Newpages:')
+        feed = api_feed_repeater(site.newpages, recent_new_gen=False, **params)
         bot = PatrolBot(site=site, generator=feed, **options)
         bot.treat_page_type = dict
         bot.run()
 
     if recentchanges or usercontribs:
-        pywikibot.output('Recentchanges:')
-        gen = site.recentchanges
-        feed = api_feed_repeater(gen, delay=60, repeat=repeat,
-                                 namespaces=gen_factory.namespaces,
-                                 user=usercontribs)
+        pywikibot.info('Recentchanges:')
+        feed = api_feed_repeater(site.recentchanges, **params)
         bot = PatrolBot(site=site, generator=feed, **options)
         bot.treat_page_type = dict
         bot.run()

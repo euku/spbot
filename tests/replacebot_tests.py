@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tests for the replace script and ReplaceRobot class."""
 #
 # (C) Pywikibot team, 2015-2022
@@ -128,7 +128,7 @@ class TestReplacementsMain(TWNBotTestCase):
                                offset)
         if msg:
             self.assertEqual(replacement.edit_summary,
-                             'M{}'.format(offset + 1))
+                             f'M{offset + 1}')
         else:
             self.assertIs(replacement.edit_summary,
                           replacement.fix_set.edit_summary)

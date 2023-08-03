@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 This script can be used to protect and unprotect pages en masse.
 
@@ -24,7 +24,7 @@ level. This is "sysop" or "all" if -unprotect was selected. If multiple
 parameters -unprotect or -default are used, only the last occurrence
 is applied.
 
-This script is a :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`.
+This script is a :py:obj:`ConfigParserBot <bot.ConfigParserBot>`.
 The following options can be set within a settings file which is scripts.ini
 by default::
 
@@ -57,7 +57,7 @@ Unprotect all pages listed in text file 'unprotect.txt' without prompting:
 #
 # Created by modifying delete.py
 #
-# (C) Pywikibot team, 2008-2022
+# (C) Pywikibot team, 2008-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -139,10 +139,10 @@ def check_protection_level(operation, level, levels, default=None) -> str:
         if level == default:
             default_char = first_char[-1]
 
-    choice = pywikibot.input_choice('Choose a protection level to {}:'
-                                    .format(operation),
-                                    zip(levels, first_char),
-                                    default=default_char)
+    choice = pywikibot.input_choice(
+        f'Choose a protection level to {operation}:',
+        zip(levels, first_char),
+        default=default_char)
 
     return levels[first_char.index(choice)]
 
@@ -199,7 +199,7 @@ def main(*args: str) -> None:
             protections[option] = value
         else:
             if not gen_factory.handle_arg(arg):
-                raise ValueError('Unknown parameter "{}"'.format(arg))
+                raise ValueError(f'Unknown parameter "{arg}"')
             if value:
                 message_properties.update({'cat': value, 'page': value})
             if 'summary' not in options:
@@ -210,11 +210,11 @@ def main(*args: str) -> None:
         if message_type == 'simple' or message_properties:
             if default_level == 'all':
                 options['summary'] = i18n.twtranslate(
-                    site, 'unprotect-{}'.format(message_type),
+                    site, f'unprotect-{message_type}',
                     message_properties)
             else:
                 options['summary'] = i18n.twtranslate(
-                    site, 'protect-{}'.format(message_type),
+                    site, f'protect-{message_type}',
                     message_properties)
 
     generator = gen_factory.getCombinedGenerator()

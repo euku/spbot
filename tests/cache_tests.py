@@ -1,17 +1,15 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """API Request cache tests."""
 #
-# (C) Pywikibot team, 2012-2022
+# (C) Pywikibot team, 2012-2023
 #
 # Distributed under the terms of the MIT license.
 #
 import unittest
 
-from pywikibot.site import BaseSite
-from pywikibot.login import LoginStatus
-
 import scripts.maintenance.cache as cache
-
+from pywikibot.login import LoginStatus
+from pywikibot.site import BaseSite
 from tests import join_cache_path
 from tests.aspects import TestCase
 
@@ -36,7 +34,8 @@ class RequestCacheTests(TestCase):
 
     def test_cache(self):
         """Test the apicache by doing _check_cache_entry over each entry."""
-        cache.process_entries(join_cache_path(), self._check_cache_entry)
+        cache.process_entries(join_cache_path(), self._check_cache_entry,
+                              tests=25)
 
 
 if __name__ == '__main__':  # pragma: no cover

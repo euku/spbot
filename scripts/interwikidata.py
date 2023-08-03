@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Script to handle interwiki links based on Wikibase.
 
@@ -25,11 +25,11 @@ Furthermore, the following command line parameters are supported:
 -summary:         Use your own edit summary for cleaning the page.
 
 .. note:: This script is a
-   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   :py:obj:`ConfigParserBot <bot.ConfigParserBot>`. All options
    can be set within a settings file which is scripts.ini by default.
 """
 
-# (C) Pywikibot team, 2015-2022
+# (C) Pywikibot team, 2015-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -98,8 +98,7 @@ class IWBot(ConfigParserBot, ExistingPageBot, SingleSiteBot):
         self.iwlangs = pywikibot.textlib.getLanguageLinks(
             self.current_page.text, insite=self.current_page.site)
         if not self.iwlangs:
-            output('No interlanguagelinks on {page}'.format(
-                page=self.current_page.title(as_link=True)))
+            output(f'No interlanguagelinks on {self.current_page}')
             return
         try:
             item = pywikibot.ItemPage.fromPage(self.current_page)
@@ -143,7 +142,7 @@ class IWBot(ConfigParserBot, ExistingPageBot, SingleSiteBot):
 
         item = pywikibot.ItemPage(self.repo)
         item.editEntity(data, new='item', summary=summary)
-        output('Created item {item}'.format(item=item.getID()))
+        output(f'Created item {item.getID()}')
         return item
 
     def handle_complicated(self) -> bool:
@@ -201,8 +200,7 @@ class IWBot(ConfigParserBot, ExistingPageBot, SingleSiteBot):
             return False
         item = list(wd_data).pop()
         if self.current_page.site.dbName() in item.sitelinks:
-            warning('Interwiki conflict in {}, skipping...'
-                    .format(item.title(as_link=True)))
+            warning(f'Interwiki conflict in {item}, skipping...')
             return False
         output('Adding link to ' + item.title())
         item.setSitelink(self.current_page, summary='Added ' + (

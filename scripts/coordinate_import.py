@@ -1,11 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 r"""
 Coordinate importing script.
 
 Usage:
 
     python pwb.py coordinate_import -site:wikipedia:en \
-        -cat:Category:Coordinates_not_on_Wikidata
+-cat:Category:Coordinates_not_on_Wikidata
 
 This will work on all pages in the category "coordinates not on Wikidata" and
 will import the coordinates on these pages to Wikidata.
@@ -17,16 +17,17 @@ is used so that extension has to be setup properly. You can look at the
 
 You can use any typical pagegenerator to provide with a list of pages:
 
-    python pwb.py coordinate_import -lang:it -family:wikipedia \
-        -namespace:0 -transcludes:Infobox_stazione_ferroviaria
+    python pwb.py coordinate_import -lang:it -family:wikipedia -namespace:0 \
+-transcludes:Infobox_stazione_ferroviaria
 
 You can also run over a set of items on the repo without coordinates and
 try to import them from any connected page. To do this, you have to
 explicitly provide the repo as the site using -site argument.
+
 Example:
 
-    python pwb.py coordinate_import -site:wikidata:wikidata \
-        -namespace:0 -querypage:Deadendpages
+    python pwb.py coordinate_import -site:wikidata:wikidata -namespace:0 \
+-querypage:Deadendpages
 
 
 The following command line parameters are supported:
@@ -37,13 +38,13 @@ The following command line parameters are supported:
 -create           Create items for pages without one.
 
 .. note:: This script is a
-   :py:obj:`ConfigParserBot <pywikibot.bot.ConfigParserBot>`. All options
+   :py:obj:`ConfigParserBot <bot.ConfigParserBot>`. All options
    can be set within a settings file which is scripts.ini by default.
 
 &params;
 """
 #
-# (C) Pywikibot team, 2013-2022
+# (C) Pywikibot team, 2013-2023
 #
 # Distributed under the terms of MIT License.
 #
@@ -99,15 +100,15 @@ class CoordImportRobot(ConfigParserBot, WikidataBot):
         """
         claims = item.get().get('claims')
         if self.prop in claims:
-            pywikibot.output('Item {} already contains coordinates ({})'
-                             .format(item.title(), self.prop))
+            pywikibot.info('Item {} already contains coordinates ({})'
+                           .format(item.title(), self.prop))
             return True
 
         prop = self.has_coord_qualifier(claims)
         if prop:
-            pywikibot.output('Item {} already contains coordinates'
-                             ' ({}) as qualifier for {}'
-                             .format(item.title(), self.prop, prop))
+            pywikibot.info(
+                'Item {} already contains coordinates ({}) as qualifier for {}'
+                .format(item.title(), self.prop, prop))
             return True
         return False
 
@@ -141,13 +142,13 @@ class CoordImportRobot(ConfigParserBot, WikidataBot):
         source = self.getSource(page.site)
         if source:
             newclaim.addSource(source)
-        pywikibot.output('Adding {}, {} to {}'.format(
-            coordinate.lat, coordinate.lon, item.title()))
+        pywikibot.info(
+            f'Adding {coordinate.lat}, {coordinate.lon} to {item.title()}')
         # todo: handle exceptions using self.user_add_claim
         try:
             item.addClaim(newclaim)
         except CoordinateGlobeUnknownError as e:
-            pywikibot.output('Skipping unsupported globe: {}'.format(e.args))
+            pywikibot.info(f'Skipping unsupported globe: {e.args}')
             return False
         else:
             return True

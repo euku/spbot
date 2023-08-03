@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 r"""
 This script runs commands on each entry in the API caches.
 
@@ -64,7 +64,7 @@ Available output commands:
     uniquedesc(entry)
 """
 #
-# (C) Pywikibot team, 2014-2022
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -73,6 +73,9 @@ import hashlib
 import os
 import pickle
 import sys
+from pathlib import Path
+from random import sample
+from typing import Optional
 
 import pywikibot
 from pywikibot.data import api
@@ -93,7 +96,7 @@ class CacheEntry(api.CachedRequest):
 
     """A Request cache entry."""
 
-    def __init__(self, directory, filename):
+    def __init__(self, directory: str, filename: str):
         """Initializer."""
         self.directory = directory
         self.filename = filename
@@ -104,24 +107,31 @@ class CacheEntry(api.CachedRequest):
 
     def __repr__(self):
         """Representation of object."""
-        return self._cachefile_path()
+        return str(self._cachefile_path())
 
     def _create_file_name(self):
         """Filename of the cached entry."""
         return self.filename
 
-    def _get_cache_dir(self):
-        """Directory of the cached entry."""
-        return self.directory
+    def _get_cache_dir(self) -> Path:
+        """Directory of the cached entry.
 
-    def _cachefile_path(self):
-        """Return cache file path."""
-        return os.path.join(self._get_cache_dir(),
-                            self._create_file_name())
+        .. versionchanged:: 8.0
+           return a `pathlib.Path` object.
+        """
+        return Path(self.directory)
+
+    def _cachefile_path(self) -> Path:
+        """Return cache file path.
+
+        .. versionchanged:: 8.0
+           return a `pathlib.Path` object.
+        """
+        return self._get_cache_dir() / self._create_file_name()
 
     def _load_cache(self):
         """Load the cache entry."""
-        with open(self._cachefile_path(), 'rb') as f:
+        with self._cachefile_path().open('rb') as f:
             self.key, self._data, self._cachetime = pickle.load(f)
         return True
 
@@ -133,12 +143,11 @@ class CacheEntry(api.CachedRequest):
         end = self.key.index(')')
 
         if not end:
-            raise ParseError('End of Site() keyword not found: {}'
-                             .format(self.key))
+            raise ParseError(f'End of Site() keyword not found: {self.key}')
 
         if 'Site' not in self.key[0:start]:
-            raise ParseError('Site() keyword not found at start of key: {}'
-                             .format(self.key))
+            raise ParseError(
+                f'Site() keyword not found at start of key: {self.key}')
 
         site = self.key[0:end + 1]
         if site[0:5] == 'Site(':
@@ -161,20 +170,20 @@ class CacheEntry(api.CachedRequest):
 
             end = self.key.index(')', start + 5)
             if not end:
-                raise ParseError('End of User() keyword not found: {}'
-                                 .format(self.key))
+                raise ParseError(
+                    f'End of User() keyword not found: {self.key}')
             username = self.key[start:end]
         elif self.key[start:start + 12] == 'LoginStatus(':
             end = self.key.index(')', start + 12)
             if not end:
-                raise ParseError('End of LoginStatus() keyword not found: {}'
-                                 .format(self.key))
+                raise ParseError(
+                    f'End of LoginStatus() keyword not found: {self.key}')
             login_status = self.key[start:end + 1]
         # If the key does not contain User(..) or LoginStatus(..),
         # it must be the old key format which only contains Site and params
         elif self.key[start:start + 3] != "[('":
-            raise ParseError('Keyword after Site not recognised: {}...'
-                             .format(self.key))
+            raise ParseError(
+                f'Keyword after Site not recognised: {self.key}...')
 
         start = end + 1
 
@@ -206,33 +215,30 @@ class CacheEntry(api.CachedRequest):
 
     def _delete(self):
         """Delete the cache entry."""
-        os.remove(self._cachefile_path())
+        self._cachefile_path().unlink()
 
 
-def process_entries(cache_path, func, use_accesstime=None, output_func=None,
-                    action_func=None):
-    """
-    Check the contents of the cache.
+def process_entries(cache_path, func, use_accesstime: Optional[bool] = None,
+                    output_func=None, action_func=None, *,
+                    tests: Optional[int] = None):
+    """Check the contents of the cache.
 
-    This program tries to use file access times to determine
-    whether cache files are being used.
-    However file access times are not always usable.
-    On many modern filesystems, they have been disabled.
-    On Unix, check the filesystem mount options. You may
-    need to remount with 'strictatime'.
+    This program tries to use file access times to determine whether
+    cache files are being used. However file access times are not always
+    usable. On many modern filesystems, they have been disabled. On Unix,
+    check the filesystem mount options. You may need to remount with
+    'strictatime'.
 
-    :param use_accesstime: Whether access times should be used.
-    :type use_accesstime: bool tristate:
-         - None  = detect
-         - False = don't use
-         - True  = always use
+    :param use_accesstime: Whether access times should be used. `None`
+        for detect, `False` for don't use and `True` for always use.
+    :param tests: Only process a test sample of files
     """
     if not cache_path:
         cache_path = os.path.join(pywikibot.config.base_dir,
-                                  'apicache-py{:d}'.format(PYTHON_VERSION[0]))
+                                  f'apicache-py{PYTHON_VERSION[0]:d}')
 
     if not os.path.exists(cache_path):
-        pywikibot.error('{}: no such file or directory'.format(cache_path))
+        pywikibot.error(f'{cache_path}: no such file or directory')
         return
 
     if os.path.isdir(cache_path):
@@ -240,6 +246,9 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
                      for filename in os.listdir(cache_path)]
     else:
         filenames = [cache_path]
+
+    if tests:
+        filenames = sample(filenames, min(len(filenames), tests))
 
     for filepath in filenames:
         filename = os.path.basename(filepath)
@@ -256,7 +265,7 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
             continue
 
         # Skip foreign python specific directory
-        _, _, version = cache_path.partition('-')
+        *_, version = cache_path.partition('-')
         if version and version[-1] != str(PYTHON_VERSION[0]):
             pywikibot.error(
                 "Skipping {} directory, can't read content with python {}"
@@ -266,8 +275,7 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
         try:
             entry._load_cache()
         except ValueError:
-            pywikibot.error('Failed loading {}'.format(
-                entry._cachefile_path()))
+            pywikibot.error(f'Failed loading {entry._cachefile_path()}')
             pywikibot.exception()
             continue
 
@@ -283,8 +291,8 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
         try:
             entry.parse_key()
         except ParseError as e:
-            pywikibot.error('Problems parsing {} with key {}'
-                            .format(entry.filename, entry.key))
+            pywikibot.error(
+                f'Problems parsing {entry.filename} with key {entry.key}')
             pywikibot.error(e)
             continue
 
@@ -304,7 +312,7 @@ def process_entries(cache_path, func, use_accesstime=None, output_func=None,
                 else:
                     output = output_func(entry)
                 if output is not None:
-                    pywikibot.output(output)
+                    pywikibot.info(output)
             if action_func:
                 action_func(entry)
 
@@ -320,7 +328,7 @@ def _parse_command(command, name):
     except Exception as e:
         pywikibot.error(e)
         pywikibot.error(
-            'Cannot compile {} command: {}'.format(name, command))
+            f'Cannot compile {name} command: {command}')
         return None
 
 
@@ -396,7 +404,7 @@ def parameters(entry):
     """Return a pretty formatted parameters list."""
     lines = ''
     for key, items in sorted(entry._params.items()):
-        lines += '{}={}\n'.format(key, ', '.join(items))
+        lines += f"{key}={', '.join(items)}\n"
     return lines
 
 
@@ -469,7 +477,7 @@ def main():
 
     for cache_path in cache_paths:
         if len(cache_paths) > 1:
-            pywikibot.output('Processing {}'.format(cache_path))
+            pywikibot.info(f'Processing {cache_path}')
         process_entries(cache_path, filter_func, output_func=output_func,
                         action_func=action_func)
 

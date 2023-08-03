@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 r"""
 This script transfers pages from a source wiki to a target wiki.
 
@@ -31,21 +31,21 @@ Transfer all pages in category "Query service" from the English Wikipedia to
 the Arabic Wiktionary, adding "Wiktionary:Import enwp/" as prefix:
 
     python pwb.py transferbot -family:wikipedia -lang:en -cat:"Query service" \
-        -tofamily:wiktionary -tolang:ar -prefix:"Wiktionary:Import enwp/"
+-tofamily:wiktionary -tolang:ar -prefix:"Wiktionary:Import enwp/"
 
 Copy the template "Query service" from the English Wikipedia to the
 Arabic Wiktionary:
 
-    python pwb.py transferbot -family:wikipedia -lang:en \
-        -tofamily:wiktionary -tolang:ar -page:"Template:Query service"
+    python pwb.py transferbot -family:wikipedia -lang:en -tofamily:wiktionary \
+-tolang:ar -page:"Template:Query service"
 
-Copy 10 wanted templates of German Wikipedia from English Wikipedia to German
-    python pwb.py transferbot -family:wikipedia -lang:en \
-        -tolang:de -wantedtemplates:10 -target
+Copy 10 wanted templates of German Wikipedia from English Wikipedia to German:
 
+    python pwb.py transferbot -family:wikipedia -lang:en -tolang:de \
+-wantedtemplates:10 -target
 """
 #
-# (C) Pywikibot team, 2014-2021
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -106,7 +106,7 @@ def main(*args: str) -> None:
         return
 
     gen_args = ' '.join(gen_args)
-    pywikibot.output("""
+    pywikibot.info("""
     Page transfer configuration
     ---------------------------
     Source: {fromsite}
@@ -149,17 +149,11 @@ def main(*args: str) -> None:
 
         if not page.exists():
             pywikibot.warning(
-                "Page {} doesn't exist".format(
-                    page.title(as_link=True)
-                )
+                f"Page {page.title(as_link=True)} doesn't exist"
             )
             continue
 
-        pywikibot.output('Moving {} to {}...'
-                         .format(page.title(as_link=True,
-                                            force_interwiki=True),
-                                 targetpage.title(as_link=True)))
-
+        pywikibot.info(f'Moving {page} to {targetpage}...')
         pywikibot.log('Getting page text.')
         text = page.get(get_redirect=True)
         source_link = page.title(as_link=True, insite=targetpage.site)
@@ -170,7 +164,7 @@ def main(*args: str) -> None:
              'history': edithistpage.title(as_link=True,
                                            insite=targetpage.site)}
         )
-        text += '<noinclude>\n\n<small>{}</small></noinclude>'.format(note)
+        text += f'<noinclude>\n\n<small>{note}</small></noinclude>'
 
         pywikibot.log('Getting edit history.')
         historytable = page.getVersionHistoryTable()

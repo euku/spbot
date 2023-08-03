@@ -1,20 +1,25 @@
 """SPARQL Query interface."""
 #
-# (C) Pywikibot team, 2016-2022
+# (C) Pywikibot team, 2016-2023
 #
 # Distributed under the terms of the MIT license.
 #
-import json
+from contextlib import suppress
 from typing import Optional
 from urllib.parse import quote
 
 from requests.exceptions import Timeout
 
 from pywikibot import Site, config, sleep, warning
-from pywikibot.backports import Dict, List
+from pywikibot.backports import Dict, List, removeprefix
 from pywikibot.comms import http
 from pywikibot.exceptions import Error, TimeoutError
 
+
+try:
+    from requests import JSONDecodeError
+except ImportError:  # requests < 2.27.0
+    from json import JSONDecodeError
 
 DEFAULT_HEADERS = {'cache-control': 'no-cache',
                    'Accept': 'application/sparql-results+json'}
@@ -62,8 +67,8 @@ class SparqlQuery:
                     'Please provide the endpoint and entity_url '
                     'parameters instead of a repo.')
             if not self.endpoint:
-                raise Error('The site {} does not provide a sparql endpoint.'
-                            .format(repo))
+                raise Error(
+                    f'The site {repo} does not provide a sparql endpoint.')
         else:
             if not entity_url:
                 raise Error('If initialised with an endpoint the entity_url '
@@ -121,8 +126,7 @@ class SparqlQuery:
                     values[var] = None
                 elif full_data:
                     if row[var]['type'] not in VALUE_TYPES:
-                        raise ValueError('Unknown type: {}'
-                                         .format(row[var]['type']))
+                        raise ValueError(f"Unknown type: {row[var]['type']}")
                     valtype = VALUE_TYPES[row[var]['type']]
                     values[var] = valtype(row[var],
                                           entity_url=self.entity_url)
@@ -140,7 +144,7 @@ class SparqlQuery:
         if headers is None:
             headers = DEFAULT_HEADERS
 
-        url = '{}?query={}'.format(self.endpoint, quote(query))
+        url = f'{self.endpoint}?query={quote(query)}'
         while True:
             try:
                 self.last_response = http.fetch(url, headers=headers)
@@ -148,13 +152,9 @@ class SparqlQuery:
                 self.wait()
                 continue
 
-            if not self.last_response.text:
-                break
-
-            try:
-                return json.loads(self.last_response.text)
-            except ValueError:
-                break
+            with suppress(JSONDecodeError):
+                return self.last_response.json()
+            break
 
         return None
 
@@ -163,7 +163,7 @@ class SparqlQuery:
         self.max_retries -= 1
         if self.max_retries < 0:
             raise TimeoutError('Maximum retries attempted without success.')
-        warning('Waiting {} seconds before retrying.'.format(self.retry_wait))
+        warning(f'Waiting {self.retry_wait} seconds before retrying.')
         sleep(self.retry_wait)
         # double the next wait, but do not exceed config.retry_max seconds
         self.retry_wait = min(config.retry_max, self.retry_wait * 2)
@@ -226,9 +226,8 @@ class URI(SparqlNode):
 
         :return: ID of Wikibase object, e.g. Q1234
         """
-        urllen = len(self.entity_url)
         if self.value.startswith(self.entity_url):
-            return self.value[urllen:]
+            return removeprefix(self.value, self.entity_url)
         return None
 
     def __repr__(self) -> str:
