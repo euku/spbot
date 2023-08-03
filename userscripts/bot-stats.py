@@ -91,7 +91,6 @@ if __name__ == "__main__":
     
     botList = reversed(sorted(botList, key=operator.itemgetter(1)))
     pageText = '{{Benutzer:Euku/B:Navigation}}\n\
-<div style="margin:0; margin-bottom:10px; border:1px solid #dfdfdf; padding:0 1em 1em 1em; background-color:#F8F8FF; -moz-border-radius-bottomleft:1em; -moz-border-radius-bottomright:1em;">\
 Aufgeführt sind alle Bots die einen Bot-Flag besitzen. Stand: ~~~~~<br />Ein Bot gilt als inaktiv, wenn er in den letzten drei Monaten keinen Beitrag geleistet hat.\n\n\
 [//de.wikipedia.org/w/index.php?title=Benutzer:Euku/Botstatistik&diff=curr&oldid=prev&diffonly=1 &Auml;nderungen der letzten Woche]\n\
 {|class="sortable wikitable"\n\
