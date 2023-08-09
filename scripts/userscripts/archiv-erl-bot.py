@@ -858,6 +858,8 @@ class ArchiveRobot:
                         self.site = pywikibot.Site(code="wikidata", fam="wikidata")
                     elif self.currentProject == 'wikimania':
                         self.site = pywikibot.Site(code="wikimania", fam="wikimania")
+                    elif self.currentProject == 'wikifunctions':
+                        self.site = pywikibot.Site(code="wikifunctions", fam="wikifunctions")
                     elif self.currentProject == 'species':
                         self.site = pywikibot.Site(code="species", fam="species")
                     elif self.currentProject[2:] == 'wikip': # end with wikip
@@ -1053,7 +1055,7 @@ class ArchiveRobot:
                 self.sectResolved1P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1</small>"
                 self.sectResolved2P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1 \\7</small>"
         
-        elif self.currentProject in ['commons', 'wikidata', 'species', 'meta', 'enwikisource', 'wikimania']:
+        elif self.currentProject in ['commons', 'wikidata', 'species', 'meta', 'enwikisource', 'wikimania', 'wikifunctions']:
             self.archiveTemplateName = "Template:Autoarchive resolved section"
             if self.currentProject == 'meta':
                 self.headTemplate   = "{{Archive header}}"
