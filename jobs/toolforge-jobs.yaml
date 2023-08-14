@@ -1,0 +1,173 @@
+# https://wikitech.wikimedia.org/wiki/Help:Toolforge/Jobs_framework
+---
+## EUROPE: 3 am UTC
+- name: archive-resolved-dewikip
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:dewikip
+  image: python3.11
+  no-filelog: false
+  schedule: "4   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-dewikip.out
+  filelog-stderr: logs/archive-resolved-dewikip.err
+- name: archive-resolved-cswikip
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:cswikip
+  image: python3.11
+  no-filelog: false
+  schedule: "5   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-cswikip.out
+  filelog-stderr: logs/archive-resolved-cswikip.err
+- name: archive-resolved-dewiktionary
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:dewiktionary
+  image: python3.11
+  no-filelog: false
+  schedule: "6   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-dewiktionary.out
+  filelog-stderr: logs/archive-resolved-dewiktionary.err
+- name: archive-resolved-dewikisource
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:dewikisource
+  image: python3.11
+  no-filelog: false
+  schedule: "6   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-dewikisource.out
+  filelog-stderr: logs/archive-resolved-dewikisource.err
+- name: archive-resolved-enwikisource
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:enwikisource
+  image: python3.11
+  no-filelog: false
+  schedule: "6   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-enwikisource.out
+  filelog-stderr: logs/archive-resolved-enwikisource.err
+
+- name: archive-resolved-commons
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:commons
+  image: python3.11
+  no-filelog: false
+  schedule: "7   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-commons.out
+  filelog-stderr: logs/archive-resolved-commons.err
+- name: archive-resolved-meta
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:meta
+  image: python3.11
+  no-filelog: false
+  schedule: "7   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-meta.out
+  filelog-stderr: logs/archive-resolved-meta.err
+
+- name: archive-resolved-wikidata
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:wikidata
+  image: python3.11
+  no-filelog: false
+  schedule: "7   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-wikidata.out
+  filelog-stderr: logs/archive-resolved-wikidata.err
+- name: archive-resolved-wikimania
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:wikimania
+  image: python3.11
+  no-filelog: false
+  schedule: "8   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-wikimania.out
+  filelog-stderr: logs/archive-resolved-wikimania.err
+- name: archive-resolved-species
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:species
+  image: python3.11
+  no-filelog: false
+  schedule: "8   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-species.out
+  filelog-stderr: logs/archive-resolved-species.err
+- name: archive-resolved-wikifunctions
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:wikifunctions
+  image: python3.11
+  no-filelog: false
+  schedule: "8   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-wikifunctions.out
+  filelog-stderr: logs/archive-resolved-wikifunctions.err
+
+### Asia
+- name: archive-resolved-jawikip
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:jawikip
+  image: python3.11
+  no-filelog: false
+  schedule: "8   19   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-jawikip.out
+  filelog-stderr: logs/archive-resolved-jawikip.err
+- name: archive-resolved-kowikip
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:kowikip
+  image: python3.11
+  no-filelog: false
+  schedule: "8   19   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-kowikip.out
+  filelog-stderr: logs/archive-resolved-kowikip.err
+- name: archive-resolved-viwikip
+  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:viwikip
+  image: python3.11
+  no-filelog: false
+  schedule: "8   19   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-viwikip.out
+  filelog-stderr: logs/archive-resolved-viwikip.err
+
+##############################################################################
+# dayly, info on WP:PB
+- name: pers-bek-info-bot
+  command: pyvenv/bin/python bot/pwb.py bot/pwb.py pers-bek-info-bot.py
+  image: python3.11
+  no-filelog: false
+  schedule: "50  3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/pers-bek-info-bot.out
+  filelog-stderr: logs/pers-bek-info-bot.err
+
+### every 10 minutes: WP:PB ###
+- name: pers-bek-to-db-bot
+  command: pyvenv/bin/python bot/pwb.py bot/pwb.py pers-bek-to-db-bot.py
+  image: python3.11
+  no-filelog: false
+  schedule: "*/10  *   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/pers-bek-to-db-bot.out
+  filelog-stderr: logs/pers-bek-to-db-bot.err
+
+##############################################################################
+# every 20 minutes: WP:MP
+- name: mp-helper
+  command: pyvenv/bin/python bot/pwb.py mp-helper.py
+  image: python3.11
+  no-filelog: false
+  schedule: "*/20  *   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/mp-helper.out
+  filelog-stderr: logs/mp-helper.err
+
+##############################################################################
+# every Thuesday: bot stats
+- name: bot-stats-dewikip
+  command: pyvenv/bin/python bot/pwb.py bot-stats.py
+  image: python3.11
+  no-filelog: false
+  schedule: "0  4   *   *   3"
+  emails: onfailure
+  filelog-stdout: logs/bot-stats.out
+  filelog-stderr: logs/bot-stats.err
+
+##############################################################################
+## Daily cleanup
+- name: daily-log-cleanup
+  command: sh ~/bot/jobs/daily-log-cleanup.sh
+  image: bullseye
+  no-filelog: false
+  schedule: "59  23   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/daily-log-cleanup.out
+  filelog-stderr: logs/daily-log-cleanup.err
