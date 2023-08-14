@@ -25,3 +25,6 @@ docs/_build/
 !/scripts/userscripts/__init__.py
 .vscode/
 **/.DS_Store
+
+# euku
+.passwd
