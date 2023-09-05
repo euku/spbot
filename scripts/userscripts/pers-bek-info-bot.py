@@ -7,14 +7,11 @@ import sys              # To not have wikipedia and this in one dir we'll import
 import re               # Used for regular expressions
 import os               # used for os.getcwd()
 import pywikibot        # pywikibot framework
-from pywikibot import pagegenerators, textlib
-import locale			# German
-from time import localtime, strftime, mktime    # strftime-Function and related
+from pywikibot import textlib
+from time import localtime, strftime    # strftime-Function and related
 from datetime import datetime, timedelta
-sys.path.append('/data/project/pb/pb/pyapi') # TODO make this a relative path
-import wppb
-sys.path.append('/data/project/pb/pb/web/dynamic') # TODO make this a relative path
-import pb_db_config
+sys.path.append('/data/project/pb/www/python/src')
+from bot_api import BotDatabase
 
 wpOptInList = "Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen"
 wpOptInListRegEx = "\[\[(?:[uU]ser|[bB]enutzer|[bB]enutzerin)\:(?P<username>[^\|\]]+)(?:\|[^\]]+)?\]\]"
@@ -62,7 +59,7 @@ def search(text, regex):
   MAIN
 """
 output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
-db = wppb.Database(database=pb_db_config.db_name)
+db = BotDatabase()
 
 # request list of all users that are opt-in
 usersToCheck = usersToCheck()
