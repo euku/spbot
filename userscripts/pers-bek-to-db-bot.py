@@ -7,17 +7,13 @@ import sys              # To not have wikipedia and this in one dir we'll import
 import re               # Used for regular expressions
 import os               # used for os.getcwd()
 import pywikibot        # pywikibot framework
-from pywikibot import config, pagegenerators, Bot, textlib
-import locale			# German
-from time import localtime, strftime, mktime    # strftime-Function and related
+from pywikibot import pagegenerators, Bot, textlib
+from time import localtime, strftime    # strftime-Function and related
 import time
 import pymysql
 import traceback
-
-sys.path.append('/data/project/pb/pb/pyapi') # TODO make this a relative path
-import wppb
-sys.path.append('/data/project/pb/pb/web/dynamic') # TODO make this a relative path
-import pb_db_config
+sys.path.append('/data/project/pb/www/python/src')
+from bot_api import BotDatabase
 
 # templates and WP paths
 tmplNewUser = "Wikipedia:Persönliche Bekanntschaften/neuer Benutzer"
@@ -60,9 +56,9 @@ def isIn(text, regex):
 def search(text, regex):
 	m = re.search(regex, text, re.UNICODE)
 	if m:
-	  return m.groups()[0]
+		return m.groups()[0]
 	else:
-	  return ""
+		return ""
 
 def output(text):
 	pywikibot.output(text)
@@ -166,23 +162,23 @@ def writeUserListToWikipedia(db, editSummary):
    and returns it back as a tuple
 """
 def divideIntoTasks(pageText):
-		### find new user requests
-		p = re.compile(newUserRegex, re.UNICODE)
-		taskIterator = p.finditer(pageText)
-		newUsers = []
-		for task in taskIterator:
-			if task.group('timemon') in monthDic:
-			   newUsers.append((task.group('user'), int(task.group('timemin')), int(task.group('timeh')), int(task.group('timed')), monthDic[task.group('timemon')], int(task.group('timeyear'))))
-		
-		## find new acknowledgements
-		p = re.compile(newACKRegex, re.UNICODE)
-		taskIterator = p.finditer(pageText)
-		newACKs = []
-		for task in taskIterator:
-			if task.group('timemon') in monthDic:
-			   newACKs.append((task.group('certifier'), task.group('certified'), task.group('comment'), int(task.group('timemin')), int(task.group('timeh')), int(task.group('timed')), monthDic[task.group('timemon')], int(task.group('timeyear'))))
-		
-		return newUsers, newACKs
+	### find new user requests
+	p = re.compile(newUserRegex, re.UNICODE)
+	taskIterator = p.finditer(pageText)
+	newUsers = []
+	for task in taskIterator:
+		if task.group('timemon') in monthDic:
+			newUsers.append((task.group('user'), int(task.group('timemin')), int(task.group('timeh')), int(task.group('timed')), monthDic[task.group('timemon')], int(task.group('timeyear'))))
+
+	## find new acknowledgements
+	p = re.compile(newACKRegex, re.UNICODE)
+	taskIterator = p.finditer(pageText)
+	newACKs = []
+	for task in taskIterator:
+		if task.group('timemon') in monthDic:
+			newACKs.append((task.group('certifier'), task.group('certified'), task.group('comment'), int(task.group('timemin')), int(task.group('timeh')), int(task.group('timed')), monthDic[task.group('timemon')], int(task.group('timeyear'))))
+
+	return newUsers, newACKs
 
 
 """
@@ -247,7 +243,7 @@ class PBBot(Bot):
         
 	def run(self):
 		output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
-		db = wppb.Database(database=pb_db_config.db_name)
+		self.db = BotDatabase()
 
 		generator = [pywikibot.Page(self._site, workList)]
 		generator = pagegenerators.PreloadingGenerator(generator, groupsize = 1)
@@ -270,8 +266,8 @@ class PBBot(Bot):
 		newRawText = rawText
 
 		if not page.botMayEdit():
-		   output("Seite gesperrt")
-		   pywikibot.stopme()
+			output("Seite gesperrt")
+			pywikibot.stopme()
 
 		newUsers, newACKs = divideIntoTasks(rawText)
 		seenUsers = []
@@ -286,7 +282,7 @@ class PBBot(Bot):
 
 			try:
 				if not DONOTSAVEDB:
-					db.add_user(currentName, timestamp)
+					self.db.add_user(currentName, timestamp)
 			except pymysql.IntegrityError:
 				# already in ... TODO change the edit comment
 				output("user " + currentName + " already in")
@@ -304,7 +300,7 @@ class PBBot(Bot):
 			output("füge Bestätigung: %s >> %s (Kommentar: %s) am %s hinzu.." % (certifier, certified, comment, timestamp))
 			entry = newACKReplRegex % (re.escape(certifier), re.escape(certified))
 			try:
-				addConfirmation(db, certifier, certified, comment, year, month, day, hours, minutes)
+				addConfirmation(self.db, certifier, certified, comment, year, month, day, hours, minutes)
 			except pymysql.DatabaseError: # WORKAROUND wir koennen nicht sicher sein, dass die Bestaetigungen wirklich ankamen, darum entferne sie erst beim naechsten Mal, wenn es sicher ist!
 				doNotRemoveWikiText = True
 			newRawText = textlib.replaceExcept(newRawText, entry, "", ["comment", "nowiki"])
@@ -346,14 +342,18 @@ class PBBot(Bot):
 			pywikibot.showDiff(rawText, newRawText)
 			if not DONOTSAVE:
 				page.put(newRawText, "In Datenbank übertragen: " + editSummary, False, False, True)
-			writeUserListToWikipedia(db, editSummary)
+			writeUserListToWikipedia(self.db, editSummary)
 			output("Zusammenfassung: " + editSummary + "\n")
 		else:
 			output("nichts zu tun")
 			# write userlist 4 times per day
 			if time.localtime()[3] in [3,15] and time.localtime()[4] in [0,1,2,3,4,5,6,7,8,9]:
-				writeUserListToWikipedia(db, editSummary)
+				writeUserListToWikipedia(self.db, editSummary)
+
+	def shutdown(self):
+		self.db.close_connections()
 
 # start here
 bot = PBBot()
 bot.run()
+bot.shutdown()
