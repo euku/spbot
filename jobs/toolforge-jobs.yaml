@@ -171,3 +171,14 @@
   emails: onfailure
   filelog-stdout: logs/daily-log-cleanup.out
   filelog-stderr: logs/daily-log-cleanup.err
+
+##############################################################################
+## publish all job of the bot
+- name: toolforge-jobs-list-of-spbot
+  command: toolforge-jobs list > /data/project/spbot/public_html/job_status.txt
+  image: bullseye
+  no-filelog: false
+  schedule: "0  */12   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/toolforge-jobs-list-of-spbot.out
+  filelog-stderr: logs/toolforge-jobs-list-of-spbot.err
