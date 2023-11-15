@@ -199,6 +199,7 @@ class Discussion:
         # remove comments and nowiki tags
         clearedContent = textlib.replaceExcept(self.content, r"(?s)<!\-\-.*?\-\->", "", [])
         clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<nowiki>.*?</nowiki>", "", [])
+        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<code>.*?</code>", "", [])
         clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<pre>.*?</pre>", "", [])
         matches = p.finditer(clearedContent)
         agesList = []
