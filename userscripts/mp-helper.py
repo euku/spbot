@@ -12,20 +12,15 @@ import sys              # To not have wikipedia and this in one dir we'll import
 import re               # Used for regular expressions
 import os               # used for os.getcwd()
 import pywikibot        # pywikibot framework
-from pywikibot import config, pagegenerators, Bot, textlib
-import locale			# German
-
-from time import localtime, strftime, mktime    # strftime-Function and related
+from pywikibot import textlib
+from time import localtime, strftime    # strftime-Function and related
 import time
 import datetime
-
 sys.path.append('/data/project/mp/mp/pyapi') # TODO make this a relative path
 import dewpmp
-import mp_db_config
 
 menteeTemplRegEx = "\|\ *Mentor\ *=\ *([^\r\n|}]+)"
-mentorTemplRegEx = "\{\{[Bb]enutzer(?:in)?\ *\:\ *([^\r\n|}]+?)\/(?:Vorlage[ _\/])?Mentor\ *(?:\|.*?)?\}\}"
-
+mentorTemplRegEx = "\{\{\ *(?:[Ww][Pp]|[Ww]ikipedia)\:\ *Mentorenprogramm\/Hinweis[ _]Mentorat\ *\|\ *Mentor\ *\=\ *([^\r\n|}]+?)\ *\}\}"
 wpOptInList = "Wikipedia:Mentorenprogramm/Projektorganisation/Opt-in-Liste"
 wpOptInListRegEx = "\[\[(?:[uU]ser|[bB]enutzer)(?:in)?\:(?P<username>[^\|\]]+)(?:\|[^\]]+)?\]\]"
 mentorenProgrammMeldungen = "Benutzer_Diskussion:Euku" # "Wikipedia Diskussion:Mentorenprogramm"
@@ -130,9 +125,8 @@ def isIn(text, regex):
 def search(text, regex):
 	m = re.search(regex, text, re.UNICODE)
 	if m:
-	  return m.groups()[0]
-	else:
-	  return ""
+		return m.groups()[0]
+	return ""
 	
 def output(text):
 	#fd = open(localLogFile, 'a')
@@ -439,34 +433,15 @@ def writeActiveMentorNumber(db):
 	page = pywikibot.Page(pywikibot.Site(), anzahlAllerZurzeitBereuendenMentoren)
 	page.put(str(mentorNumber), "Anzahl zurzeit betreuenden Mentoren: %s" % mentorNumber, False, minor=True, force=True)
 
-
-"""
-	read opt-in list
-	XXX deprecated
-"""
-def optInUsersToCheck():
-	optInPage = pywikibot.Page(pywikibot.Site(), wpOptInList)
-	optInRawText = optInPage.get()
-
-	p = re.compile(wpOptInListRegEx, re.UNICODE)
-	userIterator = p.finditer(optInRawText)
-	result = []
-	for user in userIterator:
-		# "_" is the same as " " for Wikipedia URls
-		result.append(textlib.replaceExcept(user.group('username'), "_", " ", []))
-	return result
-
-
 """
   MAIN
-  gogogo
 """
 # read program arguments
 for arg in pywikibot.handle_args():
 	if arg == '-force':
-	    forceWrite = True
+		forceWrite = True
 	else:
-	    pywikibot.output(arg + " wurde ignoriert")
+		pywikibot.output(arg + " wurde ignoriert")
 
 output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
 db = dewpmp.Database()
@@ -483,15 +458,6 @@ if (len(userListWP) == 0):
 somethingWasChanged = False
 logText = ""
 
-# müssen Mentoren benachricht werden?
-# nur einmal täglich um 3:xx Uhr
-# TODO
-itIsThreeOClockPM = time.localtime()[3] in [3] and time.localtime()[4] in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-if (False and itIsThreeOClockPM):
-	mentorenOptInList = optInUsersToCheck()
-	for mentorStr in mentorenOptInList:
-		writeInactiveMenteeListForMentor(menteesFromServer, mentorenFromServer, mentorStr)
-
 somethingWasChanged, logText = checkForNewMentees(db, mentorenFromServer, menteesFromServer, userListWP)
 result = checkForMenteesToBeArchived(mentorenFromServer, menteesFromServer, userListWP) # gibt zwei Argumente zurück (wasGeändert?, logText)
 logText += result[1]
@@ -506,6 +472,7 @@ if (somethingWasChanged or forceWrite):
 	writeActiveMenteeList(db, logText, menteesFromServer, mentorenFromServer)
 	writeMenteeArchive(db, mentorenFromServer)
 
+itIsThreeOClockPM = time.localtime()[3] in [3] and time.localtime()[4] in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
 if (forceWrite or itIsThreeOClockPM):
 	writeOverallMenteeNumber(db)
 	writeActiveMentorNumber(db)
