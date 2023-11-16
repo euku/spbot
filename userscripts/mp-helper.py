@@ -215,7 +215,7 @@ def checkForMenteesToBeArchived(mentorenFromServer, menteesFromServer, userListW
 #############################################
 def writeMenteeArchive(db, mentorenFromServer):
 	# ist das True, werden sämtliche Archive neugeschrieben, sehr langsam aber einfach umzusetzen
-	writeAllArchives = True
+	writeAllArchives = False
 
 	# %% must be written for %
 	monthTemplHead = "<noinclude><!--\n\
@@ -242,21 +242,17 @@ def writeMenteeArchive(db, mentorenFromServer):
 			menteesForArchive.append(mentee)
 	# sort them
 	menteesForArchive = mergesort(menteesForArchive)
-	heuteJahr, heuteMon, heuteTag = localtime()[0], localtime()[1], localtime()[2]
 
 	# if all months must be written, just loop through them all
-	firstMonth = 5
-	firstYear = 2007
-	if not writeAllArchives:
-		firstMonth = heuteMon
-		firstYear = heuteJahr
-	
-	for currYear in range(firstYear, heuteJahr+1):
-		output("Prüfe Archiv für %s" % currYear)
-		for currMon in range(1, 13):
-			if (currYear == firstYear and currMon < firstMonth) or (currYear == heuteJahr and currMon > heuteMon):
-				# current month is not in our range
-				continue
+	currentYear, currentMonth = localtime()[0], localtime()[1]
+	firstMonth = 5 if writeAllArchives else currentMonth
+	firstYear = 2007 if writeAllArchives else currentYear
+	for iYear in range(firstYear, currentYear+1):
+		output("Prüfe Archiv für %s" % iYear)
+		for iMonth in range(1, 13):
+			if (iYear == firstYear and iMonth < firstMonth) or (iYear == currentYear and iMonth > currentMonth):
+				continue # current month is not in our range
+
 			resultMiddleStr = ""
 			archiveMenteeStartValueThisMonth = archiveMenteeTotalCounter = archiveMenteeThisMonthCounter = 0
 			for mentee in menteesForArchive:
@@ -265,7 +261,7 @@ def writeMenteeArchive(db, mentorenFromServer):
 				outDate = mentee['mm_stop']
 				archiveMenteeTotalCounter += 1
 				# look for the current month only
-				if (currYear == outDate.year and currMon == outDate.month):
+				if (iYear == outDate.year and iMonth == outDate.month):
 					archiveMenteeThisMonthCounter += 1
 					if (archiveMenteeStartValueThisMonth == 0):
 						archiveMenteeStartValueThisMonth = archiveMenteeTotalCounter
@@ -279,21 +275,22 @@ def writeMenteeArchive(db, mentorenFromServer):
 						menteeTyp = ""
 					resultMiddleStr += monthTemplBody % (inDate.day, inDate.month, inDate.year, outDate.day, outDate.month, outDate.year, menteeTyp, menteeName, menteeName, mentorName, mentorName)
 			
-			resultHeadStr = monthTemplHead % (monthDic[currMon-1], currYear, archiveMenteeThisMonthCounter, archiveMenteeStartValueThisMonth) # for current month only
+			# for current month only
+			resultHeadStr = monthTemplHead % (monthDic[iMonth-1], iYear, archiveMenteeThisMonthCounter, archiveMenteeStartValueThisMonth)
 			
 			## write it to wikipedia
-			page = pywikibot.Page(pywikibot.Site(), mentorenProgrammMenteeArchiv + str(currYear) + " " + monthDic[currMon-1])
+			archivePage = mentorenProgrammMenteeArchiv + str(iYear) + " " + monthDic[iMonth-1]
+			output(f'Prüfe {archivePage}')
+			page = pywikibot.Page(pywikibot.Site(), archivePage)
 			try:
 				rawText = page.get()
-				pywikibot.showDiff(rawText, resultHeadStr + resultMiddleStr + monthTemplFoot)
-				
 				if resultHeadStr + resultMiddleStr + monthTemplFoot != rawText:
-					page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, "Update", False, minor=True, force=True)
+					page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, summary="Update", botflag=False, minor=True, force=True, show_diff=True)
 				else:
-					output("keine Änderung im WP-Archiv nötig: " + str(currYear) + " " + monthDic[currMon-1])
+					output("keine Änderung im WP-Archiv nötig: " + str(iYear) + " " + monthDic[iMonth-1])
 			except pywikibot.exceptions.NoPageError:
 				# create a new page
-				page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, "neues Archiv", False, minor=True, force=True)
+				page.put(resultHeadStr + resultMiddleStr + monthTemplFoot, summary="neues Archiv", botflag=False, minor=True, force=True, show_diff=True)
 	
 
 ##################################################
@@ -351,77 +348,6 @@ def writeActiveMenteeList(db, logText, menteesFromServer, mentorenFromServer):
 	#	output(result)
 	else:
 		output("keine Änderung in aktiver Menteeliste (WP)")
-
-
-##################################################
-# hat dieser Mentor "gelbe" oder "rote" Mentees?
-##################################################
-def writeInactiveMenteeListForMentor(menteesFromServer, mentorenFromServer, currMentorStr):
-	output("Pruefe auf inaktive und alte Mentees")
-	result = "\n==Erinnerung zur Betreuung am {{subst:CURRENTDAY}}. {{subst:LOCALMONTHABBREV}} {{subst:CURRENTYEAR}}==\nHallo %s! Du wirst benachrichtigt, weil du in [[%s|dieser Liste]] stehst. Bitte überprüfe, ob die Betreuung folgender Mentees noch erforderlich ist." % (currMentorStr, wpOptInList)
-	menteeCounter = 0
-	currMentorID = -1
-	sumText = 'Erinnerung an: %s Mentee(s)'
-	page = pywikibot.Page(pywikibot.Site(), "Benutzer_Diskussion:"+currMentorStr)
-	rawText = ''
-
-	for currMentor in mentorenFromServer:
-		if (currMentor[0] == mentorStr):
-			# Mentor gefunden
-			currMentorID = currMentor[1]
-			break
-	if (currMentorID == -1):
-		output("Mentor string nicht gefunden: %s" % mentorStr)
-		currMentorID = 123
-		## exit() DEBUG
-
-	for mentee in menteesFromServer:
-		if (len(mentee) == 4):
-			menteeName, menteeID, menteeEintrittDatumStr, mentorID = mentee
-			menteeAustrittDatumStr = ''
-		elif (len(mentee) == 5):
-			menteeName, menteeID, menteeEintrittDatumStr, menteeAustrittDatumStr, mentorID = mentee
-		else:
-			output(mentee + " konnte nicht entpackt werden")
-			exit()
-
-		if (currMentorID != mentorID or menteeAustrittDatumStr != ''):
-			continue # falscher Mentor oder im Archiv, weiter
-		menteeStatus = "grün"
-		
-		menteeEintrittJahr, menteeEintrittMon, menteeEintrittTag = dateToList(menteeEintrittDatumStr)
-		diffAge = (date.today() - date(menteeEintrittJahr, menteeEintrittMon, menteeEintrittTag)).days
-		if (diffAge < 0):
-			output("Alter von MentorID %s ist negativ" % menteeID)
-			exit()
-		if (diffAge >= menteeStatusOrangeGrenze): # ab 5*356/2 Tagen wirds orange
-			menteeStatus = "orange"
-			menteeCounter += 1
-		
-		if (diffAge >= menteeStatusRotGrenze-1):	# WP nicht befragen, wenn Mentee noch gar nicht 'rot' werden kann, um Ressoucen zu sparen
-			if (not menteeIstAktiv(menteeName)):	# wenn Mentee seit 60 Tagen inaktiv ist
-				menteeStatus = "rot"
-				menteeCounter += 1
-		## create the messages if needed
-		menteeEintrittJahr, menteeEintrittMon, menteeEintrittTag = dateToList(menteeEintrittDatumStr)
-		if (menteeStatus == 'orange'):
-			if (rawText == ''):
-				rawText = page.get()
-			if (not isIn(rawText, "\[\[Benutzer\:%s\|%s\]\]\:\ Eintritt\: 2" % (eukuhelp.UMLdecode(menteeName), eukuhelp.UMLdecode(menteeName)))):
-				result += "\n*[[Benutzer:%s|]]: Eintritt: %s-%s-%s, wird seit mindestens %s Tagen betreut" % (eukuhelp.UMLdecode(menteeName), menteeEintrittJahr, menteeEintrittMon, menteeEintrittTag, menteeStatusOrangeGrenze)
-		elif (menteeStatus == 'rot'):
-			if (rawText == ''):
-				rawText = page.get()
-			if (not isIn(rawText, "\[\[Benutzer\:%s\|%s\]\]\:\ Eintritt\: 2" % (eukuhelp.UMLdecode(menteeName), eukuhelp.UMLdecode(menteeName)))):
-				result += "\n*[[Benutzer:%s|]]: Eintritt: %s-%s-%s, seit %s Tagen inaktiv" % (eukuhelp.UMLdecode(menteeName), menteeEintrittJahr, menteeEintrittMon, menteeEintrittTag, menteeStatusRotGrenze)
-		
-	result += "\n--~~~~"
-	
-	## write it to wikipedia
-	if menteeCounter > 0:
-		pywikibot.showDiff(rawText, rawText + result)
-		output("schreibe: " + result)
-		page.put(result, sumText % menteeCounter, False, minor=True, force=True, botflag=False)
 
 def writeOverallMenteeNumber(db):
 	menteeNumber = db.get_overall_mentee_number()
