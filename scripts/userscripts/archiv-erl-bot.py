@@ -781,7 +781,11 @@ class WikiDocument:
         Looks for the template {{Autoarchiv-Erledigt}}
         """
         p = re.compile(bot.optionsRegEx, re.DOTALL)
-        match = p.search(self.originalText)
+        clearedContent = textlib.replaceExcept(self.originalText, r"(?s)<!\-\-.*?\-\->", "", [])
+        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<nowiki>.*?</nowiki>", "", [])
+        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<code>.*?</code>", "", [])
+        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<pre>.*?</pre>", "", [])
+        match = p.search(clearedContent)
         if match:
             allOptions = match.group('options')
             optionsDict = {}
