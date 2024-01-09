@@ -1,24 +1,24 @@
 # https://wikitech.wikimedia.org/wiki/Help:Toolforge/Jobs_framework
 ---
 ## EUROPE: 3 am UTC
-- name: archive-resolved-dewikip
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:dewikip
+- name: archive-resolved-dewikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:dewikipedia
   image: python3.11
   no-filelog: false
   schedule: "4   3   *   *   *"
   emails: onfailure
-  filelog-stdout: logs/archive-resolved-dewikip.out
-  filelog-stderr: logs/archive-resolved-dewikip.err
-- name: archive-resolved-cswikip
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:cswikip
+  filelog-stdout: logs/archive-resolved-dewikipedia.out
+  filelog-stderr: logs/archive-resolved-dewikipedia.err
+- name: archive-resolved-cswikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:cswikipedia
   image: python3.11
   no-filelog: false
   schedule: "5   3   *   *   *"
   emails: onfailure
-  filelog-stdout: logs/archive-resolved-cswikip.out
-  filelog-stderr: logs/archive-resolved-cswikip.err
+  filelog-stdout: logs/archive-resolved-cswikipedia.out
+  filelog-stderr: logs/archive-resolved-cswikipedia.err
 - name: archive-resolved-dewiktionary
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:dewiktionary
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:dewiktionary
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -26,7 +26,7 @@
   filelog-stdout: logs/archive-resolved-dewiktionary.out
   filelog-stderr: logs/archive-resolved-dewiktionary.err
 - name: archive-resolved-dewikisource
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:dewikisource
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:dewikisource
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -34,7 +34,7 @@
   filelog-stdout: logs/archive-resolved-dewikisource.out
   filelog-stderr: logs/archive-resolved-dewikisource.err
 - name: archive-resolved-enwikisource
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:enwikisource
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:enwikisource
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -43,7 +43,7 @@
   filelog-stderr: logs/archive-resolved-enwikisource.err
 
 - name: archive-resolved-commons
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:commons
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:commons
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -51,7 +51,7 @@
   filelog-stdout: logs/archive-resolved-commons.out
   filelog-stderr: logs/archive-resolved-commons.err
 - name: archive-resolved-meta
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:meta
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:meta
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -60,7 +60,7 @@
   filelog-stderr: logs/archive-resolved-meta.err
 
 - name: archive-resolved-wikidata
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:wikidata
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:wikidata
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -68,7 +68,7 @@
   filelog-stdout: logs/archive-resolved-wikidata.out
   filelog-stderr: logs/archive-resolved-wikidata.err
 - name: archive-resolved-wikimania
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:wikimania
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:wikimania
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -76,7 +76,7 @@
   filelog-stdout: logs/archive-resolved-wikimania.out
   filelog-stderr: logs/archive-resolved-wikimania.err
 - name: archive-resolved-species
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:species
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:species
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -84,7 +84,7 @@
   filelog-stdout: logs/archive-resolved-species.out
   filelog-stderr: logs/archive-resolved-species.err
 - name: archive-resolved-wikifunctions
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:wikifunctions
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:wikifunctions
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -93,30 +93,30 @@
   filelog-stderr: logs/archive-resolved-wikifunctions.err
 
 ### Asia
-- name: archive-resolved-jawikip
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:jawikip
+- name: archive-resolved-jawikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:jawikipedia
   image: python3.11
   no-filelog: false
   schedule: "8   19   *   *   *"
   emails: onfailure
-  filelog-stdout: logs/archive-resolved-jawikip.out
-  filelog-stderr: logs/archive-resolved-jawikip.err
-- name: archive-resolved-kowikip
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:kowikip
+  filelog-stdout: logs/archive-resolved-jawikipedia.out
+  filelog-stderr: logs/archive-resolved-jawikipedia.err
+- name: archive-resolved-kowikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:kowikipedia
   image: python3.11
   no-filelog: false
   schedule: "8   19   *   *   *"
   emails: onfailure
-  filelog-stdout: logs/archive-resolved-kowikip.out
-  filelog-stderr: logs/archive-resolved-kowikip.err
-- name: archive-resolved-viwikip
-  command: pyvenv/bin/python  bot/pwb.py archiv-erl-bot.py -project:viwikip
+  filelog-stdout: logs/archive-resolved-kowikipedia.out
+  filelog-stderr: logs/archive-resolved-kowikipedia.err
+- name: archive-resolved-viwikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:viwikipedia
   image: python3.11
   no-filelog: false
   schedule: "8   19   *   *   *"
   emails: onfailure
-  filelog-stdout: logs/archive-resolved-viwikip.out
-  filelog-stderr: logs/archive-resolved-viwikip.err
+  filelog-stdout: logs/archive-resolved-viwikipedia.out
+  filelog-stderr: logs/archive-resolved-viwikipedia.err
 
 ##############################################################################
 # dayly, info on WP:PB
@@ -173,12 +173,12 @@
   filelog-stderr: logs/daily-log-cleanup.err
 
 ##############################################################################
-## publish all job of the bot
-- name: toolforge-jobs-list-of-spbot
-  command: toolforge-jobs list > /data/project/spbot/public_html/job_status.txt
-  image: bullseye
-  no-filelog: false
-  schedule: "0  */12   *   *   *"
-  emails: onfailure
-  filelog-stdout: logs/toolforge-jobs-list-of-spbot.out
-  filelog-stderr: logs/toolforge-jobs-list-of-spbot.err
+## Validate if the last run of the archive bot was successful
+# - name: check-archive-bot-job-run
+#   command: sh ~/bot/jobs/check-archive-bot-job-run.sh
+#   image: bullseye
+#   no-filelog: false
+#   schedule: "5  5   *   *   *"
+#   emails: onfailure
+#   filelog-stdout: logs/check-archive-bot-job-run.out
+#   filelog-stderr: logs/check-archive-bot-job-run.err
