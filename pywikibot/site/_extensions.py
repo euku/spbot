@@ -141,6 +141,31 @@ class ProofreadPageMixin:
             self._cache_proofreadinfo()
         return self._proofread_levels
 
+    @need_extension('ProofreadPage')
+    def loadpageurls(
+        self,
+        page: 'pywikibot.page.BasePage'
+    ) -> None:
+        """Load URLs from api and store in page attributes.
+
+        Load URLs to images for a given page in the "Page:" namespace.
+        No effect for pages in other namespaces.
+
+        .. versionadded:: 8.6
+
+        .. seealso:: :api:`imageforpage`
+        """
+        title = page.title(with_section=False)
+        # responsiveimages: server would try to render the other images as well
+        # let's not load the server unless needed.
+        prppifpprop = 'filename|size|fullsize'
+
+        query = self._generator(api.PropertyGenerator,
+                                type_arg='imageforpage',
+                                titles=title.encode(self.encoding()),
+                                prppifpprop=prppifpprop)
+        self._update_page(page, query)
+
 
 class GeoDataMixin:
 
@@ -545,6 +570,28 @@ class FlowMixin:
         req = self._request(parameters=params, use_get=False)
         data = req.submit()
         return data['flow']['moderate-topic']['committed']['topic']
+
+    def summarize_topic(self, page, summary):
+        """
+        Add summary to Flow topic.
+
+        :param page: A Flow topic
+        :type page: Topic
+        :param summary: The text of the summary
+        :type symmary: str
+        :return: Metadata returned by the API
+        :rtype: dict
+        """
+        token = self.tokens['csrf']
+        params = {'action': 'flow', 'page': page, 'token': token,
+                  'submodule': 'edit-topic-summary', 'etssummary': summary,
+                  'etsformat': 'wikitext'}
+        if 'summary' in page.root._current_revision.keys():
+            params['etsprev_revision'] = page.root._current_revision[
+                'summary']['revision']['revisionId']
+        req = self._request(parameters=params, use_get=False)
+        data = req.submit()
+        return data['flow']['edit-topic-summary']['committed']['topicsummary']
 
     @need_right('flow-delete')
     @need_extension('Flow')

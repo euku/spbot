@@ -173,11 +173,7 @@ from pywikibot.logging import (
     warning,
 )
 from pywikibot.throttle import Throttle
-from pywikibot.tools import (
-    PYTHON_VERSION,
-    issue_deprecation_warning,
-    strtobool,
-)
+from pywikibot.tools import issue_deprecation_warning, strtobool
 from pywikibot.tools._logging import LoggingFormatter
 
 
@@ -525,11 +521,8 @@ def writelogheader() -> None:
         if not filename:
             continue
 
-        param = {'sep': ' '}
-        if PYTHON_VERSION >= (3, 6, 0):
-            param['timespec'] = 'seconds'
-        mtime = version.get_module_mtime(module).isoformat(**param)
-
+        mtime = version.get_module_mtime(module).isoformat(sep=' ',
+                                                           timespec='seconds')
         log(f'  {mtime} {filename}')
 
     if config.log_pywiki_repo_version:
@@ -998,15 +991,6 @@ def handle_args(args: Optional[Iterable[str]] = None,
                 # argument not global -> specific bot script will take care
                 non_global_args.append(arg)
 
-    if calledModuleName() != 'generate_user_files':  # T261771
-        try:
-            pywikibot.Site()
-        except (UnknownFamilyError, UnknownSiteError):
-            pywikibot.exception(exc_info=False)
-            sys.exit(1)
-        if calledModuleName() == 'wrapper':
-            pywikibot._sites.clear()
-
     if username:
         config.usernames[config.family][config.mylang] = username
 
@@ -1020,6 +1004,15 @@ def handle_args(args: Optional[Iterable[str]] = None,
     if do_help_val:
         show_help(show_global=do_help_val == 'global')
         sys.exit(0)
+
+    if calledModuleName() != 'generate_user_files':  # T261771
+        try:
+            pywikibot.Site()
+        except (UnknownFamilyError, UnknownSiteError):
+            pywikibot.exception(exc_info=False)
+            sys.exit(1)
+        if calledModuleName() == 'wrapper':
+            pywikibot._sites.clear()
 
     debug('handle_args() completed.')
     return non_global_args
@@ -2363,7 +2356,6 @@ class WikidataBot(Bot, ExistingPageBot):
         :return: pywikibot.ItemPage or None
         """
         if not summary:
-            # FIXME: i18n
             summary = 'Bot: New item with sitelink from {}'.format(
                       page.title(as_link=True, insite=self.repo))
 

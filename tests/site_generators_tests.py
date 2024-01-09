@@ -181,8 +181,7 @@ class TestSiteGenerators(DefaultSiteTestCase):
             'continue': [True],
             'inprop': ['protection'],
             'iilimit': ['max'],
-            'iiprop': ['timestamp', 'user', 'comment', 'url', 'size', 'sha1',
-                       'metadata'],
+            'iiprop': ['timestamp', 'user', 'comment', 'url', 'size', 'sha1'],
             'indexpageids': [True],
             'generator': ['templates'], 'action': ['query'],
             'prop': ['info', 'imageinfo', 'categoryinfo'],
@@ -218,7 +217,7 @@ class TestSiteGenerators(DefaultSiteTestCase):
             'inprop': ['protection'],
             'iilimit': ['max'],
             'iiprop': ['timestamp', 'user', 'comment', 'url', 'size',
-                       'sha1', 'metadata'], 'generator': ['links'],
+                       'sha1'], 'generator': ['links'],
             'prop': ['info', 'imageinfo', 'categoryinfo'],
             'redirects': [False],
         }
@@ -701,7 +700,7 @@ class TestSiteGeneratorsUsers(DefaultSiteTestCase):
             self.assertIn('name', user)
             self.assertIn('editcount', user)
             self.assertIn('registration', user)
-            self.assertIn('user', user['groups'])
+            self.assertIn('*', user['groups'])
 
     def test_allusers_with_start(self):
         """Test the site.allusers(start=..) method."""
@@ -1108,8 +1107,7 @@ class SearchTestCase(DefaultSiteTestCase):
         expected_params = {
             'prop': ['info', 'imageinfo', 'categoryinfo'],
             'inprop': ['protection'],
-            'iiprop': ['timestamp', 'user', 'comment', 'url', 'size', 'sha1',
-                       'metadata'],
+            'iiprop': ['timestamp', 'user', 'comment', 'url', 'size', 'sha1'],
             'iilimit': ['max'], 'generator': ['search'], 'action': ['query'],
             'indexpageids': [True], 'continue': [True],
             'gsrnamespace': [0], 'gsrsearch': ['wiki'], 'gsrwhat': ['title']}
@@ -1694,8 +1692,8 @@ class TestSiteLoadRevisions(TestCase):
             self.mysite.loadrevisions(self.mainpage,
                                       revids=130000)
 
-    def test_loadrevisions_querycontinue(self):
-        """Test the site.loadrevisions() method with query-continue."""
+    def test_loadrevisions_continue(self):
+        """Test the site.loadrevisions() method with continue."""
         self.mysite.loadrevisions(self.mainpage, step=5, total=12)
         self.assertLength(self.mainpage._revisions, 12)
 

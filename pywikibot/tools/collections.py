@@ -1,6 +1,6 @@
 """Collections datatypes."""
 #
-# (C) Pywikibot team, 2014-2022
+# (C) Pywikibot team, 2014-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -11,7 +11,9 @@ from contextlib import suppress
 from itertools import chain
 from typing import Any
 
+from pywikibot.backports import Dict
 from pywikibot.backports import Generator as GeneratorType
+from pywikibot.backports import List
 
 
 __all__ = (
@@ -68,7 +70,8 @@ class SizedKeyCollection(Collection):
             with this collection which will be used as key.
         """
         self.keyattr = keyattr
-        self.clear()
+        self.data: Dict[Any, List[Any]] = {}
+        self.size = 0
 
     def __contains__(self, key) -> bool:
         return key in self.data
@@ -120,7 +123,7 @@ class SizedKeyCollection(Collection):
 
     def clear(self) -> None:
         """Remove all elements from SizedKeyCollection."""
-        self.data = {}  # defaultdict fails (T282865)
+        self.data.clear()  # defaultdict fails (T282865)
         self.size = 0
 
     def filter(self, key):
@@ -250,7 +253,7 @@ class GeneratorWrapper(ABC, Generator):
     @abstractmethod
     def generator(self) -> GeneratorType[Any, Any, Any]:
         """Abstract generator property."""
-        return iter(())
+        yield from ()
 
     def send(self, value: Any) -> Any:
         """Return next yielded value from generator or raise StopIteration.

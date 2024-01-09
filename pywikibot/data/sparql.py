@@ -4,16 +4,17 @@
 #
 # Distributed under the terms of the MIT license.
 #
-from contextlib import suppress
+from textwrap import fill
 from typing import Optional
 from urllib.parse import quote
 
 from requests.exceptions import Timeout
 
-from pywikibot import Site, config, sleep, warning
+from pywikibot import Site
 from pywikibot.backports import Dict, List, removeprefix
 from pywikibot.comms import http
-from pywikibot.exceptions import Error, TimeoutError
+from pywikibot.data import WaitingMixin
+from pywikibot.exceptions import Error, NoUsernameError
 
 
 try:
@@ -25,11 +26,14 @@ DEFAULT_HEADERS = {'cache-control': 'no-cache',
                    'Accept': 'application/sparql-results+json'}
 
 
-class SparqlQuery:
-    """
-    SPARQL Query class.
+class SparqlQuery(WaitingMixin):
+    """SPARQL Query class.
 
     This class allows to run SPARQL queries against any SPARQL endpoint.
+
+    .. versionchanged:: 8.4
+       inherited from :class:`data.WaitingMixin` which provides a
+       :meth:`data.WaitingMixin.wait` method.
     """
 
     def __init__(self,
@@ -78,13 +82,9 @@ class SparqlQuery:
 
         self.last_response = None
 
-        if max_retries is None:
-            self.max_retries = config.max_retries
-        else:
+        if max_retries is not None:
             self.max_retries = max_retries
-        if retry_wait is None:
-            self.retry_wait = config.retry_wait
-        else:
+        if retry_wait is not None:
             self.retry_wait = retry_wait
 
     def get_last_response(self):
@@ -136,37 +136,50 @@ class SparqlQuery:
         return result
 
     def query(self, query: str, headers: Optional[Dict[str, str]] = None):
-        """
-        Run SPARQL query and return parsed JSON result.
+        """Run SPARQL query and return parsed JSON result.
+
+        .. versionchanged:: 8.5
+           :exc:``exceptions.NoUsernameError` is raised if the response
+           looks like the user is not logged in.
 
         :param query: Query text
+        :raises NoUsernameError: User not logged in
         """
         if headers is None:
             headers = DEFAULT_HEADERS
+
+        # force cleared
+        self.last_response = None
 
         url = f'{self.endpoint}?query={quote(query)}'
         while True:
             try:
                 self.last_response = http.fetch(url, headers=headers)
+                break
             except Timeout:
                 self.wait()
-                continue
 
-            with suppress(JSONDecodeError):
-                return self.last_response.json()
-            break
-
+        try:
+            return self.last_response.json()
+        except JSONDecodeError:
+            # There is no proper error given but server returns HTML page
+            # in case login isn't valid sotry to guess what the problem is
+            # and notify user instead of silently ignoring it.
+            # This could be made more reliable by fixing the backend.
+            # Note: only raise error when response starts with HTML,
+            # not in case the response otherwise might have it in between
+            strcontent = self.last_response.content.decode()
+            if (strcontent.startswith('<!DOCTYPE html>')
+                and 'https://commons-query.wikimedia.org' in url
+                and ('Special:UserLogin' in strcontent
+                     or 'Special:OAuth' in strcontent)):
+                raise NoUsernameError(fill(
+                    'User not logged in. You need to log in to Wikimedia '
+                    'Commons and give OAUTH permission. Open '
+                    'https://commons-query.wikimedia.org with browser to '
+                    'login and give permission.'
+                ))
         return None
-
-    def wait(self):
-        """Determine how long to wait after a failed request."""
-        self.max_retries -= 1
-        if self.max_retries < 0:
-            raise TimeoutError('Maximum retries attempted without success.')
-        warning(f'Waiting {self.retry_wait} seconds before retrying.')
-        sleep(self.retry_wait)
-        # double the next wait, but do not exceed config.retry_max seconds
-        self.retry_wait = min(config.retry_max, self.retry_wait * 2)
 
     def ask(self, query: str,
             headers: Optional[Dict[str, str]] = None) -> bool:

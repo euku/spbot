@@ -11,12 +11,15 @@
 # Distributed under the terms of the MIT license.
 #
 from abc import ABC, abstractmethod
-from typing import Union
+from contextlib import suppress
+from typing import Optional, Union
 from warnings import warn
 
 import pywikibot
 from pywikibot import config
+from pywikibot.backports import List
 from pywikibot.exceptions import Error, InvalidTitleError, UnsupportedPageError
+from pywikibot.tools import deprecated
 from pywikibot.tools.collections import GeneratorWrapper
 
 
@@ -101,6 +104,7 @@ class APIGenerator(APIGeneratorBase, GeneratorWrapper):
         self.limit_name = limit_name
         self.data_name = data_name
 
+        self.query_increment: Optional[int]
         if config.step > 0:
             self.query_increment = config.step
         else:
@@ -212,12 +216,10 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
     _namespaces = None
 
     def __init__(self, **kwargs) -> None:
-        """
-        Initialize a QueryGenerator object.
+        """Initialize a QueryGenerator object.
 
         kwargs are used to create a Request object; see that object's
         documentation for values. 'action'='query' is assumed.
-
         """
         if not hasattr(self, 'site'):
             kwargs = self._clean_kwargs(kwargs)  # hasn't been called yet
@@ -237,7 +239,6 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
 
         parameters['indexpageids'] = True  # always ask for list of pageids
         self.continue_name = 'continue'
-        self.continue_update = self._continue
         # Explicitly enable the simplified continuation
         parameters['continue'] = True
         self.request = self.request_class(**kwargs)
@@ -279,6 +280,7 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
                 else:
                     self.request[prefix + 'limit'] = int(param['max'])
 
+        self.api_limit: Optional[int]
         if config.step > 0:
             self.api_limit = config.step
         else:
@@ -300,16 +302,13 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
         else:
             self.resultkey = self.modules[0]
 
-        # usually the (query-)continue key is the same as the querymodule,
-        # but not always
-        # API can return more than one query-continue key, if multiple
-        # properties are requested by the query, e.g.
-        # "query-continue":{
-        #     "langlinks":{"llcontinue":"12188973|pt"},
-        #     "templates":{"tlcontinue":"310820|828|Namespace_detect"}}
-        # self.continuekey is a list
-        self.continuekey = self.modules
         self._add_slots()
+
+    @property
+    @deprecated(since='8.4.0')
+    def continuekey(self) -> List[str]:
+        """Return deprecated continuekey which is self.modules."""
+        return self.modules
 
     def _add_slots(self) -> None:
         """Add slots to params if the site supports multi-content revisions.
@@ -476,24 +475,18 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
 
         return None
 
-    def _query_continue(self) -> bool:
-        if all(key not in self.data[self.continue_name]
-               for key in self.continuekey):
-            pywikibot.log(
-                "Missing '{}' key(s) in ['{}'] value."
-                .format(self.continuekey, self.continue_name))
-            return True
+    def continue_update(self) -> None:
+        """Update query with continue parameters.
 
-        for query_continue_pair in self.data['query-continue'].values():
-            self._add_continues(query_continue_pair)
-        return False  # a new request with query-continue is needed
-
-    def _continue(self) -> bool:
-        self._add_continues(self.data['continue'])
-        return False  # a new request with continue is needed
-
-    def _add_continues(self, continue_pair) -> None:
-        for key, value in continue_pair.items():
+        .. versionadded:: 3.0
+        .. versionchanged:: 4.0
+           explicit return a bool value to be used in :meth:`generator`
+        .. versionchanged:: 6.0
+           always return *False*
+        .. versionchanged:: 8.4
+           return *None* instead of *False*.
+        """
+        for key, value in self.data['continue'].items():
             # query-continue can return ints (continue too?)
             if isinstance(value, int):
                 value = str(value)
@@ -572,12 +565,14 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
                 continue
 
             yield result
-            if isinstance(item, dict) and set(self.continuekey) & set(item):
+
+            modules_item_intersection = set(self.modules) & set(item)
+            if isinstance(item, dict) and modules_item_intersection:
                 # if we need to count elements contained in items in
                 # self.data["query"]["pages"], we want to count
-                # item[self.continuekey] (e.g. 'revisions') and not
+                # item[self.modules] (e.g. 'revisions') and not
                 # self.resultkey (i.e. 'pages')
-                for key in set(self.continuekey) & set(item):
+                for key in modules_item_intersection:
                     self._count += len(item[key])
             # otherwise we proceed as usual
             else:
@@ -653,10 +648,8 @@ class QueryGenerator(APIGeneratorBase, GeneratorWrapper):
             if self.continue_name not in self.data:
                 break
 
-            if self.continue_update():
-                break
-
-            del self.data  # a new request with (query-)continue is needed
+            self.continue_update()
+            del self.data  # a new request with continue is needed
 
     def result(self, data):
         """Process result data as needed for particular subclass."""
@@ -708,7 +701,7 @@ class PageGenerator(QueryGenerator):
                 and 'protection' in parameters['inprop']):
             append_params(parameters, 'inprop', 'protection')
         append_params(parameters, 'iiprop',
-                      'timestamp|user|comment|url|size|sha1|metadata')
+                      'timestamp|user|comment|url|size|sha1')
         append_params(parameters, 'iilimit', 'max')  # T194233
         parameters['generator'] = generator
         super().__init__(**kwargs)
@@ -728,7 +721,8 @@ class PageGenerator(QueryGenerator):
         if ns == 2:
             p = pywikibot.User(p)
         elif ns == 6:
-            p = pywikibot.FilePage(p)
+            with suppress(ValueError):
+                p = pywikibot.FilePage(p)
         elif ns == 14:
             p = pywikibot.Category(p)
         update_page(p, pagedata, self.props)
@@ -1030,7 +1024,10 @@ def update_page(page, pagedict: dict, props=None):
     elif 'pageprops' in props:
         page._pageprops = {}
 
-    if 'preload' in pagedict:
+    # preload is deprecated in MW 1.41, try preloadcontent first
+    if 'preloadcontent' in pagedict:
+        page._preloadedtext = pagedict['preloadcontent']['*']
+    elif 'preload' in pagedict:
         page._preloadedtext = pagedict['preload']
 
     if 'flowinfo' in pagedict:
@@ -1041,3 +1038,8 @@ def update_page(page, pagedict: dict, props=None):
         page._lintinfo.pop('pageid')
         page._lintinfo.pop('title')
         page._lintinfo.pop('ns')
+
+    if 'imageforpage' in props and 'imagesforpage' in pagedict:
+        # proofreadpage will work always on dicts
+        # it serves also as workaround for T352482
+        page._imageforpage = pagedict['imagesforpage'] or {}

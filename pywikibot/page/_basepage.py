@@ -73,7 +73,7 @@ class BasePage(ComparableMixin):
         '_contentmodel', '_langlinks', '_isredir', '_coords',
         '_preloadedtext', '_timestamp', '_applicable_protections',
         '_flowinfo', '_quality', '_pageprops', '_revid', '_quality_text',
-        '_pageimage', '_item', '_lintinfo',
+        '_pageimage', '_item', '_lintinfo', '_imageforpage',
     )
 
     def __init__(self, source, title: str = '', ns=0) -> None:
@@ -1539,7 +1539,7 @@ class BasePage(ComparableMixin):
         """
         if hasattr(self, '_langlinks'):
             return iter(self.langlinks(include_obsolete=include_obsolete))
-        # XXX We might want to fill _langlinks when the Site
+        # FIXME: We might want to fill _langlinks when the Site
         # method is called. If we do this, we'll have to think
         # about what will happen if the generator is not completely
         # iterated upon.

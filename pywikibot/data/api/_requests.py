@@ -24,6 +24,7 @@ import pywikibot
 from pywikibot import config
 from pywikibot.backports import Callable, Dict, Match, Tuple, removeprefix
 from pywikibot.comms import http
+from pywikibot.data import WaitingMixin
 from pywikibot.exceptions import (
     Client414Error,
     Error,
@@ -32,7 +33,6 @@ from pywikibot.exceptions import (
     NoUsernameError,
     Server504Error,
     SiteDefinitionError,
-    TimeoutError,
 )
 from pywikibot.login import LoginStatus
 from pywikibot.textlib import removeDisabledParts, removeHTMLParts
@@ -72,7 +72,7 @@ lagpattern = re.compile(
     r'Waiting for [\w.: ]+: (?P<lag>\d+(?:\.\d+)?) seconds? lagged')
 
 
-class Request(MutableMapping):
+class Request(MutableMapping, WaitingMixin):
 
     """A request to a Site's api.php interface.
 
@@ -126,6 +126,9 @@ class Request(MutableMapping):
     True
     >>> sorted(data['query'])
     ['namespaces', 'userinfo']
+
+    .. versionchanged:: 8.4
+       inherited from WaitingMixin.
     """
 
     # To make sure the default value of 'parameters' can be identified.
@@ -194,14 +197,9 @@ class Request(MutableMapping):
 
         self.throttle = throttle
         self.use_get = use_get
-        if max_retries is None:
-            self.max_retries = pywikibot.config.max_retries
-        else:
+        if max_retries is not None:
             self.max_retries = max_retries
-        self.current_retries = 0
-        if retry_wait is None:
-            self.retry_wait = pywikibot.config.retry_wait
-        else:
+        if retry_wait is not None:
             self.retry_wait = retry_wait
         self.json_warning = False
         # The only problem with that system is that it won't detect when
@@ -223,7 +221,7 @@ class Request(MutableMapping):
             parameters = kwargs
         elif parameters is self._PARAM_DEFAULT:
             parameters = {}
-        self._params = {}
+        self._params: Dict[str, Any] = {}
         if 'action' not in parameters:
             raise ValueError("'action' specification missing from Request.")
         self.action = parameters['action']
@@ -434,13 +432,6 @@ class Request(MutableMapping):
                and self.site.has_extension('ProofreadPage'):
                 prop = set(self['prop'] + ['proofread'])
                 self['prop'] = sorted(prop)
-            # When neither 'continue' nor 'rawcontinue' is present and the
-            # version number is at least 1.25wmf5 we add a dummy rawcontinue
-            # parameter. Querying siteinfo is save as it adds 'continue'
-            # except for 'tokens' (T284577)
-            if ('tokens' not in meta and 'continue' not in self._params
-                    and self.site.mw_version >= '1.25wmf5'):
-                self._params.setdefault('rawcontinue', [''])
 
         elif self.action == 'help':
             self['wrap'] = ''
@@ -1120,20 +1111,6 @@ but {scheme!r} is required. Please add the following code to your family file:
             raise unittest.SkipTest(msg)
 
         raise MaxlagTimeoutError(msg)
-
-    def wait(self, delay=None):
-        """Determine how long to wait after a failed request."""
-        self.current_retries += 1
-        if self.current_retries > self.max_retries:
-            raise TimeoutError('Maximum retries attempted without success.')
-
-        # double the next wait, but do not exceed config.retry_max seconds
-        delay = delay or self.retry_wait
-        delay *= 2 ** (self.current_retries - 1)
-        delay = min(delay, config.retry_max)
-
-        pywikibot.warning(f'Waiting {delay:.1f} seconds before retrying.')
-        pywikibot.sleep(delay)
 
 
 class CachedRequest(Request):

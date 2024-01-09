@@ -71,7 +71,7 @@ class CategoryGraphBot(SingleSiteBot):
             cat_title = pywikibot.input(
                 'For which category do you want to create a graph?')
 
-        pywikibot.info('Scanning {cat_title!r}')
+        pywikibot.info(f'Scanning {cat_title!r}')
         self.cat = pywikibot.Category(self.site, cat_title)
         self.to = args.to
         if self.to == '?':
@@ -90,7 +90,7 @@ class CategoryGraphBot(SingleSiteBot):
                 f'node [newrank=true shape=plaintext {font}] ' \
                 f'edge [arrowhead=open labeldistance=3 ' \
                 f'labelfontcolor="#00000080" {font}] ' + args.style
-        self.dot = pydot.graph_from_dot_data(f'digraph {style}')[0]
+        self.dot = pydot.graph_from_dot_data(f'digraph {{{style}}}')[0]
         self.dot.set_name(f'"{cat_title}"')
 
     def scan_level(self, cat, level, hue=None) -> str:

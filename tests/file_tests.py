@@ -12,10 +12,13 @@ from contextlib import suppress
 from itertools import chain
 
 import pywikibot
+from pywikibot import pagegenerators
 from pywikibot.exceptions import (
+    Error,
     NoPageError,
     NoWikibaseEntityError,
     PageRelatedError,
+    UserRightsError,
 )
 from tests import join_images_path
 from tests.aspects import TestCase
@@ -164,24 +167,24 @@ class TestFilePage(TestCase):
     def test_file_info_with_no_page(self):
         """FilePage:latest_file_info raises NoPageError for missing pages."""
         site = self.get_site()
-        image = pywikibot.FilePage(site, 'File:NoPage')
+        image = pywikibot.FilePage(site, 'File:NoPage.jpg')
         self.assertFalse(image.exists())
 
         with self.assertRaisesRegex(
                 NoPageError,
-                (r'Page \[\[(wikipedia\:|)test:File:NoPage\]\] '
+                (r'Page \[\[(wikipedia\:|)test:File:NoPage\.jpg\]\] '
                  r"doesn't exist\.")):
             image = image.latest_file_info
 
     def test_file_info_with_no_file(self):
         """FilePage:latest_file_info raises PagerelatedError if no file."""
         site = self.get_site()
-        image = pywikibot.FilePage(site, 'File:Test with no image')
+        image = pywikibot.FilePage(site, 'File:Test with no image.png')
         self.assertTrue(image.exists())
         with self.assertRaisesRegex(
                 PageRelatedError,
                 (r'loadimageinfo: Query on '
-                 r'\[\[(wikipedia\:|)test:File:Test with no image\]\]'
+                 r'\[\[(wikipedia\:|)test:File:Test with no image\.png\]\]'
                  r' returned no imageinfo')):
             image = image.latest_file_info
 
@@ -225,6 +228,14 @@ class TestFilePageLatestFileInfo(TestCase):
         """Create File page."""
         super().setUp()
         self.image = pywikibot.FilePage(self.site, self.file_name)
+
+    def test_lazyload_metadata(self):
+        """Test metadata lazy load."""
+        self.assertTrue(self.image.exists())
+
+        rev = self.image.latest_file_info
+        self.assertIsNone(rev._metadata)
+        self.assertIsNotNone(rev.metadata)
 
     def test_get_file_url(self):
         """Get File url."""
@@ -322,13 +333,13 @@ class TestFilePageDownload(TestCase):
     def test_not_existing_download(self):
         """Test not existing download."""
         page = pywikibot.FilePage(self.site,
-                                  'File:Albert Einstein.jpg_notexisting')
+                                  'File:notexisting_Albert Einstein.jpg')
         filename = join_images_path('Albert Einstein.jpg')
 
         with self.assertRaisesRegex(
                 NoPageError,
-                re.escape('Page [[commons:File:Albert Einstein.jpg '
-                          "notexisting]] doesn't exist.")):
+                re.escape('Page [[commons:File:Notexisting Albert '
+                          "Einstein.jpg]] doesn't exist.")):
             page.download(filename)
 
 
@@ -350,7 +361,7 @@ class TestFilePageDataItem(TestCase):
         self.assertTrue(item.file is page)
         self.assertEqual('-1', item.id)
         item.get()
-        self.assertEqual('M14634781', item.getID())
+        self.assertEqual('M14634781', item.id)
         self.assertIsInstance(
             item.labels, pywikibot.page._collections.LanguageDict)
         self.assertIsInstance(
@@ -370,13 +381,183 @@ class TestFilePageDataItem(TestCase):
         del item._file
         self.assertEqual(page, item.file)
 
-    def test_data_item_not_existing(self):
-        """Test data item associated to file that does not exist."""
-        page = pywikibot.FilePage(self.site,
-                                  'File:Albert Einstein.jpg_notexisting')
-        item = page.data_item()
+    def test_data_item_not_file(self):
+        """Test data item with invalid pageid."""
+        item = pywikibot.MediaInfo(self.site, 'M1')  # Main Page
+        with self.assertRaises(Error):
+            item.file
         with self.assertRaises(NoWikibaseEntityError):
             item.get()
+        self.assertFalse(item.exists())
+
+    def test_data_item_when_no_file_or_data_item(self):
+        """Test data item associated to file that does not exist."""
+        page = pywikibot.FilePage(self.site,
+                                  'File:Notexisting_Albert Einstein.jpg')
+        self.assertFalse(page.exists())
+        item = page.data_item()
+        self.assertIsInstance(item, pywikibot.MediaInfo)
+
+        with self.assertRaises(NoWikibaseEntityError):
+            item.get()
+        with self.assertRaises(NoWikibaseEntityError):
+            item.labels
+
+    def test_data_item_when_file_exist_but_without_item(self):
+        """Test if data item is missing from file."""
+        # Get latest uploaded files.
+        gen = pagegenerators.RecentChangesPageGenerator(
+            site=self.site,
+            namespaces=[6],  # File namespace
+            changetype='new',
+            total=100
+        )
+
+        # Seek to first page without mediainfo.
+        # Retry loop is for excepting incorrect files
+        for retry in range(5):
+            try:
+                for page in gen:
+                    slots = page.latest_revision.slots
+                    if 'mediainfo' not in slots:
+                        break
+                break
+            except ValueError:
+                pass
+
+        item = page.data_item()
+        self.assertIsInstance(item, pywikibot.MediaInfo)
+
+        # Get fails as there is no mediainfo.
+        with self.assertRaises(NoWikibaseEntityError):
+            item.get()
+
+        self.assertFalse(item.exists())
+        self.assertEqual(f'M{page.pageid}', item.id)
+        self.assertIsInstance(
+            item.labels, pywikibot.page._collections.LanguageDict)
+        self.assertIsInstance(
+            item.statements,
+            pywikibot.page._collections.ClaimCollection)
+
+    def test_data_list_to_dict_workaround(self):
+        """Test that T222159 workaround converts [] to {}."""
+        page = pywikibot.FilePage(self.site, 'File:Albert Einstein.jpg')
+        item = page.data_item()
+        item.get(force=True)
+        item._content['labels'] = []
+        item._content['statements'] = []
+        item.get()
+        self.assertIsInstance(
+            item.labels, pywikibot.page._collections.LanguageDict)
+        self.assertIsInstance(
+            item.statements, pywikibot.page._collections.ClaimCollection)
+
+
+class TestMediaInfoReadonlyEditing(TestCase):
+
+    """Test writing structured data of FilePage."""
+
+    # Create valid API requests which will fail to missing permission.
+
+    # commons.wikimedia.beta.wmflabs.org
+    family = 'commons'
+    code = 'beta'
+
+    def test_edit_label(self):
+        """Test label editing without writing rights."""
+        page = pywikibot.FilePage(self.site, 'File:123_4.jpg')
+        item = page.data_item()
+        error_message = 'User "None" does not have required user right "edit"'
+
+        data = {}
+        lang = 'fi'
+        label = 'Edit label with editEntity and dict()'
+        data.update({'labels': {lang: label}})
+        with self.assertRaisesRegex(UserRightsError, error_message):
+            item.editEntity(data, summary=label)
+
+        data = item.get()
+        label = 'Edit label with editEntity and item.get()'
+        data.update({'labels': {lang: label}})
+        with self.assertRaisesRegex(UserRightsError, error_message):
+            item.editEntity(data, summary=label)
+
+        data = item.get(force=True)
+        label = 'Edit label with editEntity and item.get(force=True)'
+        data.update({'labels': {lang: label}})
+        with self.assertRaisesRegex(UserRightsError, error_message):
+            item.editEntity(data, summary=label)
+
+        lang = 'fi'
+        label = 'Edit label with editLabels and dict()'
+        data = {lang: label}
+        with self.assertRaisesRegex(UserRightsError, error_message):
+            item.editLabels(data, summary=label)
+
+        # Test label editing when file doesn't exists
+        page = pywikibot.FilePage(self.site, 'File:123_4_DOESNT_EXISTS.jpg')
+        item = page.data_item()
+
+        data = {}
+        lang = 'fi'
+        label = 'Edit label of missing file with editEntity and dict()'
+        data.update({'labels': {lang: label}})
+        with self.assertRaises(UserRightsError):
+            item.editEntity(data, summary=label)
+
+        lang = 'fi'
+        label = 'Edit label of missing file with editLabels and dict()'
+        data = {lang: label}
+        with self.assertRaisesRegex(UserRightsError, error_message):
+            item.editLabels(data, summary=label)
+
+    def test_edit_claims(self):
+        """Test claim editing without writing rights."""
+        error_message = 'User "None" does not have required user right "edit"'
+        wikidata_site = pywikibot.Site('wikidata', 'wikidata')
+
+        # Test adding claim existing file
+        page = pywikibot.FilePage(self.site, 'File:123_4.jpg')
+        item = page.data_item()
+
+        # Create claim
+        finna_id = 'test123'
+        new_claim = pywikibot.Claim(wikidata_site, 'P9478')
+        new_claim.setTarget(finna_id)
+
+        # Do actual edit
+        with self.assertRaisesRegex(UserRightsError, error_message):
+            item.addClaim(new_claim)
+
+        # Test removing first claim using item.statements
+        for property_id in item.statements:
+            for statement in item.statements[property_id]:
+                with self.assertRaisesRegex(UserRightsError, error_message):
+                    summary = f'Removing {property_id}'
+                    item.removeClaims(statement, summary=summary)
+                break
+
+        # Test removing first claim using item.claims
+        for property_id in item.claims:
+            for claim in item.claims[property_id]:
+                with self.assertRaisesRegex(UserRightsError, error_message):
+                    summary = f'Removing {property_id}'
+                    item.removeClaims(claim, summary=summary)
+                break
+
+        # Test adding claim to non-existing file
+        page = pywikibot.FilePage(self.site, 'File:123_4_DOESNT_EXISTS.jpg')
+        item = page.data_item()
+
+        # Create claim
+        finna_id = 'test123'
+        new_claim = pywikibot.Claim(wikidata_site, 'P9478')
+        new_claim.setTarget(finna_id)
+
+        # Do actual edit
+        with self.assertRaises(NoWikibaseEntityError):
+            item.addClaim(new_claim)
 
 
 if __name__ == '__main__':  # pragma: no cover

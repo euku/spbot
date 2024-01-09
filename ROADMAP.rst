@@ -1,16 +1,25 @@
 Current release
 ---------------
 
-* Add support for btmwiktionary (:phab:`T336117`)
-* Add 'yue'/'zh-yue' code_aliases to family files (:phab:`T341960`)
-* All wbtypes are placed in ``pywkibot._wbtypes`` module
-* Use ``site.lang`` instead of ``site.code`` in :func:`comms.http.user_agent` (:phab:`T228322`)
-* Make header extraction in :func:`textlib.extract_sections` more robust (:phab:`T341787`)
+* Lazy load imageinfo metadata (:phab:`T253591`)
+* Fetch URL of page scan via :api:`imageforpage` in :mod:`proofreadpage` module
+  (:phab:`T114318`, :phab:`T181913`, :phab:`T352524`)
+* Sort page names before loading pages in :mod:`proofreadpage` module
+* L10N and i18n updates
+* check for valid family and site option after ``-help`` is processed (:phab:`T350756`)
+* Handle canary events in comms.eventstreams (:phab:`T350756`)
+* **Python 3.6 support will be discontinued** and this is the last version supporting it.
 
 
 Deprecations
 ------------
 
+* 8.4.0: Python 3.6 support is deprecated and will be dropped soon with Pywikibot 9
+* 8.4.0: *modules_only_mode* parameter of :class:`data.api.ParamInfo`, its *paraminfo_keys* class attribute
+  and its preloaded_modules property will be removed
+* 8.4.0: *dropdelay* and *releasepid* attributes of :class:`throttle.Throttle` will be removed
+  in favour of *expiry* class attribute
+* 8.2.0: :func:`tools.itertools.itergroup` will be removed in favour of :func:`backports.batched`
 * 8.2.0: *normalize* parameter of :meth:`WbTime.toTimestr` and :meth:`WbTime.toWikibase` will be removed
 * 8.1.0: Dependency of :exc:`exceptions.NoSiteLinkError` from :exc:`exceptions.NoPageError` will be removed
 * 8.1.0: ``exceptions.Server414Error`` is deprecated in favour of :exc:`exceptions.Client414Error`
@@ -48,6 +57,10 @@ Deprecations
 * 7.0.0: baserevid parameter of editSource(), editQualifier(), removeClaims(), removeSources(), remove_qualifiers() DataSite methods will be removed
 * 7.0.0: Values of APISite.allpages() parameter filterredir other than True, False and None are deprecated
 * 7.0.0: The i18n identifier 'cosmetic_changes-append' will be removed in favour of 'pywikibot-cosmetic-changes'
+
+Will be removed in Pywikibot 9
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 * 6.5.0: OutputOption.output() method will be removed in favour of OutputOption.out property
 * 6.5.0: Infinite rotating file handler with logfilecount of -1 is deprecated
 * 6.4.0: 'allow_duplicates' parameter of :func:`tools.itertools.intersect_generators` as positional argument is deprecated, use keyword argument instead
@@ -59,4 +72,3 @@ Deprecations
 * 6.2.0: Throttle.multiplydelay attribute is deprecated
 * 6.2.0: SequenceOutputter.format_list() is deprecated in favour of 'out' property
 * 6.0.0: config.register_family_file() is deprecated
-* 5.5.0: APISite.redirectRegex() will be removed in favour of APISite.redirect_regex()

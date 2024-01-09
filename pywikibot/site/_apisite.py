@@ -15,9 +15,9 @@ from typing import Any, Optional, Type, TypeVar, Union
 
 import pywikibot
 from pywikibot import login
-from pywikibot.backports import DefaultDict, Dict, List, Match
+from pywikibot.backports import DefaultDict, Dict, Iterable, List, Match
 from pywikibot.backports import OrderedDict as OrderedDictType
-from pywikibot.backports import Iterable, Pattern, Set, Tuple, removesuffix
+from pywikibot.backports import Set, Tuple, removesuffix
 from pywikibot.comms import http
 from pywikibot.data import api
 from pywikibot.exceptions import (
@@ -184,14 +184,15 @@ class APISite(
         """
         return self._interwikimap[prefix].local
 
-    @classmethod
+    @staticmethod
     def fromDBName(  # noqa: N802
-        cls,
         dbname: str,
         site: Optional[BaseSite] = None
     ) -> BaseSite:
-        """
-        Create a site from a database name using the sitematrix.
+        """Create a site from a database name using the sitematrix.
+
+        .. versionchanged:: 8.3.3
+           changed from classmethod to staticmethod.
 
         :param dbname: database name
         :param site: Site to load sitematrix from. (Default meta.wikimedia.org)
@@ -200,19 +201,27 @@ class APISite(
         # TODO this only works for some WMF sites
         if not site:
             site = pywikibot.Site('meta')
+        param = {
+            'action': 'sitematrix',
+            'smlangprop': 'site',
+            'smsiteprop': ('code', 'dbname'),
+            'formatversion': 2,
+        }
         req = site._request(expiry=datetime.timedelta(days=10),
-                            parameters={'action': 'sitematrix'})
+                            parameters=param)
         data = req.submit()
         for key, val in data['sitematrix'].items():
             if key == 'count':
                 continue
-            if 'code' in val:
-                lang = val['code']
+            if 'site' in val:
                 for m_site in val['site']:
                     if m_site['dbname'] == dbname:
-                        if m_site['code'] == 'wiki':
-                            m_site['code'] = 'wikipedia'
-                        return pywikibot.Site(lang, m_site['code'])
+                        # extract site from dbname
+                        family = m_site['code']
+                        code = removesuffix(dbname, family).replace('_', '-')
+                        if family == 'wiki':
+                            family = 'wikipedia'
+                        return pywikibot.Site(code, family)
             else:  # key == 'specials'
                 for m_site in val:
                     if m_site['dbname'] == dbname:
@@ -461,6 +470,14 @@ class APISite(
 
         # Clear also cookies for site's second level domain (T224712)
         api._invalidate_superior_cookies(self.family)
+
+    @property
+    def file_extensions(self) -> List[str]:
+        """File extensions enabled on the wiki.
+
+        .. versionadded:: 8.4
+        """
+        return sorted(e['ext'] for e in self.siteinfo.get('fileextensions'))
 
     @property
     def maxlimit(self) -> int:
@@ -1019,32 +1036,18 @@ class APISite(
             return self._magicwords[word]
         return [word]
 
-    def redirect(self) -> str:
-        """Return the localized #REDIRECT keyword."""
-        # return the magic word without the preceding '#' character
-        return self.getmagicwords('redirect')[0].lstrip('#')
+    def redirects(self) -> List[str]:
+        """Return a list of localized tags for the site without preceding '#'.
 
-    @deprecated('redirect_regex', since='5.5.0')
-    def redirectRegex(self) -> Pattern[str]:  # noqa: N802
-        """Return a compiled regular expression matching on redirect pages."""
-        return self.redirect_regex
+        .. seealso::
+           :meth:`BaseSite.redirect()
+           <pywikibot.site._basesite.BaseSite.redirect>` and
+           :meth:`BaseSite.redirects()
+           <pywikibot.site._basesite.BaseSite.redirects>`
 
-    @property
-    def redirect_regex(self) -> Pattern[str]:
-        """Return a compiled regular expression matching on redirect pages.
-
-        Group 1 in the regex match object will be the target title.
-
+        .. versionadded:: 8.4
         """
-        # NOTE: this is needed, since the API can give false positives!
-        try:
-            keywords = {s.lstrip('#') for s in self.getmagicwords('redirect')}
-            keywords.add('REDIRECT')  # just in case
-            pattern = '(?:' + '|'.join(keywords) + ')'
-        except KeyError:
-            # no localized keyword for redirects
-            pattern = None
-        return super().redirectRegex(pattern)
+        return [s.lstrip('#') for s in self.getmagicwords('redirect')]
 
     def pagenamecodes(self) -> List[str]:
         """Return list of localized PAGENAME tags for the site."""
@@ -1115,7 +1118,7 @@ class APISite(
     def version(self) -> str:
         """Return live project version number as a string.
 
-        Use :py:obj:`pywikibot.site.mw_version` to compare MediaWiki versions.
+        Use :attr:`mw_version` to compare MediaWiki versions.
         """
         try:
             version = self.siteinfo.get('generator', expiry=1).split(' ')[1]
@@ -1127,18 +1130,18 @@ class APISite(
             raise
 
         if MediaWikiVersion(version) < '1.27':
-            raise RuntimeError(
-                'Pywikibot "{}" does not support MediaWiki "{}".\n'
-                'Use Pywikibot prior to "8.0" branch instead.'
-                .format(pywikibot.__version__, version))
+            raise RuntimeError(f'Pywikibot "{pywikibot.__version__}" does not '
+                               f'support MediaWiki "{version}".\n'
+                               f'Use Pywikibot prior to "8.0" branch instead.')
         return version
 
     @property
     def mw_version(self) -> MediaWikiVersion:
-        """Return self.version() as a MediaWikiVersion object.
+        """Return :meth:`version()<pywikibot.site._apisite.APISite.version>`
+        as a :class:`tools.MediaWikiVersion` object.
 
         Cache the result for 24 hours.
-        """
+        """  # noqa: D205, D400
         mw_ver, cache_time = getattr(self, '_mw_version_time', (None, None))
         if (
             mw_ver is None
@@ -1333,7 +1336,10 @@ class APISite(
         title = page.title(with_section=False)
         inprop = 'protection'
         if preload:
-            inprop += '|preload'
+            if self.mw_version >= MediaWikiVersion('1.41'):
+                inprop += '|preloadcontent'
+            else:
+                inprop += '|preload'
 
         query = self._generator(api.PropertyGenerator,
                                 type_arg='info',
@@ -1356,27 +1362,35 @@ class APISite(
         history: bool = False,
         url_width: Optional[int] = None,
         url_height: Optional[int] = None,
-        url_param: Optional[str] = None
+        url_param: Optional[str] = None,
+        timestamp: Optional[pywikibot.Timestamp] = None
     ) -> None:
         """Load image info from api and save in page attributes.
 
         The following properties are loaded: ``timestamp``, ``user``,
         ``comment``, ``url``, ``size``, ``sha1``, ``mime``, ``mediatype``,
-        ``metadata``, ``archivename`` and ``bitdepth``. If *url_width*,
-        *url_height* or *url_param* is given, additional properties
-        ``thumbwidth``, ``thumbheight``, ``thumburl`` and
+        ``archivename`` and ``bitdepth``.
+        ``metadata``is loaded only if history is False.
+        If *url_width*, *url_height* or *url_param* is given, additional
+        properties ``thumbwidth``, ``thumbheight``, ``thumburl`` and
         ``responsiveUrls`` are given.
 
         .. note:: Parameters validation and error handling left to the
            API call.
         .. versionchanged:: 8.2
            *mediatype* and *bitdepth* properties were added.
+        .. versionchanged:: 8.6.
+           Added *timestamp* parameter.
+           Metadata are loaded only if *history* is False.
         .. seealso:: :api:`Imageinfo`
 
         :param history: if true, return the image's version history
         :param url_width: get info for a thumbnail with given width
         :param url_height: get info for a thumbnail with given height
         :param url_param:  get info for a thumbnail with given param
+        :param timestamp: timestamp of the image's version to retrieve.
+            It has effect only if history is False.
+            If omitted, the latest version will be fetched.
         """
         args = {
             'titles': page.title(with_section=False),
@@ -1385,11 +1399,15 @@ class APISite(
             'iiurlparam': url_param,
             'iiprop': [
                 'timestamp', 'user', 'comment', 'url', 'size', 'sha1', 'mime',
-                'mediatype', 'metadata', 'archivename', 'bitdepth',
+                'mediatype', 'archivename', 'bitdepth',
             ]
         }
         if not history:
             args['total'] = 1
+            args['iiprop'].append('metadata')
+            if timestamp:
+                args['iistart'] = args['iiend'] = timestamp.isoformat()
+
         query = self._generator(api.PropertyGenerator,
                                 type_arg='imageinfo',
                                 **args)
@@ -2733,7 +2751,6 @@ class APISite(
         unwatch_s = 'unwatched' if unwatch else 'watched'
         return all(unwatch_s in r for r in results['watch'])
 
-    @need_right('purge')
     def purgepages(
         self,
         pages: List['pywikibot.page.BasePage'],

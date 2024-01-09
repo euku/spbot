@@ -1,6 +1,47 @@
 Scripts Changelog
 =================
 
+8.5.0
+-----
+
+category_graph
+~~~~~~~~~~~~~~
+
+* Change category output string to format string (:phab:`T348709`)
+
+commonscat
+~~~~~~~~~~
+
+* Fix skip page template parameter check (:phab:`T106952`)
+
+8.4.0
+-----
+
+* L10N for several scripts
+
+category_graph
+~~~~~~~~~~~~~~
+
+* Wrap DOT-string in curly braces (:phab:`T346007`)
+
+checkimages
+~~~~~~~~~~~
+
+* Use welcome messages from :class:`scripts.welcome.WelcomeBot`
+* add more messages to :mod:`i18n` system
+
+newitem
+~~~~~~~
+
+* Enable ``-touch`` in newitem script for confirmed user (:phab:`T343877`)
+
+maintenance
+~~~~~~~~~~~
+
+* new script unidata to update ``_first_upper_exception_dict`` of
+  :mod:`pywikibot.tools._unidata`.
+
+
 8.3.0
 -----
 

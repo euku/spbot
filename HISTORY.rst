@@ -1,6 +1,93 @@
 Release history
 ===============
 
+8.5.1
+-----
+*11. November 2023*
+
+* Add support for new wikis (:phab:`T350231`, :phab:`T350237`, :phab:`T350243`, :phab:`T350375`)
+
+
+8.5.0
+-----
+*05. November 2023*
+
+* Add a pagegenerators filter option to check if a page is redirect (:phab:`T261549`)
+* Add support for ``vikidia:nl`` site
+* Replace MediaWiki API deprecated ``inprop=preload`` with ``preloadcontent`` (:phab:`T348910`)
+* Remove check for purge right from APISite.purgepages (:phab:`T349348`)
+* Add MediaInfo editLabels, AddClaim and removeClaim functions (:phab:`T348422`)
+* Drop unused ``Family.use_hard_category_redirects`` (:phab:`T348953`)
+* No longer drop site decorators for optimized codes (:phab:`T74424`)
+* Improve handling of uninitialized MediaInfo
+* Add support for ``vikidia:ar`` site
+* Make exception about missing mediainfo more friendly
+* L10N and i18n updates
+* Give visible error to user when there are no rights (:phab:`T345342`)
+
+
+8.4.0
+-----
+*07. October 2023*
+
+* Add support for fonwiki (:phab:`T347941`)
+* :meth:`site.BaseSite.redirects()<pywikibot.site._basesite.BaseSite.redirects>` and
+  :meth:`site.APISite.redirects()<pywikibot.site._apisite.APISite.redirects>`
+  methods were added (:phab:`T347226`)
+* Upcast to :class:`pywikibot.FilePage` for a proper extension only (:phab:`T346889`)
+* Handle missing SDC mediainfo (:phab:`T345038`)
+* *modules_only_mode* parameter of :class:`data.api.ParamInfo`, its *paraminfo_keys* class attribute
+  and its *preloaded_modules* property was deprecated, the :meth:`data.api.ParamInfo.normalize_paraminfo`
+  method became a staticmethod (:phab:`T306637`)
+* raise ValueError when :class:`pywikibot.FilePage` title doesn't have a valid file extension (:phab:`T345786`)
+* :attr:`site.APISite.file_extensions <pywikibot.site._apisite.APISite.file_extensions>` property was added (:phab:`T345786`)
+* ``dropdelay`` and ``releasepid`` attributes of :class:`throttle.Throttle` where deprecated
+  in favour of `expiry` class attribute
+* Add https scheme if missing in url asked by :mod:`pywikibot.scripts.generate_family_file`
+* L10N updates and i18n updates
+* use inline re.IGNORECASE flag in :func:`textlib.case_escape` function (:phab:`T308265`)
+* Convert URL-encoded characters also for links outside main namespace with
+  :meth:`cosmetic_changes.CosmeticChangesToolkit.cleanUpLinks` (:phab:`T342470`)
+* Implement Flow topic summaries (:phab:`T109443`)
+
+
+8.3.3
+-----
+*20. September 2023*
+
+* Extract code and family from dbname in :meth:`site.APISite.fromDBName()
+  <pywikibot.site._apisite.APISite.fromDBName>` (:phab:`T345036`)
+* L10N and i18n updates
+
+
+8.3.2
+-----
+*29. August 2023*
+
+* Add support for tlywiki (:phab:`T345172`)
+* L10N and i18n updates
+
+
+8.3.1
+-----
+*17. August 2023*
+
+* Add support for suwikisource and blkwiktionary (:phab:`T343544`, :phab:`T343550`)
+* :mod:`families.wikifunctions_family` was added (:phab:`T343573`)
+* i18n updates
+
+
+8.3.0
+-----
+*27 July 2023*
+
+* Add support for btmwiktionary (:phab:`T336117`)
+* Add 'yue'/'zh-yue' code_aliases to family files (:phab:`T341960`)
+* All wbtypes are placed in ``pywkibot._wbtypes`` module
+* Use ``site.lang`` instead of ``site.code`` in :func:`comms.http.user_agent` (:phab:`T228322`)
+* Make header extraction in :func:`textlib.extract_sections` more robust (:phab:`T341787`)
+
+
 8.2.0
 -----
 *05 July 2023*
@@ -138,6 +225,7 @@ Improvements
   :meth:`Category.members()<page.Category.members>`,
   :meth:`Category.subcategories()<page.Category.subcategories>` (*member_type* excluded) and
   :meth:`Category.articles()<page.Category.articles>` (*member_type* excluded)
+  (:phab:`T102406`)
 * Enable site-package installation from git repository (:phab:`T320851`)
 * Enable 2FA login (:phab:`T186274`)
 * :meth:`Page.editTime()<page.BasePage.editTime>` was replaced by

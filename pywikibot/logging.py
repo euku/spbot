@@ -20,7 +20,7 @@ displayed on the user console. :func:`debug()` takes a required second
 argument, which is a string indicating the debugging layer.
 """
 #
-# (C) Pywikibot team, 2010-2022
+# (C) Pywikibot team, 2010-2023
 #
 # Distributed under the terms of the MIT license.
 #
@@ -32,7 +32,7 @@ import sys
 from logging import CRITICAL, DEBUG, ERROR, INFO, WARNING
 from typing import Any
 
-from pywikibot.backports import Callable, List
+from pywikibot.backports import Callable, List, Tuple
 from pywikibot.tools import deprecated_args, issue_deprecation_warning
 
 
@@ -107,6 +107,7 @@ def logoutput(msg: Any,
     if _init_routines:
         _init()
 
+    keys: Tuple[str, ...]
     # cleanup positional args
     if level == ERROR:
         keys = ('decoder', 'newline', 'exc_info')
@@ -114,6 +115,7 @@ def logoutput(msg: Any,
         keys = ('layer', 'decoder', 'newline')
     else:
         keys = ('decoder', 'newline')
+
     for i, arg in enumerate(args):
         key = keys[i]
         issue_deprecation_warning(
@@ -175,7 +177,7 @@ output = info
 are interpreted as for :func:`logoutput`.
 
 .. versionchanged:: 7.2
-   was renamed to :func:`info`; `text`was renamed to `msg`; `msg`
+   was renamed to :func:`info`; `text` was renamed to `msg`; `msg`
    paramerer may be omitted; only keyword arguments are allowed except
    for `msg`.
 .. seealso::
@@ -196,7 +198,7 @@ def stdout(msg: Any = '', *args: Any, **kwargs: Any) -> None:
     The arguments are interpreted as for :func:`logoutput`.
 
     .. versionchanged:: 7.2
-       `text`was renamed to `msg`; `msg` parameter may be omitted;
+       `text` was renamed to `msg`; `msg` parameter may be omitted;
        only keyword arguments are allowed except for `msg`.
     .. seealso::
        - :python:`Logger.log()<library/logging.html#logging.Logger.log>`
@@ -214,7 +216,7 @@ def warning(msg: Any, *args: Any, **kwargs: Any) -> None:
     The arguments are interpreted as for :func:`logoutput`.
 
     .. versionchanged:: 7.2
-       `text`was renamed to `msg`; only keyword arguments are allowed
+       `text` was renamed to `msg`; only keyword arguments are allowed
        except for `msg`.
     .. seealso::
        :python:`Logger.warning()<library/logging.html#logging.Logger.warning>`
@@ -231,7 +233,7 @@ def error(msg: Any, *args: Any, **kwargs: Any) -> None:
     The arguments are interpreted as for :func:`logoutput`.
 
     .. versionchanged:: 7.2
-       `text`was renamed to `msg`; only keyword arguments are allowed
+       `text` was renamed to `msg`; only keyword arguments are allowed
        except for `msg`.
     .. seealso::
        :python:`Logger.error()<library/logging.html#logging.Logger.error>`
@@ -247,7 +249,7 @@ def log(msg: Any, *args: Any, **kwargs: Any) -> None:
     The arguments are interpreted as for :func:`logoutput`.
 
     .. versionchanged:: 7.2
-       `text`was renamed to `msg`; only keyword arguments are allowed
+       `text` was renamed to `msg`; only keyword arguments are allowed
        except for `msg`.
     .. seealso::
        :python:`Logger.log()<library/logging.html#logging.Logger.log>`
@@ -264,7 +266,7 @@ def critical(msg: Any, *args: Any, **kwargs: Any) -> None:
     The arguments are interpreted as for :func:`logoutput`.
 
     .. versionchanged:: 7.2
-       `text`was renamed to `msg`; only keyword arguments are allowed
+       `text` was renamed to `msg`; only keyword arguments are allowed
        except for `msg`.
     .. seealso::
        :python:`Logger.critical()
@@ -281,7 +283,7 @@ def debug(msg: Any, *args: Any, **kwargs: Any) -> None:
     The arguments are interpreted as for :func:`logoutput`.
 
     .. versionchanged:: 7.2
-       `layer` parameter is optional; `text`was renamed to `msg`;
+       `layer` parameter is optional; `text` was renamed to `msg`;
        only keyword arguments are allowed except for `msg`.
     .. seealso::
        :python:`Logger.debug()<library/logging.html#logging.Logger.debug>`

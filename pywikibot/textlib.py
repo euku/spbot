@@ -4,6 +4,7 @@
 #
 # Distributed under the terms of the MIT license.
 #
+import itertools
 import re
 from collections import OrderedDict, namedtuple
 from collections.abc import Sequence
@@ -17,13 +18,13 @@ from pywikibot.backports import (
     Container,
     Dict,
     Iterable,
-    Match,
     List,
+    Match,
 )
 from pywikibot.backports import OrderedDict as OrderedDictType
 from pywikibot.backports import Pattern
 from pywikibot.backports import Sequence as SequenceType
-from pywikibot.backports import Tuple
+from pywikibot.backports import Tuple, pairwise
 from pywikibot.exceptions import InvalidTitleError, SiteDefinitionError
 from pywikibot.family import Family
 from pywikibot.time import TZoneFixedOffset
@@ -163,19 +164,24 @@ def to_latin_digits(phrase: str,
     return phrase
 
 
-def case_escape(case: str, string: str) -> str:
+def case_escape(case: str, string: str, *, underscore: bool = False) -> str:
     """Return an escaped regex pattern which depends on 'first-letter' case.
 
     .. versionadded:: 7.0
+    .. versionchanged:: 8.4
+       Added the optional *underscore* parameter.
 
-    :param case: if `case` is 'first-letter' the regex contains an
-        upper/lower case set for the first letter
+    :param case: if `case` is 'first-letter', the regex contains an
+        inline re.IGNORECASE flag for the first letter
+    :param underscore: if True, expand the regex to detect spaces and
+        underscores which are interchangeable and collapsible
     """
-    first = string[0]
-    if first.isalpha() and case == 'first-letter':
-        pattern = f'[{first.upper()}{first.lower()}]{re.escape(string[1:])}'
+    if case == 'first-letter':
+        pattern = f'(?i:{string[:1]}){re.escape(string[1:])}'
     else:
         pattern = re.escape(string)
+    if underscore:
+        pattern = re.sub(r'_|\\ ', '[_ ]+', pattern)
     return pattern
 
 
@@ -377,7 +383,7 @@ def get_regexes(
 def replaceExcept(text: str,
                   old: Union[str, Pattern[str]],
                   new: Union[str, Callable[[Match[str]], str]],
-                  exceptions: List[Union[str, Pattern[str]]],
+                  exceptions: SequenceType[Union[str, Pattern[str]]],
                   caseInsensitive: bool = False,
                   allowoverlap: bool = False,
                   marker: str = '',
@@ -575,7 +581,7 @@ class _GetDataHTML(HTMLParser):
     """
 
     textdata = ''
-    keeptags = []
+    keeptags: List[str] = []
 
     def __enter__(self) -> None:
         pass
@@ -1009,14 +1015,11 @@ def _extract_sections(text: str, headings) -> List[Section]:
     sections = []
     if headings:
         # Assign them their contents
-        for i, heading in enumerate(headings):
-            try:
-                next_heading = headings[i + 1]
-            except IndexError:
-                content = text[heading.end:]
-            else:
-                content = text[heading.end:next_heading.start]
+        for heading, next_heading in pairwise(headings):
+            content = text[heading.end:next_heading.start]
             sections.append(Section(heading.text, content))
+        last = headings[-1]
+        sections.append(Section(last.text, text[last.end:]))
 
     return sections
 
@@ -1136,15 +1139,14 @@ def getLanguageLinks(
     text: str,
     insite=None,
     template_subpage: bool = False
-) -> Dict:
-    """
-    Return a dict of inter-language links found in text.
+) -> Dict['pywikibot.site.BaseSite', 'pywikibot.Page']:
+    """Return a dict of inter-language links found in text.
 
-    The returned dict uses the site as keys and Page objects as values. It does
-    not contain its own site.
+    The returned dict uses the site as keys and Page objects as values.
+    It does not contain its own site.
 
-    Do not call this routine directly, use Page.interwiki() method
-    instead.
+    Do not call this routine directly, use
+    :meth:`page.BasePage.interwiki` method instead.
     """
     if insite is None:
         insite = pywikibot.Site()
@@ -1153,7 +1155,7 @@ def getLanguageLinks(
     # infos there
     if fam.interwiki_forward:
         fam = Family.load(fam.interwiki_forward)
-    result = {}
+    result: Dict[pywikibot.site.BaseSite, pywikibot.Page] = {}
     # Ignore interwiki links within nowiki tags, includeonly tags, pre tags,
     # and HTML comments
     include = []
@@ -1557,9 +1559,7 @@ def replaceCategoryInPlace(oldtext, oldcat, newcat, site=None,
         return oldtext
 
     # title might contain regex special characters
-    title = case_escape(site.namespaces[14].case, title)
-    # spaces and underscores in page titles are interchangeable and collapsible
-    title = title.replace(r'\ ', '[ _]+').replace(r'\_', '[ _]+')
+    title = case_escape(site.namespaces[14].case, title, underscore=True)
     categoryR = re.compile(r'\[\[\s*({})\s*:\s*{}[\s\u200e\u200f]*'
                            r'((?:\|[^]]+)?\]\])'
                            .format(catNamespace, title), re.I)
@@ -1875,7 +1875,7 @@ def extract_templates_and_params_regex_simple(text: str):
         else:
             params = params.split('|')
 
-        numbered_param_identifiers = iter(range(1, len(params) + 1))
+        numbered_param_identifiers = itertools.count(1)
 
         params = OrderedDict(
             arg.split('=', 1)
