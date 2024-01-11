@@ -41,6 +41,14 @@
   emails: onfailure
   filelog-stdout: logs/archive-resolved-enwikisource.out
   filelog-stderr: logs/archive-resolved-enwikisource.err
+- name: archive-resolved-wikiversity
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:dewikiversity
+  image: python3.11
+  no-filelog: false
+  schedule: "7   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-dewikiversity.out
+  filelog-stderr: logs/archive-resolved-dewikiversity.err
 
 - name: archive-resolved-commons
   command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:commons
