@@ -180,6 +180,15 @@
   filelog-stdout: logs/daily-log-cleanup.out
   filelog-stderr: logs/daily-log-cleanup.err
 
+- name: archive-resolved-sych-bot-overview
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-sych-bot-overview.py
+  image: python3.11
+  no-filelog: false
+  schedule: "1   3   */3   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-sych-bot-overview.out
+  filelog-stderr: logs/archive-resolved-sych-bot-overview.err
+
 ##############################################################################
 ## Validate if the last run of the archive bot was successful
 # - name: check-archive-bot-job-run
