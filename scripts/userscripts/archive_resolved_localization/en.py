@@ -36,9 +36,10 @@ class LocalBotEn(LocalBot):
         self.archiveSumTargetP = "archiving {numOfSections} sections from [[{sourcePage}]]"
         self.archiveSumOriginS = "1 section"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin} sections"
-        self.archiveSumOriginMulti  = "%d to [[%s]]"
+        self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} to [[{targetPageName}]]"
+        self.firstNewSectionInArchiveSummary  = " (after section [[{firstNewSectionInArchiveLink}]])"
         self.archiveSumLastEdit= " - previous edit: [[:User:%s|%s]], %s"
-        self.archiveOverallSummary = "archive {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{lastEditComment}"
+        self.archiveOverallSummary = "archive {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
         self.sectResolvedRegEx = "(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
         self.sectResolved1P    = ":<small>This section was archived on a request by: \\1</small>"
