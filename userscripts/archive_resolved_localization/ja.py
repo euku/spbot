@@ -32,9 +32,10 @@ class LocalBotJa(LocalBot):
         self.archiveSumTargetP = "[[{sourcePage}]] から節 {numOfSections} 件を過去ログ化"
         self.archiveSumOriginS = "節 1 件"
         self.archiveSumOriginP = "節 {numberOfSectionsRemovedFromOrigin} 件"
-        self.archiveSumOriginMulti = "%d件を%sに過去ログ化"
+        self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget}件を[[{targetPageName}]]に過去ログ化"
+        self.firstNewSectionInArchiveSummary  = " ([[{firstNewSectionInArchiveLink}]]以下の節)"
         self.archiveSumLastEdit= " - 前の編集: [[:User:%s|%s]], %s"
-        self.archiveOverallSummary = "{numberOfSectionsRemovedFromOriginStr} を過去ログ化: {distributionComment}{lastEditComment}"
+        self.archiveOverallSummary = "{numberOfSectionsRemovedFromOriginStr} を過去ログ化: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
         self.sectResolvedRegEx = "(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
         self.sectResolved1P    = ":<small>この節は次の利用者の依頼で過去ログ化されました： \\1</small>"

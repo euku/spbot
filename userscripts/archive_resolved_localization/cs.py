@@ -33,9 +33,10 @@ class LocalBotCs(LocalBot):
         self.archiveSumTargetP = "archivuji {numOfSections} vláken z [[{sourcePage}]]"
         self.archiveSumOriginS = "1 vlákno"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin} vláken"
-        self.archiveSumOriginMulti = "%d do [[%s]]"
+        self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} do [[{targetPageName}]]"
+        self.firstNewSectionInArchiveSummary  = " ([[{firstNewSectionInArchiveLink}]]以下の節)"
         self.archiveSumLastEdit= " - předchozí editace: [[User:%s|%s]], %s"
-        self.archiveOverallSummary = "archivuji {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{lastEditComment}"
+        self.archiveOverallSummary = "archivuji {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
         self.sectResolvedRegEx = "[Ss]ekce[_ ]vyřešena"
         self.sectResolved1P = ":<small>Tato sekce byla archivována na žádost uživatele: \\1</small>"

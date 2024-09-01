@@ -40,9 +40,10 @@ class LocalBotDe(LocalBot):
         self.archiveSumTargetP = "Archiviere {numOfSections} Abschnitte von [[{sourcePage}]]"
         self.archiveSumOriginS = "1 Abschnitt"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin} Abschnitte"
-        self.archiveSumOriginMulti  = "%d nach [[%s]]"
+        self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} nach [[{targetPageName}]]"
+        self.firstNewSectionInArchiveSummary  = " (ab Abschnitt [[{firstNewSectionInArchiveLink}]])"
         self.archiveSumLastEdit= " - letzte Bearbeitung: [[:User:%s|%s]], %s"
-        self.archiveOverallSummary = "Archiviere {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{lastEditComment}"
+        self.archiveOverallSummary = "Archiviere {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
         self.sectResolvedRegEx = "[Ee]rledigt"
         self.sectResolved1P    = ":<small>Archivierung dieses Abschnittes wurde gewünscht von: \\1</small>"

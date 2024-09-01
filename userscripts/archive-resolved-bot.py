@@ -19,14 +19,13 @@ authors:
     after Nov. 2007: Euku
 """
 import sys
-sys.path.append(".")    # To not have pywikibot and archiving in one dir we'll import sys
 assert sys.version_info >= (3,5)
 import re               # Used for regular expressions
 import os               # used for os.getcwd()
 import traceback
 import pywikibot        # Wikipedia-pybot-framework
 from pywikibot import pagegenerators, textlib
-from time import localtime, strftime, mktime    # strftime-Function and related
+from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
 from archive_resolved_localization.local_bot import LocalBot
 from archive_resolved_localization.local_bot_factory import LocalBotFactory
@@ -80,8 +79,11 @@ class Discussion:
         self.title = title
         self.titleClear = titleClear.strip()
 
-    def getTitle(self, clear = False):
-        return self.titleClear if clear else self.title
+    def getTitle(self):
+        return self.title
+    
+    def getTitleClear(self):
+        return self.titleClear
 
     def setTitleOffsetStart(self, titleOffsetStart):
         """
@@ -167,8 +169,10 @@ class Discussion:
             self.numberOfContributions = len(agesList) # 1 date = 1 contribution
 
     def shouldBeArchived(self, thresholdAgeResolvedTemplate: float, thresholdAgeByTimeout: float) -> bool:
-        return self.ageByResolvedTemplate > thresholdAgeResolvedTemplate\
-            or (not self.hasDoNotArchiveTmpl and thresholdAgeByTimeout > 0 and self.lastContributionAge >= thresholdAgeByTimeout)
+        return not self.hasDoNotArchiveTmpl \
+            and (self.ageByResolvedTemplate > thresholdAgeResolvedTemplate \
+                    or (thresholdAgeByTimeout > 0 and self.lastContributionAge >= thresholdAgeByTimeout) \
+                )
 
     def getAgeByResolvedTemplate(self) -> float:
         return self.ageByResolvedTemplate
@@ -228,8 +232,9 @@ class WikiDocument:
                                                         # True: the one in the resolved template False: the oldest one
         self.headlineLevel       = 2                  # level of headline to work on (no. of "=")
         self.numberOfDiscussionsToArchive = 0         # Number of discussions that will be archived
-        self.archiveContainer    = {}                 # Dict in which archive text will be stored in
-        self.archiveContCounter  = {}                 # Number of archived discs per container
+        self.archiveJobTextByTarget    = {}           # Dict in which archive text will be stored in
+        self.archiveJobCounterByTarget  = {}          # Number of archived discs per container
+        self.archiveJobFirstTitleByTarget = {}        # The first section title that is going to this page
 
         self.originPageName      = page.title()       # Current page
         self.lastEditTime        = page.latest_revision.timestamp    # last edit time
@@ -295,7 +300,7 @@ class WikiDocument:
         numOfContribution = 0
         for discussion in self.listDiscussions:
             counter       += 1
-            headline      = discussion.getTitle(True)
+            headline      = discussion.getTitleClear()
             firstContributionAge  = discussion.getFirstContributionAge()
             numOfContribution     = discussion.getNumberOfContributions()
             # where it would be archived to
@@ -330,7 +335,7 @@ class WikiDocument:
     def prepareArchiving(self):
         for discussion in self.listDiscussions:
             if discussion.shouldBeArchived(self.thresholdAgeResolvedTemplate, self.thresholdAgeByTimeout):
-                self.archiveDiscussion(discussion)
+                self._prepareDiscussionForArchiving(discussion)
 
     def substSectionResolvedTempl(self, originalText):
         """
@@ -342,37 +347,45 @@ class WikiDocument:
         
         old = re.compile("\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + "\ {0,5}\|(?:1=)?([^}]*?[^}|*]?" + self.bot.localBot.timeStampRegEx + ")\ *?\}\}", re.UNICODE | re.DOTALL)
         return textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved1P, ["comment", "nowiki"])
-    
+
+    def _showDiffs(self, pageName: str, originalText: str, modifiedText: str):
+        if originalText != modifiedText:
+            pywikibot.output(f"Diff of [[{pageName}]]:")
+            pywikibot.output("#"*80)
+            pywikibot.showDiff(originalText, modifiedText)
+            pywikibot.output("#"*80)
+
     def executeArchiving(self):
-        # first, check if we can edit the origin page at all
-        originPage = pywikibot.Page(self.bot.site, self.originPageName)
-        if not originPage.botMayEdit():
-            pywikibot.output(f'Skipping {self.originPageName} because it is protected.')
+        # first, check if we can edit all the pages
+        if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
+            pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it is protected.<<default>>')
             return
+        for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
+            if not pywikibot.Page(self.bot.site, targetPageName).botMayEdit():
+                pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
+                return
 
-        if len(self.archiveContainer) >= 1:
+        if len(self.archiveJobTextByTarget) >= 1:
             skipThisPage = False
-            distributionComment = "" # Text for what bot did
-            numberOfSectionsRemovedFromOrigin = 0
-            for targetPageName, discussionsAsText in self.archiveContainer.items():
-                pywikibot.showDiff("", discussionsAsText)
-                pywikibot.output("-"*80)
-                pywikibot.showDiff(discussionsAsText, self.substSectionResolvedTempl(discussionsAsText))
-
+            firstRemovedSectionFromSourceLink = ''
+            for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
                 targetEditComment = ""
-                if self.archiveContCounter[targetPageName] == 1:
+                firstNewSectionInArchive = self.archiveJobFirstTitleByTarget[targetPageName]
+                firstNewSectionInArchiveLink = f'{targetPageName}#{firstNewSectionInArchive}|{firstNewSectionInArchive}'
+                if firstRemovedSectionFromSourceLink == '':
+                    firstRemovedSectionFromSourceLink = firstNewSectionInArchiveLink
+
+                if self.archiveJobCounterByTarget[targetPageName] == 1:
                     targetEditComment = self.bot.localBot.archiveSumTargetS.format(sourcePage=self.originPageName)
                 else:
-                    targetEditComment = self.bot.localBot.archiveSumTargetP.format(numOfSections=self.archiveContCounter[targetPageName], sourcePage=self.originPageName)
-                
-                numberOfSectionsRemovedFromOrigin += self.archiveContCounter[targetPageName]
-                if distributionComment == "":
-                    distributionComment = self.bot.localBot.archiveSumOriginMulti % (self.archiveContCounter[targetPageName], targetPageName)
-                else:
-                    distributionComment += ", " + self.bot.localBot.archiveSumOriginMulti % (self.archiveContCounter[targetPageName], targetPageName)
+                    targetEditComment = self.bot.localBot.archiveSumTargetP.format(
+                                    numOfSections=self.archiveJobCounterByTarget[targetPageName],
+                                    sourcePage=self.originPageName)
+                if self.bot.localBot.firstNewSectionInArchiveSummary != '': # for projects without translation
+                    targetEditComment += self.bot.localBot.firstNewSectionInArchiveSummary.format(firstNewSectionInArchiveLink=firstNewSectionInArchiveLink)
                 
                 try:
-                    pywikibot.output(f"opening [[{targetPageName}]]")
+                    pywikibot.output(f"Opening page [[{targetPageName}]]")
                     targetPage = pywikibot.Page(self.bot.site, targetPageName)
                     if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
                         pywikibot.output("Archiving into the (Main) namespace 0!")
@@ -383,20 +396,22 @@ class WikiDocument:
                         else:
                             newText = self.substSectionResolvedTempl(self.bot.localBot.headTemplate + "\n\n" + discussionsAsText)
                         
+                        self._showDiffs(targetPageName, targetPage.text, newText)
                         if self.bot.dryRun:
                             pywikibot.output(f'Skipping {targetPageName} because of "dry run"')
                         else:
                             targetPage.text = newText
                             targetPage.save(targetEditComment, minor=True, force=True)
+                        pywikibot.output(f'edit comment: {targetEditComment}')
                 except pywikibot.exceptions.EditConflictError:
-                    pywikibot.output("Edit conflict!")
+                    pywikibot.output("<<lightpurple>>Edit conflict!<<default>>")
                     skipThisPage = True
                 except pywikibot.exceptions.LockedPageError:
-                    pywikibot.output("Page is locked!")
+                    pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
                     skipThisPage = True
                 except pywikibot.exceptions.InvalidTitleError:
                     # don't care, some bug in the title
-                    pywikibot.output("Page skipped because of pywikibot.exceptions.InvalidTitleError")
+                    pywikibot.output("<<lightpurple>>Page skipped because of pywikibot.exceptions.InvalidTitleError<<default>>")
                     skipThisPage = True
                 except:
                     # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
@@ -406,65 +421,91 @@ class WikiDocument:
                     targetPage = pywikibot.Page(self.bot.site, targetPageName)
                     # ugly workaround for strange behaviour
                     editTimeFirstTry = targetPage.latest_revision.timestamp if targetPage.exists() else 20361231235900
-                    if (targetPage.exists() and targetPage.userName() == "SpBot" and (targetPage.latest_revision.timestamp - editTimeFirstTry).seconds < 60 * 2):
-                        pass # ok
-                    else:
+                    if not targetPage.exists() or targetPage.userName() != "SpBot" or (targetPage.latest_revision.timestamp - editTimeFirstTry).seconds >= 60 * 2:
                         raise
-
-            # Try to save original page
-            if numberOfSectionsRemovedFromOrigin == 1:
-                numberOfSectionsRemovedFromOriginStr = self.bot.localBot.archiveSumOriginS
+            
+            if skipThisPage:
+                pywikibot.output(f'Skipping {self.originPageName} because "skipThisPage" is True')
             else:
-                numberOfSectionsRemovedFromOriginStr = self.bot.localBot.archiveSumOriginP.format(numberOfSectionsRemovedFromOrigin=numberOfSectionsRemovedFromOrigin)
-            
-            # add last contributor + time
-            lastEditTime = self.lastEditTime + self.bot.localBot.getUtcDiff()
-            lastEditTime = ("%s-%02d-%02d %02d:%02d" % (lastEditTime.year, lastEditTime.month, lastEditTime.day, lastEditTime.hour, lastEditTime.minute))
-            lastEditComment = self.bot.localBot.archiveSumLastEdit % (self.lastUser, self.lastUser, lastEditTime)
-            archiveOverallSummary = self.bot.localBot.archiveOverallSummary.format(numberOfSectionsRemovedFromOriginStr=numberOfSectionsRemovedFromOriginStr,
-                                                        distributionComment=distributionComment, lastEditComment=lastEditComment)
-            
-            self.modifiedText = bot.localBot.applyLocalModifications(self.modifiedText)
-            try:
-                originPage = pywikibot.Page(self.bot.site, self.originPageName)
-                if self.bot.dryRun:
-                    pywikibot.output(f'Skipping {self.originPageName} because of "dry run"')
-                elif skipThisPage:
-                    pywikibot.output(f'Skipping {self.originPageName} because "skipThisPage" is True')
-                else:
-                    originPage.text = self.modifiedText
-                    originPage.save(archiveOverallSummary, minor=True)
-            except pywikibot.exceptions.NoPageError:
-                if not self.bot.dryRun:
-                    originPage.text = self.modifiedText
-                    originPage.save(archiveOverallSummary, minor=True)
-                pass
-            except pywikibot.exceptions.EditConflictError:
-                pywikibot.output(f'Skipping {self.originPageName} because of edit conflict')
+                self._performArchivingOnOriginPage(firstRemovedSectionFromSourceLink)
+                sleep(2)
 
-    def archiveDiscussion(self, disc):
+    def _performArchivingOnOriginPage(self, firstRemovedSectionFromSourceLink: str):
+        distributionComment = ''
+        numberOfSectionsRemovedFromOrigin = 0
+        for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
+            numberOfSectionsRemovedFromOrigin += self.archiveJobCounterByTarget[targetPageName]
+            if distributionComment != '':
+                distributionComment += ", "
+            distributionComment += self.bot.localBot.archiveSumOriginMulti.format(
+                            noOfDisuccionsToThisTarget=self.archiveJobCounterByTarget[targetPageName],
+                            targetPageName=targetPageName)
+                
+        if numberOfSectionsRemovedFromOrigin == 1:
+            numberOfSectionsRemovedFromOriginStr = self.bot.localBot.archiveSumOriginS
+        else:
+            numberOfSectionsRemovedFromOriginStr = self.bot.localBot.archiveSumOriginP.format(numberOfSectionsRemovedFromOrigin=numberOfSectionsRemovedFromOrigin)
+        
+        # add last contributor + time
+        lastEditTime = self.lastEditTime + self.bot.localBot.getUtcDiff()
+        lastEditTime = ("%s-%02d-%02d %02d:%02d" % (lastEditTime.year, lastEditTime.month, lastEditTime.day, lastEditTime.hour, lastEditTime.minute))
+        lastEditComment = self.bot.localBot.archiveSumLastEdit % (self.lastUser, self.lastUser, lastEditTime)
+        firstNewSectionInArchiveSummary = '' # fallback
+        if len(self.archiveJobTextByTarget) == 1 and self.bot.localBot.firstNewSectionInArchiveSummary != '': # for projects without translation
+            firstNewSectionInArchiveSummary = self.bot.localBot.firstNewSectionInArchiveSummary.format(firstNewSectionInArchiveLink=firstRemovedSectionFromSourceLink)
+        
+        archiveOverallSummary = self.bot.localBot.archiveOverallSummary.format(numberOfSectionsRemovedFromOriginStr=numberOfSectionsRemovedFromOriginStr,
+                    distributionComment=distributionComment, firstNewSectionInArchiveSummary=firstNewSectionInArchiveSummary, lastEditComment=lastEditComment)
+        
+        self.modifiedText = bot.localBot.applyLocalModifications(self.modifiedText)
+        try:
+            originPage = pywikibot.Page(self.bot.site, self.originPageName)
+            self._showDiffs(self.originPageName, originPage.text, self.modifiedText)
+
+            if self.bot.dryRun:
+                pywikibot.output(f'Skipping {self.originPageName} because of "dry run"')
+                pywikibot.output(f'edit comment: {archiveOverallSummary}')
+            else:
+                originPage.text = self.modifiedText
+                originPage.save(archiveOverallSummary, minor=True)
+                pywikibot.output(f'edit comment: {archiveOverallSummary}')
+        except pywikibot.exceptions.NoPageError:
+            if not self.bot.dryRun:
+                originPage.text = self.modifiedText
+                originPage.save(archiveOverallSummary, minor=True)
+            pywikibot.output(f'edit comment: {archiveOverallSummary}')
+        except pywikibot.exceptions.EditConflictError:
+            pywikibot.output(f'Skipping {self.originPageName} because of edit conflict')
+
+    def _prepareDiscussionForArchiving(self, disc: Discussion):
         sliceStart = disc.getTitleOffsetStart() - self.sliceOffset
         sliceStop  = disc.getContentOffsetEnd() - self.sliceOffset
         sliceText  = self.modifiedText[sliceStart:sliceStop]
+        headline = disc.getTitle()
         self.modifiedText  = self.modifiedText[:sliceStart] + self.modifiedText[sliceStop:]
         self.sliceOffset   = self.sliceOffset + len(sliceText)
         self.numberOfDiscussionsToArchive += 1
         target = disc.determineArchivingTarget(self)
 
-        if target in self.archiveContainer:
-            self.archiveContainer[target] = self.archiveContainer[target] + sliceText
-            self.archiveContCounter[target] = self.archiveContCounter[target] + 1
+        if target in self.archiveJobTextByTarget:
+            self.archiveJobTextByTarget[target] += sliceText
+            self.archiveJobCounterByTarget[target] += 1
         else:
-            self.archiveContainer[target]   = sliceText
-            self.archiveContCounter[target] = 1
+            self.archiveJobTextByTarget[target] = sliceText
+            self.archiveJobCounterByTarget[target] = 1
         
-    def showDiffs(self):
-        if self.originalText != self.modifiedText:
-            pywikibot.output("Diff:")
-            pywikibot.output("#"*80)
-            pywikibot.showDiff(self.originalText, self.modifiedText)
-            pywikibot.output("#"*80)
-
+        if target not in self.archiveJobFirstTitleByTarget:
+            # remove headline marker == abc ==
+            headline = textlib.replaceExcept(headline, r"=+\s*(.*?)\s*=+\s*", "\\1", [])
+            # [[abc|xyz]] -> yxz
+            headline = textlib.replaceExcept(headline, r"\[\[[^\|\]]+?\|(.*?)\]\]", "\\1", [])
+            # remove markup
+            headline = headline.replace(' ', '_').replace('[[', '').replace(']]', '').replace("'''", '').replace("''", '')\
+                    .replace('<s>', '').replace('</s>', '').replace('<nowiki>', '').replace('</nowiki>', '')\
+                    .replace('<code>', '').replace('</code>', '').replace('<pre>', '').replace('</pre>', '')\
+                    .replace('<sub>', '').replace('</sub>', '').replace('<sup>', '').replace('</sup>', '')
+            self.archiveJobFirstTitleByTarget[target] = headline
+    
     def removeCommentsAndOther(originalText: str) -> str:
         clearedContent = textlib.replaceExcept(originalText, r"(?s)<!\-\-.*?\-\->", "", [])
         clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<nowiki>.*?</nowiki>", "", [])
@@ -577,7 +618,6 @@ class ArchiveRobot:
             wdoc.examineDiscussions()
             wdoc.prepareArchiving()
             wdoc.generateReport()
-            wdoc.showDiffs()
             wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
             if wdoc.hasWorkToDo():
                 wdoc.executeArchiving()

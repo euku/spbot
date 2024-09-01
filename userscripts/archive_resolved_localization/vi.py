@@ -34,9 +34,10 @@ class LocalBotVi(LocalBot):
         self.archiveSumTargetP = "Lưu trữ {numOfSections} đề mục từ [[{sourcePage}]]"
         self.archiveSumOriginS = "1 đề mục"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin} đề mục"
-        self.archiveSumOriginMulti  = "%d tới [[%s]]"
+        self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} tới [[{targetPageName}]]"
+        self.firstNewSectionInArchiveSummary  = " (kể từ sau đề mục [[{firstNewSectionInArchiveLink}]])"
         self.archiveSumLastEdit= " - sửa đổi trước đó: [[User:%s|%s]], %s"
-        self.archiveOverallSummary = "lưu trữ {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{lastEditComment}"
+        self.archiveOverallSummary = "lưu trữ {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
         self.sectResolvedRegEx = "(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
         self.sectResolved1P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1</small>"

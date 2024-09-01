@@ -32,9 +32,10 @@ class LocalBotKo(LocalBot):
         self.archiveSumTargetP = "{numOfSections}개의 문단을 [[{sourcePage}]] 에서 가져옴"
         self.archiveSumOriginS = "1개의 문단"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin}개의 문단"
-        self.archiveSumOriginMulti = "%d 을(를) [[%s]]"
+        self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} 을(를) [[{targetPageName}]]"
+        self.firstNewSectionInArchiveSummary  = ""
         self.archiveSumLastEdit = "-이전 편집: [[:User:%s|%s]],%s"
-        self.archiveOverallSummary = "보존 {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{lastEditComment}"
+        self.archiveOverallSummary = "보존 {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
         self.sectResolvedRegEx = "(?:완료된\ 토론)"
         self.sectResolved1P = ":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1</small>"
