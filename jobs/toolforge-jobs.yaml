@@ -99,6 +99,14 @@
   emails: onfailure
   filelog-stdout: logs/archive-resolved-wikifunctions.out
   filelog-stderr: logs/archive-resolved-wikifunctions.err
+- name: archive-resolved-incubator
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:incubator
+  image: python3.11
+  no-filelog: false
+  schedule: "8   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-incubator.out
+  filelog-stderr: logs/archive-resolved-incubator.err
 
 ### Asia
 - name: archive-resolved-jawikipedia
@@ -161,7 +169,7 @@
 ##############################################################################
 # every Thuesday: bot stats
 - name: bot-stats-dewikip
-  command: pyvenv/bin/python bot/pwb.py bot-stats.py
+  command: pyvenv/bin/python bot/pwb.py bot-stats.py -always
   image: python3.11
   no-filelog: false
   schedule: "0  4   *   *   3"

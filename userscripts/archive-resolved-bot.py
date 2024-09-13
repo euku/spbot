@@ -19,7 +19,7 @@ authors:
     after Nov. 2007: Euku
 """
 import sys
-assert sys.version_info >= (3,5)
+assert sys.version_info >= (3,7)
 import re               # Used for regular expressions
 import os               # used for os.getcwd()
 import traceback
@@ -27,7 +27,6 @@ import pywikibot        # Wikipedia-pybot-framework
 from pywikibot import pagegenerators, textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
-from archive_resolved_localization.local_bot import LocalBot
 from archive_resolved_localization.local_bot_factory import LocalBotFactory
 
 #

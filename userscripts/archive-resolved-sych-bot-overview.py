@@ -6,7 +6,6 @@ This script will sychronize a commons page to all existing bot pages there the a
 import sys
 assert sys.version_info >= (3,5)
 import pywikibot        # Wikipedia-pybot-framework
-from time import sleep
 from archive_resolved_localization.local_bot import LocalBot
 
 basePageToCopy = ('commons', 'User:SpBot/Archivebot')
@@ -15,7 +14,7 @@ targetProjects = ['dewikipedia', 'cswikipedia', 'jawikipedia', 'kowikipedia', 'v
                   'dewikisource',
                   'enwikisource',
                   'dewikiversity',
-                  'meta', 'wikidata', 'wikimania', 'species', 'wikifunctions']
+                  'meta', 'wikidata', 'wikimania', 'species', 'wikifunctions', 'incubator']
 
 def getSourcePage():
     projectCode, projectFamily = LocalBot.splitInCodeAndFamily(basePageToCopy[0])
