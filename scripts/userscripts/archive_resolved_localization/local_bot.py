@@ -8,7 +8,7 @@ import time
 from pytz import timezone
 
 class LocalBot():
-    multi_lang_projects = ['meta', 'commons', 'wikidata', 'wikimania', 'wikifunctions', 'species']
+    multi_lang_projects = ['meta', 'commons', 'wikidata', 'wikimania', 'wikifunctions', 'species', 'incubator']
 
     def __init__(self, projectId: str) -> None:
         """
