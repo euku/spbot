@@ -629,7 +629,7 @@ class ArchiveRobot:
                 page = pywikibot.Page(self.site, page.title())
                 if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
                     # paste only, if there is no such message
-                    page.saves(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), self.localBot.errorTextSummary, botflag=False, minor=False, force=False)
+                    page.save(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), self.localBot.errorTextSummary, botflag=False, minor=False, force=False)
                 wdoc.generateErrorReport()
                 wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
         except:

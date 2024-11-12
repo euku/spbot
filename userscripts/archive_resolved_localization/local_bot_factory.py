@@ -9,6 +9,7 @@ from archive_resolved_localization.ja import LocalBotJa
 from archive_resolved_localization.vi import LocalBotVi
 
 from archive_resolved_localization.meta import LocalBotMeta
+from archive_resolved_localization.incubator import LocalBotIncubator
 
 """
     This file extracts all the project and translation related stuff from the main bot code
@@ -20,13 +21,15 @@ class LocalBotFactory():
         if projectFamily in LocalBot.multi_lang_projects:
             if projectCode == 'meta':
                 return LocalBotMeta(projectId=projectId)
+            if projectCode == 'incubator':
+                return LocalBotIncubator(projectId=projectId)
             return LocalBotEn(projectId=projectId)
         
         elif projectCode == 'cs':
             return LocalBotCs(projectId=projectId)
         elif projectCode == 'de':
             return LocalBotDe(projectId=projectId)
-        elif projectCode == 'en':
+        elif projectCode == 'en' or projectCode == 'simple':
             return LocalBotEn(projectId=projectId)
         elif projectCode == 'ko':
             return LocalBotKo(projectId=projectId)
