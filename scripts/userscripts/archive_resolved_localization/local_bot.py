@@ -21,6 +21,9 @@ class LocalBot():
         if projectId in LocalBot.multi_lang_projects:
             projectCode = projectId
             projectFamily = projectId
+        elif projectId.startswith('simple'):
+            projectCode = 'simple'
+            projectFamily = projectId[len('simple'):]
         else:
             projectCode = projectId[:2]
             projectFamily = projectId[2:]

@@ -66,6 +66,14 @@
   emails: onfailure
   filelog-stdout: logs/archive-resolved-meta.out
   filelog-stderr: logs/archive-resolved-meta.err
+- name: archive-resolved-simplewikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:simplewikipedia
+  image: python3.11
+  no-filelog: false
+  schedule: "6   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-simplewikipedia.out
+  filelog-stderr: logs/archive-resolved-simplewikipedia.err
 
 - name: archive-resolved-wikidata
   command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:wikidata
