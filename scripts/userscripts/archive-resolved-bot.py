@@ -198,7 +198,7 @@ class Discussion:
 
         usingWeekVar = False
         for weekVar in bot.localBot._getAllWeekVariablesForTargetPath():
-            if weekVar not in targetPath:
+            if weekVar in targetPath:
                 usingWeekVar = True
                 break
 
