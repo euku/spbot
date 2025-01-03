@@ -63,7 +63,7 @@ class LocalBot():
         # default: just the number
         return str(monthNumber)
 
-    def getHalfyearName(self, stamp, roman : bool, fill : bool):
+    def getHalfyearName(self, stamp: datetime, roman : bool, fill : bool):
         """
             roman: instead use I, II, III, IV
             fill: zero fill the number to 2 digits length
@@ -74,12 +74,12 @@ class LocalBot():
             return 'i' if roman else halfyearI
         return 'ii' if roman else halfyearI
     
-    def getQuarterName(self, stamp, roman : bool, fill : bool):
+    def getQuarterName(self, stamp: datetime, roman : bool, fill : bool):
         """
             roman: instead use I, II, III, IV
             fill: zero fill the number to 2 digits length
         """
-        month = int(time.strftime("%m", stamp))
+        month: int = int(time.strftime("%m", stamp))
         quater = ('0' if fill else '') + str(int((month -1) / 3) +1)
         if quater == '1' or quater == '01':
             return 'i' if roman else quater
@@ -96,7 +96,7 @@ class LocalBot():
             Builds up a dictionary with all ((variables)) as keys and substituted to actual values as values of the dict.
             fullpagename: current page to work on
             timestampToUse: the timestamp to parse
-            yearToUse: the preselected year to take. This can be different if we are are using calendar weeks an are in an exception week.
+            yearToUse: the preselected year to take. This can be different if we are are using calendar weeks and we are in an exception week.
             monthNumberToUse: the preselected month to take. This can be different if we are are using calendar weeks an are in an exception week.
         """
         raise NotImplementedError("Please Implement this method")
