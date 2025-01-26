@@ -1,5 +1,14 @@
 # https://wikitech.wikimedia.org/wiki/Help:Toolforge/Jobs_framework
----
+
+- name: bot-login
+  command: pyvenv/bin/python bot/pwb.py pwb.py login -all
+  image: python3.11
+  no-filelog: false
+  schedule: "0   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/bot-login.out
+  filelog-stderr: logs/bot-login.err
+
 ## EUROPE: 3 am UTC
 - name: archive-resolved-dewikipedia
   command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:dewikipedia
@@ -41,7 +50,7 @@
   emails: onfailure
   filelog-stdout: logs/archive-resolved-enwikisource.out
   filelog-stderr: logs/archive-resolved-enwikisource.err
-- name: archive-resolved-wikiversity
+- name: archive-resolved-dewikiversity
   command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:dewikiversity
   image: python3.11
   no-filelog: false
@@ -49,6 +58,14 @@
   emails: onfailure
   filelog-stdout: logs/archive-resolved-dewikiversity.out
   filelog-stderr: logs/archive-resolved-dewikiversity.err
+- name: archive-resolved-itwikipedia
+  command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:itwikipedia
+  image: python3.11
+  no-filelog: false
+  schedule: "6   3   *   *   *"
+  emails: onfailure
+  filelog-stdout: logs/archive-resolved-itwikipedia.out
+  filelog-stderr: logs/archive-resolved-itwikipedia.err
 
 - name: archive-resolved-commons
   command: pyvenv/bin/python  bot/pwb.py archive-resolved-bot.py -project:commons
