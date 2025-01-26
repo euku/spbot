@@ -73,7 +73,7 @@ class LocalBotEn(LocalBot):
             Builds up a dictionary with all ((variables)) as keys and substituted to actual values as values of the dict.
             fullpagename: current page to work on
             timestampToUse: the timestamp to parse
-            yearToUse: the preselected year to take. This can be different if we are are using calendar weeks an are in an exception week.
+            yearToUse: the preselected year to take. This can be different if we are are using calendar weeks and are in an exception week.
             monthNumberToUse: the preselected month to take. This can be different if we are are using calendar weeks an are in an exception week.
         """
         return [( "((year))"              , yearToUse),

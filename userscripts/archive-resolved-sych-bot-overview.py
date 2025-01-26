@@ -4,12 +4,12 @@
 This script will sychronize a commons page to all existing bot pages there the archiving bot is used.
 """
 import sys
-assert sys.version_info >= (3,5)
+assert sys.version_info >= (3,12)
 import pywikibot        # Wikipedia-pybot-framework
 from archive_resolved_localization.local_bot import LocalBot
 
 basePageToCopy = ('commons', 'User:SpBot/Archivebot')
-targetProjects = ['dewikipedia', 'cswikipedia', 'jawikipedia', 'kowikipedia', 'viwikipedia',
+targetProjects = ['dewikipedia', 'cswikipedia', 'itwikipedia', 'jawikipedia', 'kowikipedia', 'viwikipedia',
                   'dewiktionary',
                   'dewikisource',
                   'enwikisource',
