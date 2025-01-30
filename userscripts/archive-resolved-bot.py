@@ -293,7 +293,7 @@ class WikiDocument:
         logText += "* On headline level '''%d'''\n" % self.headlineLevel
         logText += "* Number of sections: '''%d'''\n" % self.numberDiscussions
         logText += "* Number of sections to archive: '''%d'''\n" % self.numberOfDiscussionsToArchive
-        logText += "{| class=\"wikitable\"\n|- class=\"hintergrundfarbe8\"\n! lfd. Nr. !! Headline !! Age of oldest signature !! Num. of signatures !! Age of 'resolved' !! Target"
+        logText += "{| class=\"wikitable\"\n|-\n! lfd. Nr. !! Headline !! Age of oldest signature !! Num. of signatures !! Age of 'resolved' !! Target"
 
         counter = 0 # lfd. Nr.
         numOfContribution = 0
