@@ -37,7 +37,7 @@ class LocalBotIt(LocalBot):
         self.archiveSumTargetP = "archiviazione di {numOfSections} sezioni da [[{sourcePage}]]"
         self.archiveSumOriginS = "1 sezione"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin} sezioni"
-        self.archiveSumOriginMulti = "{noOfDisuccionsToThisTarget} a [[{targetPageName}]]"
+        self.archiveSumOriginMulti = "{noOfDisuccionsToThisTarget} in [[{targetPageName}]]"
         self.firstNewSectionInArchiveSummary  = " (dopo la sezione [[{firstNewSectionInArchiveLink}]])"
         self.archiveSumLastEdit= " - modifica precedente: [[:User:%s|%s]], %s"
         self.archiveOverallSummary = "archiviate {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
