@@ -91,7 +91,8 @@ def writeUserListToWikipedia(db, editSummary):
 	#####################################
 	# prepare user list for main page   #
 	#####################################
-	toc = '{{WP:Persönliche Bekanntschaften/Infobox}}\n{{WP:Persönliche Bekanntschaften/Teilnehmerliste/Intro}}\nAngezeigt werden \'\'\'<span id="num-participants">' + str(len(userList)) + '</span>\'\'\' Teilnehmer:\n'
+	toc: str = '{{WP:Persönliche Bekanntschaften/Infobox}}\n{{WP:Persönliche Bekanntschaften/Teilnehmerliste/Intro}}\n' \
+		+ 'Angezeigt werden \'\'\'<span id="num-participants">' + str(len(userList)) + '</span>\'\'\' Teilnehmer und Teilnehmerinnen:\n'
 	userTemplate = '{{DB-Link|%s|%s|%s|%s}}'
 	safeUserTemplate = '{{DB-Link|1=%s|2=%s|3=%s|4=%s}}'
 	classTemplate1 = '===%s===\n'
@@ -229,6 +230,8 @@ def addConfirmation(db, bestaetigerName, bestaetigterName, comment, year, month,
 		if DONOTSAVE: return
 		try:
 			UserTalkPage.put(UserTalkPage.get() + msgText, "du wurdest zum dritten Mal bestätigt", False, minor=False, force=True, botflag=False)
+		except pywikibot.exceptions.LockedPageError:
+			output(f"Page {UserTalkPage.get()} is locked.")
 		except pywikibot.NoPage:
 			UserTalkPage.put(msgText, "du wurdest zum dritten Mal bestätigt", False, minor=False, force=True, botflag=False)
 
