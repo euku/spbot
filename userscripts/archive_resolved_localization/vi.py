@@ -21,7 +21,8 @@ class LocalBotVi(LocalBot):
         self.errorText += f"\n\n[[{self.errorCategory}]]<!-- xin hãy xóa dòng này nếu vấn đề đã được giải quyết -->"
         self.errorTextSummary = "reporting an error"
         # template parameters
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]'
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'

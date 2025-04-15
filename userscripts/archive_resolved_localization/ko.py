@@ -19,7 +19,8 @@ class LocalBotKo(LocalBot):
         self.errorText += f"\n\n[[{self.errorCategory}]]<!--문제가 해결되었다면 이 줄을 지우세요. -->"
         self.errorTextSummary = "문제 보고"
         # template parameters / 틀 변수
-        self.optionsRegEx = "\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = '\{\{\ *보존i\ 중단\}\}'
         self.paramAge = '날짜'
         self.paramArchive = '보존'
