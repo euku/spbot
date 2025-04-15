@@ -124,7 +124,9 @@ class Discussion:
         self._examineAllResolvedTemplate(bot, clearedContent)
 
         doNotArchivePattern = re.compile(bot.localBot.templDoNotArchive, re.IGNORECASE)
-        self.hasDoNotArchiveTmpl = doNotArchivePattern.search(clearedContent) != None
+        # using original self.content because for EN and commons there is not visible template but you can find this in the code:
+        # <!-- [[User:DoNotArchiveUntil]] 19:24, 13 March 2035 (UTC) -->
+        self.hasDoNotArchiveTmpl = doNotArchivePattern.search(self.content) != None
 
     def _extractTimeStampsAndAges(self, regex: str, clearedContent: str):
         """
