@@ -25,7 +25,7 @@ class LocalBotEn(LocalBot):
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
         self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
+        self.templDoNotArchive = '<!--\ *\[\[User\:DoNotArchiveUntil\]\]\ +' + self.timeStampRegEx
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
