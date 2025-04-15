@@ -20,7 +20,8 @@ class LocalBotCs(LocalBot):
         self.errorText += f"\n\n[[{self.errorCategory}]]<!-- odstraňte tento řádek, pokud je problém vyřešen -->"
         self.errorTextSummary = "Archivaci nelze dokončit"
         # template parameters
-        self.optionsRegEx = "\{\{\ *(?:[Šš]ablona|[Tt]emplate\:)?\ *[Aa]rchivace\ vyřešených\ sekcí(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Šš]ablona|[Tt]emplate\:)?\ *[Aa]rchivace\ vyřešených\ sekcí(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'

@@ -24,7 +24,8 @@ class LocalBotIt(LocalBot):
         self.errorTextSummary = "segnalazione di un errore"
         
         # template parameters
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchivio(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchivio(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
         self.paramAge = 'GIORNI'
         self.paramArchive = 'ARCHIVIO'

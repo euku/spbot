@@ -23,7 +23,8 @@ class LocalBotEn(LocalBot):
         self.errorText += f"\n\n[[{self.errorCategory}]]<!-- remove this line, if the problem was resolved -->"
         self.errorTextSummary = "reporting an error"
         # template parameters
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'

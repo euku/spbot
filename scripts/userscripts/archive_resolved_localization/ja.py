@@ -19,7 +19,8 @@ class LocalBotJa(LocalBot):
         self.errorText += f"\n\n[[{self.errorCategory}]]<!-- 問題が解決したらこの行は除去してください -->"
         self.errorTextSummary = "エラーを報告"
         # template parameters
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]'
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'

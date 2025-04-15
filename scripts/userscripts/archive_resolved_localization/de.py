@@ -27,7 +27,8 @@ class LocalBotDe(LocalBot):
         self.errorText += f"\n\n[[{self.errorCategory}]]<!-- entferne diese Zeile, wenn das Problem behoben wurde -->"
         self.errorTextSummary = "Berichte Fehler"
         # template parameters
-        self.optionsRegEx = "\{\{\ *(?:[Vv]orlage\:|[Tt]emplate\:)?\ *[Aa]utoarchiv-[Ee]rledigt(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Vv]orlage\:|[Tt]emplate\:)?\ *[Aa]utoarchiv-[Ee]rledigt(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren\s*[\|\}]'
         self.paramAge = 'ALTER'
         self.paramArchive = 'ZIEL'

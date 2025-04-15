@@ -7,4 +7,5 @@ class LocalBotIncubator(LocalBotEn):
         super().__init__(projectId)
 
         # the rest is inherited from EN
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *(?:\w\w/\w{1,3}/)?\ *[Aa]utoarchive\ resolved\ section(?P<options>.*?)\}\}"
+        # should be able to handle {{CURRENTYEAR}} in the parameter value
+        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *(?:\w\w/\w{1,3}/)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
