@@ -246,7 +246,15 @@ class WikiDocument:
         """
             Divide the Original text by headlines ...
         """
-        regex = "(?P<title>^(?P<hls>[=]{1,%d})(?P<title_clear>[^=]{1}.*?)(?P=hls))([\s]{0,5})$" % self.headlineLevel
+        # Should match these variants
+        # == 1.2. bla == 
+        # ==_==
+        # == {{Q-|Q6501349|capitalization=ucfirst}} == <!-- Car parks -->
+        # === sub header ===
+        # Note, it is {1,%s} because it must match header levels less the defined level. Otherwise = Bla = will be archived with == Blub ==.
+        # It must not match higher levels === like this ===.
+        # Also, it must match not match just text starting with => bla.
+        regex = "(?P<title>^(?P<hls>[=]{1,%s})(?P<title_clear>[^=\n\r]+.+)(?P=hls))(.*?)$" % self.headlineLevel
         p = re.compile(regex, re.IGNORECASE|re.M)
         # ... and iterate through it
         headlineIterator = p.finditer(self.originalText)
