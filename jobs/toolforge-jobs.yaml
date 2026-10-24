@@ -206,7 +206,7 @@
 ## Daily cleanup
 - name: daily-log-cleanup
   command: sh ~/bot/jobs/daily-log-cleanup.sh
-  image: bullseye
+  image: trixie
   no-filelog: false
   schedule: "59  23   *   *   *"
   emails: onfailure
