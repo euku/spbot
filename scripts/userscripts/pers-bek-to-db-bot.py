@@ -2,13 +2,17 @@
 # -*- coding: utf-8 -*-
 """
 	pywikibot framework is needed!
+
+	Options:
+	  -force      write the user lists even if there is nothing to do
+	  --dry-run   only show what would be done, change neither the database nor Wikipedia
 """
 import sys              # To not have wikipedia and this in one dir we'll import sys
 import re               # Used for regular expressions
-import os               # used for os.getcwd()
 import pywikibot        # pywikibot framework
-from pywikibot import pagegenerators, Bot, textlib
+from pywikibot import textlib
 from time import localtime, strftime    # strftime-Function and related
+from datetime import datetime
 import time
 import pymysql
 import traceback
@@ -17,17 +21,16 @@ from bot_api import BotDatabase
 
 # templates and WP paths
 tmplNewUser = "Wikipedia:Persönliche Bekanntschaften/neuer Benutzer"
-newUserRegex = "\{\{" + tmplNewUser + "\|Name=(?P<user>[^|]+)(?:\|Kommentar=.*)?\|Zeit=(?P<timeh>(?:[01]\d|2[0-3]))\:(?P<timemin>[0-5]\d)\,\ (?P<timed>[123]?\d)\.\ (?P<timemon>Jan\.|Feb\.|Mär\.|Apr\.|Mai|Jun\.|Jul\.|Aug\.|Sep\.|Okt\.|Nov\.|Dez\.)\ (?P<timeyear>2\d\d\d)\ \(CES?T\)\}\}"
-newUserReplRegex = "\{\{" + tmplNewUser + "\|Name=%s(?:\|Kommentar=.*?)?\|Zeit=.+?\ 2\d\d\d\ \(CES?T\)\}\}[\n\r]*"
+newUserRegex = r"\{\{" + tmplNewUser + r"\|Name=(?P<user>[^|]+)(?:\|Kommentar=.*)?\|Zeit=(?P<timeh>(?:[01]\d|2[0-3]))\:(?P<timemin>[0-5]\d)\,\ (?P<timed>[123]?\d)\.\ (?P<timemon>Jan\.|Feb\.|Mär\.|Apr\.|Mai|Jun\.|Jul\.|Aug\.|Sep\.|Okt\.|Nov\.|Dez\.)\ (?P<timeyear>2\d\d\d)\ \(CES?T\)\}\}"
+newUserReplRegex = r"\{\{" + tmplNewUser + r"\|Name=%s(?:\|Kommentar=.*?)?\|Zeit=.+?\ 2\d\d\d\ \(CES?T\)\}\}[\n\r]*"
 tmplNewACK = "Wikipedia:Persönliche Bekanntschaften/neue Bestätigung"
-newACKRegex = "\{\{" + tmplNewACK + "\|Bestätiger=(?P<certifier>[^|]+)\|Bestätigter=(?P<certified>[^|]+)\|Kommentar=(?P<comment>.*?)\|Zeit=(?P<timeh>(?:[01]\d|2[0-3]))\:(?P<timemin>[0-5]\d)\,\ (?P<timed>[123]?\d)\.\ (?P<timemon>Jan\.|Feb\.|Mär\.|Apr\.|Mai|Jun\.|Jul\.|Aug\.|Sep\.|Okt\.|Nov\.|Dez\.)\ (?P<timeyear>2\d\d\d)\ \(CES?T\)\}\}"
-newACKReplRegex = "\{\{" + tmplNewACK + "\|Bestätiger=%s\|Bestätigter=%s\|Kommentar=.*?\|Zeit=.+?\ 2\d\d\d\ \(CES?T\)\}\}[\n\r]*"
+newACKRegex = r"\{\{" + tmplNewACK + r"\|Bestätiger=(?P<certifier>[^|]+)\|Bestätigter=(?P<certified>[^|]+)\|Kommentar=(?P<comment>.*?)\|Zeit=(?P<timeh>(?:[01]\d|2[0-3]))\:(?P<timemin>[0-5]\d)\,\ (?P<timed>[123]?\d)\.\ (?P<timemon>Jan\.|Feb\.|Mär\.|Apr\.|Mai|Jun\.|Jul\.|Aug\.|Sep\.|Okt\.|Nov\.|Dez\.)\ (?P<timeyear>2\d\d\d)\ \(CES?T\)\}\}"
+newACKReplRegex = r"\{\{" + tmplNewACK + r"\|Bestätiger=%s\|Bestätigter=%s\|Kommentar=.*?\|Zeit=.+?\ 2\d\d\d\ \(CES?T\)\}\}[\n\r]*"
 
 workList = "Wikipedia:Persönliche Bekanntschaften/neue Einträge"
 userRAWListPage = "Wikipedia:Persönliche Bekanntschaften/JS-alle Benutzer"
 userListPage = "Wikipedia:Persönliche Bekanntschaften/Teilnehmerliste"
 newUserListPage = "Wikipedia:Persönliche Bekanntschaften/Neu dazugekommen"
-localLogFile = os.getcwd() + strftime("/logs/pb-bot-%Y-%m-%d.log",localtime())
 
 # debugging
 DONOTSAVEDB = False # if True => no changes will be made to the database
@@ -47,18 +50,13 @@ monthDic["Okt."] = 10
 monthDic["Nov."] = 11
 monthDic["Dez."] = 12
 
+# results of addConfirmation and addUser
+ADDED = 'added'
+ALREADY = 'already'
+REFUSED = 'refused'
+
 class ConfirmationNotStored(Exception):
 	'''If the confirmation was not stored in the DB'''
-
-def isIn(text, regex):
-	return re.search(regex, text, re.UNICODE)
-	
-def search(text, regex):
-	m = re.search(regex, text, re.UNICODE)
-	if m:
-		return m.groups()[0]
-	else:
-		return ""
 
 def output(text):
 	pywikibot.output(text)
@@ -68,9 +66,9 @@ def writeUserListToWikipedia(db, editSummary):
 	if editSummary == '': editSummary = "Aktualisiere Benutzerliste"
 
 	# load list
-	userList = db.get_user_list_with_confirmations() 
+	userList = db.get_user_list_with_confirmations()
 	#print (userList)
-	
+
 	#############################################
 	# prepare the raw user list for JavaScripts #
 	#############################################
@@ -86,7 +84,7 @@ def writeUserListToWikipedia(db, editSummary):
 		output("RAW-Benutzerliste:")
 		pywikibot.showDiff(rawText, newRawText)
 		if not DONOTSAVE:
-			page.put(newRawText, editSummary, False, minor=True, force=True)
+			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True)
 
 	#####################################
 	# prepare user list for main page   #
@@ -111,26 +109,27 @@ def writeUserListToWikipedia(db, editSummary):
 		verfStatus = "u" if confirmationCount < 3 else ""
 		inactiveStatus = "" # TODO
 		homewiki = "" #TODO
-		if u == '=':
+		# names containing "=" would break positional template parameters
+		if '=' in u:
 			newRawText += safeUserTemplate % (u, verfStatus, inactiveStatus, homewiki)
 		else:
 			newRawText += userTemplate % (u, verfStatus, inactiveStatus, homewiki)
 	newRawText += classTemplate2
-	
+
 	# save it
 	page = pywikibot.Page(pywikibot.Site(), userListPage)
 	rawText = page.get()
 	if newRawText != rawText + "\n":
 		output("Teilnehmerliste:")
-	pywikibot.showDiff(rawText, newRawText)
-	if not DONOTSAVE:
-		page.put(newRawText, editSummary, False, minor=True, force=True, botflag=False)
-	
+		pywikibot.showDiff(rawText, newRawText)
+		if not DONOTSAVE:
+			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, botflag=False)
+
 	######################
 	# write new users    #
 	######################
 	# prepare new-user list for main page
-	newUserList = db.get_latest_user_list_with_confirmations() 
+	newUserList = db.get_latest_user_list_with_confirmations()
 	toc = '<noinclude>{{WP:Persönliche Bekanntschaften/Teilnehmerliste/Intro}}</noinclude>\n== Neu dazugekommen ==\n'
 	userTemplate = '{{/Benutzer-Link|%s|%s|%s}} '
 
@@ -145,7 +144,7 @@ def writeUserListToWikipedia(db, editSummary):
 			newRawText += userTemplate % (u, date, userStatus)
 		except KeyError:
 			output(u + " not found in dictionary")
-	
+
 	# save it
 	page = pywikibot.Page(pywikibot.Site(), newUserListPage)
 	rawText = page.get()
@@ -153,10 +152,10 @@ def writeUserListToWikipedia(db, editSummary):
 		output("Teilnehmerliste:")
 		pywikibot.showDiff(rawText, newRawText)
 		if not DONOTSAVE:
-			page.put(newRawText, editSummary, False, minor=True, force=True, botflag=False)
-	
+			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, botflag=False)
+
 	output(newRawText)
-	
+
 
 """
    extrats from a text all information needed: new users and new acknoledgements
@@ -183,94 +182,113 @@ def divideIntoTasks(pageText):
 
 
 """
-   sends information to the DB API skript
+   returns 'YYYY-MM-DD hh:mm:00' or None if the date does not exist (e.g. 30. Feb.)
 """
-def addConfirmation(db, bestaetigerName, bestaetigterName, comment, year, month, day, hours, minutes):
-	bestaetigerID = -1
-	bestaetigterID = -1
-	bestaetigerCfCount = -1
+def makeTimestamp(year, month, day, hours, minutes):
 	try:
-		bestaetigerID  = db.get_user_by_name(bestaetigerName)[1]
-		bestaetigterID = db.get_user_by_name(bestaetigterName)[1]
-		bestaetigerCfCount = db.get_cf_count_by_confirmed(bestaetigerID)
-	except TypeError:
-		return
+		return datetime(year, month, day, hours, minutes).strftime("%Y-%m-%d %H:%M:00")
+	except ValueError:
+		return None
 
-	if (bestaetigerCfCount < 3):
+
+"""
+   sends information to the DB API skript
+   returns (ADDED|ALREADY|REFUSED, reason); raises pymysql.DatabaseError or
+   ConfirmationNotStored if it is unclear whether the confirmation was stored
+"""
+def addConfirmation(db, bestaetigerName, bestaetigterName, comment, timestamp):
+	bestaetiger = db.get_user_by_name(bestaetigerName)
+	bestaetigter = db.get_user_by_name(bestaetigterName)
+	if bestaetiger is None:
+		return REFUSED, "%s ist kein Teilnehmer" % bestaetigerName
+	if bestaetigter is None:
+		return REFUSED, "%s ist kein Teilnehmer" % bestaetigterName
+	bestaetigerID = bestaetiger[1]
+	bestaetigterID = bestaetigter[1]
+
+	if db.get_cf_count_by_confirmed(bestaetigerID) < 3:
 		output("Darf noch nicht bestätigen")
-		return
+		return REFUSED, "%s hat noch keine 3 Bestätigungen" % bestaetigerName
 
 	###### write to DB
 	output("send it to DB API...")
-	timestamp = "%s-%02d-%02d %02d:%02d:00" % (year, month, day, hours, minutes)
 	if not DONOTSAVEDB:
 		try:
 			if not db.add_confirmation(bestaetigerID, bestaetigterID, comment, timestamp):
 				output("Validierung schlug fehl!")
-				raise ConfirmationNotStored('Bestätigung %s -> %s zu %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName, timestamp))
-			output("bestaetigerID %s, bestaetigterID %s" % (bestaetigerID, bestaetigterID))
-			if not db.has_confirmed(bestaetigerID, bestaetigterID):
-				output("Bestätigung wurde nicht übertragen!")
-				raise ConfirmationNotStored('Bestätigung %s -> %s zu %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName, timestamp))
+				return REFUSED, "Validierung schlug fehl"
 		except pymysql.IntegrityError:
-			#output(traceback.print_exc())
 			output("Bestätigung schon vorhanden")
-			return
-		except:
-			output("Unexpected error: %s" % sys.exc_info()[0])
-			output(traceback.print_exc())
-			raise
-	
+			return ALREADY, ""
+		output("bestaetigerID %s, bestaetigterID %s" % (bestaetigerID, bestaetigterID))
+		if not db.has_confirmed(bestaetigerID, bestaetigterID):
+			output("Bestätigung wurde nicht übertragen!")
+			raise ConfirmationNotStored('Bestätigung %s -> %s zu %s wurde nicht übertragen!' % (bestaetigerName, bestaetigterName, timestamp))
+
 	### check if 'bestaetigterName' is allowed to write ACKs now and leave a message on his/her talk page
 	if db.get_cf_count_by_confirmed(bestaetigterID) == 3:
 		# ok, write a message
 		msgText = "\n==[[Wikipedia:Persönliche Bekanntschaften]] ==\nHallo " + bestaetigterName + ".\nDu wurdest vor ein paar Minuten von " + bestaetigerName + " bestätigt und hast damit insgesamt drei Bestätigungen. D.h. von nun an darfst du [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|selber Bestätigungen verteilen]] an Wikipedianer, die du persönlich kennengelernt hast. Bei Fragen wende dich [[Wikipedia Diskussion:Persönliche Bekanntschaften|hier]] hin. Gruß --~~~~"
 		output("war unbestaetigt und darf nun selber bestaetigen")
-		UserTalkPage = pywikibot.Page(pywikibot.Site(), "Benutzer_Diskussion:" + bestaetigterName)
-		if DONOTSAVE: return
-		try:
-			UserTalkPage.put(UserTalkPage.get() + msgText, "du wurdest zum dritten Mal bestätigt", False, minor=False, force=True, botflag=False)
-		except pywikibot.exceptions.LockedPageError:
-			output(f"Page {UserTalkPage.get()} is locked.")
-		except pywikibot.NoPage:
-			UserTalkPage.put(msgText, "du wurdest zum dritten Mal bestätigt", False, minor=False, force=True, botflag=False)
+		userTalkPage = pywikibot.Page(pywikibot.Site(), "Benutzer_Diskussion:" + bestaetigterName)
+		if not DONOTSAVE:
+			try:
+				oldText = userTalkPage.get() if userTalkPage.exists() else ""
+				userTalkPage.put(oldText + msgText, summary="du wurdest zum dritten Mal bestätigt", watch='unwatch', minor=False, force=True, botflag=False)
+			except pywikibot.exceptions.Error as e:
+				pywikibot.error("Nachricht auf %s nicht gespeichert: %r" % (userTalkPage.title(), e))
+	return ADDED, ""
+
+
+"""
+   returns (ADDED|ALREADY|REFUSED, reason); raises pymysql.DatabaseError
+"""
+def addUser(db, userName, timestamp):
+	if DONOTSAVEDB:
+		return ADDED, ""
+	try:
+		if not db.add_user(userName, timestamp):
+			return REFUSED, "Benutzer existiert nicht"
+	except pymysql.IntegrityError:
+		output("user " + userName + " already in")
+		return ALREADY, ""
+	return ADDED, ""
+
+
+def userLink(name):
+	return "[[:User:%s|%s]]" % (name, name)
 
 
 """
   MAIN
 """
-class PBBot(Bot):
+class PBBot:
 	def __init__(self, isForceMode=False):
 		self._site = pywikibot.Site()
-		self.isForceMode = pywikibot.bot.handle_args()
-        
+		self.isForceMode = isForceMode
+
 	def run(self):
 		output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
+		if DONOTSAVE or DONOTSAVEDB:
+			output("Dry run: nothing will be saved")
 		self.db = BotDatabase()
 
-		generator = [pywikibot.Page(self._site, workList)]
-		generator = pagegenerators.PreloadingGenerator(generator, groupsize = 1)
-		# variables for concatenating a reasonable edit summary
-		commentLongAdded = ""
-		commentLongRefused = ""
-		commentLongNewUsers = ""
-		commentLongACKAlreadyIn = ""
-		commentLongNewAlreadyIn = "" # for new users
-		commentShortAdded = 0
-		commentShortRefused = 0
-		commentShortNewUsers = 0
-		commentShortACKAlreadyIn = 0
-		commentShortNewAlreadyIn = 0 # for new users
-
-		page = ''
-		for page in generator: # get the last element
-			pass
+		page = pywikibot.Page(self._site, workList)
 		rawText = page.get()
 		newRawText = rawText
 
 		if not page.botMayEdit():
 			output("Seite gesperrt")
-			pywikibot.stopme()
+			return
+
+		# lists of short texts for the edit summary
+		usersAdded = []
+		usersAlreadyIn = []
+		usersRefused = []
+		acksAdded = []
+		acksAlreadyIn = []
+		acksRefused = []
+		errors = 0 # entries that stay on the page because of a database error
 
 		newUsers, newACKs = divideIntoTasks(rawText)
 		seenUsers = []
@@ -278,62 +296,74 @@ class PBBot(Bot):
 			if currentName in seenUsers:
 				output("überspringe %s weil schon enthalten" % currentName)
 				continue
+			seenUsers.append(currentName)
 
-			timestamp = "%s-%02d-%02d %02d:%02d:00" % (year, month, day, hours, minutes)
 			output("füge %s hinzu.. "  % currentName)
 			entry = newUserReplRegex % re.escape(currentName)
-
-			try:
-				if not DONOTSAVEDB:
-					self.db.add_user(currentName, timestamp)
-			except pymysql.IntegrityError:
-				# already in ... TODO change the edit comment
-				output("user " + currentName + " already in")
+			timestamp = makeTimestamp(year, month, day, hours, minutes)
+			if timestamp is None:
+				status, reason = REFUSED, "ungültiges Datum"
+			else:
+				try:
+					status, reason = addUser(self.db, currentName, timestamp)
+				except pymysql.DatabaseError:
+					# the entry stays on the page and will be tried again next time
+					pywikibot.error("Benutzer %s nicht übertragen:\n%s" % (currentName, traceback.format_exc()))
+					errors += 1
+					continue
 			newRawText = textlib.replaceExcept(newRawText, entry, "", ["comment", "nowiki"])
 
 			# build comments for edit summary
-			if commentLongNewUsers != "": commentLongNewUsers = commentLongNewUsers + ", "
-			commentLongNewUsers = commentLongNewUsers + ("[[:User:%s|%s]]" % (currentName, currentName))
-			commentShortNewUsers = commentShortNewUsers + 1
+			if status == ADDED:
+				usersAdded.append(userLink(currentName))
+			elif status == ALREADY:
+				usersAlreadyIn.append(userLink(currentName))
+			else:
+				output("abgelehnt: %s (%s)" % (currentName, reason))
+				usersRefused.append("%s (%s)" % (userLink(currentName), reason))
 
-		doNotRemoveWikiText = False
 		for currentACK in newACKs:
 			certifier, certified, comment, minutes, hours, day, month, year = currentACK
-			timestamp = "%s-%02d-%02d %02d:%02d:00" % (year, month, day, hours, minutes)
-			output("füge Bestätigung: %s >> %s (Kommentar: %s) am %s hinzu.." % (certifier, certified, comment, timestamp))
+			output("füge Bestätigung: %s >> %s (Kommentar: %s) am %s.%s.%s %s:%02d hinzu.." % (certifier, certified, comment, day, month, year, hours, minutes))
 			entry = newACKReplRegex % (re.escape(certifier), re.escape(certified))
-			try:
-				addConfirmation(self.db, certifier, certified, comment, year, month, day, hours, minutes)
-			except pymysql.DatabaseError: # WORKAROUND wir koennen nicht sicher sein, dass die Bestaetigungen wirklich ankamen, darum entferne sie erst beim naechsten Mal, wenn es sicher ist!
-				doNotRemoveWikiText = True
+			timestamp = makeTimestamp(year, month, day, hours, minutes)
+			if timestamp is None:
+				status, reason = REFUSED, "ungültiges Datum"
+			else:
+				try:
+					status, reason = addConfirmation(self.db, certifier, certified, comment, timestamp)
+				except (pymysql.DatabaseError, ConfirmationNotStored):
+					# we cannot be sure that the confirmation was stored: the entry stays
+					# on the page and will be checked again next time
+					pywikibot.error("Bestätigung %s -> %s nicht übertragen:\n%s" % (certifier, certified, traceback.format_exc()))
+					errors += 1
+					continue
 			newRawText = textlib.replaceExcept(newRawText, entry, "", ["comment", "nowiki"])
+
 			# build comments for edit summary
-			if commentLongAdded != "": commentLongAdded = commentLongAdded + ", "
-			commentLongAdded = commentLongAdded + "[[:User:%s|%s]] → [[:User:%s|%s]]" % (certifier, certifier, certified, certified)
-			commentShortAdded = commentShortAdded + 1
+			ack = "%s → %s" % (userLink(certifier), userLink(certified))
+			if status == ADDED:
+				acksAdded.append(ack)
+			elif status == ALREADY:
+				acksAlreadyIn.append(ack)
+			else:
+				output("abgelehnt: %s -> %s (%s)" % (certifier, certified, reason))
+				acksRefused.append("%s (%s)" % (ack, reason))
 
-		if doNotRemoveWikiText:
-			output("Bestaetigungen versucht hinzuzufuegen, aber wegen pymysql.DatabaseError nicht von der WP-Seite entfernt!")
-			return # ende hier
+		if errors:
+			output("%s Einträge wegen Datenbankfehlern nicht übertragen, sie bleiben auf der Seite" % errors)
+
 		##### edit comments
-		editSummary = ""
-		commentPreAdded = " Bestätigungen: "
-		commentPreNewUsers = " neue(r) Benutzer: "
-		commentPreACKAlreadyIn = " Bestätigungen schon vorhanden: "
-		commentPreNewAlreadyIn = " Benutzer schon hinzugefügt: "
-
-		commentLong = editSummary
-		if commentLongAdded != "":		commentLong = commentLong + commentPreAdded + commentLongAdded
-		if commentLongACKAlreadyIn != "":	commentLong = commentLong + commentPreACKAlreadyIn + commentLongACKAlreadyIn
-		if commentLongNewUsers != "":		commentLong = commentLong + commentPreNewUsers + commentLongNewUsers
-		if commentLongNewAlreadyIn != "":	commentLong = commentLong + commentPreNewAlreadyIn + commentLongNewAlreadyIn
-
-		commentShort = editSummary
-		if commentShortAdded != 0:		commentShort = commentShort + commentPreAdded + str(commentShortAdded)
-		if commentShortACKAlreadyIn != 0:	commentShort = commentShort + commentPreACKAlreadyIn + str(commentShortACKAlreadyIn)
-		if commentShortNewUsers != 0:		commentShort = commentShort + commentPreNewUsers + str(commentShortNewUsers)
-		if commentShortNewAlreadyIn != 0:	commentShort = commentShort + commentPreNewAlreadyIn + str(commentShortNewAlreadyIn)
-
+		parts = [
+			("Bestätigungen", acksAdded),
+			("Bestätigungen schon vorhanden", acksAlreadyIn),
+			("Bestätigungen abgelehnt", acksRefused),
+			("neue(r) Benutzer", usersAdded),
+			("Benutzer schon hinzugefügt", usersAlreadyIn),
+			("Benutzer abgelehnt", usersRefused),
+		]
+		commentLong = "; ".join("%s: %s" % (pre, ", ".join(items)) for pre, items in parts if items)
+		commentShort = "; ".join("%s: %s" % (pre, len(items)) for pre, items in parts if items)
 		if (len(commentLong) > 200):
 			editSummary = commentShort
 		else:
@@ -341,15 +371,16 @@ class PBBot(Bot):
 
 		## update wikipedia: delete requests
 		if self.isForceMode or newRawText != rawText:
-			output("Anfragen:")
-			pywikibot.showDiff(rawText, newRawText)
-			if not DONOTSAVE:
-				page.put(newRawText, "In Datenbank übertragen: " + editSummary, False, False, True)
+			if newRawText != rawText:
+				output("Anfragen:")
+				pywikibot.showDiff(rawText, newRawText)
+				if not DONOTSAVE:
+					page.put(newRawText, summary="In Datenbank übertragen: " + editSummary, watch='unwatch', minor=False, botflag=True)
 			writeUserListToWikipedia(self.db, editSummary)
 			output("Zusammenfassung: " + editSummary + "\n")
 		else:
 			output("nichts zu tun")
-			# write userlist 4 times per day
+			# write userlist twice per day (03:00 and 15:00, the container runs in UTC)
 			if time.localtime()[3] in [3,15] and time.localtime()[4] in [0,1,2,3,4,5,6,7,8,9]:
 				writeUserListToWikipedia(self.db, editSummary)
 
@@ -357,6 +388,13 @@ class PBBot(Bot):
 		self.db.close_connections()
 
 # start here
-bot = PBBot()
+isForceMode = False
+for arg in pywikibot.handle_args():
+	if arg in ('-force', '--force'):
+		isForceMode = True
+	elif arg in ('--dry-run', '-dryrun'):
+		DONOTSAVE = True
+		DONOTSAVEDB = True
+bot = PBBot(isForceMode)
 bot.run()
 bot.shutdown()
