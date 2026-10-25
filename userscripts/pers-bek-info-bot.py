@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 	pywikibot framework is needed!
+
+	Options:
+	  --dry-run   only show the messages, do not save anything
 """
 import sys              # To not have wikipedia and this in one dir we'll import sys
 import re               # Used for regular expressions
@@ -14,7 +17,7 @@ sys.path.append('/data/project/pb/www/python/src')
 from bot_api import BotDatabase
 
 wpOptInList = "Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen"
-wpOptInListRegEx = "\[\[(?:[uU]ser|[bB]enutzer|[bB]enutzerin)\:(?P<username>[^\|\]]+)(?:\|[^\]]+)?\]\]"
+wpOptInListRegEx = r"\[\[(?:[uU]ser|[bB]enutzer|[bB]enutzerin)\:(?P<username>[^\|\]]+)(?:\|[^\]]+)?\]\]"
 localLogFile = os.getcwd() + strftime("/logs/pb-info-bot-%Y-%m.log",localtime())
 
 # debugging
@@ -58,7 +61,12 @@ def search(text, regex):
 """
   MAIN
 """
+for arg in pywikibot.handle_args():
+	if arg in ('--dry-run', '-dryrun'):
+		DONOTSAVE = True
 output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
+if DONOTSAVE:
+	output("Dry run: nothing will be saved")
 db = BotDatabase()
 
 # request list of all users that are opt-in
@@ -86,7 +94,7 @@ for userWaitingForMsg in usersWaitingForMsg:
 	userTalkPage = pywikibot.Page(pywikibot.Site(), "Benutzer_Diskussion:" + userWaitingForMsg)
 	try:
 		userTalkPageRaw = userTalkPage.get()
-	except pywikibot.NoPage:
+	except pywikibot.exceptions.NoPageError:
 		userTalkPageRaw = ""
 	usersVeriedThisUserText = ""
 	# concat a string with 'user1, user2, ... and userN'
@@ -123,12 +131,14 @@ for userWaitingForMsg in usersWaitingForMsg:
 	output("Writing message to " + userWaitingForMsg + "...")
 	output("message: " + msgToUser)
 	archiveHelp = ""
-	if (isIn(userTalkPageRaw, "\{\{\ *[Aa]utoarchiv")):
-		archiveHelp = " <!{{subst:ns:0}}-- Hilfe für den Auto-Archiv-Bot: ~~~~~ -->"
-	elif (isIn(userTalkPageRaw, "\{\{\ *[Aa]utoarchiv\-Erledigt")):
+	if (isIn(userTalkPageRaw, r"\{\{\ *[Aa]utoarchiv\-Erledigt")):
 		archiveHelp = "\n{{Erledigt|1=~~~~}}"
+	elif (isIn(userTalkPageRaw, r"\{\{\ *[Aa]utoarchiv")):
+		archiveHelp = " <!{{subst:ns:0}}-- Hilfe für den Auto-Archiv-Bot: ~~~~~ -->"
 	if not DONOTSAVE:
 		try:
-			userTalkPage.put(userTalkPageRaw + msgToUser + archiveHelp, userTalkSummary, False, minorEdit=False, force=True, botflag=True)
-		except:
-			output("Exception mache weiter...")
+			userTalkPage.put(userTalkPageRaw + msgToUser + archiveHelp, summary=userTalkSummary, watch='unwatch', minor=False, force=True, botflag=True)
+		except Exception as e:
+			pywikibot.error("Fehler beim Speichern von %s: %r, mache weiter..." % (userTalkPage.title(), e))
+	else:
+		output("Dry run: %s not saved (summary: %s, archiveHelp: %r)" % (userTalkPage.title(), userTalkSummary, archiveHelp))
