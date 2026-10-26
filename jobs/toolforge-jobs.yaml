@@ -1,7 +1,7 @@
 # https://wikitech.wikimedia.org/wiki/Help:Toolforge/Jobs_framework
 
 - name: bot-login
-  command: pyvenv/bin/python bot/pwb.py pwb.py login -all
+  command: pyvenv/bin/python bot/pwb.py login -all
   image: python3.11
   no-filelog: false
   schedule: "0   3   *   *   *"
@@ -162,7 +162,7 @@
 ##############################################################################
 # dayly, info on WP:PB
 - name: pers-bek-info-bot
-  command: pyvenv/bin/python bot/pwb.py bot/pwb.py pers-bek-info-bot.py
+  command: pyvenv/bin/python bot/pwb.py pers-bek-info-bot.py
   image: python3.11
   no-filelog: false
   schedule: "50  3   *   *   *"
@@ -172,7 +172,7 @@
 
 ### every 10 minutes: WP:PB ###
 - name: pers-bek-to-db-bot
-  command: pyvenv/bin/python bot/pwb.py bot/pwb.py pers-bek-to-db-bot.py
+  command: pyvenv/bin/python bot/pwb.py pers-bek-to-db-bot.py
   image: python3.11
   no-filelog: false
   schedule: "*/10  *   *   *   *"
