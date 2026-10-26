@@ -32,6 +32,12 @@ userRAWListPage = "Wikipedia:Persönliche Bekanntschaften/JS-alle Benutzer"
 userListPage = "Wikipedia:Persönliche Bekanntschaften/Teilnehmerliste"
 newUserListPage = "Wikipedia:Persönliche Bekanntschaften/Neu dazugekommen"
 
+# check of the version history: a confirmation must be entered by the certifier himself/herself
+reportPage = "Benutzer Diskussion:Euku"  # irregular confirmations are reported here
+ackCheckExemptUsers = ["Euku"]  # these users may enter confirmations for others
+refuseIrregularACKs = True  # True => irregular confirmations are not stored; False => stored, but reported
+maxRevisionsToCheck = 50  # how far back the version history is searched at most
+
 # debugging
 DONOTSAVEDB = False # if True => no changes will be made to the database
 DONOTSAVE = False # if True => no changes will be made on Wikipedia
@@ -259,6 +265,65 @@ def userLink(name):
 	return "[[:User:%s|%s]]" % (name, name)
 
 
+def normalizeUser(name):
+	name = re.sub(r"[_\s]+", " ", name).strip()
+	return name[:1].upper() + name[1:]
+
+
+def ackKey(certifier, certified):
+	return (normalizeUser(certifier), normalizeUser(certified))
+
+
+"""
+   searches the version history (newest first) for the revisions that entered
+   the given confirmations, i.e. back to the last run of the bot that removed
+   the older entries; returns {ackKey: (user, revid)}, user is None if hidden
+"""
+def findACKAuthors(page, acks):
+	pending = set(ackKey(a[0], a[1]) for a in acks)
+	candidates = {}
+	authors = {}
+	for rev in page.revisions(content=True, total=maxRevisionsToCheck):
+		keys = set(ackKey(a[0], a[1]) for a in divideIntoTasks(rev.text or "")[1])
+		for key in list(pending):
+			if key in keys:
+				# still contained => this or an older revision entered it
+				candidates[key] = (None if rev.userhidden else rev.user, rev.revid)
+			else:
+				# not contained => the newer revision entered it
+				authors[key] = candidates.get(key, (None, None))
+				pending.discard(key)
+		if not pending:
+			break
+	for key in pending:
+		# beyond maxRevisionsToCheck, take the oldest revision checked
+		output("Ersteller von %s -> %s nicht sicher ermittelt" % key)
+		authors[key] = candidates.get(key, (None, None))
+	return authors
+
+
+"""
+   reports irregular confirmations on reportPage
+"""
+def reportIrregularACKs(irregularACKs):
+	lines = []
+	for certifier, certified, author, revid, status in irregularACKs:
+		diff = " ([[Spezial:Diff/%s|Diff]])" % revid if revid else ""
+		authorText = userLink(author) if author else "(versteckter Benutzer)"
+		lines.append("* %s → %s, eingetragen von %s%s – %s" % (userLink(certifier), userLink(certified), authorText, diff, status))
+	msgText = "\n== [[Wikipedia:Persönliche Bekanntschaften]]: irreguläre Bestätigung(en) ==\nFolgende Bestätigungen wurden nicht vom Bestätiger selbst eingetragen:\n" \
+		+ "\n".join(lines) + "\nGruß --~~~~"
+	output(msgText)
+	if DONOTSAVE:
+		return
+	page = pywikibot.Page(pywikibot.Site(), reportPage)
+	try:
+		oldText = page.get() if page.exists() else ""
+		page.put(oldText + msgText, summary="irreguläre Bestätigung(en) bei [[WP:PB]]", watch='unwatch', minor=False, force=True, botflag=False)
+	except pywikibot.exceptions.Error as e:
+		pywikibot.error("Meldung auf %s nicht gespeichert: %r" % (reportPage, e))
+
+
 """
   MAIN
 """
@@ -288,9 +353,13 @@ class PBBot:
 		acksAdded = []
 		acksAlreadyIn = []
 		acksRefused = []
+		acksIrregular = []
+		irregularACKs = [] # for reportPage
 		errors = 0 # entries that stay on the page because of a database error
 
 		newUsers, newACKs = divideIntoTasks(rawText)
+		ackAuthors = findACKAuthors(page, newACKs) if newACKs else {}
+		exemptUsers = set(normalizeUser(u) for u in ackCheckExemptUsers)
 		seenUsers = []
 		for currentName, minutes, hours, day, month, year in newUsers:
 			if currentName in seenUsers:
@@ -327,7 +396,13 @@ class PBBot:
 			output("füge Bestätigung: %s >> %s (Kommentar: %s) am %s.%s.%s %s:%02d hinzu.." % (certifier, certified, comment, day, month, year, hours, minutes))
 			entry = newACKReplRegex % (re.escape(certifier), re.escape(certified))
 			timestamp = makeTimestamp(year, month, day, hours, minutes)
-			if timestamp is None:
+			author, revid = ackAuthors.get(ackKey(certifier, certified), (None, None))
+			irregular = author is None or normalizeUser(author) not in exemptUsers | {normalizeUser(certifier)}
+			if irregular:
+				output("irregulär: %s -> %s eingetragen von %s" % (certifier, certified, author))
+			if irregular and refuseIrregularACKs:
+				status, reason = REFUSED, "nicht vom Bestätiger eingetragen"
+			elif timestamp is None:
 				status, reason = REFUSED, "ungültiges Datum"
 			else:
 				try:
@@ -342,7 +417,11 @@ class PBBot:
 
 			# build comments for edit summary
 			ack = "%s → %s" % (userLink(certifier), userLink(certified))
-			if status == ADDED:
+			if irregular:
+				statusText = {ADDED: "übernommen", ALREADY: "war schon vorhanden"}.get(status, "abgelehnt: " + reason)
+				irregularACKs.append((certifier, certified, author, revid, statusText))
+				acksIrregular.append("%s (eingetragen von %s, %s)" % (ack, author or "verstecktem Benutzer", statusText))
+			elif status == ADDED:
 				acksAdded.append(ack)
 			elif status == ALREADY:
 				acksAlreadyIn.append(ack)
@@ -368,6 +447,10 @@ class PBBot:
 			editSummary = commentShort
 		else:
 			editSummary = commentLong
+		# irregular confirmations are always named explicitly
+		workListSummary = editSummary
+		if acksIrregular:
+			workListSummary = "; ".join(x for x in ["IRREGULÄRE Bestätigungen: " + ", ".join(acksIrregular), editSummary] if x)
 
 		## update wikipedia: delete requests
 		if self.isForceMode or newRawText != rawText:
@@ -375,9 +458,11 @@ class PBBot:
 				output("Anfragen:")
 				pywikibot.showDiff(rawText, newRawText)
 				if not DONOTSAVE:
-					page.put(newRawText, summary="In Datenbank übertragen: " + editSummary, watch='unwatch', minor=False, botflag=True)
+					page.put(newRawText, summary="In Datenbank übertragen: " + workListSummary, watch='unwatch', minor=False, botflag=True)
 			writeUserListToWikipedia(self.db, editSummary)
-			output("Zusammenfassung: " + editSummary + "\n")
+			if irregularACKs:
+				reportIrregularACKs(irregularACKs)
+			output("Zusammenfassung: " + workListSummary + "\n")
 		else:
 			output("nichts zu tun")
 			# write userlist twice per day (03:00 and 15:00, the container runs in UTC)
