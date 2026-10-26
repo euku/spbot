@@ -4,7 +4,7 @@
 	Tests for pers-bek-to-db-bot.py (check of the version history for irregular confirmations).
 	pywikibot, pymysql and the database are replaced by stubs: nothing is written to a wiki or a DB.
 
-	Run: pyvenv/bin/python -m unittest discover -s bot/scripts/userscripts -p 'test_pers_bek*'
+	Run: pyvenv-standalone/bin/python -m unittest discover -s src/userscripts -p 'test_pers_bek*'
 """
 import os
 import re

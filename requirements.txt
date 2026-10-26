@@ -1,0 +1,7 @@
+# Pywikibot is pinned to the version the bot ran on as a git checkout
+# (bot/, pywikibot 8.6.0). Upgrade separately and test with -simulate.
+pywikibot==8.6.0
+mwparserfromhell
+requests
+pymysql
+pytz
