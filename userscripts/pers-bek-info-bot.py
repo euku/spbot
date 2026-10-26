@@ -137,7 +137,8 @@ for userWaitingForMsg in usersWaitingForMsg:
 		archiveHelp = " <!{{subst:ns:0}}-- Hilfe für den Auto-Archiv-Bot: ~~~~~ -->"
 	if not DONOTSAVE:
 		try:
-			userTalkPage.put(userTalkPageRaw + msgToUser + archiveHelp, summary=userTalkSummary, watch='unwatch', minor=False, force=True, botflag=True)
+			# appendtext: the server appends, so there are no edit conflicts and nothing written in the meantime is lost
+			pywikibot.Site().editpage(userTalkPage, summary=userTalkSummary, minor=False, bot=True, watch='unwatch', appendtext=msgToUser + archiveHelp)
 		except Exception as e:
 			pywikibot.error("Fehler beim Speichern von %s: %r, mache weiter..." % (userTalkPage.title(), e))
 	else:
