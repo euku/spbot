@@ -32,10 +32,11 @@ userRAWListPage = "Wikipedia:Persönliche Bekanntschaften/JS-alle Benutzer"
 userListPage = "Wikipedia:Persönliche Bekanntschaften/Teilnehmerliste"
 newUserListPage = "Wikipedia:Persönliche Bekanntschaften/Neu dazugekommen"
 
-# check of the version history: a confirmation must be entered by the certifier himself/herself
-reportPage = "Benutzer Diskussion:Euku"  # irregular confirmations are reported here
-ackCheckExemptUsers = ["Euku"]  # these users may enter confirmations for others
-refuseIrregularACKs = True  # True => irregular confirmations are not stored; False => stored, but reported
+# check of the version history: a confirmation must be entered by the certifier himself/herself,
+# a new user by the user himself/herself
+reportPage = "Benutzer Diskussion:Euku"  # irregular entries are reported here
+ackCheckExemptUsers = ["Euku"]  # these users may enter confirmations and new users for others
+refuseIrregularEntries = True  # True => irregular entries are not stored; False => stored, but reported
 maxRevisionsToCheck = 50  # how far back the version history is searched at most
 
 # debugging
@@ -137,30 +138,26 @@ def writeUserListToWikipedia(db, editSummary):
 	# prepare new-user list for main page
 	newUserList = db.get_latest_user_list_with_confirmations()
 	toc = '<noinclude>{{WP:Persönliche Bekanntschaften/Teilnehmerliste/Intro}}</noinclude>\n== Neu dazugekommen ==\n'
-	userTemplate = '{{/Benutzer-Link|%s|%s|%s}} '
+	# named parameters: names containing "=" would break positional template parameters
+	userTemplate = '{{/Benutzer-Link|1=%s|2=%s|3=%s}} '
 
 	newRawText = toc
 	for u, confirmationCount, cfDate in newUserList:
-		try:
-			if confirmationCount < 3:
-				userStatus = "unbestätigt"
-			else:
-				userStatus = ""
-			date = "%s.%s" % (cfDate.day, cfDate.month) # convert to DD.MM.
-			newRawText += userTemplate % (u, date, userStatus)
-		except KeyError:
-			output(u + " not found in dictionary")
+		if confirmationCount < 3:
+			userStatus = "unbestätigt"
+		else:
+			userStatus = ""
+		date = "%s.%s" % (cfDate.day, cfDate.month) # convert to DD.MM.
+		newRawText += userTemplate % (u, date, userStatus)
 
-	# save it
+	# save it (MediaWiki strips trailing whitespace)
 	page = pywikibot.Page(pywikibot.Site(), newUserListPage)
 	rawText = page.get()
-	if newRawText != rawText + "\n":
-		output("Teilnehmerliste:")
+	if newRawText.rstrip() != rawText.rstrip():
+		output("Neu dazugekommen:")
 		pywikibot.showDiff(rawText, newRawText)
 		if not DONOTSAVE:
 			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, bot=False)
-
-	output(newRawText)
 
 
 """
@@ -168,6 +165,9 @@ def writeUserListToWikipedia(db, editSummary):
    and returns it back as a tuple
 """
 def divideIntoTasks(pageText):
+	# entries in comments and nowiki are not removed by replaceExcept, so they must not be processed either
+	pageText = textlib.removeDisabledParts(pageText, ["comment", "nowiki"])
+
 	### find new user requests
 	p = re.compile(newUserRegex, re.UNICODE)
 	taskIterator = p.finditer(pageText)
@@ -205,10 +205,13 @@ def makeTimestamp(year, month, day, hours, minutes):
 def addConfirmation(db, bestaetigerName, bestaetigterName, comment, timestamp):
 	bestaetiger = db.get_user_by_name(bestaetigerName)
 	bestaetigter = db.get_user_by_name(bestaetigterName)
-	if bestaetiger is None:
-		return REFUSED, "%s ist kein Teilnehmer" % bestaetigerName
-	if bestaetigter is None:
-		return REFUSED, "%s ist kein Teilnehmer" % bestaetigterName
+	for user, name in ((bestaetiger, bestaetigerName), (bestaetigter, bestaetigterName)):
+		if user is None:
+			return REFUSED, "%s ist kein Teilnehmer" % name
+		# hidden (former) and banned users: the edit summary is public, so do not tell the exact reason
+		if user[3] or user[4]:
+			output("%s ist %s" % (name, "gesperrt" if user[4] else "ausgetreten (versteckt)"))
+			return REFUSED, "%s ist kein Teilnehmer" % name
 	bestaetigerID = bestaetiger[1]
 	bestaetigterID = bestaetigter[1]
 
@@ -267,24 +270,40 @@ def userLink(name):
 
 def normalizeUser(name):
 	name = re.sub(r"[_\s]+", " ", name).strip()
-	return name[:1].upper() + name[1:]
+	first = name[:1].upper()
+	if len(first) != 1:
+		# e.g. "ß".upper() == "SS", MediaWiki keeps it
+		first = name[:1]
+	return first + name[1:]
+
+
+def userKey(name):
+	return ('user', normalizeUser(name))
 
 
 def ackKey(certifier, certified):
-	return (normalizeUser(certifier), normalizeUser(certified))
+	return ('ack', normalizeUser(certifier), normalizeUser(certified))
+
+
+def taskKeys(pageText):
+	newUsers, newACKs = divideIntoTasks(pageText)
+	return set(userKey(u[0]) for u in newUsers) | set(ackKey(a[0], a[1]) for a in newACKs)
 
 
 """
    searches the version history (newest first) for the revisions that entered
-   the given confirmations, i.e. back to the last run of the bot that removed
-   the older entries; returns {ackKey: (user, revid)}, user is None if hidden
+   the given entries (userKey/ackKey), i.e. back to the last run of the bot that
+   removed the older entries; returns {key: (user, revid)}, user is None if hidden
+   Only the key is compared, not the whole entry: whoever re-adds a removed entry
+   (e.g. a revert) counts as its author, and changes to the comment or time of an
+   entry by someone else are not noticed.
 """
-def findACKAuthors(page, acks):
-	pending = set(ackKey(a[0], a[1]) for a in acks)
+def findAuthors(page, pending):
+	pending = set(pending)
 	candidates = {}
 	authors = {}
 	for rev in page.revisions(content=True, total=maxRevisionsToCheck):
-		keys = set(ackKey(a[0], a[1]) for a in divideIntoTasks(rev.text or "")[1])
+		keys = taskKeys(rev.text or "")
 		for key in list(pending):
 			if key in keys:
 				# still contained => this or an older revision entered it
@@ -297,21 +316,32 @@ def findACKAuthors(page, acks):
 			break
 	for key in pending:
 		# beyond maxRevisionsToCheck, take the oldest revision checked
-		output("Ersteller von %s -> %s nicht sicher ermittelt" % key)
+		output("Ersteller von %s nicht sicher ermittelt" % " -> ".join(key[1:]))
 		authors[key] = candidates.get(key, (None, None))
 	return authors
 
 
 """
-   reports irregular confirmations on reportPage
+   rolls back the open transaction after a database error, so that a half
+   written entry is not committed together with the next one
 """
-def reportIrregularACKs(irregularACKs):
+def rollback(db):
+	try:
+		db.conn.rollback()
+	except pymysql.Error as e:
+		pywikibot.error("Rollback fehlgeschlagen: %r" % e)
+
+
+"""
+   reports irregular entries on reportPage
+"""
+def reportIrregularEntries(irregularEntries):
 	lines = []
-	for certifier, certified, author, revid, status in irregularACKs:
+	for what, author, revid, status in irregularEntries:
 		diff = " ([[Spezial:Diff/%s|Diff]])" % revid if revid else ""
 		authorText = userLink(author) if author else "(versteckter Benutzer)"
-		lines.append("* %s → %s, eingetragen von %s%s – %s" % (userLink(certifier), userLink(certified), authorText, diff, status))
-	msgText = "\n== [[Wikipedia:Persönliche Bekanntschaften]]: irreguläre Bestätigung(en) ==\nFolgende Bestätigungen wurden nicht vom Bestätiger selbst eingetragen:\n" \
+		lines.append("* %s, eingetragen von %s%s – %s" % (what, authorText, diff, status))
+	msgText = "\n== [[Wikipedia:Persönliche Bekanntschaften]]: irreguläre Einträge ==\nFolgende Einträge wurden nicht vom Bestätiger bzw. vom neuen Benutzer selbst eingetragen:\n" \
 		+ "\n".join(lines) + "\nGruß --~~~~"
 	output(msgText)
 	if DONOTSAVE:
@@ -319,7 +349,7 @@ def reportIrregularACKs(irregularACKs):
 	page = pywikibot.Page(pywikibot.Site(), reportPage)
 	try:
 		oldText = page.get() if page.exists() else ""
-		page.put(oldText + msgText, summary="irreguläre Bestätigung(en) bei [[WP:PB]]", watch='unwatch', minor=False, force=True, bot=False)
+		page.put(oldText + msgText, summary="irreguläre Einträge bei [[WP:PB]]", watch='unwatch', minor=False, force=True, bot=False)
 	except pywikibot.exceptions.Error as e:
 		pywikibot.error("Meldung auf %s nicht gespeichert: %r" % (reportPage, e))
 
@@ -353,24 +383,37 @@ class PBBot:
 		acksAdded = []
 		acksAlreadyIn = []
 		acksRefused = []
-		acksIrregular = []
-		irregularACKs = [] # for reportPage
+		irregularSummary = []
+		irregularEntries = [] # for reportPage
 		errors = 0 # entries that stay on the page because of a database error
 
 		newUsers, newACKs = divideIntoTasks(rawText)
-		ackAuthors = findACKAuthors(page, newACKs) if newACKs else {}
+		pendingKeys = taskKeys(rawText)
+		authors = findAuthors(page, pendingKeys) if pendingKeys else {}
 		exemptUsers = set(normalizeUser(u) for u in ackCheckExemptUsers)
+
+		def irregularStatus(status, reason):
+			return {ADDED: "übernommen", ALREADY: "war schon vorhanden"}.get(status, "abgelehnt: " + reason)
+
 		seenUsers = []
-		for currentName, minutes, hours, day, month, year in newUsers:
-			if currentName in seenUsers:
-				output("überspringe %s weil schon enthalten" % currentName)
+		for rawName, minutes, hours, day, month, year in newUsers:
+			# the raw name is needed to remove the entry, the normalized one for the DB
+			if rawName in seenUsers:
+				output("überspringe %s weil schon enthalten" % rawName)
 				continue
-			seenUsers.append(currentName)
+			seenUsers.append(rawName)
+			currentName = normalizeUser(rawName)
 
 			output("füge %s hinzu.. "  % currentName)
-			entry = newUserReplRegex % re.escape(currentName)
+			entry = newUserReplRegex % re.escape(rawName)
 			timestamp = makeTimestamp(year, month, day, hours, minutes)
-			if timestamp is None:
+			author, revid = authors.get(userKey(currentName), (None, None))
+			irregular = author is None or normalizeUser(author) not in exemptUsers | {currentName}
+			if irregular:
+				output("irregulär: %s eingetragen von %s" % (currentName, author))
+			if irregular and refuseIrregularEntries:
+				status, reason = REFUSED, "nicht vom Benutzer selbst eingetragen"
+			elif timestamp is None:
 				status, reason = REFUSED, "ungültiges Datum"
 			else:
 				try:
@@ -378,12 +421,17 @@ class PBBot:
 				except pymysql.DatabaseError:
 					# the entry stays on the page and will be tried again next time
 					pywikibot.error("Benutzer %s nicht übertragen:\n%s" % (currentName, traceback.format_exc()))
+					rollback(self.db)
 					errors += 1
 					continue
 			newRawText = textlib.replaceExcept(newRawText, entry, "", ["comment", "nowiki"])
 
 			# build comments for edit summary
-			if status == ADDED:
+			if irregular:
+				statusText = irregularStatus(status, reason)
+				irregularEntries.append(("neuer Benutzer " + userLink(currentName), author, revid, statusText))
+				irregularSummary.append("neuer Benutzer %s (eingetragen von %s, %s)" % (userLink(currentName), author or "verstecktem Benutzer", statusText))
+			elif status == ADDED:
 				usersAdded.append(userLink(currentName))
 			elif status == ALREADY:
 				usersAlreadyIn.append(userLink(currentName))
@@ -392,15 +440,16 @@ class PBBot:
 				usersRefused.append("%s (%s)" % (userLink(currentName), reason))
 
 		for currentACK in newACKs:
-			certifier, certified, comment, minutes, hours, day, month, year = currentACK
+			rawCertifier, rawCertified, comment, minutes, hours, day, month, year = currentACK
+			certifier, certified = normalizeUser(rawCertifier), normalizeUser(rawCertified)
 			output("füge Bestätigung: %s >> %s (Kommentar: %s) am %s.%s.%s %s:%02d hinzu.." % (certifier, certified, comment, day, month, year, hours, minutes))
-			entry = newACKReplRegex % (re.escape(certifier), re.escape(certified))
+			entry = newACKReplRegex % (re.escape(rawCertifier), re.escape(rawCertified))
 			timestamp = makeTimestamp(year, month, day, hours, minutes)
-			author, revid = ackAuthors.get(ackKey(certifier, certified), (None, None))
-			irregular = author is None or normalizeUser(author) not in exemptUsers | {normalizeUser(certifier)}
+			author, revid = authors.get(ackKey(certifier, certified), (None, None))
+			irregular = author is None or normalizeUser(author) not in exemptUsers | {certifier}
 			if irregular:
 				output("irregulär: %s -> %s eingetragen von %s" % (certifier, certified, author))
-			if irregular and refuseIrregularACKs:
+			if irregular and refuseIrregularEntries:
 				status, reason = REFUSED, "nicht vom Bestätiger eingetragen"
 			elif timestamp is None:
 				status, reason = REFUSED, "ungültiges Datum"
@@ -411,6 +460,7 @@ class PBBot:
 					# we cannot be sure that the confirmation was stored: the entry stays
 					# on the page and will be checked again next time
 					pywikibot.error("Bestätigung %s -> %s nicht übertragen:\n%s" % (certifier, certified, traceback.format_exc()))
+					rollback(self.db)
 					errors += 1
 					continue
 			newRawText = textlib.replaceExcept(newRawText, entry, "", ["comment", "nowiki"])
@@ -418,9 +468,9 @@ class PBBot:
 			# build comments for edit summary
 			ack = "%s → %s" % (userLink(certifier), userLink(certified))
 			if irregular:
-				statusText = {ADDED: "übernommen", ALREADY: "war schon vorhanden"}.get(status, "abgelehnt: " + reason)
-				irregularACKs.append((certifier, certified, author, revid, statusText))
-				acksIrregular.append("%s (eingetragen von %s, %s)" % (ack, author or "verstecktem Benutzer", statusText))
+				statusText = irregularStatus(status, reason)
+				irregularEntries.append(("Bestätigung " + ack, author, revid, statusText))
+				irregularSummary.append("%s (eingetragen von %s, %s)" % (ack, author or "verstecktem Benutzer", statusText))
 			elif status == ADDED:
 				acksAdded.append(ack)
 			elif status == ALREADY:
@@ -447,10 +497,10 @@ class PBBot:
 			editSummary = commentShort
 		else:
 			editSummary = commentLong
-		# irregular confirmations are always named explicitly
+		# irregular entries are always named explicitly
 		workListSummary = editSummary
-		if acksIrregular:
-			workListSummary = "; ".join(x for x in ["IRREGULÄRE Bestätigungen: " + ", ".join(acksIrregular), editSummary] if x)
+		if irregularSummary:
+			workListSummary = "; ".join(x for x in ["IRREGULÄRE Einträge: " + ", ".join(irregularSummary), editSummary] if x)
 
 		## update wikipedia: delete requests
 		if self.isForceMode or newRawText != rawText:
@@ -460,8 +510,8 @@ class PBBot:
 				if not DONOTSAVE:
 					page.put(newRawText, summary="In Datenbank übertragen: " + workListSummary, watch='unwatch', minor=False, bot=True)
 			writeUserListToWikipedia(self.db, editSummary)
-			if irregularACKs:
-				reportIrregularACKs(irregularACKs)
+			if irregularEntries:
+				reportIrregularEntries(irregularEntries)
 			output("Zusammenfassung: " + workListSummary + "\n")
 		else:
 			output("nichts zu tun")
