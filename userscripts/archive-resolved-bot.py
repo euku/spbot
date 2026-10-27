@@ -239,7 +239,7 @@ class WikiDocument:
 
         self.originPageName      = page.title()       # Current page
         self.lastEditTime        = page.latest_revision.timestamp    # last edit time
-        self.lastUser            = page.userName()    # last editor
+        self.lastUser            = page.latest_revision.user    # last editor
         self.bot                 = bot
 
     def divideIntoSlices(self):
@@ -430,7 +430,7 @@ class WikiDocument:
                     targetPage = pywikibot.Page(self.bot.site, targetPageName)
                     # ugly workaround for strange behaviour
                     editTimeFirstTry = targetPage.latest_revision.timestamp if targetPage.exists() else 20361231235900
-                    if not targetPage.exists() or targetPage.userName() != "SpBot" or (targetPage.latest_revision.timestamp - editTimeFirstTry).seconds >= 60 * 2:
+                    if not targetPage.exists() or targetPage.latest_revision.user != "SpBot" or (targetPage.latest_revision.timestamp - editTimeFirstTry).seconds >= 60 * 2:
                         raise
             
             if skipThisPage:
@@ -639,7 +639,7 @@ class ArchiveRobot:
                 page = pywikibot.Page(self.site, page.title())
                 if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
                     # paste only, if there is no such message
-                    page.save(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), self.localBot.errorTextSummary, botflag=False, minor=False, force=False)
+                    page.put(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), summary=self.localBot.errorTextSummary, bot=False, minor=False, force=False)
                 wdoc.generateErrorReport()
                 wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
         except:

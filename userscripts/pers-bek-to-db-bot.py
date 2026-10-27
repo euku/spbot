@@ -129,7 +129,7 @@ def writeUserListToWikipedia(db, editSummary):
 		output("Teilnehmerliste:")
 		pywikibot.showDiff(rawText, newRawText)
 		if not DONOTSAVE:
-			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, botflag=False)
+			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, bot=False)
 
 	######################
 	# write new users    #
@@ -158,7 +158,7 @@ def writeUserListToWikipedia(db, editSummary):
 		output("Teilnehmerliste:")
 		pywikibot.showDiff(rawText, newRawText)
 		if not DONOTSAVE:
-			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, botflag=False)
+			page.put(newRawText, summary=editSummary, watch='unwatch', minor=True, force=True, bot=False)
 
 	output(newRawText)
 
@@ -240,7 +240,7 @@ def addConfirmation(db, bestaetigerName, bestaetigterName, comment, timestamp):
 		if not DONOTSAVE:
 			try:
 				oldText = userTalkPage.get() if userTalkPage.exists() else ""
-				userTalkPage.put(oldText + msgText, summary="du wurdest zum dritten Mal bestätigt", watch='unwatch', minor=False, force=True, botflag=False)
+				userTalkPage.put(oldText + msgText, summary="du wurdest zum dritten Mal bestätigt", watch='unwatch', minor=False, force=True, bot=False)
 			except pywikibot.exceptions.Error as e:
 				pywikibot.error("Nachricht auf %s nicht gespeichert: %r" % (userTalkPage.title(), e))
 	return ADDED, ""
@@ -319,7 +319,7 @@ def reportIrregularACKs(irregularACKs):
 	page = pywikibot.Page(pywikibot.Site(), reportPage)
 	try:
 		oldText = page.get() if page.exists() else ""
-		page.put(oldText + msgText, summary="irreguläre Bestätigung(en) bei [[WP:PB]]", watch='unwatch', minor=False, force=True, botflag=False)
+		page.put(oldText + msgText, summary="irreguläre Bestätigung(en) bei [[WP:PB]]", watch='unwatch', minor=False, force=True, bot=False)
 	except pywikibot.exceptions.Error as e:
 		pywikibot.error("Meldung auf %s nicht gespeichert: %r" % (reportPage, e))
 
@@ -458,7 +458,7 @@ class PBBot:
 				output("Anfragen:")
 				pywikibot.showDiff(rawText, newRawText)
 				if not DONOTSAVE:
-					page.put(newRawText, summary="In Datenbank übertragen: " + workListSummary, watch='unwatch', minor=False, botflag=True)
+					page.put(newRawText, summary="In Datenbank übertragen: " + workListSummary, watch='unwatch', minor=False, bot=True)
 			writeUserListToWikipedia(self.db, editSummary)
 			if irregularACKs:
 				reportIrregularACKs(irregularACKs)

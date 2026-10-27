@@ -18,7 +18,7 @@ from operator import methodcaller
 
 import pywikibot  # pywikibot framework
 from pywikibot import Timestamp
-from pywikibot.backports import Generator, removeprefix
+from collections.abc import Generator
 from pywikibot.bot import CurrentPageBot, SingleSiteBot
 from pywikibot.tools.itertools import filter_unique
 
@@ -190,7 +190,7 @@ def main(*args: str) -> None:
         opt, _, value = arg.partition(':')
         if not opt.startswith('-'):
             continue
-        options[removeprefix(opt, '-')] = value or True
+        options[opt.removeprefix('-')] = value or True
 
     bot = BotStatsUpdater(**options)
     bot.run()

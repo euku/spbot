@@ -154,7 +154,7 @@ def writeActiveMenteeList(site, mentees):
     summary = changeSummary(rawText, mentees)
     pywikibot.showDiff(rawText, result)
     page.put(result, summary="Update " + summary if summary else "Update (Status)",
-             minor=True, force=True, botflag=True)
+             minor=True, force=True, bot=True)
 
 
 def writeMenteeArchive(site, session, base, today):
@@ -165,10 +165,10 @@ def writeMenteeArchive(site, session, base, today):
         text = renderArchiveMonth(archive)
         page = pywikibot.Page(site, f"{mentorenProgrammMenteeArchiv}{year} {MONTHS[month - 1]}")
         if not page.exists():
-            page.put(text, summary="neues Archiv", minor=True, force=True, botflag=False)
+            page.put(text, summary="neues Archiv", minor=True, force=True, bot=False)
         elif page.get() != text:
             pywikibot.showDiff(page.get(), text)
-            page.put(text, summary="Update", minor=True, force=True, botflag=False)
+            page.put(text, summary="Update", minor=True, force=True, bot=False)
         else:
             pywikibot.info(f"keine Änderung im WP-Archiv nötig: {year} {MONTHS[month - 1]}")
 
