@@ -11,7 +11,7 @@ class LocalBotDe(LocalBot):
     def __init__(self, projectId: str) -> None:
         super().__init__(projectId)
         
-        self.timeStampRegEx = "(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ (?P<dd>[0-9]{1,2})\.?\ (?P<MM>[a-zA-Zä]{3,10})\.?\ (?P<yyyy>[0-9]{4})\ \((?:CE[S]?T|ME[S]?Z|UTC)\)"
+        self.timeStampRegEx = r"(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ (?P<dd>[0-9]{1,2})\.?\ (?P<MM>[a-zA-Zä]{3,10})\.?\ (?P<yyyy>[0-9]{4})\ \((?:CE[S]?T|ME[S]?Z|UTC)\)"
         self.archiveTemplateName = "Vorlage:Autoarchiv-Erledigt"
         self.headTemplate   = "{{Archiv}}"      # Headtemplate to insert into new archivpages
         self.excludeList = (
@@ -28,7 +28,7 @@ class LocalBotDe(LocalBot):
         self.errorTextSummary = "Berichte Fehler"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:[Vv]orlage\:|[Tt]emplate\:)?\ *[Aa]utoarchiv-[Ee]rledigt(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.optionsRegEx = r"\{\{\ *(?:[Vv]orlage\:|[Tt]emplate\:)?\ *[Aa]utoarchiv-[Ee]rledigt(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
         self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren\s*[\|\}]'
         self.paramAge = 'ALTER'
         self.paramArchive = 'ZIEL'
@@ -117,10 +117,10 @@ class LocalBotDe(LocalBot):
             excludeTags = ["comment", "nowiki", "code"]
             # won't work for but also won't harm:
             # {{Autoarchiv-Erledigt|Alter=1|Ziel=((FULLPAGENAME))/Archiv|aktuelles Archiv={{FULLPAGENAME}}/Archiv|Zeigen=Ja}}
-            rmParamRegEx = "(\{\{\s*?[Aa]utoarchiv\-[Ee]rledigt[^}]*)\|[^}]*%s\s*=\s*%s[\n\r\s]*([^}]*?\}\})"
-            modifiedText = textlib.replaceExcept(originalText, rmParamRegEx % ("Mindestabschnitte", "\d+?"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Mindestbeiträge", "\d+?"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Frequenz","[a-zäöü\:]*"), "\\1\\2", excludeTags)
+            rmParamRegEx = "(\\{\\{\\s*?[Aa]utoarchiv\\-[Ee]rledigt[^}]*)\\|[^}]*%s\\s*=\\s*%s[\n\r\\s]*([^}]*?\\}\\})"
+            modifiedText = textlib.replaceExcept(originalText, rmParamRegEx % ("Mindestabschnitte", r"\d+?"), "\\1\\2", excludeTags)
+            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Mindestbeiträge", r"\d+?"), "\\1\\2", excludeTags)
+            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Frequenz",r"[a-zäöü\:]*"), "\\1\\2", excludeTags)
             modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Klein", "[JjAaNnEeIiNn]*"), "\\1\\2", excludeTags)
             modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Modus", "[Eerledigt]*"), "\\1\\2", excludeTags)
             modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Zeigen", "[JjAa]+"), "\\1\\2", excludeTags)

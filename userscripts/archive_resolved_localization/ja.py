@@ -8,7 +8,7 @@ class LocalBotJa(LocalBot):
     def __init__(self, projectId: str) -> None:
         super().__init__(projectId)
 
-        self.timeStampRegEx = "(?P<yyyy>\d{4})年(?P<MM>\d{1,2})月(?P<dd>\d{1,2})日\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(UTC\)"
+        self.timeStampRegEx = r"(?P<yyyy>\d{4})年(?P<MM>\d{1,2})月(?P<dd>\d{1,2})日\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(UTC\)"
         self.archiveTemplateName = "Template:Autoarchive resolved section"
         self.headTemplate   = "{{Talkarchive}}"
         self.excludeList = ( self.archiveTemplateName )
@@ -20,8 +20,8 @@ class LocalBotJa(LocalBot):
         self.errorTextSummary = "エラーを報告"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]'
+        self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren[|}]'
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
@@ -38,7 +38,7 @@ class LocalBotJa(LocalBot):
         self.archiveSumLastEdit= " - 前の編集: [[:User:%s|%s]], %s"
         self.archiveOverallSummary = "{numberOfSectionsRemovedFromOriginStr} を過去ログ化: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
-        self.sectResolvedRegEx = "(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
+        self.sectResolvedRegEx = r"(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
         self.sectResolved1P    = ":<small>この節は次の利用者の依頼で過去ログ化されました： \\1</small>"
         self.sectResolved2P    = ":<small>この節は次の利用者の依頼で過去ログ化されました： \\1 \\7</small>"
     

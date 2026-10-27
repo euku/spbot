@@ -3,7 +3,6 @@
 - name: bot-login
   command: pyvenv/bin/pwb login -all
   image: python3.13
-  no-filelog: false
   schedule: "0   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/bot-login.out
@@ -13,7 +12,6 @@
 - name: archive-resolved-dewikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikipedia
   image: python3.13
-  no-filelog: false
   schedule: "4   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-dewikipedia.out
@@ -21,7 +19,6 @@
 - name: archive-resolved-cswikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:cswikipedia
   image: python3.13
-  no-filelog: false
   schedule: "5   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-cswikipedia.out
@@ -29,7 +26,6 @@
 - name: archive-resolved-dewiktionary
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewiktionary
   image: python3.13
-  no-filelog: false
   schedule: "6   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-dewiktionary.out
@@ -37,7 +33,6 @@
 - name: archive-resolved-dewikisource
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikisource
   image: python3.13
-  no-filelog: false
   schedule: "6   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-dewikisource.out
@@ -45,7 +40,6 @@
 - name: archive-resolved-enwikisource
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:enwikisource
   image: python3.13
-  no-filelog: false
   schedule: "6   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-enwikisource.out
@@ -53,7 +47,6 @@
 - name: archive-resolved-dewikiversity
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikiversity
   image: python3.13
-  no-filelog: false
   schedule: "7   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-dewikiversity.out
@@ -61,7 +54,6 @@
 - name: archive-resolved-itwikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:itwikipedia
   image: python3.13
-  no-filelog: false
   schedule: "6   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-itwikipedia.out
@@ -70,7 +62,6 @@
 - name: archive-resolved-commons
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:commons
   image: python3.13
-  no-filelog: false
   schedule: "7   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-commons.out
@@ -78,7 +69,6 @@
 - name: archive-resolved-meta
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:meta
   image: python3.13
-  no-filelog: false
   schedule: "7   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-meta.out
@@ -86,7 +76,6 @@
 - name: archive-resolved-simplewikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:simplewikipedia
   image: python3.13
-  no-filelog: false
   schedule: "6   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-simplewikipedia.out
@@ -95,7 +84,6 @@
 - name: archive-resolved-wikidata
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:wikidata
   image: python3.13
-  no-filelog: false
   schedule: "7   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-wikidata.out
@@ -103,7 +91,6 @@
 - name: archive-resolved-wikimania
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:wikimania
   image: python3.13
-  no-filelog: false
   schedule: "8   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-wikimania.out
@@ -111,7 +98,6 @@
 - name: archive-resolved-species
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:species
   image: python3.13
-  no-filelog: false
   schedule: "8   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-species.out
@@ -119,7 +105,6 @@
 - name: archive-resolved-wikifunctions
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:wikifunctions
   image: python3.13
-  no-filelog: false
   schedule: "8   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-wikifunctions.out
@@ -127,7 +112,6 @@
 - name: archive-resolved-incubator
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:incubator
   image: python3.13
-  no-filelog: false
   schedule: "8   3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-incubator.out
@@ -137,7 +121,6 @@
 - name: archive-resolved-jawikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:jawikipedia
   image: python3.13
-  no-filelog: false
   schedule: "8   19   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-jawikipedia.out
@@ -145,7 +128,6 @@
 - name: archive-resolved-kowikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:kowikipedia
   image: python3.13
-  no-filelog: false
   schedule: "8   19   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-kowikipedia.out
@@ -153,7 +135,6 @@
 - name: archive-resolved-viwikipedia
   command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:viwikipedia
   image: python3.13
-  no-filelog: false
   schedule: "8   19   *   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-viwikipedia.out
@@ -164,7 +145,6 @@
 - name: pers-bek-info-bot
   command: pyvenv/bin/python src/userscripts/pers-bek-info-bot.py
   image: python3.13
-  no-filelog: false
   schedule: "50  3   *   *   *"
   emails: onfailure
   filelog-stdout: logs/pers-bek-info-bot.out
@@ -174,7 +154,6 @@
 - name: pers-bek-to-db-bot
   command: pyvenv/bin/python src/userscripts/pers-bek-to-db-bot.py
   image: python3.13
-  no-filelog: false
   schedule: "*/10  *   *   *   *"
   emails: onfailure
   filelog-stdout: logs/pers-bek-to-db-bot.out
@@ -185,7 +164,6 @@
 - name: mp-helper
   command: pyvenv/bin/python src/userscripts/mp-helper.py
   image: python3.13
-  no-filelog: false
   schedule: "*/20  *   *   *   *"
   emails: onfailure
   filelog-stdout: logs/mp-helper.out
@@ -196,7 +174,6 @@
 - name: bot-stats-dewikip
   command: pyvenv/bin/python src/userscripts/bot-stats.py -always
   image: python3.13
-  no-filelog: false
   schedule: "0  4   *   *   3"
   emails: onfailure
   filelog-stdout: logs/bot-stats.out
@@ -207,7 +184,6 @@
 - name: daily-log-cleanup
   command: sh ~/src/jobs/daily-log-cleanup.sh
   image: trixie
-  no-filelog: false
   schedule: "59  23   *   *   *"
   emails: onfailure
   filelog-stdout: logs/daily-log-cleanup.out
@@ -216,7 +192,6 @@
 - name: archive-resolved-sych-bot-overview
   command: pyvenv/bin/python src/userscripts/archive-resolved-sych-bot-overview.py
   image: python3.13
-  no-filelog: false
   schedule: "1   3   */3   *   *"
   emails: onfailure
   filelog-stdout: logs/archive-resolved-sych-bot-overview.out

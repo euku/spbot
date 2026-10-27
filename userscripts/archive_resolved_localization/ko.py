@@ -8,7 +8,7 @@ class LocalBotKo(LocalBot):
     def __init__(self, projectId: str) -> None:
         super().__init__(projectId)
         
-        self.timeStampRegEx = "(?P<yyyy>\d{4})년\ (?P<MM>\d{1,2})월\ (?P<dd>\d{1,2})일\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(KST\)"
+        self.timeStampRegEx = r"(?P<yyyy>\d{4})년\ (?P<MM>\d{1,2})월\ (?P<dd>\d{1,2})일\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(KST\)"
         self.archiveTemplateName = "틀:완료된 토론 자동 보존"
         self.headTemplate = "{{보존}}"
         self.excludeList = ( self.archiveTemplateName )
@@ -20,8 +20,8 @@ class LocalBotKo(LocalBot):
         self.errorTextSummary = "문제 보고"
         # template parameters / 틀 변수
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = '\{\{\ *보존i\ 중단\}\}'
+        self.optionsRegEx = r"\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.templDoNotArchive = r'\{\{\ *보존i\ 중단\}\}'
         self.paramAge = '날짜'
         self.paramArchive = '보존'
         self.paramLevel = '단위'
@@ -38,7 +38,7 @@ class LocalBotKo(LocalBot):
         self.archiveSumLastEdit = "-이전 편집: [[:User:%s|%s]],%s"
         self.archiveOverallSummary = "보존 {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
-        self.sectResolvedRegEx = "(?:완료된\ 토론)"
+        self.sectResolvedRegEx = r"(?:완료된\ 토론)"
         self.sectResolved1P = ":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1</small>"
         self.sectResolved2P = ":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1 \\7</small>"
     

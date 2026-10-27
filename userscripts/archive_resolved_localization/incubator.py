@@ -8,4 +8,4 @@ class LocalBotIncubator(LocalBotEn):
 
         # the rest is inherited from EN
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *(?:\w\w/\w{1,3}/)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *(?:\w\w/\w{1,3}/)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"

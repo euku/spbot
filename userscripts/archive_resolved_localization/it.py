@@ -11,7 +11,7 @@ class LocalBotIt(LocalBot):
     def __init__(self, projectId: str) -> None:
         super().__init__(projectId)
 
-        self.timeStampRegEx = "(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ (?P<dd>[0-9]{1,2})\ (?P<MM>[a-zA-Zä]{3,10})\.?\ (?P<yyyy>[0-9]{4})\ \((?:CE[S]?T|UTC)\)"
+        self.timeStampRegEx = r"(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ (?P<dd>[0-9]{1,2})\ (?P<MM>[a-zA-Zä]{3,10})\.?\ (?P<yyyy>[0-9]{4})\ \((?:CE[S]?T|UTC)\)"
         self.archiveTemplateName = "Template:Autoarchivio"
         self.headTemplate   = "{{Avviso archivio}}"
 
@@ -25,8 +25,8 @@ class LocalBotIt(LocalBot):
         
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchivio(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
+        self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchivio(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
         self.paramAge = 'GIORNI'
         self.paramArchive = 'ARCHIVIO'
         self.paramLevel = 'LIVELLO'
@@ -43,7 +43,7 @@ class LocalBotIt(LocalBot):
         self.archiveSumLastEdit= " - modifica precedente: [[:User:%s|%s]], %s"
         self.archiveOverallSummary = "archiviate {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
-        self.sectResolvedRegEx = "(?:[Ss]ezione[\ _]risolta)"
+        self.sectResolvedRegEx = r"(?:[Ss]ezione[\ _]risolta)"
         self.sectResolved1P = ":<small>Questa sezione è stata archiviata su richiesta di: \\1</small>"
         self.sectResolved2P = ":<small>Questa sezione è stata archiviata su richiesta di \\1 \\7</small>"
 

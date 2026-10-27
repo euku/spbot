@@ -10,7 +10,7 @@ class LocalBotVi(LocalBot):
     def __init__(self, projectId: str) -> None:
         super().__init__(projectId)
         
-        self.timeStampRegEx = "(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ ngày\ (?P<dd>[0-9]{1,2})\ [Tt]háng\ (?P<MM>\d{1,2})\ năm\ (?P<yyyy>[0-9]{4})\ \(UTC\)"
+        self.timeStampRegEx = r"(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ ngày\ (?P<dd>[0-9]{1,2})\ [Tt]háng\ (?P<MM>\d{1,2})\ năm\ (?P<yyyy>[0-9]{4})\ \(UTC\)"
         self.archiveTemplateName = "Bản mẫu:Autoarchive resolved section"
         self.headTemplate   = "{{Talkarchive}}"
         self.excludeList = ( self.archiveTemplateName, f"{{self.archiveTemplateName}}/doc" )
@@ -22,8 +22,8 @@ class LocalBotVi(LocalBot):
         self.errorTextSummary = "reporting an error"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]'
+        self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren[|}]'
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
@@ -40,7 +40,7 @@ class LocalBotVi(LocalBot):
         self.archiveSumLastEdit= " - sửa đổi trước đó: [[User:%s|%s]], %s"
         self.archiveOverallSummary = "lưu trữ {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
-        self.sectResolvedRegEx = "(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
+        self.sectResolvedRegEx = r"(?:[Ss]ection[\ _]resolved|[Rr]esolved[\ _]section)"
         self.sectResolved1P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1</small>"
         self.sectResolved2P    = ":<small>Đề mục này đã được lưu trữ theo yêu cầu của: \\1 \\7</small>"
     

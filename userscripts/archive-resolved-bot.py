@@ -156,7 +156,7 @@ class Discussion:
 
     def _examineAllResolvedTemplate(self, bot, clearedContent: str):
         # Now examine if discussion has a "cleared" flag and
-        sectResolvedPattern = "\{\{\s{0,50}" + bot.localBot.sectResolvedRegEx + "\s{0,50}\|.*?" + bot.localBot.timeStampRegEx + ".*?\}\}"
+        sectResolvedPattern = r"\{\{\s{0,50}" + bot.localBot.sectResolvedRegEx + r"\s{0,50}\|.*?" + bot.localBot.timeStampRegEx + r".*?\}\}"
         agesList, timestampList = self._extractTimeStampsAndAges(sectResolvedPattern, clearedContent)
         if agesList != []:
             self.ageByResolvedTemplate = min(agesList)
@@ -351,10 +351,10 @@ class WikiDocument:
             Substitutes the templates
         """
         # subst erledigt
-        old = re.compile("\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + "\ {0,5}\|(?:1=)?([^}]*?" + self.bot.localBot.timeStampRegEx + ")\ *?\|(?:2=.*?)?([^}]*?)\ *\}\}", re.UNICODE | re.DOTALL)
+        old = re.compile(r"\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + r"\ {0,5}\|(?:1=)?([^}]*?" + self.bot.localBot.timeStampRegEx + r")\ *?\|(?:2=.*?)?([^}]*?)\ *\}\}", re.UNICODE | re.DOTALL)
         originalText = textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved2P, ["comment", "nowiki"])
         
-        old = re.compile("\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + "\ {0,5}\|(?:1=)?([^}]*?[^}|*]?" + self.bot.localBot.timeStampRegEx + ")\ *?\}\}", re.UNICODE | re.DOTALL)
+        old = re.compile(r"\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + r"\ {0,5}\|(?:1=)?([^}]*?[^}|*]?" + self.bot.localBot.timeStampRegEx + r")\ *?\}\}", re.UNICODE | re.DOTALL)
         return textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved1P, ["comment", "nowiki"])
 
     def _showDiffs(self, pageName: str, originalText: str, modifiedText: str):

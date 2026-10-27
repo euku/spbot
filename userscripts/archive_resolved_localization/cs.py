@@ -9,7 +9,7 @@ class LocalBotCs(LocalBot):
     def __init__(self, projectId: str) -> None:
         super().__init__(projectId)
         
-        self.timeStampRegEx = "(?P<dd>[0-9]{1,2})\.\ (?P<MM>\d{1,2})\.\ (?P<yyyy>[0-9]{4}),\ (?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2})\ \((?:CE[S]?T)\)"
+        self.timeStampRegEx = r"(?P<dd>[0-9]{1,2})\.\ (?P<MM>\d{1,2})\.\ (?P<yyyy>[0-9]{4}),\ (?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2})\ \((?:CE[S]?T)\)"
         self.archiveTemplateName = "Šablona:Archivace vyřešených sekcí"
         self.headTemplate   = "{{Archiv diskuse}}"
         self.excludeList = ( self.archiveTemplateName )
@@ -21,8 +21,8 @@ class LocalBotCs(LocalBot):
         self.errorTextSummary = "Archivaci nelze dokončit"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = "\{\{\ *(?:[Šš]ablona|[Tt]emplate\:)?\ *[Aa]rchivace\ vyřešených\ sekcí(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = '\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
+        self.optionsRegEx = r"\{\{\ *(?:[Šš]ablona|[Tt]emplate\:)?\ *[Aa]rchivace\ vyřešených\ sekcí(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
