@@ -7,7 +7,7 @@ from PyPI (see `requirements.txt`), not vendored.
 ## Layout on Toolforge (`/data/project/spbot`)
 
 - `src/` – this repository
-- `pyvenv-standalone/` – venv, created with `src/bootstrap_venv.sh` inside the job image
+- `pyvenv/` – venv, created with `src/bootstrap_venv.sh` inside the job image
 - `.pywikibot/` – pywikibot base dir (`user-config.py`, cookies, throttle file);
   found automatically because it is `~/.pywikibot` of the tool account
 - `logs/` – job logs; the scripts write their own logs relative to the
@@ -27,6 +27,6 @@ minthrottle = 0
 ## Running a script manually
 
 ```sh
-pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:dewikipedia -page:Benutzer_Diskussion:Werner_von_Basil -dryrun
-pyvenv-standalone/bin/python -m unittest discover -s src/userscripts -p 'test_pers_bek*'
+pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikipedia -page:Benutzer_Diskussion:Werner_von_Basil -dryrun
+pyvenv/bin/python -m unittest discover -s src/userscripts -p 'test_pers_bek*'
 ```

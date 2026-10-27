@@ -5,7 +5,7 @@
 # Refuses to touch an existing venv; remove or rename it yourself first.
 set -euo pipefail
 
-VENV="${VENV:-$HOME/pyvenv-standalone}"
+VENV="${VENV:-$HOME/pyvenv}"
 if [ -e "$VENV" ]; then
     echo "$VENV already exists, not touching it" >&2
     exit 1

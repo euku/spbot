@@ -1,7 +1,7 @@
 # https://wikitech.wikimedia.org/wiki/Help:Toolforge/Jobs_framework
 
 - name: bot-login
-  command: pyvenv-standalone/bin/pwb login -all
+  command: pyvenv/bin/pwb login -all
   image: python3.11
   no-filelog: false
   schedule: "0   3   *   *   *"
@@ -11,7 +11,7 @@
 
 ## EUROPE: 3 am UTC
 - name: archive-resolved-dewikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:dewikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikipedia
   image: python3.11
   no-filelog: false
   schedule: "4   3   *   *   *"
@@ -19,7 +19,7 @@
   filelog-stdout: logs/archive-resolved-dewikipedia.out
   filelog-stderr: logs/archive-resolved-dewikipedia.err
 - name: archive-resolved-cswikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:cswikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:cswikipedia
   image: python3.11
   no-filelog: false
   schedule: "5   3   *   *   *"
@@ -27,7 +27,7 @@
   filelog-stdout: logs/archive-resolved-cswikipedia.out
   filelog-stderr: logs/archive-resolved-cswikipedia.err
 - name: archive-resolved-dewiktionary
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:dewiktionary
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewiktionary
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -35,7 +35,7 @@
   filelog-stdout: logs/archive-resolved-dewiktionary.out
   filelog-stderr: logs/archive-resolved-dewiktionary.err
 - name: archive-resolved-dewikisource
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:dewikisource
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikisource
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -43,7 +43,7 @@
   filelog-stdout: logs/archive-resolved-dewikisource.out
   filelog-stderr: logs/archive-resolved-dewikisource.err
 - name: archive-resolved-enwikisource
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:enwikisource
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:enwikisource
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -51,7 +51,7 @@
   filelog-stdout: logs/archive-resolved-enwikisource.out
   filelog-stderr: logs/archive-resolved-enwikisource.err
 - name: archive-resolved-dewikiversity
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:dewikiversity
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikiversity
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -59,7 +59,7 @@
   filelog-stdout: logs/archive-resolved-dewikiversity.out
   filelog-stderr: logs/archive-resolved-dewikiversity.err
 - name: archive-resolved-itwikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:itwikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:itwikipedia
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -68,7 +68,7 @@
   filelog-stderr: logs/archive-resolved-itwikipedia.err
 
 - name: archive-resolved-commons
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:commons
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:commons
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -76,7 +76,7 @@
   filelog-stdout: logs/archive-resolved-commons.out
   filelog-stderr: logs/archive-resolved-commons.err
 - name: archive-resolved-meta
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:meta
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:meta
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -84,7 +84,7 @@
   filelog-stdout: logs/archive-resolved-meta.out
   filelog-stderr: logs/archive-resolved-meta.err
 - name: archive-resolved-simplewikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:simplewikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:simplewikipedia
   image: python3.11
   no-filelog: false
   schedule: "6   3   *   *   *"
@@ -93,7 +93,7 @@
   filelog-stderr: logs/archive-resolved-simplewikipedia.err
 
 - name: archive-resolved-wikidata
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:wikidata
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:wikidata
   image: python3.11
   no-filelog: false
   schedule: "7   3   *   *   *"
@@ -101,7 +101,7 @@
   filelog-stdout: logs/archive-resolved-wikidata.out
   filelog-stderr: logs/archive-resolved-wikidata.err
 - name: archive-resolved-wikimania
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:wikimania
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:wikimania
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -109,7 +109,7 @@
   filelog-stdout: logs/archive-resolved-wikimania.out
   filelog-stderr: logs/archive-resolved-wikimania.err
 - name: archive-resolved-species
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:species
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:species
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -117,7 +117,7 @@
   filelog-stdout: logs/archive-resolved-species.out
   filelog-stderr: logs/archive-resolved-species.err
 - name: archive-resolved-wikifunctions
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:wikifunctions
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:wikifunctions
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -125,7 +125,7 @@
   filelog-stdout: logs/archive-resolved-wikifunctions.out
   filelog-stderr: logs/archive-resolved-wikifunctions.err
 - name: archive-resolved-incubator
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:incubator
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:incubator
   image: python3.11
   no-filelog: false
   schedule: "8   3   *   *   *"
@@ -135,7 +135,7 @@
 
 ### Asia
 - name: archive-resolved-jawikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:jawikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:jawikipedia
   image: python3.11
   no-filelog: false
   schedule: "8   19   *   *   *"
@@ -143,7 +143,7 @@
   filelog-stdout: logs/archive-resolved-jawikipedia.out
   filelog-stderr: logs/archive-resolved-jawikipedia.err
 - name: archive-resolved-kowikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:kowikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:kowikipedia
   image: python3.11
   no-filelog: false
   schedule: "8   19   *   *   *"
@@ -151,7 +151,7 @@
   filelog-stdout: logs/archive-resolved-kowikipedia.out
   filelog-stderr: logs/archive-resolved-kowikipedia.err
 - name: archive-resolved-viwikipedia
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-bot.py -project:viwikipedia
+  command: pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:viwikipedia
   image: python3.11
   no-filelog: false
   schedule: "8   19   *   *   *"
@@ -162,7 +162,7 @@
 ##############################################################################
 # dayly, info on WP:PB
 - name: pers-bek-info-bot
-  command: pyvenv-standalone/bin/python src/userscripts/pers-bek-info-bot.py
+  command: pyvenv/bin/python src/userscripts/pers-bek-info-bot.py
   image: python3.11
   no-filelog: false
   schedule: "50  3   *   *   *"
@@ -172,7 +172,7 @@
 
 ### every 10 minutes: WP:PB ###
 - name: pers-bek-to-db-bot
-  command: pyvenv-standalone/bin/python src/userscripts/pers-bek-to-db-bot.py
+  command: pyvenv/bin/python src/userscripts/pers-bek-to-db-bot.py
   image: python3.11
   no-filelog: false
   schedule: "*/10  *   *   *   *"
@@ -183,7 +183,7 @@
 ##############################################################################
 # every 20 minutes: WP:MP
 - name: mp-helper
-  command: pyvenv-standalone/bin/python src/userscripts/mp-helper.py
+  command: pyvenv/bin/python src/userscripts/mp-helper.py
   image: python3.11
   no-filelog: false
   schedule: "*/20  *   *   *   *"
@@ -194,7 +194,7 @@
 ##############################################################################
 # every Thuesday: bot stats
 - name: bot-stats-dewikip
-  command: pyvenv-standalone/bin/python src/userscripts/bot-stats.py -always
+  command: pyvenv/bin/python src/userscripts/bot-stats.py -always
   image: python3.11
   no-filelog: false
   schedule: "0  4   *   *   3"
@@ -214,7 +214,7 @@
   filelog-stderr: logs/daily-log-cleanup.err
 
 - name: archive-resolved-sych-bot-overview
-  command: pyvenv-standalone/bin/python src/userscripts/archive-resolved-sych-bot-overview.py
+  command: pyvenv/bin/python src/userscripts/archive-resolved-sych-bot-overview.py
   image: python3.11
   no-filelog: false
   schedule: "1   3   */3   *   *"
