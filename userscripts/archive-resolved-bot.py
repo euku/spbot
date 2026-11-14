@@ -375,13 +375,31 @@ class WikiDocument:
             pywikibot.output(f"Could not verify [[{targetPageName}]]: {traceback.format_exc()}")
             return False
 
+    def _resolveTargetPage(self, targetPageName: str):
+        """Return the page to write the archive to, following a redirect only if it
+        points to another subpage of the origin page (e.g. a moved archive).
+        Returns None if the target is an unsafe redirect."""
+        targetPage = pywikibot.Page(self.bot.site, targetPageName)
+        if not targetPage.isRedirectPage():
+            return targetPage
+        redirectTarget = targetPage.getRedirectTarget()
+        if redirectTarget.title().startswith(self.originPageName + '/') and not redirectTarget.isRedirectPage():
+            pywikibot.output(f'[[{targetPageName}]] is a redirect, archiving into [[{redirectTarget.title()}]] instead')
+            return redirectTarget
+        pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because archive [[{targetPageName}]] '
+                         f'redirects to [[{redirectTarget.title()}]], which is not a subpage of the origin page.<<default>>')
+        return None
+
     def executeArchiving(self):
         # first, check if we can edit all the pages
         if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
             pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it is protected.<<default>>')
             return
         for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
-            if not pywikibot.Page(self.bot.site, targetPageName).botMayEdit():
+            targetPage = self._resolveTargetPage(targetPageName)
+            if targetPage is None:
+                return
+            if not targetPage.botMayEdit():
                 pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
                 return
 
@@ -407,7 +425,11 @@ class WikiDocument:
                 newText = None
                 try:
                     pywikibot.output(f"Opening page [[{targetPageName}]]")
-                    targetPage = pywikibot.Page(self.bot.site, targetPageName)
+                    targetPage = self._resolveTargetPage(targetPageName)
+                    if targetPage is None:
+                        skipThisPage = True
+                        break
+                    targetPageName = targetPage.title()
                     if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
                         pywikibot.output("Archiving into the (Main) namespace 0!")
                         skipThisPage = True
