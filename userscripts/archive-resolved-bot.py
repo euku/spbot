@@ -364,6 +364,17 @@ class WikiDocument:
             pywikibot.showDiff(originalText, modifiedText)
             pywikibot.output("#"*80)
 
+    def _targetWasSaved(self, targetPageName: str, expectedText: str) -> bool:
+        try:
+            freshPage = pywikibot.Page(self.bot.site, targetPageName)
+            if not freshPage.exists():
+                return False
+            return (freshPage.latest_revision.user == self.bot.site.username()
+                    and freshPage.get(force=True).rstrip() == expectedText.rstrip())
+        except Exception:
+            pywikibot.output(f"Could not verify [[{targetPageName}]]: {traceback.format_exc()}")
+            return False
+
     def executeArchiving(self):
         # first, check if we can edit all the pages
         if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
@@ -393,6 +404,7 @@ class WikiDocument:
                 if self.bot.localBot.firstNewSectionInArchiveSummary != '': # for projects without translation
                     targetEditComment += self.bot.localBot.firstNewSectionInArchiveSummary.format(firstNewSectionInArchiveLink=firstNewSectionInArchiveLink)
                 
+                newText = None
                 try:
                     pywikibot.output(f"Opening page [[{targetPageName}]]")
                     targetPage = pywikibot.Page(self.bot.site, targetPageName)
@@ -427,11 +439,14 @@ class WikiDocument:
                     pywikibot.output(f"\n<<lightpurple>>Error at {targetPageName}<<default>> skip page\n")
                     pywikibot.output(f"Unexpected error: {str(traceback.format_exc())}")
                     pywikibot.output(f"check if [[{targetPageName}]] was already saved")
-                    targetPage = pywikibot.Page(self.bot.site, targetPageName)
-                    # ugly workaround for strange behaviour
-                    editTimeFirstTry = targetPage.latest_revision.timestamp if targetPage.exists() else 20361231235900
-                    if not targetPage.exists() or targetPage.latest_revision.user != "SpBot" or (targetPage.latest_revision.timestamp - editTimeFirstTry).seconds >= 60 * 2:
+                    # The save may have succeeded server-side despite the error (e.g. timeout).
+                    # Only continue (and later remove the sections from the origin page) if the
+                    # archive page now really contains our new text; otherwise abort this page
+                    # so no discussions get lost.
+                    if newText is None or self.bot.dryRun or not self._targetWasSaved(targetPageName, newText):
+                        pywikibot.output(f"<<lightpurple>>[[{targetPageName}]] was NOT saved, origin page stays untouched<<default>>")
                         raise
+                    pywikibot.output(f"[[{targetPageName}]] was saved after all")
             
             if skipThisPage:
                 pywikibot.output(f'Skipping {self.originPageName} because "skipThisPage" is True')
