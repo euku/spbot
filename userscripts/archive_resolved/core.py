@@ -12,23 +12,41 @@ from pywikibot import textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
 
+# Markup whose content MediaWiki does not parse: comments (an unclosed one hides the
+# rest of the page) and <nowiki>, <pre>, <code>, <syntaxhighlight>, <source> with any
+# attributes and in any case. Self-closing <nowiki/> does not hide anything.
+HIDDEN_MARKUP = re.compile(
+    r"<!--.*?(?:-->|\Z)"
+    r"|<(?P<tag>nowiki|pre|code|syntaxhighlight|source)(?:\s[^>]*)?(?<!/)>.*?</(?P=tag)\s*>",
+    re.IGNORECASE | re.DOTALL)
+
+# optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
+TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
+
 #
 # Local exceptions
 #
 class ArchivingError(Exception):
     """Archiving error"""
 
-class NoOptions(ArchivingError):
+class OptionsError(ArchivingError):
+    """The archive template is missing or has wrong parameters; msg is shown on the talk page."""
     def __init__(self, msg=None):
-        pywikibot.output("\t *** No archive template found or wrong format ***\n")
+        super().__init__(msg)
         self.msg = msg
 
     def getMsg(self):
         return self.msg
 
-class WrongOptions(ArchivingError):
-    def __init__(self):
+class NoOptions(OptionsError):
+    def __init__(self, msg=None):
+        pywikibot.output("\t *** No archive template found or wrong format ***\n")
+        super().__init__(msg)
+
+class WrongOptions(OptionsError):
+    def __init__(self, msg=None):
         pywikibot.output("\t *** Parameters have a wrong format ***\n")
+        super().__init__(msg)
 
 #
 # *** DECLARATIONS ***
@@ -144,7 +162,7 @@ class Discussion:
 
     def _examineAllResolvedTemplate(self, bot, clearedContent: str, now: datetime):
         # Now examine if discussion has a "cleared" flag and
-        sectResolvedPattern = r"\{\{\s{0,50}" + bot.localBot.sectResolvedRegEx + r"\s{0,50}\|.*?" + bot.localBot.timeStampRegEx + r".*?\}\}"
+        sectResolvedPattern = r"\{\{\s{0,50}" + TEMPLATE_PREFIX + bot.localBot.sectResolvedRegEx + r"\s{0,50}\|.*?" + bot.localBot.timeStampRegEx + r".*?\}\}"
         agesList, timestampList = self._extractTimeStampsAndAges(bot, sectResolvedPattern, clearedContent, now)
         if agesList != []:
             self.ageByResolvedTemplate = min(agesList)
@@ -249,20 +267,25 @@ class WikiDocument:
         """
         # Should match these variants
         # == 1.2. bla == 
+        # ==A==
         # ==_==
         # == {{Q-|Q6501349|capitalization=ucfirst}} == <!-- Car parks -->
         # === sub header ===
         # Note, it is {1,%s} because it must match header levels less the defined level. Otherwise = Bla = will be archived with == Blub ==.
         # It must not match higher levels === like this ===.
         # Also, it must match not match just text starting with => bla.
-        regex = "(?P<title>^(?P<hls>[=]{1,%s})(?P<title_clear>[^=\n\r]+.+)(?P=hls))(.*?)$" % self.headlineLevel
+        regex = "(?P<title>^(?P<hls>[=]{1,%s})(?P<title_clear>[^=\n\r].*)(?P=hls))(.*?)$" % self.headlineLevel
         p = re.compile(regex, re.IGNORECASE|re.M)
         # ... and iterate through it
         headlineIterator = p.finditer(self.originalText)
-        
+        # headlines inside comments, <nowiki>, <pre> etc. are no headlines
+        hiddenSpans = [m.span() for m in HIDDEN_MARKUP.finditer(self.originalText)]
+
         counter = 0
         possibleDiscs = []
         for singleHeadline in headlineIterator:
+            if any(start <= singleHeadline.start() < end for start, end in hiddenSpans):
+                continue
             possibleDiscs.append(Discussion(self.originPageName))
             possibleDiscs[counter].setTitleOffsetStart(singleHeadline.span()[0])
             possibleDiscs[counter].setContentOffsetStart(singleHeadline.span()[1])
@@ -349,11 +372,16 @@ class WikiDocument:
             Substitutes the templates
         """
         # subst erledigt
-        old = re.compile(r"\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + r"\ {0,5}\|(?:1=)?([^}]*?" + self.bot.localBot.timeStampRegEx + r")\ *?\|(?:2=.*?)?([^}]*?)\ *\}\}", re.UNICODE | re.DOTALL)
-        originalText = textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved2P, ["comment", "nowiki"])
-        
-        old = re.compile(r"\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + r"\ {0,5}\|(?:1=)?([^}]*?[^}|*]?" + self.bot.localBot.timeStampRegEx + r")\ *?\}\}", re.UNICODE | re.DOTALL)
-        return textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved1P, ["comment", "nowiki"])
+        # group 1: signature with timestamp, groups 2-6: parts of the timestamp, group 7: 2nd parameter (reason)
+        lb = self.bot.localBot
+        start = r"\{\{\s*" + TEMPLATE_PREFIX + lb.sectResolvedRegEx + r"\s*\|(?:1=)?"
+        old = re.compile(start + r"([^}]*?" + lb.timeStampRegEx + r")\s*\|(?:2=)?([^}]*?)\s*\}\}", re.UNICODE | re.DOTALL)
+        # an empty 2nd parameter is treated like a missing one
+        withReason = lambda m: m.expand(lb.sectResolved2P if m.group(7).strip() else lb.sectResolved1P)
+        originalText = textlib.replaceExcept(originalText, old, withReason, ["comment", "nowiki"])
+
+        old = re.compile(start + r"([^}]*?[^}|*]?" + lb.timeStampRegEx + r")\s*\}\}", re.UNICODE | re.DOTALL)
+        return textlib.replaceExcept(originalText, old, lb.sectResolved1P, ["comment", "nowiki"])
 
     def _showDiffs(self, pageName: str, originalText: str, modifiedText: str):
         if originalText != modifiedText:
@@ -539,6 +567,9 @@ class WikiDocument:
             self.archiveJobCounterByTarget[target] = 1
         
         if target not in self.archiveJobFirstTitleByTarget:
+            # remove comments and HTML tags (keeping their content), like MediaWiki does for anchors
+            headline = re.sub(r"(?s)<!--.*?-->", "", headline)
+            headline = re.sub(r"</?[A-Za-z][^<>]*>", "", headline)
             # remove headline marker == abc ==
             headline = textlib.replaceExcept(headline, r"=+\s*(.*?)\s*=+\s*", "\\1", [])
             # [[abc|xyz]] -> yxz
@@ -552,10 +583,8 @@ class WikiDocument:
     
     @staticmethod
     def removeCommentsAndOther(originalText: str) -> str:
-        clearedContent = textlib.replaceExcept(originalText, r"(?s)<!\-\-.*?\-\->", "", [])
-        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<nowiki>.*?</nowiki>", "", [])
-        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<code>.*?</code>", "", [])
-        return textlib.replaceExcept(clearedContent, r"(?s)<pre>.*?</pre>", "", [])
+        """Removes comments, <nowiki>, <pre>, <code>, <syntaxhighlight> and <source> blocks."""
+        return HIDDEN_MARKUP.sub("", originalText)
 
     def findOptions(self):
         """
@@ -574,33 +603,42 @@ class WikiDocument:
             for nam, num in optionsDict.items():
                 pywikibot.output("%s = %s" % (nam, num))              
             
-            try:
-                if self.bot.localBot.paramAge not in optionsDict:
-                   raise NoOptions(f"<<lightpurple>>'{self.bot.localBot.paramAge}' is missing.<<default>>")
-                if self.bot.localBot.paramArchive not in optionsDict:
-                   raise NoOptions(f"<<lightpurple>>'{self.bot.localBot.paramArchive}' is missing.<<default>>")
+            lb = self.bot.localBot
 
-                self.thresholdAgeResolvedTemplate    = float(optionsDict[self.bot.localBot.paramAge])
-                self.archivingTargetPattern = optionsDict[self.bot.localBot.paramArchive].replace("'", "") # remove '
-                if self.bot.localBot.paramLevel in optionsDict and optionsDict[self.bot.localBot.paramLevel] != '':
-                    self.headlineLevel   = int(optionsDict[self.bot.localBot.paramLevel])
-                else:
-                    self.headlineLevel   = 2
+            def number(param, convert):
+                value = optionsDict[param]
+                try:
+                    return convert(value)
+                except ValueError:
+                    raise WrongOptions(f"'{param}' must be a number, not '{value}'.")
 
-                # Zeitvergleich=erledigt / timecompare=resolved: sort into the archive by the timestamp of the resolved template
-                timeComparator = optionsDict.get(self.bot.localBot.paramTimeComparator, '')
-                self.archivingUseTimeComparatorCleared = \
-                    timeComparator.lower() == self.bot.localBot.paramTimeComparatorCleared.lower()
-                timeout = optionsDict.get(self.bot.localBot.paramTimeout, '')
-                if timeout != '':
-                    self.thresholdAgeByTimeout = float(timeout)
-            except KeyError as ke:
-                raise NoOptions()
-            except ValueError:
-                raise WrongOptions()
+            if lb.paramAge not in optionsDict:
+                raise NoOptions(f"'{lb.paramAge}' is missing.")
+            if lb.paramArchive not in optionsDict:
+                raise NoOptions(f"'{lb.paramArchive}' is missing.")
+
+            self.thresholdAgeResolvedTemplate = number(lb.paramAge, float)
+            if self.thresholdAgeResolvedTemplate < 0:
+                raise WrongOptions(f"'{lb.paramAge}' must not be negative.")
+            self.archivingTargetPattern = optionsDict[lb.paramArchive].replace("'", "") # remove '
+            if optionsDict.get(lb.paramLevel, '') != '':
+                self.headlineLevel = number(lb.paramLevel, int)
+                if not 1 <= self.headlineLevel <= 6:
+                    raise WrongOptions(f"'{lb.paramLevel}' must be between 1 and 6.")
+            else:
+                self.headlineLevel = 2
+
+            # Zeitvergleich=erledigt / timecompare=resolved: sort into the archive by the timestamp of the resolved template
+            timeComparator = optionsDict.get(lb.paramTimeComparator, '')
+            self.archivingUseTimeComparatorCleared = \
+                timeComparator.lower() == lb.paramTimeComparatorCleared.lower()
+            if optionsDict.get(lb.paramTimeout, '') != '':
+                self.thresholdAgeByTimeout = number(lb.paramTimeout, float)
+                if self.thresholdAgeByTimeout < 0:
+                    raise WrongOptions(f"'{lb.paramTimeout}' must not be negative.")
 
         else:
-            raise NoOptions(f"<<lightpurple>>Main template not found.<<default>>")
+            raise NoOptions("Main template not found.")
     
     def hasWorkToDo(self):
         """
