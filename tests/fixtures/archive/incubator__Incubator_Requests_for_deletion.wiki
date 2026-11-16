@@ -1,0 +1,307 @@
+{{Shortcut|[[I:RFD]]|archivelink=Incubator:Requests for deletions/Archive}}
+__NEWSECTIONLINK__
+This page is for nominating '''test wikis''' for deletion, or for nominating '''pages related to the maintenance of the Incubator''' for deletion. Requests for '''un'''deletion can also be made here. To request the deletion of '''individual pages in a specific test wiki''', please use the relevant talk pages where the editors of the test wiki are most active (such as the talk page of the test wiki's Main Page). Pages that should be speedily deleted should be tagged with {{tl|delete}} '''with a proper reason'''.
+
+It is typically not necessary to request that pages in a test wiki be deleted after the project has been given its own subdomain (e.g., <code>aa.wikipedia.org</code>), since such deletions are part of the normal workflow when creating new wikis. Eventually all pages in the test wiki will be deleted, leaving behind only the [[Incubator:Policy/Test wiki info page|info page]].
+
+For the deletion policy, see [[Incubator:Deletion policy]].
+
+{{Autoarchive resolved section | age = 1 | archive = 'Incubator:Requests for deletions/Archive/((year)) | show = yes }}
+
+== [[Wt/grc]] ==
+As suggested by the [[m:Requests for new languages/Wiktionary Ancient Greek|rejected request]], and even agreed by a "keeper" of [[#Wp/grc]] above, there's blatantly no reason for having a Wiktionary in Historical language such as in Ancient Greek. For writting definitions of Ancient Greek words, the existing Wiktionaries e.g. [[wikt:el:|Greek Wiktionary]] are already hard on doing so. I would hence prefer to merge these contents into el.wiktionary. --[[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 08:25, 12 July 2025 (UTC)
+
+:Just to be clear, I did not say that "there's blatantly no reason for having a Wiktionary in an historical language such as Ancient Greek". I don't agree on that point! What I've actually said is that I don't see reasons to preserve this draft of a Wiktionary, because the lemmas are too few and, above all, almost exclusively (80%?) written in Modern Greek. Probably, it is a draft by someone who wanted to translate them in Classical Greek but never had the time to do so. Since this Wiktionary is also inactive, and since there is no probability at all that this person will ever continue what he barely started, I don't find particular reasons to keep this very rough draft of a project alive. If someone wanted to restart an Ancient Greek Wiktionary, he could start it anew: having this draft or not would make very little difference!
+:On the other hand, having a real Ancient Greek Wiktionary would be useful: who could say that monolingual dictionaries are of no use for students of foreign languages? Nobody could say that! Therefore, a functional Ancient Greek Wiktionary would be very useful for the ca. 1 million students of Ancient Greek around the globe. Unfortunately, no scholar is currently willing to write such a monolingual dictionary for free. [[User:Anaxicrates|Anaxicrates]] ([[User talk:Anaxicrates|talk]]) 13:16, 18 July 2025 (UTC)
+
+{{Oppose}}. It's a good historical record. Others may be interested in it later.[[User:Andrijko Z.|Andrijko Z.]] ([[User talk:Andrijko Z.|talk]]) 01:06, 25 August 2025 (UTC)
+
+:@[[User:Andrijko Z.|Andrijko Z.]] A good historical record? At least one former active user [[m:Special:Contributions/Leonardo José Raimundo|Leonardo José Raimundo]] is nowadays [[m:Requests for comment/Global ban for Leonardo José Raimundo|global banned]]. [[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 01:17, 25 August 2025 (UTC)
+::For me it's not an argument. The project may be cleaned if necessary, but not deleted. [[User:Andrijko Z.|Andrijko Z.]] ([[User talk:Andrijko Z.|talk]]) 01:57, 25 August 2025 (UTC)
+*'''Delete''', {{ping|Andrijko Z.}} Are you really sure that you can speak such a historical language instead of a living language? From your record of contributions, I really really and really can't see anything as "good", all of your historical records are only promoting your bad properties instead of "good"s. --[[Special:Contributions/&#126;2026-19854-51|&#126;2026-19854-51]] ([[User talk:&#126;2026-19854-51|talk]]) 06:23, 31 March 2026 (UTC)
+*:Please stick back to constructive arguments. @[[User:MF-Warburg|MF-Warburg]] please pay attention to the tone of this user. Thank you! [[User:Andrijko Z.|Andrijko Z.]] ([[User talk:Andrijko Z.|talk]]) 23:10, 31 March 2026 (UTC)
+*::@[[User:Andrijko Z.|Andrijko Z.]] You don't really need to ping MF-W or other administrators, since the user who made bad tone is just you, not me. [[Special:Contributions/&#126;2026-20750-41|&#126;2026-20750-41]] ([[User talk:&#126;2026-20750-41|talk]]) 14:10, 4 April 2026 (UTC)
+*'''Delete''' Only Wikisource allows such ancient languages, and for testing Wikisource, [[s:mul:|here, the correct place]]. --[[Special:Contributions/&#126;2026-37662-04|&#126;2026-37662-04]] ([[User talk:&#126;2026-37662-04|talk]]) 10:59, 1 July 2026 (UTC)
+*'''Comment''' I'm not enough into the internal policies of the Incubator to !vote on this, but I do think the idea of a Wiktionary in an ancient language has a place, that unlike a Wikipedia in an ancient language, it's actually a tool that students can use to look up Ancient Greek words and translations and stay in language, and where students of Ancient Greek whose native language Wiktionaries don't support Ancient Greek well could find help.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 01:41, 10 November 2026 (UTC)
+
+== [[Wp/atv]] ==
+
+See [[Incubator:Administrators%27_noticeboard#Wp/atv_existence]]. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 21:19, 14 November 2025 (UTC)
+
+== Multiple projects ==
+;[[Wy/wal]], [[Wy/zu]], [[Wy/mg]], [[Wy/aa]], [[Wy/zyj]], [[Wy/udm]], [[Wy/wym]], [[Wy/jbo]]
+
+These projects only have one page, usually the main page, and have never been active since creation. They should be deleted. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 02:25, 8 January 2026 (UTC)
+
+; [[Wq/so]], [[Wq/blk]], [[Wq/dtp]], [[Wq/aa]], [[Wq/zgh]], [[Wq/tcy]], [[Wq/se]], [[Wq/ary]]
+
+Again, These projects only have one page, usually the main page, and have never been active since creation. They should be deleted. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 02:30, 8 January 2026 (UTC)
+
+; [[Wb/ab]], [[Wb/ain]], [[Wb/bhi]], [[Wb/bug]], [[Wb/mos]], [[Wb/rw]], [[Wb/sn]], [[Wb/tum]], [[Wb/ddo]], [[Wb/lki]], [[Wb/wal]]
+
+Again, These projects only have one page, usually the main page, and have never been active since creation. They should be deleted. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 02:35, 8 January 2026 (UTC)
+
+; [[wn/ace]], [[wn/ain]], [[wn/am]], [[wn/gl]], [[wn/ady]], [[wn/ceb]]
+
+Again, These projects only have one page, usually the main page, and have never been active since creation. They should be deleted. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 02:40, 8 January 2026 (UTC)
+
+; [[Wp/mki]], [[Wp/beu]], [[Wp/com]], [[Wp/lrl]], [[Wp/mhp]], [[Wp/bgx]], [[Wp/enx]]
+
+Again, These projects only have one page, usually the main page, and have never been active since creation. They should be deleted. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 02:46, 8 January 2026 (UTC)
+
+:For what?... [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 18:38, 11 February 2026 (UTC)
+::For being inactive, not having any content (or very few) and just taking up space. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 23:16, 11 February 2026 (UTC)
+:::"Placeholder" projects have always existed on Incubator and are not a problem by themselves. Info pages with "tocreate" status (like Wp/com) also should not be deleted. If a Main Page properly written in the languages invites people to contribute, there is no problem. If there are additional problems, like the sole Main Page is not actually written in the language itself, or the language is dead/invalid, please elaborate. For example, I did just deleted Wb/tum because its Main Page was very broken with a lot of missing templates. --<small>[[User:MF-Warburg|MF-W]] ''{a, b}''</small> 00:11, 12 February 2026 (UTC)
+::::There is really no problem aside from that it has no content, so if you say that they are just placeholder than they should be fine. Thanks for telling me. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 00:35, 12 February 2026 (UTC)
+::::But also, these projects have never been active since creation. [[User:Breck0530|Breck0530]] ([[User talk:Breck0530|talk]]) 00:36, 12 February 2026 (UTC)
+*'''Delete''' Placeholder-only "projects" are nonsense of nonsense, gibberish of gibberish, trolls of trolls, and especially, damn of damn. --[[Special:Contributions/&#126;2026-19854-51|&#126;2026-19854-51]] ([[User talk:&#126;2026-19854-51|talk]]) 06:24, 31 March 2026 (UTC)
+
+:Also Wb/ary Wy/acm Wt/acm [[User:Almajidy|<b style="background:#3e67b3;color:#FFF;border:4pxsolid #3e67b3;border-radius:25px;padding:3px 10px;font:20px 'Brush Script MT';">'''Almajidy'''</b>]]<b style="font-size:7px;">【Talk】</b> 08:45, 8 April 2026 (UTC)
+
+== [[Wp/ase]] ==
+
+Pains me to say this but this project is unlikely to ever go anywhere. It has had no activity since 2020 besides spam. Most Deaf folks in the US, for cultural reasons, use English, and the SignWriting community is not very large. [[Special:Contributions/&#126;2026-10410-48|&#126;2026-10410-48]] ([[User talk:&#126;2026-10410-48|talk]]) 22:57, 16 February 2026 (UTC)
+
+:And is it just me or are there not even really characters to represent sign language? They don't show up for me at least. [[Special:Contributions/&#126;2026-12914-86|&#126;2026-12914-86]] ([[User talk:&#126;2026-12914-86|talk]]) 15:42, 27 February 2026 (UTC)
+::There is a gadget you need to activate. --<small>[[User:MF-Warburg|MF-W]] ''{a, b}''</small> 15:31, 2 March 2026 (UTC)
+::I do not support the request for deletion. This content is readable to fluent ASL users with knowledge of signwriting (speaking as one myself). the characters do represent signed langauge [[User:Kachow03|Kachow03]] ([[User talk:Kachow03|talk]]) 07:32, 17 June 2026 (UTC)
+:@[[User:Yair rand|Yair rand]]: What's the technical status of this project? I thought it was just waiting for MediaWiki to [[phab:T11436|properly support vertical text]] or for VisualEditor to have better support for SignWriting? Have you had any contact with [[User:ValSutton|ValSutton]] lately about this project? [[User:Mxn|Minh <span style="font-variant: small-caps;">Nguyễn</span>]]&nbsp;<sup>[[User talk:Mxn|<span style="display: inline-block;">&#x1f4ac;</span>]]</sup> 21:13, 19 March 2026 (UTC)
+:This project has faltered in the past due to a lack of technical investment, but actually I think its potential has gone way up since 2020. If AI works for speech recognition in audio, it's likely to work decently for sign recognition in video as well; this would be an easy way to bypass SignWriting's traditional problem of having to learn a whole new writing system. [[User:Pharos|Pharos]] ([[User talk:Pharos|talk]]) 19:54, 23 March 2026 (UTC)
+::There are indeed visual models of producing sign language video generation and recognition <ref>[https://signllm.github.io/ SignLLM: Sign Languages Production Large Language Models]</ref>. However there are {{Comment|no known study currently on converting to and from SignWriting.}} [[User:TNTErick|TNTErick]] ([[User talk:TNTErick|talk]]) 03:25, 8 October 2026 (UTC)
+:::The statement that there are '''"no known studies"''' on converting to and from SignWriting is simply incorrect. There is a substantial body of published research and open-source development addressing these problems.
+:::For example, see [[github:sign-language-processing|Sign Language Processing]], including projects for video-to-SignWriting transcription and SignWriting-to-animation, and [https://aclanthology.org/2023.findings-eacl.127/ Jiang et al. (2023)], which explores machine translation between spoken languages and signed languages represented in SignWriting. These are just a few examples.
+:::There are certainly technical challenges remaining, but that is very different from claiming no research exists.
+:::More importantly, automated conversion between video and SignWriting is not a prerequisite for an ASL Wikipedia. SignWriting is already a functional writing system. The more relevant questions are how we improve technical support and encourage community participation. -[[User:Slevinski|Slevinski]] ([[User talk:Slevinski|talk]]) 18:55, 20 October 2026 (UTC)
+:{{oppose}} this is maybe the only incubator in a sign language, providing a proof of concept for testing technical investment in this area. This is an important language to have here and will be a reference for future sign languages in wikimedia. [[User:Arcstur|Arcstur]] ([[User talk:Arcstur|talk]]) 18:27, 11 July 2026 (UTC)
+:If there is no established practice among Deaf users of using SignWriting as a means of writing and consuming content - rather than simply as a transcription of "live" signs - I don't see any realistic possibility of this project moving forward. I don't think it's reasonable for Wikimedia to try to impose the use of a script which the external community surrounding a language has not accepted. [[User:Omphalographer|Omphalographer]] ([[User talk:Omphalographer|talk]]) 23:17, 14 August 2026 (UTC)
+::The concern about whether enough ASL users currently read and write SignWriting to sustain an encyclopedia is reasonable. SignWriting has not yet achieved widespread adoption in the American Deaf community, but that doesn't mean it is only useful for transcribing live signing.
+::In Brazil, SignWriting is used for reading, writing, and education in Brazilian Sign Language (Libras), from elementary education through university-level study. For example, [https://repositorio.ufsc.br/handle/123456789/100775 research at the Federal University of Santa Catarina] examines reading comprehension and original text production in SignWriting by Deaf students and university students. There is even [https://repositorio.ufsc.br/handle/123456789/206070 academic research examining textual cohesion in SignWriting literature].
+::While Libras and ASL are different languages, the Brazilian experience demonstrates that SignWriting can serve as a practical writing system, not merely a transcription method.
+::Most importantly, nobody is imposing SignWriting on anyone. Participation in an ASL Wikipedia is entirely voluntary. The Incubator provides an opportunity for those interested in reading and writing ASL to develop content collaboratively.
+::The question is whether we can support and encourage that community, not whether SignWriting has already achieved widespread adoption. -[[User:Slevinski|Slevinski]] ([[User talk:Slevinski|talk]]) 19:10, 20 October 2026 (UTC)
+:{{support}} what even is the point? ASl is visual. Reading is also visual, and way simpler than trying to figure out what a SignWriting symbol means. [[User:Arenghtqru888|Arenghtqru888]] ([[User talk:Arenghtqru888|talk]]) 19:24, 7 October 2026 (UTC)
+::The point is to have a written form of ASL that can be used in a collaborative wiki environment. ASL and English are different languages, and reading English is not the same as reading ASL.
+::SignWriting makes it possible to write, read, and edit ASL as text. This has practical advantages over video in a wiki environment. If you want to correct a single sign in an article, you can edit the text rather than record and replace a video. Written content also allows people to contribute without recording themselves on camera, which is an important privacy consideration.
+::Video is valuable for sign language communication, but it serves a different purpose. SignWriting is not intended to replace video, any more than writing replaces speech.
+::Learning to read SignWriting does require some effort, just as learning any writing system does. But the fact that someone is unfamiliar with a writing system does not make that writing system pointless.
+::The question should be how we can support an ASL Wikipedia, not whether ASL deserves a written presence in Wikimedia. -[[User:Slevinski|Slevinski]] ([[User talk:Slevinski|talk]]) 19:01, 20 October 2026 (UTC)
+:::Understands. [[User:Arenghtqru888|Arenghtqru888]] ([[User talk:Arenghtqru888|talk]]) 19:04, 20 October 2026 (UTC)
+:{{oppose}} '''Strong oppose.''' This deletion request appears to contradict [[Incubator:Policy#Common reasons for test deletion|Incubator policy]], which explicitly states:
+:"You may only propose a deletion of a test language that does not have a proposal on Meta or is rejected by the Langcom."
+:The [https://meta.wikimedia.org/wiki/Requests_for_new_languages/Wikipedia_American_Sign_Language_2 American Sign Language Wikipedia proposal] exists on Meta and was verified as eligible by the Language Committee on November 29, 2008. The committee specifically acknowledged the technical challenges of SignWriting and determined that they did not affect the project's eligibility.
+:Furthermore, work is underway to address these technical challenges. A new [https://github.com/bidaian/SignWritingMediaWiki SignWriting MediaWiki extension] is in development, with support being developed for rendering and editing SignWriting, including VisualEditor integration. Although still in an early stage, this is concrete progress toward improving the technical infrastructure needed by the project.
+:Limited activity and technical difficulties are challenges to overcome, not sufficient reasons to abandon an eligible language project. The purpose of Incubator is to provide a place for language projects to develop before they are ready for independent Wikipedias.
+:I strongly oppose deletion and encourage closing this nomination in favor of supporting the project's continued development. -[[User:Slevinski|Slevinski]] ([[User talk:Slevinski|talk]]) 19:19, 20 October 2026 (UTC)
+----
+{{Not done}} Invalid proposal as explained by Slevinski. --<small>[[User:MF-Warburg|MF-W]] ''{a, b}''</small> 21:57, 25 October 2026 (UTC)
+
+== Wikinews test projects ==
+As of March 30, 2026, [[meta:Wikimedia Foundation Board noticeboard#Board of Trustees Approves Closure of Wikinews|Wikinews has been shut down]]. Therefore, none of the Wikinews test projects on the Incubator will ever go anywhere. They should therefore either be deleted or the content should be archived elsewhere. [[User:DraconicDark|DraconicDark]] ([[User talk:DraconicDark|talk]]) 17:17, 31 March 2026 (UTC)
+
+:Please note that existing Wikinews tests are now [technically] in read only mode (or restricted to administrators), and creating new tests is also restricted. 🪶-[[User:Tanbiruzzaman|<span style="font-family:monospace;color:#006400;letter-spacing:1px;">TΛNBIRUZZΛMΛN</span>]] ([[User talk:Tanbiruzzaman|💬]]) 20:13, 1 April 2026 (UTC)
+:I'd suggest to announce this question via top of these test projects' portal pages e.g. [[Wn/cdo]] via that tag. [[Special:Contributions/&#126;2026-20743-13|&#126;2026-20743-13]] ([[User talk:&#126;2026-20743-13|talk]]) 07:51, 4 April 2026 (UTC)
+::Done, there’ll now be a notice on every Wikinews tests info page. 🪶-[[User:Tanbiruzzaman|<span style="font-family:monospace;color:#006400;letter-spacing:1px;">TΛNBIRUZZΛMΛN</span>]] ([[User talk:Tanbiruzzaman|💬]]) 09:37, 4 April 2026 (UTC)
+I am told that the Board considers making a decision about this and is in consultation about possible place to put this content, so let's wait for that. --<small>[[User:MF-Warburg|MF-W]] ''{a, b}''</small> 13:20, 7 April 2026 (UTC)
+
+:And, for the record, what to do with [[m:Requests_for_new_languages#Wikinews|RFL requests for Wikinewses]] (which many of them are marked eligible)? [[Special:Contributions/&#126;2026-22152-29|&#126;2026-22152-29]] ([[User talk:&#126;2026-22152-29|talk]]) 01:22, 10 April 2026 (UTC)
+::If no users oppose, then I'd love to merge the above "Wn/kk, Wn/sah/ Wn/tt" section and another section below as L3 sections under this thread since we are discussing all Wikinews test projects here. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 01:46, 18 April 2026 (UTC)
+:Manually pinging @[[User:Nvdtn19|Nvdtn19]] for [[Wn/vi]] due to talk page semi-protected. --[[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 00:32, 19 April 2026 (UTC)
+::I have no further comments on [[Wn/vi]]. This project just needs to archive and read-only like other cases. [[User:Nvdtn19|Nvdtn19]] ([[User talk:Nvdtn19|{{int:talkpagelinktext}}]]) 05:39, 19 April 2026 (UTC)
+
+As one of the main contributors and maintainers of [[Wn/cdo]], I was caught completely off guard and deeply shocked by this news. Reading [[#Wn/ms|the statement below from the Wn/ms community]] truly resonated with me.
+
+Over the years, volunteer reporters for Wn/cdo have actively gathered and edited news, gone on field assignments, and connected with locals to take photos and write articles—covering everything from major international events to grassroots local news in [[:w:en:Fuzhou|Hokchew]], [[:w:en:Matsu_Islands|Matsu]] and Malaysia [[:w:en:Fuzhou people|Hokchew community]]. Wikireporters even volunteered for field assignments in other cities, such as Shanghai, to cover local exhibitions. We were dedicated to ensuring that the Wikinews in our mother tongue was not merely a translation of dominant, high-resource languages, but instead possessed its own unique character. Wn/cdo is a project that has grown alongside the personal capabilities of its editors and maintainers.
+
+It is profoundly regrettable to hear this news today. The editors of Wn/cdo are currently discussing where to go from here. [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 09:28, 19 April 2026 (UTC)
+
+:Hello Davidzdh,
+:I'm  Victoria, the  WMF Board of Trustees member responsible for the Wikinews -related discussions. I'm truly sorry that this news has come so unexpectedly. The wider Wikimedia Movement was discussing the possible future of the Wikinews projects for a while, and the consensus was that the existing projects did not leave up to the expectations while using the limited resources. But I understand that the bulk of discussions was happening in other places (mostly on Meta) and many people were not aware of them.
+:It’s clear from your message how much care, effort, and personal commitment has gone into building and sustaining Wn/cdo over the years. The work of your community is deeply meaningful. It’s especially difficult when something that has grown so organically and with such dedication faces an uncertain future. I can assure you that all you've done wouldn't be lost as it will be accessible in the read mode and can be copied.
+:I regret that this situation has come as a shock, and that it has affected contributors who have invested so much into the project.I understand that you and your fellow editors are now considering next steps. I sincerely hope that, whatever direction you choose, the strength and cohesion of your community will carry forward. [[User:Victoria|Victoria]] ([[User talk:Victoria|talk]]) 09:53, 21 April 2026 (UTC)
+
+:: Hi [[User:Davidzdh|Davidzdh]], what is the most recent work on [[Wn/cdo/Wikinews:Main Page|wn:cdo]]? Just making sure nothing is lost. [[User:Sj|Sj]] ([[User talk:Sj|talk]]) 19:50, 21 April 2026 (UTC)
+:::Interesting, all the newsletters shown on their mainpage were created 8 years ago, so where are their recent news? [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 06:26, 22 April 2026 (UTC)
+:::Hi @[[User:Sj|Sj]], all works from [[Wn/cdo]] are [https://incubator.wikimedia.org/wiki/Special:PrefixIndex/Wn/cdo/ here], in addition, their category pages, templates, and modules cannot be seen on the above summary page; they can be found at:
+:::* [https://incubator.wikimedia.org/wiki/Special:PrefixIndex?prefix=Wn%2Fcdo%2F&namespace=1 <code>Talk:Wn/cdo/xxx</code>]
+:::* [https://incubator.wikimedia.org/wiki/Special:PrefixIndex/Category:Wn/cdo/ <code>Category:Wn/cdo/xxx</code>]
+:::* [https://incubator.wikimedia.org/wiki/Special:PrefixIndex?prefix=template%3AWn%2Fcdo%2F&namespace=0 <code>template:Wn/cdo/xxx</code>]
+:::* [https://incubator.wikimedia.org/wiki/Special:PrefixIndex?prefix=module%3AWn%2Fcdo%2F&namespace=0 <code>module:Wn/cdo/xxx</code>]
+:::* [https://incubator.wikimedia.org/wiki/Special:PrefixIndex?prefix=Wn%2Fcdo&namespace=829 <code>module_talk:Wn/cdo/xxx</code>]
+:::I have provided a detailed summary of the page distribution and the community’s migration plan below [[#Wn/cdo]]. Thank you for your attention! [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 05:41, 25 April 2026 (UTC)
+:::To provide some additional context regarding the main page, which might confuse those unfamiliar with the project:
+:::Mindong has long had two mainstream writing systems: one using Chinese characters and the other using [[:en:Bàng-uâ-cê|Latin alphabets]]. For nearly thirty years in the online Mindong community, the debate over which script to use has been a controversial topic that has, to some extent, torn the community apart. Under the Mindong Wikipedia's village pump, Help namespace, and Wikipedia namespace, you will find extensive records of fierce arguments between both sides, as well as essays written by their respective supporters defending their stances. This controversy is not limited to Wikimedia projects; you can find even more of it in other Min language web forums and online chat rooms.
+:::Therefore, in order to resolve this dispute and unite the community—at least within Wikimedia projects—we want the project's official pages to feature both Chinese characters and Romanization side-by-side (合璧, hăk-bék), with one script on the left half and the other on the right. Moreover, the content on both sides is essentially identical; if read aloud, they produce exactly the same sound, only the written text differs. This imposes high demands on the content—they cannot be written independently of one another, but must be coordinated to ensure both sides say the exact same thing.
+:::Additionally, our view of the main page is that it serves as a showcase of the project volunteers' reporting and editing standards. Because of this, it is not simply the latest news that gets posted on the main page. Instead, we feature reports where volunteers actually did fieldwork, visited the sites, and took news photos to write lengthy, detailed articles. Furthermore, all articles featured on the main page are audio news reports, meaning an audio file read aloud by a human voice without any mispronunciations or verbal errors is attached alongside the transcript. Some even go a step further and are presented as full video news report programs that we have produced.
+:::Naturally, requiring both high-quality reporting and strict consistency between the Chinese character and Latin alphabet versions makes maintaining updates on the main page objectively difficult. Our intent for the main page is to give people an understanding of the editorial style and quality standards of this incubator project as much as possible, so we do not aggressively push for rapid updates there. However, this does not mean there are no newer news articles within the project. [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 06:29, 25 April 2026 (UTC)
+::Hello Victoria,
+::Thank you for your clarification. I appreciate the assurance that, the content "wouldn't be lost." I believe this is extremely important because it directly affects the volunteers' trust in Wikimedia. Many newsletters from Mindong Wikinews have been cited and linked on social media via their URLs. Regardless of the final outcome, keeping these URLs accessible means that the past efforts of the Mindong language community will have a chance to be remembered. [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 06:41, 25 April 2026 (UTC)
+:[[Wn/tr/Ekrem İmamoğlu 13. cumhurbaşkanı seçildi]] is a spam page [[Special:Contributions/&#126;2026-25348-62|&#126;2026-25348-62]] ([[User talk:&#126;2026-25348-62|talk]]) 17:10, 25 April 2026 (UTC)
+::+1, that should really fit the speedy deletion criteria. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 11:59, 12 May 2026 (UTC)
+
+=== [[Wn/kk]], [[Wn/sah]], [[Wn/tt]] ===
+
+These projects are already on Russian Wikinews [[Special:Contributions/151.135.197.56|151.135.197.56]] 13:47, 4 January 2025 (UTC)
+
+:Tend to '''support deletion''' of Wn/kk per the [[m:Requests for new languages/Wikinews Kazakh|rejected RFL]], which as only having little substubs before RFL rejection, there are merely no benefit for having a separate kk.wikinews. Eventually, it currently has '''[[Special:PrefixIndex/Wn/kk/|no pages]]'''. (Someone would say that there's [[m:Requests for new languages/Wikinews Kazakh 2|second open RFL]], but its creator Bauka0625 didn't create anything except their own user page here)
+:The later two were discussed [[Incubator:Requests_for_deletions/Archive/3#Wikinews_projects_in_languages_of_the_Russian_Federation|in 2019]] which result no consensus, of which Tatar Wikinews has its [[m:Requests for new languages/Wikinews Tatar|RFL verified as eligible]], I'm not sure whether there's really benefit for second trial of RFD em. --[[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 00:35, 5 January 2025 (UTC)
+
+: {{Support}} I support the deletion of the projects as per the request. Besides that, these projects have never been active in the incubator since their creation.--[[User:ꠢꠣꠍꠘ ꠞꠣꠎꠣ|ꠢꠣꠍꠘ ꠞꠣꠎꠣ]] ([[User talk:ꠢꠣꠍꠘ ꠞꠣꠎꠣ|talk]]) 08:15, 5 January 2025 (UTC)
+::@[[User:ꠢꠣꠍꠘ ꠞꠣꠎꠣ|ꠢꠣꠍꠘ ꠞꠣꠎꠣ]] The last Tatar one may be a sensitive question as, again, its RFL is verified as eligible, I contacted a user who voted keep in that 2019 DR, that has several contributions to [[Wq/tt]]. [[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 10:24, 8 January 2025 (UTC)
+: "Delete" (in scare quotes because no use of the MediaWiki deletion functionality is involved here - the page will really be replaced with a pointer) [[wn/kk]] as empty. Delete [[wn/sah]], which only contains a main page and no other content. Inclined to delete [[wn/tt]], which only contains a Main Page and one news article from 2020, as well, but not as strongly convinced. In any case these can be recreated if there's a movement to develop the project outside of Russian Wikinews. 
+: Once these are deleted, we need to decide what to do with the domain names https://kk.wikinews.org, https://sah.wikinews.org, https://tt.wikinews.org.
+:: Inclined to redirect https://tt.wikinews.org -> https://ru.wikinews.org/wiki/%D0%90%D0%BB%D0%B3%D1%8B_%D0%B1%D0%B8%D1%82, https://sah.wikinews.org -> https://ru.wikinews.org/wiki/%D0%A1%D2%AF%D1%80%D2%AF%D0%BD_%D1%81%D0%B8%D1%80%D1%8D%D0%B9, but redirect https://kk.wikinews.org to https://ru.wikinews.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8:%D0%9C%D0%BD%D0%BE%D0%B3%D0%BE%D1%8F%D0%B7%D1%8B%D1%87%D0%BD%D0%BE%D1%81%D1%82%D1%8C (the project page explaining Russian Wikinews' multilingual initiative) since there isn't even a Kazakh Main Page. Although even the first two are very dead. And for all three domains redirect https://tt.wikinews.org/wiki/foo -> https://ru.wikinews.org/wiki/Foo. [[User:Pppery|Pppery]] ([[User talk:Pppery|talk]]) 20:03, 12 January 2025 (UTC)
+::@[[User:Pppery|Pppery]] I think for 3rd one, once we indeed gain consensus to delete, we might need to discuss with langcom members on whether its RFL's eligible status should be revoked. [[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 03:42, 13 January 2025 (UTC)
+::: The project should remain in-theory eligible. I'm effectively saying to do a [[w:WP:Soft deletion|soft delete]] - delete the nearly-empty test currently there without prejudice against a new movement for starting a test if one forms. [[User:Pppery|Pppery]] ([[User talk:Pppery|talk]]) 03:43, 13 January 2025 (UTC)
+::::@[[User:Ooswesthoesbes|OWTB]]: As you're most likely supporting to keep such "tocreate portal pages", do you have time on Pppery's suggestions above? [[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 04:57, 12 July 2025 (UTC)
+::::Anyway, it looks like the member who marked Tatar Wikinews request eligible [[m:User_talk:Jon_Harald_Søby#Consider_cancelling_eligibility_of_Wikinews_Tatar?|doesn't agree]] to re-consider it should be revoked or not. [[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 05:01, 12 July 2025 (UTC)
+:::::If they are already present on Wn/ru, then at least, they should link to their respective pages on ru.wikinews. --[[User:Ooswesthoesbes|OWTB]] ([[User talk:Ooswesthoesbes|talk]]) 06:17, 12 July 2025 (UTC)
+::::::Looks like the nominator already did so. [[User:Liuxinyu970226|Liuxinyu970226]] ([[User talk:Liuxinyu970226|talk]]) 07:53, 12 July 2025 (UTC)
+*'''Delete''' Per [[m:Wikimedia_Foundation_Board_noticeboard#Board_of_Trustees_Approves_Closure_of_Wikinews|board decision]], they are already failed, and should go to 3rd platform for further contributing. --[[Special:Contributions/&#126;2026-20743-13|&#126;2026-20743-13]] ([[User talk:&#126;2026-20743-13|talk]]) 07:46, 4 April 2026 (UTC)
+*:{{Oppose}} Soft-closure and archive. ~ [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 00:32, 9 May 2026 (UTC)
+*::@[[User:Sheminghui.WU|Sheminghui.WU]] The entire projects were created on other wikis, why archive here? Make discussion branches? That's really hassle for citing. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 11:54, 12 May 2026 (UTC)
+*:::Why not keep with soft redirections? But, yes, I'm not really opposite it, however should let the local community speak up maybe other russian contributors as well. [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 12:50, 12 May 2026 (UTC)
+
+:{{Oppose}} all of the above. You should first ask one of the ru-Wikinews users (as me) to move these 4 pages. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 05:49, 19 April 2026 (UTC)
+
+I have moved all useful Tatar and Kazakh content along with Yakut mainpage, and I'm asking the Incubator administrators to help me complete the migration:
+# Delete all content of [[Wn/tt]] and [[Wn/kk]]
+# Move all of the templates with redirects (~30) in [[Wn/sah]] <u>with prefixes, under their current names</u> to Russian Wikinews. I can't do it myself, because importing to Wikinews from Incubator is not allowed, local sysops cannot import pages from Incubator. In the edit description, would be good to specify the contributors who created the template and the CC-BY-SA license (because Russian Wikinews use CC-BY-2.5).
+# Place stubs from [[User:Таёжный лес/news]] on [[Wn/evn]] (another one language version hosted in ruWN), [[Wn/kk]], [[Wn/tt]], [[Wn/sah]] respectively. 
+[[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 11:30, 19 April 2026 (UTC)
+
+:@[[User:Таёжный лес|Таёжный лес]] ruwikinews, as well as other Wikinews with official subdomains, are being discussed on [[m:Migration_of_Wikinews_and_future_hosts#Russian_Wikinews|future migration targets]], so I don't know why 3rd is still needed. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 02:30, 20 April 2026 (UTC)
+::Right, along with other Wikinews, including projects in Incubator. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 03:44, 20 April 2026 (UTC)
+:::Just note: Wn/evn is now deleted. [[Special:Contributions/&#126;2026-36425-52|&#126;2026-36425-52]] ([[User talk:&#126;2026-36425-52|talk]]) 04:50, 23 June 2026 (UTC)
+
+=== Empty Wikinews test projects ===
+These Wikinews test projects contain no pages or only main pages:
+[[Wn/ady]], [[Wn/ain]], [[Wn/arz]], [[Wn/bew]], [[Wn/bgn]], [[Wn/brh]], [[Wn/ccp]], [[Wn/ceb]], [[Wn/cnh]], [[Wn/ctg]], [[Wn/cy]], [[Wn/ddo]], [[Wn/dlg]], [[Wn/dtp]], [[Wn/dv]], [[Wn/dz]], [[Wn/ee]], [[Wn/ff]], [[Wn/fur]], [[Wn/ga]], [[Wn/gag]], [[Wn/gd]], [[Wn/gl]], [[Wn/gu]], [[Wn/hif]], [[Wn/hnd]], [[Wn/ie]], [[Wn/jax]], [[Wn/jbo]], [[Wn/jje]], [[Wn/kbd]], [[Wn/kip]], [[Wn/kjh]], [[Wn/kk]], [[Wn/kl]], [[Wn/km]], [[Wn/kn]], [[Wn/ks]], [[Wn/ku]], [[Wn/ky]], [[Wn/lg]], [[Wn/lo]], [[Wn/min]], [[Wn/mn]], [[Wn/mnw]], [[Wn/mr]], [[Wn/mrh]], [[Wn/my]], [[Wn/nrm]], [[Wn/nv]], [[Wn/oc]], [[Wn/om]], [[Wn/os]], [[Wn/pcm]], [[Wn/phr]], [[Wn/rw]], [[Wn/sah]], [[Wn/sco]], [[Wn/so]], [[Wn/tly]], [[Wn/trv]], [[Wn/ts]], [[Wn/tt]], [[Wn/tum]], [[Wn/tw]], [[Wn/vec]], [[Wn/wal]], [[Wn/yi]], [[Wn/zu]]
+[[Special:Contributions/&#126;2026-21280-06|&#126;2026-21280-06]] ([[User talk:&#126;2026-21280-06|talk]]) 09:25, 7 April 2026 (UTC)
+
+:False about Wn/tt. I don't see any problem with a test project having at least one page written in a language, even if it's just a mainpage. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 04:21, 8 April 2026 (UTC)
+::@[[User:Таёжный лес|Таёжный лес]] This is already being discussed on the section above. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 23:06, 18 April 2026 (UTC)
+:Probably [[Wn/als]], [[Wn/ang]], [[Wn/ba]] and [[Wn/bar]] can also be ditto opinions. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 23:10, 18 April 2026 (UTC)
+::als, ba, and bar document where the corresponding projects are, and ang puts up a deletion notice. I don't see why we should delete them. [[User:魔琴|魔琴]] ([[User talk:魔琴|talk]]) 21:49, 29 April 2026 (UTC)
+:::@[[User:魔琴|魔琴]] Where are benefits to keep such semi-redirect to closed projects? Those "projects" are having no pages useful, deletion of them should potentially be feel free and without prejudice, as like how we are plugging power sockets. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 15:02, 7 May 2026 (UTC)
+::::Redirects are cheap. [[User:魔琴|魔琴]] ([[User talk:魔琴|talk]]) 15:05, 7 May 2026 (UTC)
+:::::@[[User:魔琴|魔琴]] That will only result unnecessary discussion branches which can really stuck citation purposes, that said, [[w:Don't be a jerk|no need to leave such redirects to jerk pages]]/ [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 11:55, 12 May 2026 (UTC)
+::Just soft close those pages, its not hard. It's nothing [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 12:52, 12 May 2026 (UTC)
+
+* {{oppose}} all requests above. Cause this doesn’t even matter if the consensus reach to keep or delete, as the board already decided to close the project. If the board ask us delete all tests, we'll delete them.🪶-[[User:Tanbiruzzaman|<span style="font-family:monospace;color:#006400;letter-spacing:1px;">TΛNBIRUZZΛMΛN</span>]] ([[User talk:Tanbiruzzaman|💬]]) 01:57, 19 April 2026 (UTC)
+*:bew and ks are already deleted. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 22:58, 22 April 2026 (UTC)
+
+:Suggest to '''delete''' those with entirely no subpages, e.g. [[Wn/my]], these can be feel free to go without prejudice. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 04:00, 19 April 2026 (UTC)
+:{{Oppose}} [[Wn/nrm]] because of special code. {{Oppose}} [[Wn/kk]], [[Wn/sah]], and [[Wn/tt]] because we may need to mention [[:n:ru:Викиновости:Multilingualism|Russosphere Multilingual Wikinews project]] on their portals. --[[User:魔琴|魔琴]] ([[User talk:魔琴|talk]]) 21:52, 29 April 2026 (UTC)
+::@[[User:魔琴|魔琴]] Russian Wikinews is currently discussing the target of migration, see details [[m:Migration_of_Wikinews_and_future_hosts#Russian_Wikinews|here]]. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 17:09, 1 May 2026 (UTC)
+
+* {{oppose}} First, we clearly need redirects etc.; e.g. if the Incubator cannot have interested contributors taking a look, then there's no way forward for the whole site, might consider a soft closure as well(no lol). Second, this actually brings no real benefit. Third, a soft closure decision points to soft closure, also the history of Wikimedia movement sites is not a have or not have. Wikinews(pages) have already been soft-closed now, and anyway that is a done deal. ~ [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 14:23, 8 May 2026 (UTC)
+
+=== [[Wn/ms]] ===
+I need clarification regarding the closure of Malay Wikinews. Will administrators on Wikimedia Incubator mass-delete all the pages associated with Malay Wikinews, given that there are currently a total of 1162 pages (including categories, templates, talk pages, and redirects) based on [https://meta.toolforge.org/catanalysis/index.php?cat=0&title=Wn/ms&wiki=incubatorwiki the statistics on this page]? Or will the community be given the option to move/archive these pages elsewhere (such as Miraheze, or maybe one of the Malay Wikimedia projects with new namespace, or perhaps separate toolforge project)? [[User:Hakimi97|Hakimi97]] ([[User talk:Hakimi97|talk]]) 05:08, 19 April 2026 (UTC)
+
+:I will tag active Malay Wikinews contributors such as @[[User:Stress 043|Stress 043]], @[[User:26 Ramadan|26 Ramadan]], @[[User:EmpAhmadK|EmpAhmadK]], @[[User:Izington|Izington]], @[[User:Rulwarih|Rulwarih]], @[[User:Jeluang Terluang|Jeluang Terluang]], @[[User:SNN95|SNN95]], @[[User:Zazamental|Zazamental]], @[[User:Wiki Farazi|Wiki Farazi]], @[[User:Adikhebat|Adikhebat]], @[[User:Tofeiku|Tofeiku]], @[[User:Song GK|Song GK]], @[[User:Ceball1923|Ceball1923]], @[[User:Niduzzi|Niduzzi]] regarding this. They have the right to know where their contributions would go, and worst comes to worst, send their final goodbye to their content. [[User:Hakimi97|Hakimi97]] ([[User talk:Hakimi97|talk]]) 05:13, 19 April 2026 (UTC)
+::Actually, with the exception of blocked users e.g. Zazamental (and some who are inactive for at least 2 years), I already posted noticement on their talk pages this morning. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 05:20, 19 April 2026 (UTC)
+:As someone who has been very hopeful and working a lot on the release of Malay Wikinews since 2020, it is definitely upsetting to see the years of work wasted, especially with the recent creation of the news header template and all the work that the Malaysian community put for more original reports on the ground that also helped to contribute to other projects such as Wikipedia and Wikimedia Commons. I would suggest that even if Wikinews is no longer supported, the local communities on incubator should have the autonomy to continue running their own Wikinews (and any other projects if they also get shut down) afterwards on Incubator as it barely costs anything for the Foundation to support.
+:The initiatives taken by the Malaysian community such as to get the media pass to be the first to report on the iPhone 17 launch and have pictures uploaded to commons cannot be ignored. Even other news occassionally refers to the Malay Wikinews for their report, such as when the new Kamus Dewan Perdana website was announced, where the Malay tech news [https://amanz.my/2025541529 directly cited Wikinews' original report] of the announcement from Dewan Bahasa.
+:If local communities are able to bring Wikinews to greater heights, nobody should be able to stop them. At least let us operate our projects on the Incubator even if it will never make it to its full stage, it's better than shutting it down entirely. [[User:EmpAhmadK|EmpAhmadK]] ([[User talk:EmpAhmadK|talk]]) 06:33, 19 April 2026 (UTC)
+:: Hello [[user:Hakimi97|Hakimi97]] and [[user:EmpAhmadK|EmpAhmadK]], I don't believe any pages will be deleted, at most made read-only.  Existing URLs should continue to work. There are also community plans to [[m:Migration of Wikinews and future hosts|migrate Wikinews to a new host]] which could include interested active incubator languages. (You may want to comment there.) So no work to date should be wasted. [[User:Sj|Sj]] ([[User talk:Sj|talk]]) 19:50, 21 April 2026 (UTC)
+:::I don't think that it is possible for Malay Wikinews to be moved together with those established language editions of Wikinews, given that the Malay Wikinews has not even graduated from the Incubator before the closure of the Wikinews being announced. [[User:Hakimi97|Hakimi97]] ([[User talk:Hakimi97|talk]]) 20:15, 21 April 2026 (UTC)
+:::@[[User:Sj|Sj]] Maybe [[Wn/tr]] has really benefits for losing instead of archiving due to its totally spam subpages. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 12:01, 12 May 2026 (UTC)
+::First, I believe that Malay Wikinews will absolutely not be deleted; another key aspect of soft closure is proper preservation. Second, you are welcome to continue following future developments related to Wikinews and participate in related discussions, perhaps join back in again! ~ [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 00:30, 9 May 2026 (UTC)
+:Sorry for being inactive for quite some time. When I first came across Malay Wikinews back in 2024, it had roughly 300 articles. Seeing that number grow to over 600 today is a significant achievement, especially given the very small number of active contributors.
+:Realistically, awareness of Wikinews is quite low, and even fewer people know about the Malay edition. For this reason, the Board's decision to close the project is understandable, and I accept the archival of the Malay site. However, I completely empathize with the contributors who might feel frustrated by this decision. They invested a great deal of time and effort into producing original reporting and photography, and their disappointment is completely valid.
+:Ultimately, life goes on, and the broader Wikimedia movement will continue to move forward. Free knowledge truly comes with a hefty price. [[User:Stress 043|Stress 043]] ([[User talk:Stress 043|talk]]) 15:45, 24 May 2026 (UTC)
+::That being said, many communities are still going, and we welcome you to join us moving forward or stopping together. ~ [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 23:00, 24 May 2026 (UTC)
+
+=== [[Wn/cdo]] ===
+
+Following the recent news regarding the Wikinews closures, the Mindong (cdo) community has discussed our next steps. With the explicit support of our local administrators, we plan to migrate our Wikinews test project to the Mindong Wikipedia (cdo.wikipedia.org) and continue operating it there as a dedicated sub-project.
+
+To ensure that the years of hard work by our contributors are preserved and that proper attribution is maintained, we need to perform a full import. Therefore, I am requesting a complete dump—including full edit histories—for all pages under the Wn/cdo/ prefix.
+
+For context, our community has already prepared the necessary namespace mapping plan for the target wiki:
+
+{| class="wikitable"
+! Incubator Path !! Target path on cdo.wikipedia
+|-
+| Wn/cdo/xxx || Report:xxx
+|-
+| Talk:Wn/cdo/xxx || Report_talk:xxx
+|-
+| Wn/cdo/Help:xxx || Help:xxx
+|-
+| Wn/cdo/Wikinews:xxx || WN:xxx
+|-
+| Talk:Wn/cdo/Wikinews:xxx || WN_talk:xxx
+|-
+| Category:Wn/cdo/xxx || Category:Wn/cdo/xxx
+|-
+| Template:Wn/cdo/xxx || Template:Wn/cdo/xxx
+|-
+| Module:Wn/cdo/xxx || Module:Wn/cdo/xxx
+|-
+| Module_talk:Wn/cdo/xxx || Module_talk:Wn/cdo/xxx
+|}
+
+Could an administrator or someone with the necessary access please assist us in generating this export? --[[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 05:30, 25 April 2026 (UTC)
+
+:You need to file a request at [https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?tags=wikimedia-site-requests phabricator] for those namespace creation. 🪶-[[User:Tanbiruzzaman|<span style="font-family:monospace;color:#006400;letter-spacing:1px;">TΛNBIRUZZΛMΛN</span>]] ([[User talk:Tanbiruzzaman|💬]]) 05:46, 25 April 2026 (UTC)
+::Thank you for the information. Do we need the Phabricator request for the namespaces to be approved and implemented first, or can the data dump and import happen in parallel? [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 06:44, 25 April 2026 (UTC)
+::[[phab:T424413]] has been created. [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 07:11, 25 April 2026 (UTC)
+:Really support this constructive decision by the local community. Keep it up! ~ [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 00:31, 9 May 2026 (UTC)
+
+I would recommend not creating new namespaces (that makes archiving and discovery much harder, especially for a small number of pages) unless necessary.  You can more easily map this as follows, with no new namespaces needed.  Also it's better for the official page title to be a full "wikinews" rather than an abbreviation "WN" again for searchability and readability. [[User:Sj|Sj]] ([[User talk:Sj|talk]]) 12:59, 28 April 2026 (UTC)
+
+{| class="wikitable"
+! Incubator Path !! Target path on cdo.wikipedia
+|-
+| Wn/cdo/xxx || Project:Reports/xxx
+|-
+| Wn/cdo/Wikinews:xxx || Project:Wikinews/xxx
+|}
+:Thank you for your constructive suggestion.
+:From my understanding, requesting and creating new namespaces is actually a separate matter from importing the news articles and their edit histories from the Incubator. (I also pointed this out during our internal discussions within the local community, and the local Wikipedia administrator agrees with this as well.)
+:For the import process itself, I think using the target paths you suggested works perfectly. As for creating new namespaces, it might take a very long time due to technical or other reasons, or it might not even be implemented at all. However, this will not affect the continued operation of the local community's news project.
+:How should we move forward with the export and import process? [[User:Davidzdh|Davidzdh]] ([[User talk:Davidzdh|talk]]) 09:11, 25 May 2026 (UTC)
+
+=== Archive all ===
+
+It should be based on full archival as the standard. Since the closure component of the soft-close has already been applied to the various Incubator sites, its archival component should also be applied here. 
+
+and For Incubator versions with communities by the way, they have always been part of the global Wikinews community, and they are also welcome to take part in future contributions and discussions. ~ [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 13:47, 8 May 2026 (UTC)
+
+:@[[User:Sheminghui.WU|Sheminghui.WU]] I don't think empty ones e.g. [[Wn/my]] should also be "archived", since there are eventually no projects under this prefix, such empty "projects" should feel free to be deleted. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 11:51, 12 May 2026 (UTC)
+::The main thing is, deleting a one page doesn't do any good, and since it's already been soft-closed, the process isn't exactly fair. And since there's no negative impact anyway, I guess it's fine to just keep it. But, not really impact much thing [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 12:43, 12 May 2026 (UTC)
+:::@[[User:Sheminghui.WU|Sheminghui.WU]] But keeping such "null project"s, on the other hand, can really mislead users to consider starting them even after 4 May, to which those are no longer allowed to active in any circumstances, that will only cause unnecessary unprotect requests which are also unfair for the administrators. Due to really existing negative impact in the near future, I suggest that we can exclude such empty ones from archival by early-bird deletion, that's the correct way with no hurts, not keeping, this way is really hurting future new users. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 05:14, 13 May 2026 (UTC)
+::::I understand your concerns, but they are unnecessary. Enough explanation is enough. If you think like that, then all soft shutdown sites would have this problem, which is impossible. [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 11:04, 13 May 2026 (UTC)
+:::::@[[User:Sheminghui.WU|Sheminghui.WU]] I don't think so, it's unable to guess what the new users really wanna do, if and when they asked for unprotect, are you really able to do such "enough explanation"s? [[Special:Contributions/&#126;2026-38002-61|&#126;2026-38002-61]] ([[User talk:&#126;2026-38002-61|talk]]) 04:09, 3 July 2026 (UTC)
+:@[[User:Sheminghui.WU|Sheminghui.WU]] Anyway, I suggest that we can exclude one from your archival proposal: Turkish ([[Wn/tr]]) as someone else pointed above, there are really nothing but spam pages under Wn/tr prefix. Presumably, that's already a scandal of Incubator. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 11:52, 12 May 2026 (UTC)
+::Yeah If there truly is an extremely exceptional incubator version that cannot be resolved through cleanup and has a significant negative impact, then of course it is open to discuss, I won't be opposite. [[User:Sheminghui.WU|Sheminghui.WU]] ([[User talk:Sheminghui.WU|talk]]) 12:39, 12 May 2026 (UTC)
+
+=== [[Wn/tr]] ===
+Since someone pointed above, I suggest that even we are considering to archive all Wikinews test projects without deletion, but this Turkish one should really be excluded from archival, and should consider '''deleting all pages''', and with explaination to '''direct to either tr.wikipedia or Miraheze/Fandom...''' for future news contributions, due to '''full of spam-only pages, include the mainpage'''. --'''[[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 11:24, 13 May 2026 (UTC)'''
+
+== [[Wb/ary]], [[Wp/ars]], [[Wt/acm]], [[Wy/acm]], [[Wp/ayl]], [[Wq/ary]], [[Wp/afb]] ==
+
+one page wiki test projects [[User:Almajidy|<b style="background:#3e67b3;color:#FFF;border:4pxsolid #3e67b3;border-radius:25px;padding:3px 10px;font:20px 'Brush Script MT';">'''Almajidy'''</b>]]<b style="font-size:7px;">【Talk】</b> 12:10, 12 May 2026 (UTC)
+
+:Notifyed two users that were active on some of above. [[Special:Contributions/&#126;2026-23926-28|&#126;2026-23926-28]] ([[User talk:&#126;2026-23926-28|talk]]) 05:07, 13 May 2026 (UTC)
+:Wp/afb has multiple pages. [[User:JJUPLOADS22|JJUPLOADS22]] ([[User talk:JJUPLOADS22|talk]]) 19:01, 31 May 2026 (UTC)
+
+== [[Wp/xzh]] ==
+
+Unactive test in an ancient language. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 05:08, 1 September 2026 (UTC)
+
+== [[Wt/mxi]] ==
+
+Unactive test in a historical language. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 05:08, 1 September 2026 (UTC)
+
+== Tungusic Wiktionaries ==
+[[Wt/neg]], [[Wt/ude]], [[Wt/evn]], [[Wt/ulc]], [[Wt/oaa]], [[Wt/gld]]. No content on these languages except from the described words. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 17:39, 2 September 2026 (UTC)
+
+== [[Wb/udm]] ==
+
+LTA's vandalism. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 14:54, 4 September 2026 (UTC)
+
+== [[Wp/mjd]] ==
+No actual content for 14 years, only one-word pages. [[User:Таёжный лес|Таёжный лес]] ([[User talk:Таёжный лес|talk]]) 19:50, 27 October 2026 (UTC)

@@ -1,0 +1,717 @@
+{{shortcut|WD:PC|WD:CHAT|WD:?}}
+{{Chat header
+|title = Wikidata project chat
+|description = A place to discuss any and all aspects of Wikidata: the project itself, policy and proposals, individual data items, technical issues, etc. '''This is not the place to ask about deleting or creating individual new items, see below'''<br/>
+'''Please use {{Tl|Q}} or {{Tl|P}} the first time you mention an item or property, respectively.'''<br/>
+<big>'''Other places to find help'''</big>
+* {{ll|Help:FAQ|Frequently asked questions}}
+* [[Wikidata:Requests for deletions|Requests for deletions]]
+* [[Wikidata:Requests_for_new_items|Requests for new items]]
+* {{ll|Help:Merge|Merging instructions}}
+* [[Wikidata:Report a technical problem|Report a technical problem]]
+* [[Wikidata:Administrators' noticeboard|Requests for protections, undeletions]] and other matters requiring administrator attention. To report [[Special:MyLanguage/Wikidata:Vandalism|vandalism]], click [//www.wikidata.org/wiki/Wikidata:Administrators%27_noticeboard?action=edit&section=new&preload=Template:VandalReport/Preload&nosummary=true&veswitched=0 here].
+
+For realtime chat rooms about Wikidata, see [[Wikidata:IRC]].
+|new section = Start a new discussion
+}}[[Category:Wikidata-en]]
+{{ProjectChatLanguages}}
+{{Archiving|age=7}} 
+{{Autoarchive resolved section
+|age=1
+|archive='Wikidata:Project chat/Archive/((year))/((month:##))'
+|show=yes
+|timeout=7
+}}
+{{User:Hazard-Bot/Archiver
+|archive = Wikidata:Project chat/Archive/%(year)d/%(month)02d
+|algo = old(7d)
+|counter = 685
+|archiveheader = {{Archive||Project chat archive}}
+}}
+{{Discussion navigation}}
+
+== Disagreement about image ([[Property:P18|P18]]) versus image of cosplay ([[Property:P13632|P13632]]) ==
+
+I and [[User:Mikirito 07]] have a disagreement surrounding when to use {{p|18}} versus {{p|13632}}. I have been (manually) moving many claims from P18 to P13632 whenever the photo clearly depicts a cosplay ([https://www.wikidata.org/w/index.php?diff=prev&oldid=2548914215 example]), and Mikirito 07 have been reverting many of this. I ask for help to resolve this dispute and find a consensus-supported solution.
+
+My side of the story: I believe it is obvious that cosplay photos belong under P13632 since that is the whole point of the property. Its [[Wikidata:Property_proposal/image_of_cosplay|property proposal]] seem to show consensus in favor of using P13632 in place of P18 when that is what the media depicts, including how sisterprojects should handle it. Any sisterproject that checks for images on P18 are more than free to also check on P13632. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:58, 18 October 2026 (UTC)
+
+:The problem is P13632 doesn't allow the image to be shown [[c:DC_Comics_characters|here]] or [[c:Marvel_Comics_characters|here]], and instead P18 makes it possible. I think P18 should be used whenever there is no other image other than cosplays, and P13632 should be used only in cases like [[Q547612|this one]]. [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:31, 18 October 2026 (UTC)
+::And as mentioned on your usertalk, you can easily modify the script of those pages to display from either P18 or P13632 depending on what's available for any given item. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:47, 18 October 2026 (UTC)
+:::I don't know if it can be done, but in this case I don't know how to do it. [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:48, 18 October 2026 (UTC)
+::I suspect a lot of these shouldn't be on commons anyway as they are trademarked characters. [[User:Secretlondon|Secretlondon]] ([[User talk:Secretlondon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:00, 19 October 2026 (UTC)
+:::@[[User:Secretlondon|Secretlondon]] cosplays are allowed as free depictions of the characters [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:13, 19 October 2026 (UTC)
+:::Secretlondon, that's not what our questions are about, please stay on topic. If you have concerns about files being on Commons, then start a deletion discussion over on that project. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:00, 19 October 2026 (UTC)
+:::The trademark issue means than in many cases our only image would be a cosplay one, but I still think {{P|13632}} is the place for them. It ensures the queryier knows what they are getting [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:33, 19 October 2026 (UTC)
+::::Is it possible to modify the script of the paged to display from either P18 or P13632 depending on what's available? If so, how? [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:42, 19 October 2026 (UTC)
+:::::Probably you can just query both properties and union the results with P18 taking priority. I could try modify the pages' queries tomorrow if you want. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:44, 19 October 2026 (UTC)
+::::::Ok, thank you :)
+::::::P.S. can you please do the same for [[c:Marvel_Cinematic_Universe_characters|those]] [[c:DC_Extended_Universe_characters|two]] pages? [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:51, 19 October 2026 (UTC)
+:::::::I have now [https://commons.wikimedia.org/w/index.php?diff=prev&oldid=1290582390 edited one of the pages] per your request. {{ping|Mikirito 07}} Please confirm that it gives the functionality you want, and then I will do the same with the other 3. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:45, 23 October 2026 (UTC)
+::::::::{{ping|Mikirito 07}} I would like to remind you to that I above asked for confirmation that the script now behaves as you want it to. You have not replied, but I see that you are [https://www.wikidata.org/w/index.php?title=Q2922722&diff=prev&oldid=2561550408 still performing the same type of edits] while this discussion is ongoing. I was reluctant to fix your script(s) in the first place since I have no interest in the galleries, so I kindly ask that you are cooperative and not further the disagreement. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 13:25, 2 November 2026 (UTC)
+:::::::::Sorry, I didn't notice the message. Anyways unfortunately your edit didn't work. [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:52, 4 November 2026 (UTC)
+::::::::::Okay, then please give some details about it. I can't do much with "didn't work" and it did work when I run it in the query service. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:10, 7 November 2026 (UTC)
+:::::::::::@[[User:Rose Abrams|Rose Abrams]] If I edit the source I can see there are the images of cosplays, but in the actual page the spots the images should be are just blank spots. [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:08, 11 November 2026 (UTC)
+::::::::::::@[[User:Mikirito 07|Mikirito 07]] You know what, I feel that I am no longer interested in helping you with this. I am leaving this internet argument before it continues for a whole month, because I am way more interested in other things. If you want those galleries to work in a certain way, the burden is on you and not me to make it happen. For scrip help, please refer to [[Wikidata:SPARQL query service/Wikidata Query Help|the numerous helppages]] or ask another editor to help you – I believe that is what you should have done first when noticing your galleries malfunctioned, rather than changing Wikidata to your preference.
+::::::::::::As per the statements of several users ([https://www.wikidata.org/w/index.php?diff=prev&oldid=2562666900 1],[https://www.wikidata.org/w/index.php?diff=prev&oldid=2560238910 2]), there is consensus that cosplay images shoulod be under P13632 and not P18. I therefore now ask you to stop moving P13632 to P18, and revert all your previous actions of moving P13632 to P18. Do not wait for your gallery pages to be fixed – a specific usecase is no reason to worsen the data of Wikidata. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:37, 12 November 2026 (UTC)
+:::::::::::::@[[User:Rose Abrams|Rose Abrams]] Ok, I'll do it myself, no problem. Also I already stopped moving P13632 to P18 a long time ago when you asked me to do so. [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 22:05, 12 November 2026 (UTC)
+::::::::::Also, can I please ask you to undo all the relevant image edits to that you've made? Consensus on this page is clearly in favor of using P13632 for cosplay images regardless of what. You and other interestees are free to fix the Commons gallery scripts in your own time, but I ask that you conform your Wikidata edits to the agreed consensus. [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:16, 7 November 2026 (UTC)
+:::::::::::https://commons.wikimedia.org/wiki/DC_Comics_characters
+:::::::::::https://commons.wikimedia.org/wiki/Marvel_Comics_characters
+:::::::::::https://commons.wikimedia.org/wiki/Marvel_Cinematic_Universe_characters
+:::::::::::https://commons.wikimedia.org/wiki/Mickey_Mouse_universe_characters
+:::::::::::https://commons.wikimedia.org/wiki/DC_Extended_Universe_characters
+:::::::::::https://commons.wikimedia.org/wiki/Donald_Duck_universe_characters
+:::::::::::None of the pages have P13632 show up when no P18 exists [[Special:Contributions/~2026-58171-13|~2026-58171-13]] ([[User talk:~2026-58171-13|talk]]) 19:49, 7 November 2026 (UTC)
+::::::Query to 2 dIfferent variables and use COALESCE in the order you want them [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 03:49, 22 October 2026 (UTC)
+:I also think that if anything wants images of cosplay as well as regular images, it should query that. Making the database worse instead of making other pages better seems like a bad solution. [[User:Psychpsyo|Psychpsyo]] ([[User talk:Psychpsyo|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:26, 24 October 2026 (UTC)
+::💯👍 [[User:Rose Abrams|Rose Abrams]] ([[User talk:Rose Abrams|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:55, 24 October 2026 (UTC)
+:Whether Marvel Comics characters/DC Comics characters pages want to show cosplay or not, should be their content decision to make. Having our cosplay images at P13632 instead of P18 allows them to make that choice. 
+:The general idea is that a page like [[User:ChristianKl|<span style="color:#0000EE;">'''ChristianKl'''</span>]] ❪[[User talk:ChristianKl|✉]]❫ 18:31, 30 October 2026 (UTC)
+::I think there is a more general question to resolve: we have a lot of specialized properties for images (like P13632 but also night view, winter view, image of place name, architectural drawing, image of interior, and so on) that clearly should be used if a image is available. However, the question is what to do when the only images available for {{P|18}} also fit one of those properties. For a lot of uses, it would be good to put the image in the most concrete property and also put the most representative image in P18, even if it's the same image used in the more concrete property.
+::Of course it is possible for reusers to fall back to other properties if P18 is empty, but it would be better to always have in P18 the human-selected most representative image of the subject, whenever a representative image of the subject exists. [[User:Pere prlpz|Pere prlpz]] ([[User talk:Pere prlpz|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:21, 16 November 2026 (UTC)
+:::@[[User:Pere prlpz|Pere prlpz]] I absolutely agree [[User:Mikirito 07|Mikirito 07]] ([[User talk:Mikirito 07|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:14, 16 November 2026 (UTC)
+
+== Proposal: mainpage improvements ==
+Hello, a week ago I posted a [[Wikidata talk:Main Page#Proposal: mainpage improvements|proposal for some changes to the Wikidata mainpage]] on its talk page. So far there hasn’t been any response, so I thought I’d share a link here to get wider feedback. Looking forward to hearing what the community thinks. Thank you! — [[User:Elisha Cohen (WMDE)|Elisha Cohen (WMDE)]] ([[User talk:Elisha Cohen (WMDE)|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:39, 2 November 2026 (UTC)
+
+:It feels unclear to me to understand what your proposed changes are. Having a clear before-and-after image would make it easier to evaluate. [[User:ChristianKl|<span style="color:#0000EE;">'''ChristianKl'''</span>]] ❪[[User talk:ChristianKl|✉]]❫ 11:15, 2 November 2026 (UTC)
+::There's a wireframe of the new layout included in the mentioned post. We should probably follow up there. [[User:ArthurPSmith|ArthurPSmith]] ([[User talk:ArthurPSmith|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:06, 2 November 2026 (UTC)
+:::@[[User:ArthurPSmith|ArthurPSmith]] No, there isn't. There's a view that tries to show both the old and the new together with removed things in strikethrough text. [[User:ChristianKl|<span style="color:#0000EE;">'''ChristianKl'''</span>]] ❪[[User talk:ChristianKl|✉]]❫ 14:20, 9 November 2026 (UTC)
+
+== labels for untranslated works - a candidate for mul? ==
+(posting here for widest visibility, will inform relevant projects)
+
+For a work written in Czech with no English translation, what should we put in the English label, bearing in mind the WD principle that labels are for people, properties are for machines.
+
+# Nothing - unless the user has Czech in their language tree, they get QXXXXXX
+# A translation of the title, either done by manually by bilingual people or machine translation - helpful for the user, but might wrongly suggest the work content is available in that language, and should all translations be official.
+# The Czech label - accurate, but just a jumble of letters for non Czech speakers. And do we duplicate for other languages
+# nothing, but have the Czech label in mul, so its available to all Latin language users, but whether they get it depends on their preference for fallback/mul labelling.
+
+My preferences in order are 4,2,3,1, what are yours?
+
+(put aside non-Latin titles, where I could see both merit and confusion in having the mul label being that of a french edition of a Chinese work being helpful to an English speaker) [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:51, 3 November 2026 (UTC)
+
+:2,1,3-4 [[User:Pallor|Pallor]] ([[User talk:Pallor|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:41, 3 November 2026 (UTC)
+:4,1,3,2 presupposing that all Latin script-default works ''should'' have a mul label (video games, albums, songs, films, TV shows, books?). &mdash;[[User:Xezbeth|Xezbeth]] ([[User talk:Xezbeth|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:52, 3 November 2026 (UTC)
+:4, 3, 1, 2 [[User:Difool|Difool]] ([[User talk:Difool|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:09, 3 November 2026 (UTC)
+:Many of these item are imported wrom czech wikisource, I can set my scripts to import czech label into mul: too for 4 [[User:JAn Dudík|JAn Dudík]] ([[User talk:JAn Dudík|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:24, 3 November 2026 (UTC)
+:4,3 no own reseach. --[[User:Sabelöga|Sabelöga]] ([[User talk:Sabelöga|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:27, 3 November 2026 (UTC)
+:4, Czech label in mul, preferably, though many times there are "informal" title translations used in discussions and those can be used too (like for example book is never officially translated but English works ''discussing it'' call it a translated title...). [[User:PARAKANYAA|PARAKANYAA]] ([[User talk:PARAKANYAA|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 17:19, 3 November 2026 (UTC)
+:4, 1, 2, 3 ―[[User:Koavf|Justin (<span style="color:grey">ko'''a'''<span style="color:black">v</span>f</span>)]]<span style="color:red">❤[[User talk:Koavf|T]]☮[[Special:Contributions/Koavf|C]]☺[[Special:Emailuser/Koavf|M]]☯</span> 17:33, 3 November 2026 (UTC)
+:Just do 4, that's what 'mul' is for. If there are official or common translations of the work name in other languages that's fine of course. [[User:ArthurPSmith|ArthurPSmith]] ([[User talk:ArthurPSmith|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:33, 3 November 2026 (UTC)
+So it looks like nearly everyone likes the mul approach, but it raises two subsidiary questions: Traditionally if we add a mul value, we remove all identical values from other labels. Now I'd say we should not do this for the Czech label, just because its presence makes it obvious that that it was the original language, without checking {{P|1476}} or {{P|407}}. Do you agree? Also I often wince when people add English mul values for things that are not proper names, but that's OK here if we agree a Title is like a Proper Name, quoted in full, and don't apply the rule to mixed things, like "Heathrow Airport" [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:58, 3 November 2026 (UTC)
+: I would also leave the Czech label to make it clear. I think for works without official translation this is the best approach. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:11, 3 November 2026 (UTC)
+:I don't think that matters much, if people have trouble figuring out the language of a mul label then the language specification on {{P|1476}} should resolve it. If the Czech name were used as an English, German, and French label, as well as Czech then it's not very informative about which is the "real" language anyway. [[User:ArthurPSmith|ArthurPSmith]] ([[User talk:ArthurPSmith|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 20:30, 3 November 2026 (UTC)
+Regarding editions, those in the same language as the original should follow the same format, mul+native label. For works that have been translated, their translated titles should appear in the master item, but we need to decide what to do with foreign language editions. I think they should just have the translated title in mul as is done for {{Q|50326877}}, and no English or Czech labels. Adding back a Czech title to an English edition just feels confusing. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:40, 4 November 2026 (UTC)
+:Regarding non Latin titles, I wonder if we should put them in mul anyway. Its better than your language tree giving a Q value, and if you can't read the title, you are confident you can't read the work. Arabic, with its directionalism, is still an issue. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 04:55, 13 November 2026 (UTC)
+:: In what way is Arabic an issue? Like having right to left text can make it look weird, but at least the browser can handle it no problem. Is it about other consumers who might not expect it? [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:54, 13 November 2026 (UTC)
+:::The mul box displays the text from the left margin, the arabic from the right margin, not sure about any other hidden features, I don't know enough about arabic on computers as to whether this would upset people. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:10, 13 November 2026 (UTC)
+
+== New character items for 12 works: linking them from {{P|P725}} and {{P|P161}} ==
+Over the last weeks I created character items for a number of works, as {{P|P1441}} of those works;
+Someone has already used three of them on {{Q|Q6144664}}, where {{P|P453}} of the voice actors had pointed to the real emotion instead of the character (Thanks!).
+The other works have the same gap, and I can't fill it by script, as most cast statements don't say who played whom, so that takes a source per work.
+
+These 12 works have both new characters and cast statements (new characters, then cast statements, then those without {{P|P453}}):
+* [ ] {{Q|Q16538}} (9, 42, 42)
+* [ ] {{Q|Q113877606}} (7, 28, 27)
+* [ ] {{Q|Q61478103}} (26, 19, 19)
+* [ ] {{Q|Q113883193}} (1, 20, 20)
+* [ ] {{Q|Q25167044}} (2, 16, 5)
+* [ ] {{Q|Q112801489}} (6, 15, 15)
+* [ ] {{Q|Q104845027}} (8, 11, 11)
+* [ ] {{Q|Q5815826}} (4, 10, 9)
+* [ ] {{Q|Q6144664}} (4, 10, 3)
+* [ ] {{Q|Q126796}} (2, 9, 8)
+* [ ] {{Q|Q104905}} (1, 8, 4)
+* [ ] {{Q|Q113879962}} (14, 4, 4)
+
+To take on a work, please mark it <code>[/]</code> (so that nobody else starts on it), and <code>[x]</code> when its original-language cast is done. <small>(Adding Voice Actors of ''other'' languages, as well as adding ''qualifiers for the language'', is beyond the planned scope of this post and, if anything, would be subject of a much larger project of its own)</small>
+The new characters of a work are the items with {{P|P1441}} pointing to it.
+Is a list like this welcome here, or is there a better place for it, such as a WikiProject?
+[[User:Trummler12|Trummler12]] ([[User talk:Trummler12|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:44, 4 November 2026 (UTC)
+
+:As this list needs more than a week, I've moved it to [[Wikidata talk:WikiProject Narration#Linking new character items from cast statements: 12 works|Wikidata talk:WikiProject Narration]], where it can stay until the works are done. [[User:Trummler12|Trummler12]] ([[User talk:Trummler12|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:00, 10 November 2026 (UTC)
+
+== Should {{Q|178065}} be split into a building and an organisation? ==
+Currently, Wikidata treats the building and the organisation as the same entity. I think they should be split into two separate items, with the existing Wikipedia sitelinks remaining on the building item. What do you all think? -- [[User:JhowieNitnek|JhowieNitnek]] ([[User talk:JhowieNitnek|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:36, 6 November 2026 (UTC)
+
+:Generally no, because that would mean lots of tourist sites would be split into their building and overseeing organisation. with lots of duplication. Only organisations that run multiple sites like {{Q|23315190}} need an overarching entry. We've had this discussion about museum and museum building in the past, and have accepted that single building museums, or complexes of museum buildings with only one notable element, can be covered by a single entity. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:57, 6 November 2026 (UTC)
+::@[[User:Vicarage|Vicarage]] Centre Pompidou also manages several other sites, including satellite locations in Metz and Málaga. Wouldn't that make it a case where separating the organisation from the building would be justified? [[User:JhowieNitnek|JhowieNitnek]] ([[User talk:JhowieNitnek|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:11, 6 November 2026 (UTC)
+:::I'd have thought so, but I don't know about French cultural orgnisations. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:21, 6 November 2026 (UTC)
+::::I've always been in favor of pragmatic disambiguation: Split up an item when it start to hurt and stops making sense. In this case it looks ready for split up. [[User:Multichill|Multichill]] ([[User talk:Multichill|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 20:19, 12 November 2026 (UTC)
+:::::I think so too, it didn't make sense for a long time. I am happy to split it up. [[User:JhowieNitnek|JhowieNitnek]] ([[User talk:JhowieNitnek|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 06:54, 13 November 2026 (UTC)
+::::::I just discoverd a item for the organisation was already created in 2024 {{Q|125769482}} [[User:JhowieNitnek|JhowieNitnek]] ([[User talk:JhowieNitnek|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:02, 13 November 2026 (UTC)
+:::::::Ha, I missed the different from. In my experience you have to keep an eye on these kind of split up items because (semi-) automated errors will slowly mix them up again. 
+:::::::I created [[Wikidata:Pragmatic disambiguation]] so people can refer to it. Feel free to improve and/or expand. [[User:Multichill|Multichill]] ([[User talk:Multichill|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:15, 13 November 2026 (UTC)
+
+== Surnames and disambiguation pages ==
+Example: [[:de:Straub]] it not as disambiguation page, but a regular article about a surname. Still is linked with {{Q|Q1291926}} which is a {{q|Q4167410}}. Shouldn't it better link to the {{q|Q101352}} {{q|Q15732188}}? Or should the Wikidata items even be merged? --[[User:Flominator|Flominator]] ([[User talk:Flominator|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:19, 7 November 2026 (UTC)
+
+:It should be moved, but not merged. Disambiguation items are always separate. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:57, 7 November 2026 (UTC)
+:@[[User:Flominator|Flominator]] That is apparently how it is modeled. [[Wikidata:WikiProject Names#Sample items|Wikidata:WikiProject Names#Sample items]] [[User:RVA2869|RVA2869]] ([[User talk:RVA2869|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 17:13, 7 November 2026 (UTC)
+::@[[User:Flominator|Flominator]]: in dewiki there is systematic error that surname articles are categorized as disambiguation pages. Hopefully in some point dewiki users will mass-change this error in dewiki. Before this, we are helpless in Wikidata [[User:Estopedist1|Estopedist1]] ([[User talk:Estopedist1|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 06:46, 9 November 2026 (UTC)
+:::for more info https://de.wikipedia.org/wiki/Wikipedia:Auskunft/Archiv/2022/Woche_23#h-Family_names_articles_are_not_disambiguation_pages!-2022-06-12T05:09:00.000Z [[User:Estopedist1|Estopedist1]] ([[User talk:Estopedist1|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 06:48, 9 November 2026 (UTC)
+::: {{Q|Q112632639}} family name<br> {{Q|Q1648724}} disambiguation page<br> {{Q|Q50073186}} surname disambiguation page
+::: This is how it should be, the only issue here is that you could switch the last one to instance of {{Q|Q66480449}} to make it clearer, but this is the indented way this is modeled.
+::: The same applies to Straub.
+::: And the most important part is that each of the items has the same kind of wikipedia articles attached from different languages.
+::: 
+:::*Edit: Also just realized that the example above is kind of weird since the surname has a different spelling, so not sure why it is linked to the disambiguation page...
+::: [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:18, 9 November 2026 (UTC)
+
+== Possible duplicate or namesake? Camilla Treadwell (Q142033728) and Camille Treadwell (Q124660661) ==
+Hello everyone,
+
+I would appreciate some help from the community to determine whether {{Q|142033728}} (Camilla Treadwell, American Red Cross nurse) and {{Q|124660661}} (Camille Treadwell, artist listed in the Reid Hall Artist Index, {{Q|124660533}}) refer to the same person or if they are two distinct individuals requiring a {{P|1889}} ("different from") statement.
+
+'''Converging clues suggesting they are the same person:'''
+
+* '''Name & Timeline:''' {{Q|142033728}} lived in France, spoke French, and is frequently recorded as "Camille Treadwell" in French official sources (e.g., ''Journal officiel''). Her personal papers at the Huntington Library start in 1912, shortly before her Red Cross service (1915–1922).
+* '''Reid Hall biography & Nursing career:''' The Reid Hall Artist Index entry for "Camille Treadwell" (who exhibited metalwork/objets d'art at the AWAA show in Paris in March 1914) explicitly mentions that she later served as an American Red Cross nurse in France during WWI and worked in Arizona (citing a Nov 21, 2004 ''LA Times'' article).
+* '''Archival transfer:''' The Reid Hall entry notes that a stack of her letters and postcards was held in the archival collections of the Los Angeles County Medical Association (LACMA), adding *"It is unclear if they are still held by the Association."* Notably, LACMA transferred its historical collections to the Huntington Library in 1992—where {{Q|142033728}}'s papers (1912–1948, OAC ID <code>c8qv3v1k</code>) are now kept.
+
+'''Point of doubt requiring verification:'''
+
+* The Reid Hall entry (quoting the 2004 ''LA Times'' article) states that Camille Treadwell was '''"French-born"''', whereas {{Q|142033728}} was born in Albany, New York (1881–1971).
+
+Is this "French-born" mention simply a journalistic inaccuracy due to her long residence in France, or is there any possibility of a namesake?
+
+Since I do not have access to the paywalled ''Los Angeles Times'' archives to check the November 21, 2004 article myself, any help from editors who can verify that source or the Huntington Library finding aid before deciding whether to merge these two items would be greatly appreciated! - [[User:Trauenbaum|Trauenbaum]] ([[User talk:Trauenbaum|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:42, 7 November 2026 (UTC)
+
+:@[[User:Trauenbaum|Trauenbaum]] I would merge the two items. Looking through the newspaper archives at https://www.newspapers.com/ [https://www.newspapers.com/image/441657653/?match=1&terms=Camilla%20Treadwell&search-id=c69e1e21-70b9-415a-8396-c038a5066f36&search-rank=1 Camille/a Treadwell the Red Cross nurse was in Paris from 1913]. Her name was [https://www.newspapers.com/image/725360321/?match=1&terms=Camille%20Treadwell&search-id=99fc2243-3104-4c09-8776-c09806e27e13&search-rank=2 spelled with both an a and an e even in the same article]. [https://www.newspapers.com/image/192796326/?match=1&terms=Camille%20Treadwell&search-id=99fc2243-3104-4c09-8776-c09806e27e13&search-rank=22 The LA Times artcle is on newspapers.com but contains nothing more than you wrote above]. [https://www.newspapers.com/image/1130759855/?article=f249dcf5-7cb5-46be-b4bd-1c5001bda08e She was born in Albany, NY]. You should be able to [https://wikipedialibrary.wmflabs.org/partners/26/ request access to the newspaper archive] if you haven't already. [https://access-newspaperarchive-com.wikipedialibrary.idm.oclc.org/us/ohio/cleveland/the-cleveland-leader/1914/12-23/page-4 An article in The Cleveland Leader Newspaper says she was studying art in Paris]. [[User:Piecesofuk|Piecesofuk]] ([[User talk:Piecesofuk|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:21, 7 November 2026 (UTC)
+::@[[User:Piecesofuk|Piecesofuk]] Cheers for looking into this and for the helpful advice. I agree with your findings and will go ahead and merge the two items. I will also look into requesting access to the newspaper archive as you suggested. Much appreciated! - [[User:Trauenbaum|Trauenbaum]] ([[User talk:Trauenbaum|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:07, 9 November 2026 (UTC)
+
+== Authors with and without items ==
+Let's say, I'd create a Wikidata item for W. Steurenthaler, one of the authors of {{q|Q76264669}}. Can I then add a {{p|P50}} statement for him alone in parallel to the {{p|P2093}} statement with still both of them? Or would I need to create an item for the other author as well? Bonus question: is there a way to alternatively link the paper from the author? <small>(accidentally previously asked [[Wikidata:Forum/Archiv/2026/10#h-Authors_with_and_without_items-20261013185400|here]])</small> {{Ping project|Periodicals}} --[[User:Flominator|Flominator]] ([[User talk:Flominator|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:22, 7 November 2026 (UTC)
+
+:You can mix author (P50) and author name string (P2093), especially if you do not wish to create an item for other authors. With series ordinal (P1545), you can also specify the order of authors across the two properties, alternating between them. [[User:Jsamwrites|John Samuel]] ([[User:Jsamwrites|talk]]) 11:31, 7 November 2026 (UTC)
+:When adding an author property, remove the matching author name string. Transfer the ordinal [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:32, 7 November 2026 (UTC)
+:Further to other answers, see [[Q39636195]] for an example of an item with a mix of P50 and P2093. This mix is quite common. <span class="vcard"><span class="fn">[[User:Pigsonthewing|Andy Mabbett]]</span> (<span class="nickname">Pigsonthewing</span>); [[User talk:Pigsonthewing|Talk to Andy]]; [[Special:Contributions/Pigsonthewing|Andy's edits]]</span> 11:35, 7 November 2026 (UTC)
+:Your last question was answered at the link you provided to the last time you asked that question. Short answer: {{P|800}} (but use it sparingly) &mdash;&nbsp;Martin <small>([[User:MSGJ|MSGJ]]&nbsp;·&nbsp;[[User talk:MSGJ|talk]])</small> 12:28, 9 November 2026 (UTC)
+
+== Modifications to property scheduled service destination including renaming ==
+I think the property {{P|P521}} needs some modifications:
+# '''Change the label to "service destination"'''. The label in English, and similarly in some other languages like German and Dutch, is restrictive in using ''"scheduled" service destination''. In some cases, a service destination is not necessarily scheduled - such as cargo operations that are on an as-needed basis. To keep the property general, the label could be changed to simply "service destination". Where it is important to mention a service is scheduled, for flights at least, {{P|P518}} : {{Q|Q1689215}} could be used, and with the label change using {{P|P518}} : {{Q|Q21074304}} makes sense. 
+# '''Add {{P|P2825}} as qualifier'''. In some cases, two locations are known to be connected directly but include a stop (in contrast to non-stop). [[w:Direct flight]] discusses that in the aviation industry a direct flight can include intermediate airport stops with no change in flight number. For example British Airways flies from London to the Cayman Islands on the same flight number, but stops in Nassau and Rex Airlines flies from Cairns Airport ([[w:Cairns_Airport#cite_ref-G_50-0|link]]) to Mount Isa, but via four other airports (a [[w:Milk run]]). The {{Q|Q21510851}} for {{P|P521}} would need to be amended.    
+Pinging the property creator [[User:Joshbaumgartner]] as promised, I will notify [[Wikidata talk:WikiProject Aviation]] and: {{Ping project|Aviation}}. [[User:Commander Keane|Commander Keane]] ([[User talk:Commander Keane|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:42, 7 November 2026 (UTC)
+
+: Point # 1: Object. This would open up any destination to which a single, occasional flight operated once in 30, 40 years. Unnecessary blow-up. --[[User:Uli Elch|Uli Elch]] ([[User talk:Uli Elch|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 13:04, 8 November 2026 (UTC)
+::Interesting. I interpreted "service" as in Wiktionary: [[wikt:service#Noun|service#Noun, definition #6]] ("commodity provided on a continuous basis"). I would never call a one-off flight a service. Changing the label to '''"regular service destination"''' would saistfy scheduled flights, charter flights and exclude occasional flights. Another alternative (less desirable to me) is creating new companion properties like "Charter service destination" and "Cargo service destination" and I am not sure if further sister properties would be required with that approach. [[User:Commander Keane|Commander Keane]] ([[User talk:Commander Keane|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:44, 9 November 2026 (UTC)
+: For 1: Why not use scheduled service destination for this case? A as needed schedule is still a schedule. The cargo connection goes whenever it is full or some cargo is needed, so it is scheduled to go whenever it is needed to go. Maybe could just has characteristic qualifier to add something like need based schedule or however you want to call it. Further context could be provided by a reference. Schedules aren't required to be time based.
+: For 2: Seems like a useful addition to me. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:24, 9 November 2026 (UTC)
+
+== Copyright status (P6216) of vibe-coded software? ==
+I tried to change the {{P|6216}} property on {{Q|141647655}} etc. from {{Q|50423863}} to {{Q|19652}} (tagged with {{Q|61005058}} as the determination method or standard), since the software was reportedly created entirely using AI, and Wikidata displayed a warning that {{P|275}} should not be used on items marked as "public domain". Even though fully AI-generated software programs are ineligible for copyright in most countries, it is common for developers to attach open-source licenses to them (perhaps conservatively, just in case any portion of the software is eligible for copyright, or to signal that it is open-source). Identifying these programs as "copyrighted" without a qualifier (e.g. {{P|1001}} or {{P|518}}) is misleading.
+
+How should we treat the copyright status of AI-generated software? Should we allow {{P|275}} to be added to items where {{P|6216}} is "public domain" to avoid this issue? Or add another value of "copyright status" or "copyright determination method" for AI-generated works, similar to {{Q|77406753}}? [[User:Qzekrom|Qzekrom]] ([[User talk:Qzekrom|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:27, 8 November 2026 (UTC)
+
+:Surely the copyright lies with the person/organisation who directed the AI to produce the software? Its never been the employees who own the copyright, its the organisation who employs them and puts an IP clause in their contract. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:56, 8 November 2026 (UTC)
+::No, that's not sure at all. I think the current status in courts is that artifacts produced by generative AI does not hold copyright at all since it was not produced by a human, no matter how creative the prompt was. However, courts have granted copyright to collections of gen AI productions, most famously a comic book where it thanks to the story combined with all generated images arranged in order got copyright as a work even though each individual image didn't have it. So for software it will come down to: was it ''entirely'' generated by a tool or was there a human involved adding creativity to the final code (not the prompts) making it a collage like the comic book? [[User:Ainali|Ainali]] ([[User talk:Ainali|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:08, 8 November 2026 (UTC)
+:::IANAL but given the money behind it, I'm sure that copyright law will change, either through legislation or case law to allow control of generative AI products, or everyone will just add the minimal adding flourishes to their vibe software. Its never good for WD to be involved in a rapidly changing environment, so I suggest we {{Q|1244363}} [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:10, 8 November 2026 (UTC)
+:::Generally, copyright in an AI-generated/-assisted work extends only to the human authorship perceptible in the output. In the case of {{Q|115789820}}, the United States Copyright Office granted a registration for the text in the comic book as well as the selection and arrangement of image panels; the image panels themselves were deemed ineligible because the prompting was not enough for them to be considered works of human authorship. [https://www.copyright.gov/ai/Copyright-and-Artificial-Intelligence-Part-2-Copyrightability-Report.pdf]
+:::If a programmer uses AI to generate the code rather than typing it line by line, there is an argument that the software as a whole can still have copyright protection. However, this would only apply to the overall structure of the program, not the individual AI-generated code blocks. [https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6489379] There's another complication for software: copyright doesn't protect functionality or system architecture, so the software would only be copyrightable to the extent that the programmer went beyond just specifying the desired functionality (e.g. providing variable or class names, deciding how to organize the code) when prompting the AI agents. [[User:Qzekrom|Qzekrom]] ([[User talk:Qzekrom|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:24, 8 November 2026 (UTC)
+: Unless you can provide an authoritative source that actually confirms that this specific software is public domain and not under the copyright license provided by the creator, I don't think it should be marked as public domain on Wikidata.
+: Additionally if it is public domain any copyright license should be deprecated since that would be invalid if its public domain, so I don't think we need to change the property. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:06, 8 November 2026 (UTC)
+::I think marking AI-generated works as {{Q|50423863}} requires a high evidentiary standard. With human-authored works, you can assume they are copyrighted unless the author releases them into the public domain, the Copyright Office or a court says they are ineligible for copyright, or they clearly don't meet the criteria for copyright protection (e.g. many simple text logos that are below TOO).
+::The creator advertised these programs as being vibe-coded, and I would need there to be evidence that they exercised creative control over the code output before I could feel comfortable with it being marked as {{Q|50423863}}. In this case, it seems likely that the programmer simply prompted a Claude Opus model to clone the functionality of the existing program and check its generated code against the oracle, with the entire process being automated including code review. Bun was translated into Rust using a similar process [https://bun.com/blog/bun-in-rust]. There would need to be a much higher level of human supervision and control for me to believe that the resulting code contains any perceptible human authorship on the part of the developer. [[User:Qzekrom|Qzekrom]] ([[User talk:Qzekrom|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:46, 8 November 2026 (UTC)
+::: Well if you have a good source and are confident in your assessment of the situation nothing is stopping you from removing the copyright license and setting the status to public domain. Doesn't mean we need to change the property constraints.
+::: Though this only applies to the US, so not something that can be used for other software that isn't created by people in the US. And I am pretty sure there are some jurisdictions (I think Singapore is one of them) already offer protections to LLM generate code or other output. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:10, 9 November 2026 (UTC)
+:::I expect copyright law will change so that the set of prompts provided to the LLM can be copyrighted in the same way as a high level language can be today. There are so many layers of interpretation and optimisation down to the bare hardware now, that I can see a specification being as protected as the machine code I started my career with. But WD should follow legal changes, not lead them. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:34, 9 November 2026 (UTC)
+:::It sounds to me like you just looked at media pieces instead of reading the documentation of the project about how it was created or looked at the existing review process on Github. 
+:::You are ignoring the things that design decisions where PhotoCraft makes different decisions than PhotoCraft like having a menu button for "New from Clipboard". 
+:::If someone claims a software license they are claiming that the product is copyrighted. Our general approach to claims like that at Wikidata is to use {{P|1310}}. [[User:ChristianKl|<span style="color:#0000EE;">'''ChristianKl'''</span>]] ❪[[User talk:ChristianKl|✉]]❫ 14:15, 9 November 2026 (UTC)
+::::I'm happy to dive into the GitHub repos and learn more about the development process used to create the Crafting Apps suite, but I'm still skeptical that the ''code'' contains enough human authorship to be copyrightable. Providing a specification of the system architecture and functionality to an AI agent does not result in copyrightable code, since system design is not copyrightable ([https://www.law.cornell.edu/uscode/text/17/102 17 U.S.C. &sect; 102(b)] - {{tq|In no case does copyright protection for an original work of authorship extend to any idea, procedure, process, system, method of operation...}}). Only if the developer wrote the actual code or exercised sufficiently detailed control over its structure and written expression (e.g. specifying variable and function names, organizing functionality into classes or modules) is the output copyrightable. [https://www.gwlr.org/what-is-copyrightable-in-software/ This paper] provides examples of communicative elements of code that enable humans to read and understand it, and may therefore constitute copyrightable expression.
+::::To your next point, I agree that {{P|1310}} is appropriate to use for a work whose copyright status is in dispute. [[User:Qzekrom|Qzekrom]] ([[User talk:Qzekrom|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:04, 11 November 2026 (UTC)
+
+== ODNB move ==
+Hello,
+
+[https://academic.oup.com/pages/about-oxford-academic/upcoming-changes-for-customers/oxford-dictionary-of-national-biography The ''Oxford Dictionary of National Biography'' has moved.] It used to be its own thing, but now it’s hosted on Oxford Academic. The DOIs have not changed, but the URLs have. I believe this implies changes to {{P|1415}}, but I'm not good enough at Wikidata to know what needs to be done exactly. Can someone have a look into this? [[User:Ælfgar|Ælfgar]] ([[User talk:Ælfgar|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:17, 8 November 2026 (UTC)
+: Add <br> https://academic.oup.com/view/article/$1 as a new {{P|P1630}} statement to the item, set it to preferred rank and demote the old one to deprecated rank. However, since I do not have access to the dictionary with my institutional access, I can't confirm that these links actually resolve. According to the documentation there are redirects in place so these two links for {{Q|Q430712}} should lead to the same article.
+: [https://www.oxforddnb.com/view/article/95491 https://www.oxforddnb.com/view/article/95491]<br> [https://academic.oup.com/view/article/95491 https://academic.oup.com/view/article/95491]
+: Can someone with access to this dictionary confirm that? Also not sure if editing formatter URLs are restricted actions as they are rather important and heavily cached. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:47, 8 November 2026 (UTC)
+::ODNB is available through the Wikipedia Library. I think it is easier to look at {{Q|Q36322}}, where the ODNB article is freely available. The old ODNB ID is 904.
+::If I search ODNB for Jane Austen I land on https://academic.oup.com/oxford-dictionary-of-national-biography/reference/63486/reference-article/579443516?searchresult=1 and can read the article
+::https://www.oxforddnb.com/view/article/904 redirects to https://academic.oup.com/oxford-dictionary-of-national-biography?login=true
+::the article includes a doi link https://doi.org/10.1093/ref:odnb/904 which redirects to https://academic.oup.com/oxford-dictionary-of-national-biography [[User:TSventon|TSventon]] ([[User talk:TSventon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 00:14, 9 November 2026 (UTC)
+::: Thanks! What I gather from this that the redirects currently don't work, and that the new paths require two completely different numbers in the path that seem to have no explanation, so that will require a lot more than just a new formatter. So I would wait for now until the ODNB fixes their website and likely just deprecate this property and then add the entries as sources with their dois and then link that with described in source / stated in. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:16, 9 November 2026 (UTC)
+::::[[User:Kordishal|Kordishal]], I searched ODNB for Miller, Charles William and got https://academic.oup.com/oxford-dictionary-of-national-biography/reference/63486/reference-article-abstract/579330736?redirectedFrom=fulltext
+::::That suggests that 63486 identifies the ODNB and 579443516 may represent Austen's biography. [[User:TSventon|TSventon]] ([[User talk:TSventon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:04, 9 November 2026 (UTC)
+::::: Probably a good guess, but there seems to be no connection between the new number and the old number. So until the redirect and doi links actually work, we can't do anything anyway. I've also found no documentation on how their system is supposed to work or if these numbers are stable. Presumably they are, but would be better if it was actually documented somewhere. And their Share dropdown doesn't do anything for me either, so seems like a pretty poor launch so far. Calling it an upgrade seems a bit shameless to me with all the features they cut and replaced with a AI that can't be access for free users.
+::::: Likely the best way to continue would be to just ignore these and change the preferred rank formatter to the right DOI one. Least amount of work for Wikidata, but they first need to fix the redirects. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:32, 9 November 2026 (UTC)
+:::::: Okay the redirects work now.
+:::::: [https://www.oxforddnb.com/view/article/95491 https://www.oxforddnb.com/view/article/95491]
+:::::: This leads to the new article of the new platform for {{Q|Q430712}}.
+:::::: However, the new link is [https://academic.oup.com/oxford-dictionary-of-national-biography/reference/63486/reference-article-abstract/579330736 https://academic.oup.com/oxford-dictionary-of-national-biography/reference/63486/reference-article-abstract/579330736], which means that they changed the identifier. 
+:::::: So I believe a new property would be needed for the new identifiers. A matching is possible with the redirects, or potentially someone could just ask the team responsible for this migration for the translation table, which they obviously have.
+:::::: Additionally since the DOIs of the existing entries still use the old numbers and new entries will likely use the new number and not get a redirect it should use the redirect. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:09, 13 November 2026 (UTC)
+
+== Full name of people accused of crime ==
+There exists [[Q142080736]], which reflects the person who's responsible for the yesterday's {{q|Q142077465}}. The issue with the former item is that it's completely unverifiable. The Polish press law states clearly that press titles (regardless of their form, so including online outlets) are forbidden to share information that can identify people accused of commiting a crime (before they are found guilty by a court). Formally, that press law doesn't apply to Wikimedia projects, so we're not bound by it.
+
+All the sources in that item come from online posts that seems more or less like lynching, correrating photos from the time of arresting with profile photos of the attacker's profile. As such, it's basically an original research, just not directly in Wikimedia.
+
+I'm not sure what are the policies and practices on Wikidata around such issues, therefore I'm asking here. In my opinion, and looking at how the attacker is depicted on Wikipedias, I feel like this item should be deleted or at least anonymized to basically tell that he's Michał O., and what he's responsible for. It's worth noting that he's not a public person, and as such his privacy should still be protected, regardless of crime-related anonimization (so, publishing data like his birth date is probably not a good idea). [[User:Msz2001|Msz2001]] ([[User talk:Msz2001|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:12, 8 November 2026 (UTC)
+
+:We have discussed people accused of perpetrating crimes in the past, and the general view was indeed that this was a legal minefield that could open up WD to legal action, and too emotive a subject and open to abuse. The rule to apply is whether a person is notable, and that notability needs reliable sources of facts, not allegations. We don't have an "arrested for" property, so nothing should appear before a trial starts when the {{P|1595}} property could be applied to the trial, and if the accused entry were created as notable, it would need to be removed if the trial failed to convict, as the person might lose their notability. Bottom line, we should never have people's arrest or failed conviction history recorded, and without that they may not be notable. (Of course we need an item if another wikipedia creates one, as we have no control over that, but we are not obliged to create allegation properties) [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:32, 8 November 2026 (UTC)
+::Thanks! [[User:Msz2001|Msz2001]] ([[User talk:Msz2001|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:34, 8 November 2026 (UTC)
+::In many countries the full name of the accused is not published to give them privacy. [[User:Secretlondon|Secretlondon]] ([[User talk:Secretlondon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:55, 9 November 2026 (UTC)
+
+:I skimmed through the talk page on english Wikipedia. It seems the name is mentioned by a swedish newspaper now. My (normal user) opinion is it's too early to add the name on Wikidata until police formally charge them and/or at least one reputable polish newspaper decides to go out with their name. [[User:Infrastruktur|Infrastruktur]] ([[User talk:Infrastruktur|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 20:16, 8 November 2026 (UTC)
+
+::Looks like they've published the name now. [[User:Infrastruktur|Infrastruktur]] ([[User talk:Infrastruktur|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:38, 9 November 2026 (UTC)
+:::Yes, the person died today, so the laws protecting his privacy (both in general and with regard to criminal matters) are no longer technically applicable. [[User:Msz2001|Msz2001]] ([[User talk:Msz2001|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:02, 9 November 2026 (UTC)
+::::Can someone please undelete the item then? [[Special:Contributions/~2026-58171-13|~2026-58171-13]] ([[User talk:~2026-58171-13|talk]]) 18:23, 10 November 2026 (UTC)
+:::::Sure. Undeleted and merged with existing item. The item is a bit messy as it's been edited by new users. [[User:Infrastruktur|Infrastruktur]] ([[User talk:Infrastruktur|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:36, 10 November 2026 (UTC)
+
+== Interior VS exterior shutters ==
+WP:FR distinguishes between interior shutters ({{Q|Q13583626}}) and exterior shutters ({{Q|Q1096423}}). This is because we have a word that exclusively refers to the latter, and a word which, ''allegedly,'' referred historically only to the former and apparently still does for some (better source needed). The relevance of having separate pages is however all the more debatable as both pages are insufficiently sourced drafts and I'm questioning merging them.
+
+{{Q|Q1096423}} is only used by WP:FR, NL and VLS. So, I was wondering if:
+* Some editors who speak NL and VLS could check the corresponding pages and/or confirm whether those are truly separate concepts in your respective languages, or if similar to FR this may just be a case of pedantry.
+* Editors who speak any of the other languages covered at {{Q|Q13583626}} could confirm that their language doesn't distinguish between the two and that there aren't ““orphaned”” pages whose wikidata item should be merged with {Q|Q13583626}}.
+
+If NL and VLS editors find that a merge is warranted on their respective wikipedias, I will merge the FR pages so we can proceed to a merge here. [[User:Goblin in a jar|Goblin in a jar]] ([[User talk:Goblin in a jar|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:02, 8 November 2026 (UTC)
+
+:Dutch speaker here: from the NL/VLS side, this does not look like an interior vs. exterior distinction. It looks like two words for the same object: standard Dutch ''vensterluik/blind'' versus the Belgian/regional term ''blaffetuur''. I think ''blaffetuur'' originally meant 'cloth coverings for glassless windows', so probably something used indoors, but the modern concept is now the same.
+:* nl:[[:nl:Blaffetuur|Blaffetuur]] (on {{Q|Q13583626}}) defines a ''blaffetuur'' simply as a ''vensterluik'' (window shutter). It says the word is in the official Dutch word list but is rarely used in the Netherlands, while in Belgium it is common. The rest of the article is about the word's etymology. It does not describe a different object.
+:* nl:[[:nl:Blind (luik)|Blind (luik)]] (on {{Q|Q1096423}}) covers the same hinged panel and says outright that it is found both inside and outside: 'komt zowel binnen als buiten voor'.
+:* vls:[[:vls:Blaffeteure|Blaffeteure]] describes it as a panel that closes the window on the outside: 'an de buutnkant'. So if anything, the VLS article describes the exterior shutter, the opposite of the FR split.
+:[[User:Difool|Difool]] ([[User talk:Difool|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 23:17, 10 November 2026 (UTC)
+
+== Wikidata weekly summary #757 ==
+<div class="plainlinks mw-content-ltr" lang="en" dir="ltr">
+
+[[File:Wikidata-logo-en.svg|150px|right]]
+<div style="margin-top:10px; padding-left:5px; font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">'' Here's your quick overview of what has been happening around Wikidata in the<br>week leading up to 2026-11-09. Missed the previous one? See issue [[d:Special:MyLanguage/Wikidata:Status updates/Previous|#756]].<br>''</div>
+<div style="-moz-column-count:2; -webkit-column-count:2; column-count:2; -webkit-column-width: 400px; -moz-column-width: 400px; column-width: 400px;">
+
+''' Discussions '''
+* New requests for permissions/Bot:
+**[[d:Wikidata:Requests for permissions/Bot/Dragons Bot|Dragons Bot]] - '''Task/s:''' fetch labels and descriptions for rare languages on 10s or 100s of thousands items.
+**[[d:Wikidata:Requests for permissions/Bot/CWTSIDsBot|CWTSIDsBot]] - '''Task/s:''' Adding [[d:Property:P10203|ASJC]], Print [[d:Property:P236|ISSN]], and Online ISSN from CWTS dataset ( [[d:Q131521512|Leiden University's Centre for Science and Technology Studies]], from <nowiki>https://www.journalindicators.com/</nowiki>) where they are missing in Wikidata.
+**[[d:Wikidata:Requests for permissions/Bot/PubMedIDsBot|PubMedIDsBot]] - '''Task/s:''' Adding [[d:Property:P1055|NLM]], Print [[d:Property:P236|ISSN]], and Online ISSN from [[d:Q180686|PubMed dataset]] where they are missing in Wikidata.
+**[[d:Wikidata:Requests for permissions/Bot/CRMEDRBot|CRMEDRBot]] - '''Task/s:''' Add missing Latin, Italian and English labels to items for saints and blessed of the Roman Martyrology, using the name under which the Martyrology commemorates them.
+* Closed request for permissions/Bot: '''''All closed as successful''' -'' [[d:Wikidata:Requests for permissions/Bot/AuntuBot|AuntuBot]], [[d:Wikidata:Requests for permissions/Bot/OKA bot 3|OKA bot 3]], [[d:Wikidata:Requests for permissions/Bot/Karlb42Bot|Karlb42Bot]], [[d:Wikidata:Requests for permissions/Bot/AcervoFilmicoBot|AcervoFilmicoBot]], 
+* New mass-editing proposals: [[d:Wikidata:Mass editing proposals#Public office holders and state bodies, from Wikipedia articles|Public office holders and state bodies]] – A proposal to improve Wikidata records about public office holders and government institutions using Wikipedia articles.
+* New request for comments: [[d:Wikidata:Requests for comment/Add schema:dateCreated as Item's creation date to rdf-Export|Add property: ''schema:dateCreated'' as Item's creation date to rdf-Export]] - new property proposal for ''schema:dateCreated'' to the entity data block in the Wikidata RDF export, exposing creation date of an Item (first revision timestamp). Complements existing ''schema:dateModified'' property and enable longitudinal 'item creation' analyses directly in SPARQL, without API round-trips.
+
+''' Press, articles, blog posts, videos '''
+* Blogs:
+**[https://jsamwrites.substack.com/p/one-fact-seven-languages-bringing One Fact, Seven Languages: Bringing Abstract Wikipedia to Life] (From Wikidata to Abstract Wikipedia : Exploring a data-driven and test-driven approach to multilingual knowledge generation.)
+** [https://diff.wikimedia.org/2026/11/06/celebrating-wikidatas-14th-birthday-in-zanzibar/ Celebrating Wikidata’s 14th Birthday in Zanzibar]
+** [https://diff.wikimedia.org/2026/11/08/from-skills-to-action-expanding-how-we-contribute-to-wikimedia/ From Skills to Action: Expanding How We Contribute to Wikimedia]
+** (Deutsch) [https://digamus-award.de/digamus-2026-auf-wikidata/ DigAMus 2026 on Wikidata] - visit the [[d:Wikidata:WikiProject_Digital_projects_of_museums/Digital_projects_of_museums|DigAMus WikiProject]].
+* Papers: [https://dl.acm.org/doi/10.1007/978-3-030-30796-7_5 LC-QuAD 2.0: A Large Dataset for Complex Question Answering over Wikidata and DBpedia] - by Dubey et al., (2026).
+* Videos:
+** (Español) [https://www.youtube.com/watch?v=_D22jJYE50g Latin America in Wikidata 2026: Presentation on how to model data in Wikidata – with EPorto (WMB)]
+** (zh-TW) [https://www.youtube.com/watch?v=f1axSr16Jak Taiwan OpenStreetMap and Wikidata Workshop] - from the Taiwan OpenStreetMap and Wikimedia meeting, August 23, 2026.
+** [https://www.youtube.com/playlist?list=PLKru5NgeiH20 Playlist: Wikibase Cloud Sandbox] - Crystal Yragui demonstrates how to create an account, navigate and use the sandbox.
+** [https://www.youtube.com/watch?v=vLowRfj1ECE The Wikimedians (ep. 2): Andy Mabbett/Pigsonthewing] - a conversation with User:CloverMoss.
+* Games: [https://geo-master.app/map Geo-Master] - is a suite of geographically-themed Wikidata-powered games. Guess the Capital, Neighbours, Mystery Country, collect regions of the World Map to show off your skill and progress. Daily Challenges, multiplayer, leaderboards.
+
+''' Tool of the week '''
+* [https://affandymurad.github.io/wikipindai/ Wikipindai] - by [[d:User:Affandy_Murad|User:Affandy Murad]] - a Chrome browser extension. When installed, right-click on any text to retrieve what the Wikimedia projects knows about it...acts as a great discovery tool to see what articles and pages exist about the highlighted text/concept.
+* [[toolforge:dinodata|DinoData]] ({{Q|141746631}}) ‒ a web tool for viewing and editing Wikidata items in a more compact interface built with Vue and Codex. Edits are collected locally, shown as a diff, and then saved in one revision or exported as QuickStatements. A [[User:Simon04/DinoData.js|user script]] adds a "DinoData" tab to item pages. More at [[Wikidata:DinoData]].
+
+''' Other Noteworthy Stuff '''
+* WMF is finishing the rollout of hCaptcha on December 1, which will affect edits made via the API by non-autoconfirmed users. Those edits will need to include an hCaptcha "token" to be accepted by the API. If you have a tool that is used by non-autoconfirmed users, users who don’t have skipcaptcha, that you think might be affected see more on [[meta:Product_Safety_and_Integrity/hCaptcha#November_2026:_Completing_hCaptcha_rollout]].
+* Baltic and Finnish architecture: reconciling an editorial base with Wikidata led to 23 new building items, 17 new architect items and more than 100 sourced architect ([[Property:P84|P84]]) statements, plus Lithuanian heritage register codes ([[Property:P10040|P10040]]); every change is dated in a public [https://pierrejeantribot.com/socle/journal/ corrections log].
+* [https://humanlineage.org Human Lineage], a free public genealogical graph of historical people, published an open data dump on [https://doi.org/10.5281/zenodo.23284943 Zenodo] (CC BY-SA 4.0): 2.7 million deceased persons with Wikidata, VIAF and GND identifiers, parent-child and couple relationships and dated life facts. (Disclosure: added by the project maintainer.)
+* Wikidata has a new page for easy navigation to your favourite [[d:Wikidata:Games|Wikidata:Games]]
+
+''' Newest [[d:Special:ListProperties|properties]] and [[d:Special:MyLanguage/Wikidata:Property proposal|property proposals]] to review '''
+
+<!-- NEW PROPERTIES DO NOT REMOVE -->
+* Newest [[d:Special:ListProperties|properties]]:
+** General datatypes: none
+** External identifiers: [[:d:Property:P15013|MEMO ID]], [[:d:Property:P15014|Baidu Baike ID]]
+<!-- END NEW PROPERTIES -->
+<!-- NEW PROPOSALS DO NOT REMOVE -->
+* New [[d:Special:MyLanguage/Wikidata:Property proposal|property proposals]] to review:
+** General datatypes: 
+***[[:d:Wikidata:Property proposal/collection category|collection category]] (<nowiki>Wikimedia category for the collection corresponding to this item</nowiki>)
+** External identifiers: [[:d:Wikidata:Property proposal/Wallonie-Bruxelles Architectures ID|Wallonie-Bruxelles Architectures ID]], [[:d:Wikidata:Property proposal/spielregeln-spielanleitungen.de ID|spielregeln-spielanleitungen.de ID]], [[:d:Wikidata:Property proposal/Kiwifruit Atlas taxon ID|Kiwifruit Atlas taxon ID]], [[:d:Wikidata:Property proposal/OSCR paper ID|OSCR paper ID]], [[:d:Wikidata:Property proposal/Plattmakers person ID|Plattmakers person ID]], [[:d:Wikidata:Property proposal/NIFS Person ID|NIFS Person ID]], [[:d:Wikidata:Property proposal/NIFS stadium ID|NIFS stadium ID]], [[:d:Wikidata:Property proposal/NIFS team ID|NIFS team ID]], [[:d:Wikidata:Property proposal/NIFS match ID|NIFS match ID]], [[:d:Wikidata:Property proposal/Street Art Cities marker id|Street Art Cities marker id]], [[:d:Wikidata:Property proposal/Tieteen termipankki ID|Tieteen termipankki ID]], [[:d:Wikidata:Property proposal/Identifiant Livre-Mémorial de la Déportation|Identifiant Livre-Mémorial de la Déportation]], [[:d:Wikidata:Property proposal/Parfumo parent companies ID|Parfumo parent companies ID]], [[:d:Wikidata:Property proposal/m3db.com lyric ID|m3db.com lyric ID]], [[:d:Wikidata:Property proposal/identifiant Dataparl|identifiant Dataparl]], [[:d:Wikidata:Property proposal/identifiant Le Guide du pouvoir|identifiant Le Guide du pouvoir]], [[:d:Wikidata:Property proposal/CA Perfume Ingredient Guide ID|CA Perfume Ingredient Guide ID]]
+<!-- END NEW PROPOSALS -->
+
+You can comment on [[d:Wikidata:Property proposal/Overview|all open property proposals]]!
+
+''' Did you know? '''
+* Query examples: [https://w.wiki/gnch Tennis tournament start and end date] - ([[d:Special:GoToComment/c-Wolbo-20261108150900-Tennis_tournament_start_date_and_end_date|source]])
+* Schema examples: [[d:Wikidata:Database_reports/EntitySchema_directory|EntitySchema Directory]] - see here for the list of EntitySchema's available.
+* Newest [[d:Special:MyLanguage/Wikidata:WikiProjects|WikiProjects]]:
+** [[d:Wikidata:Wikiproject_European_Universities_Alliances|Project: European Universities Alliances]] - coordinate the creation, curation, and enrichment of items related to the European Universities initiative (EUI)
+** [[d:Wikidata:WikiProject_NOM|Project: NOM]]
+** [[d:Wikidata:WikiProject_Italien_in_Berlin|Project: Italien in Berlin]]
+* Newest [[d:Wikidata:Database reports|database reports]]: [[d:Wikidata:Database_reports/Humans_with_missing_claims|Humans with missing claims]] - This report sorts Items about humans missing a claim: sex or gender (P21), place of birth (P19), date of birth (P569), family name (P734) and given name (P735). Table rows by other human-related claims help break these columns down further.
+
+''' Development '''
+*
+
+[[phab:maniphest/query/4RotIcw5oINo/#R|You can see all open tickets related to Wikidata here]]. If you want to help, you can also have a look at [https://phabricator.wikimedia.org/project/board/71/query/zfiRgTnZF7zu/?filter=zfiRgTnZF7zu&order=priority the tasks needing a volunteer].
+
+''' Weekly Tasks '''
+* Add labels, in your own language(s), for the new properties listed [[d:Wikidata:Status_updates/Next#Newest_properties_and_property_proposals_to_review|above]].
+* Contribute to the showcase Item and Lexeme [[d:Wikidata:Status_updates/Next#Did_you_know?|above]].
+* Govdirectory weekly focus country: [[d:Wikidata:WikiProject Govdirectory/Zambia|Zambia]]
+* Summarize your [[d:Wikidata:Status_updates/Next#Did_you_know?|WikiProject's ongoing activities]] in one or two sentences.
+* Help [[d:Special:LanguageStats|translate]] or proofread the interface and documentation pages, in your own language!
+* [[d:User:Pasleim/projectmerge|Help merge identical items]] across Wikimedia projects.
+* Help [[d:Wikidata:Status updates/Next|write the next summary!]]
+
+<div style="margin-top:10px; font-size:90%; padding-left:5px; font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">'''· [[d:Special:MyLanguage/Wikidata:Status updates/Previous|Previous issue]] . [[d:Special:MyLanguage/Wikidata:Status updates/Current|Full report]] · [[m:Global message delivery/Targets/Wikidata|Unsubscribe]] .  [[:d:User:JosefAnthony |JosefAnthony]] [[:d:User talk:JosefAnthony|talk]] ·[[User:MediaWiki message delivery|MediaWiki message delivery]] ([[User talk:MediaWiki message delivery|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:54, 9 November 2026 (UTC)'''
+</div>
+</div>
+</div>
+<!-- Message sent by User:JosefAnthony@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Wikidata&oldid=31239182 -->
+
+== Non-championship races with {{P|P361}} a Formula One World Championship season ==
+{{Q|Q3070913}} and {{Q|Q3067191}} were non-championship races, but both are {{P|P361}} of their season ({{Q|Q69184}}, {{Q|Q69229}}), which has {{P|P3450}} {{Q|Q1968}}.
+So a query for the championship rounds of a season picks them up as well.
+
+Is a season item meant to cover all Formula One races of that year, including the non-championship ones, or only the championship rounds?
+If only the rounds, the two races would lose {{P|P361}} (or get a qualifier), and I'd do that; if all races, is there a way to mark the championship rounds that queries should use?
+[[User:Trummler12|Trummler12]] ([[User talk:Trummler12|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 14:01, 10 November 2026 (UTC)
+
+:I don’t know how F1 is modeled on Wikidata. But the people at [[Wikidata:WikiProject Sports]] surely know. [[User:RVA2869|RVA2869]] ([[User talk:RVA2869|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:50, 10 November 2026 (UTC)
+::Thanks, I've now asked at [[Wikidata talk:WikiProject Sports#Non-championship races as part of a Formula One season|Wikidata talk:WikiProject Sports]] [[User:Trummler12|Trummler12]] ([[User talk:Trummler12|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 13:40, 11 November 2026 (UTC)
+
+== Question About External Website Links on Wikidata ==
+Hello Wikidata community,
+
+I would like to understand the guidelines for adding external website links to Wikidata items. What criteria should a website meet before it can be included as an external reference or official website?
+
+I want to make sure that any links I contribute follow Wikidata's policies and provide genuine value to readers.
+
+Thank you for your guidance. [[User:Alax097|Alax097]] ([[User talk:Alax097|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:27, 11 November 2026 (UTC)
+: The {{P|P856}} is described in the property itself. Its the official website of the item. That generally means the site is published and maintained by the entity represented by the the item itself. See the examples on the page as well.
+: The property {{P|P854}} is used to provide a source for the statement it is attached to. What constitutes a source is discussed in the pages linked from [[Wikidata:Sources]].
+: The property {{P|P973}} is used if the item is described in a significant way, but there is no external id property for this page and it adds information beyond just specific statements.
+: There are a few more properties, but their uses are more niche. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:05, 11 November 2026 (UTC)
+:For the website criteria, its either have to fulfill one these things:
+:* Not a personal blog, with strict exceptions for rare cases
+:* Is a known notable publications (newspaper, large established trade magazines, etc.)
+:* Known notable repositories for journals, archives, etc.
+:* Not categorized under advertisement materials,
+:* Not a Wiki site, with strict exceptions for rare cases.
+:* Not mere a listing/directory, for this is included under identifiers, however limited cases would allow using listing and directory as values for {{P|854}}
+:They have to contain:
+:* Sufficient description describing the subject of the item, i.e. directly talk about the subject descriptively.
+:* Informations not authored by the author of the item itself. (See [[WD:SELF|this article]])
+:My mindset usually view Wikidata is a '''''tertiary source''''', they prefer to cite '''''secondary sources''''', and tend to avoid '''''primary sources.''''' In my experience as a contributor, I found Wikipedia policies useful as a framework, particularly on [[:en:WP:V|Verifiability]] and regarding [[:en:WP:NOR|Original Research]]. 
+:This answer is challenging for me to make as I draw it from my personal contribution experience and interaction with other admins/users, and I might fail to capture other subtle parts of Wikidata. So, as always, I welcome opinion/constructive correction/addition from other admins and/or experienced users. Thank you. [[User:Yamato Shiya|'''Yamato''']] Shiya • ([[User talk:Yamato Shiya|Hello!]]) 22:36, 11 November 2026 (UTC)
+::Not sure why you dislike wikis, that's just a matter of the software chosen to host the site (Wikipedias certainly dislike Fandom wikis, I don't think we need to). For an article on a site, its better to use {{P|1343}} with a {{P|2699}} qualifier than the bald {{P|973}}. It gives better context, and is easier to convert to a property if the site is proving useful. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 06:24, 12 November 2026 (UTC)
+:::Hi, thank you for your addition. Please do not conclude when I said "not a Wiki" that means I dislike it. It is far from what I understood. As I said it is my experience interacting with other contributors, and usually I got this impression that Wikis (Wikimedia projects and other Wikis) are "tertiary sources", and we prioritize secondary sources (published by registered entity), as you said, we can use them for other purposes, but the main point in question is criteria for an external referencing website and/or official website. [[User:Yamato Shiya|'''Yamato''']] Shiya • ([[User talk:Yamato Shiya|Hello!]]) 06:46, 12 November 2026 (UTC)
+:::We don't like user generated content as references. Wikis are generally user generated. [[User:Secretlondon|Secretlondon]] ([[User talk:Secretlondon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:10, 12 November 2026 (UTC)
+::::I guess by user you mean fan. Fans can either be flaky or subject matter experts. The irony is that we have vast numbers of references quoting different wikipedias, the very sort of secondary content that should not be a reference. A good quality link is in the mind of the editor, a local historian blog post is often better than a scant few lines in a national database. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:19, 12 November 2026 (UTC)
+:: There are plenty of things on Wikidata that can be drawn from primary sources. There is also plenty of things drawn from self-published sources. Only place I would maybe see to be a bit more restrictive are living people and maybe active organizations.
+:: But why wouldn't I source information about Pokémon from a Pokémon Wiki or directly from Nintendo itself. And with the source right on the statement any consumer can decide for themselves if they want to consider that. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:29, 12 November 2026 (UTC)
+:::Thanks! [[User:Yamato Shiya|'''Yamato''']] Shiya • ([[User talk:Yamato Shiya|Hello!]]) 07:12, 13 November 2026 (UTC)
+::@[[User:Yamato Shiya|Yamato]]
+::I don't think we have a rule to generally prefer secondary sources over primary sources. If you for example take the US census, I would prefer the primary source from the US census over a secondary source where a newspaper reports about what the US census number happens to be. 
+::I would rather cite the US Supreme Court for information about a US Supreme Court decision then a New York Times article.
+::We don't have a no-original-research rule either. As one example, our upper-level ontology is essentially a product of original research. Many property proposals are entirely original research which users not even checking for the prior art. [[User:ChristianKl|<span style="color:#0000EE;">'''ChristianKl'''</span>]] ❪[[User talk:ChristianKl|✉]]❫ 18:32, 12 November 2026 (UTC)
+:::I were thinking "primary sources" as sources that has not been edited, reviewed, and/or published by an entity. In your example, my definition of primary source is the testimony/notes/records of those who attend the court session in first person. If the records have been edited, reviewed and published under Supreme Court seal, in my perspective that is a secondary (data) sources. It is primary in term of authority, but it also secondary as a data source. CMIIW and Thanks! [[User:Yamato Shiya|'''Yamato''']] Shiya • ([[User talk:Yamato Shiya|Hello!]]) 07:13, 13 November 2026 (UTC)
+:Do you have any (professional) connection with the links you would contribute? [[User:Sjoerddebruin|<font color="#325186">'''Sjoerd de Bruin'''</font>]] [[User talk:Sjoerddebruin|<font color="#325186">(talk)</font>]]  09:56, 12 November 2026 (UTC)
+
+== November 2026 Wikimedia Café: the Newcomer homepage & Home experience ==
+<div class="border-box" style="background-color: var(--background-color-warning-subtle, #f8eaba); max-width: 575px; padding: 5px; border: 1px solid black; margin: 5px; color: var(--clr-dark)">
+<div class="box" style="float:left; padding-top: 10px; padding-right: 10px; padding-left: 10px; padding-bottom: 10px;">[[File:Wikimedia Café logo in plain SVG format.svg|60px|alt=The logo for the Wikimedia Café]]</div>
+
+'''The Wikimedia Foundation's Contributor teams are migrating the [https://www.mediawiki.org/wiki/Special:MyLanguage/Growth/Personalized_first_day/Newcomer_homepage Newcomer homepage] to a new experience called [https://www.mediawiki.org/wiki/Home Home].''' This page will evolve with users, introducing them to new personalized opportunities based on their interests, and helping them develop into experienced contributors. 
+
+In November 21–22 sessions of the Wikimedia Café, [https://www.mediawiki.org/wiki/User:KStoller-WMF Kirsten Stoller] (senior product manager, Growth) and [https://www.mediawiki.org/wiki/User:Samwalton9_(WMF) Sam Walton] (senior product manager, Moderator Tools) will share an overview of this feature, plans for its future, and demos of interactive prototypes which we can explore together.
+
+A quote which I hope will inspire your attendance or at least good wishes, from [https://en.wikipedia.org/wiki/Grace_Hopper Grace Hopper]: "The most important thing I've accomplished, other than building the compiler, is training young people. They come to me, you know, and say, 'Do you think we can do this?' I say, 'Try it.' And I back 'em up. They need that. I keep track of them as they get older and I stir 'em up at intervals so they don't forget to take chances."
+
+This month's schedule:
+* Session A: 21 November at 16:00 UTC [https://zonestamp.toolforge.org/1795276800 (timestamp converter)], at a time friendly to the Americas, Africa, and Europe
+* Session B: 22 November at 04:00 UTC [https://zonestamp.toolforge.org/1795320000 (timestamp converter)], at a time friendly to Asia and the Pacific
+ 
+'''Please see the [https://meta.wikimedia.org/wiki/Wikimedia_Caf%C3%A9 Café] page for more information, including [https://meta.wikimedia.org/wiki/Wikimedia_Caf%C3%A9#How_to_register how to register]!'''
+
+Attendees of the Café are encouraged to bring a favorite beverage. (In the eternal words of [https://en.wikipedia.org/wiki/Jean-Luc_Picard Captain Picard], "Tea, Earl Grey, hot.")
+
+To subscribe or unsubscribe for Café notices on your talk page please [https://meta.wikimedia.org/wiki/Global_message_delivery/Targets/Wikimedia_Caf%C3%A9 go here].
+<br />
+[[File:Buntstifte Eberhard Faber crop 64h.jpg|360px|alt=cropped image of colored pencils]]</div>
+<span style="white-space:nowrap;">[[User:Pine|<span style="color:#01796f; text-shadow:#00BFFF 0 0 1.0em">༄ᨒ𖠰 Pine</span>]] [[User talk:Pine|<span style="color:DeepSkyBlue">(<b style="color:#FFDF00;text-shadow:#FFDF00 0 0 1.0em">✉</b>)</span>]]</span> 23:50, 11 November 2026 (UTC)
+
+== Merge request ==
+Could an uninvolved editor review [[Q61838083]] and [[Q139668937]] and merge them if they describe the same person?
+
+Michael Chandler, the security consultant named in these items. Both items describe a security consultant with the same name and include portraits. Q139668937 also links to his profile on The Vanquish Group’s website. Neither item currently has Wikipedia sitelinks.
+
+Please use your judgement on whether to merge the items and which ID to retain. Thank you. [[Special:Contributions/~2026-60369-82|~2026-60369-82]] ([[User talk:~2026-60369-82|talk]]) 00:54, 13 November 2026 (UTC)
+
+:They seem to be the same person, and there is a request to merge them at [[Talk:Q61838083#Merge request: Q61838083 into Q139668937]], but I am not sure the subject is notable. The first was created by {{noping|Smashpr}} in 2019, the second by {{noping|The Vanquish Group}} in 2026, along with five related items. I checked the Daily Mail reference and only found a picture of an unnamed bodyguard. [[User:TSventon|TSventon]] ([[User talk:TSventon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 03:02, 13 November 2026 (UTC)
+
+== Identity review: Sita Achaya / Sita Acharya ==
+Independent review requested of whether {{Q|Q141462158}} and {{Q|Q141462128}} describe one woman or two. The items were merged and subsequently restored while source discrepancies were examined.
+
+''Women Scientists in India'', p. 30, uses “Sita Acharya”. University of Delhi and Anatomical Society of India records use “Sita Achaya” or “Sita A Achaya” for the corresponding medical career. ''The Firsts'', pp. 36–37, connects Sita Ayappa (née Achaya) with the same posts. The sources also disagree about her MS specialty.
+
+Please review the [[Talk:Q141462128#Name discrepancy: discuss before merging|existing source comparison]] and comment there on whether the evidence establishes a single person with source errors or two distinct people. If two people are identifiable, please identify the sources and biographical facts distinguishing them. - [[User:Rohini|Rohini]] ([[User talk:Rohini|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 12:32, 13 November 2026 (UTC)
+
+== Warning on using "refine date" specifying a season ==
+The [[Help:Dates]] page says that for a source that specifies an inexact date using a season (like Fall 2006), to use the year (like 2006) for the main value and then add a qualifier {{P|P4241}} with a value like {{Q|Q40720568}}. In fact, that value says in its description that it's intended to be used with P4241, and P4241 uses it as a "Wikidata property example". That all makes sense to me, but when it's actually used that way (such as {{Q|Q9696}} "educated at" "Princeton University" statement, though that's not the item I was personally editing), it gives a warning that "Values of refine date statements should be instances or subclasses of one of the following classes (or of one of their subclasses), but autumn (northern hemisphere) currently isn't." I don't know if there's something wrong with the values, or with the constraint, but I hoped that someone here more familiar with how it's supposed to work could take a look. Thanks. — [[User:PeterCooperJr|PeterCooperJr]] ([[User talk:PeterCooperJr|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 13:56, 13 November 2026 (UTC)
+
+:{{ping|PeterCooperJr}} Maybe a temporary bad edit of the subclass tree? It seems to be fine now. [[User:ArthurPSmith|ArthurPSmith]] ([[User talk:ArthurPSmith|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:31, 16 November 2026 (UTC)
+::It does seem to be working now. Thank you to whoever fixed it. {{Section resolved|1=[[User:PeterCooperJr|PeterCooperJr]] ([[User talk:PeterCooperJr|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:40, 16 November 2026 (UTC)}}
+
+== Versioning of engineering standards publications and SysML v2 ==
+I'm trying to wrangle spec versions of {{Q|Q2117885}}. I have added {{P|P9767}} to it, but wiki reports some issues with that as {{Q|Q1941921}} doesn't fall into its scope. {{P|P348}} is not fitting. Not sure where to go with this, so I would like some input on how to handle this.
+
+Still in the topic of versions, SysML v2 is very different. While v1 was based on UML, v2 is based on {{Q|Q142129333}}. Should I split those items, or I can do some fancy tricks with properties? [[User:Not7CD|Not7CD]] ([[User talk:Not7CD|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 17:51, 13 November 2026 (UTC)
+: I would create a new item as a class that is modeling language version as a subtype of  {{Q|Q3331189}} and then create a separate item for each significant version of the language. Use {{P|P629}} and the inverse to connect the versions and the primary language item. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 19:24, 13 November 2026 (UTC)
+::I went with this approach. Now there is a second entry, I modified the original one:
+::* {{Q|Q2117885}}
+::* {{Q|Q142154223}}
+::Now that I think about it, SysML v1 should have stayed as just SysML and have two versions, v1 and v2. Are there any examples for other specifications? [[User:Not7CD|Not7CD]] ([[User talk:Not7CD|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 09:48, 14 November 2026 (UTC)
+::: Yes with this approach you should have three items at the end.
+::: There are no examples, as there are only 32 modeling languages on Wikidata at present.[https://query.wikidata.org/#SELECT%20DISTINCT%20%3Fs%20%3FsLabel%20%3FisTruthy%20WHERE%20%7B%0A%20%20%3Fs%20p%3AP31%20%3Fstmt%20.%0A%20%20%3Fstmt%20ps%3AP31%20wd%3AQ1941921%20.%0A%20%20BIND%28%20EXISTS%20%7B%20%3Fstmt%20a%20wikibase%3ABestRank%20%7D%20AS%20%3FisTruthy%20%29%20.%0A%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22en%22%20%7D%0A%7D%0AORDER%20BY%20%3FsLabel] The few modeling languages that have any versions use the property {{P|P348}} to designate the versions. Which I can see as a possible solution. My proposal is definitely more flexible in terms of the possibilities. 
+::: Since this is a barely charted use case you can probably choose what you want to do.
+::: I would recommend to keep {{Q|Q2117885}} as the modeling language. Then create a new item for v1 and then add the modeling from there. The reason why others have not done this approach is likely that there is just very little done to model these languages. Most currently present have only a handful of statements each. So if you don't want to use the software version property I would expand it. And personally I agree that having versions as separate entities is the better approach to model this. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 10:18, 14 November 2026 (UTC)
+
+== Ateş Kuan ==
+Hi, I’m a new user (Ateş Kuan)
+Hi, I'm a new user and created [[Q142151458]] for the Turkish rapper Ateş Kuan.
+The abuse filter blocks me from adding identifiers. Could someone add these?
+* Spotify artist ID (P1902): 3CTpD0KwnhHWzS7wdiXFSM
+* MusicBrainz artist ID (P434): ae2d295c-de77-4ee8-b0b8-806eefc8c6e9
+* Discogs artist ID (P1953): 15875651
+* Apple Music artist ID (P2850): 1551511562
+* YouTube channel ID (P2397): UC4czYHXPefArjJC7tmYvMCw
+* IMDb ID (P345): nm18866891
+* Genius artist ID (P2373): Ates-kuan
+Source for the biographical data: https://genius.com/artists/Ates-kuan (verified artist bio).
+I'm part of the artist's team (conflict of interest disclosure). Thank you! [[User:Furkan Yiğitt|Furkan Yiğitt]] ([[User talk:Furkan Yiğitt|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 03:50, 14 November 2026 (UTC)
+
+:Wrong place to ask [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 06:35, 14 November 2026 (UTC)
+:I don't think it blocks, it only warns and then adds a "possible vandalism" tag if the warning is ignored. [[User:Peter James|Peter James]] ([[User talk:Peter James|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:48, 14 November 2026 (UTC)
+::Right.  Looking at this user's log, I see only "Warn" events, which they should be able to acknowledge and proceed from. [[User:Bovlb|Bovlb]] ([[User talk:Bovlb|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 18:23, 14 November 2026 (UTC)
+
+== نسب ذوي ميزان  ==
+ذوو ميزان (الموازين)
+ذوو ميزان أو الموازين (مفردهم: الميزاني) هم أحد بطون فخذ ذوي سويعد من ذوي عون، من بني عبد الله من قبيلة مطير. يتركز انتشارهم التاريخي والسكاني في عالية نجد ومنطقة القصيم.
+النسب والفروع
+ينتسب ذوو ميزان إلى جدهم ميزان بن سويعد بن عون بن علي بن عباد من بني عبد الله من مطير.
+التقسيم القبلي (الأفخاذ)
+بحسب ما أورده المؤرخون ونسّابو القبيلة (مثل عوض بن رشيد العقيلي المطيري وفي كتاب سيرة مصاول بن بخيتان)، ينقسم ذوو ميزان إلى ثلاثة فروع رئيسية نسبةً لأبناء جدهم ميزان بن سويعد:
+1. ذوو مسلم: ويُعرفون بـ (الدلاقين / دليقان).
+2. ذوو سفر: ويُعرفون بـ (القحومة).
+3. ذوو جبار (أو جبير).
+الديار والمساكن
+تتوزع ديار ذوي ميزان ومساكنهم مع قومهم ذوي عون في عدة مناطق في وسط وغرب المملكة العربية السعودية، ومن أبرزها:
+نقطة تعداد عالية نجد: يمتلكون فيها أكثر من ثلاثين قرية وهجرة، من أشهرها: ضرية، ثرب، ديم، والظاهرية.
+نقطة تعداد منطقة القصيم ومحيطها: العمار، المطيوي، جفرة، نجخ، فجيج، الضبعية، الرضمية، صعينين، مليح، وموزر.
+التاريخ والأعلام
+كان لذوي ميزان حضور تاريخي بارز في عالية نجد والحجاز، خاصة في فترة حكم الدولة العثمانية والأشراف، ثم في عهد توحيد المملكة العربية السعودية. وعُرفوا بلقب "الدويلة" لكثرة صولاتهم وشجاعتهم في الذود عن الديار.
+أبرز الشيوخ والفرسان
+تتوارث إمارة ومشيخة ذوي ميزان في أسرة ابن مدلج، ومن أبرز أعلامهم:
+•الشيخ فاضي بن بخيتان بن مدلج: من الدلاقين من الموازين، ويلقب بـ (غامان). عاش في نهاية القرن الثاني عشر وبداية القرن الثالث عشر الهجري. اشتهر بالحلم والكرم وحسن العلاقة مع القبائل المجاورة. من أشهر مواقفه التاريخية استجابة استنجاد شيوخ الدلابحة من الروقة به لإطلاق سراح السجين (حميد الدلبحي) من سجن منصوب السوارقية التابع للشريف، حيث قاد فرسانه واقتحموا السجن وأطلقوه، وله في ذلك قصيدة مشهورة مطلعها:
+يالدلبحي جبناك من حبس الأشراف
+جبناك بخشوم النمش والشلافي
+•الشيخ عوض بن فاضي بن مدلج: تولى المشيخة بعد والده، وعُرف بالفروسية والكرم، وشارك في معارك منطقته ومنها وقعة ضرية.
+•الشيخ عايض بن فاضي بن مدلج: تولى المشيخة بعد أخيه عوض، وعاصر عهد الملك عبد العزيز بن عبد الرحمن آل سعود. طلب من الملك عبد العزيز الاستيطان في بلدة ضرية فأقطعه إياها، واستقر فيها الموازين والكثير من بني عون. عقد له الملك عبد العزيز لواءً للجهاد سُمي بـ "لواء ضرية"، وشارك به في حصار جدة وفتح الطائف ومكة المكرمة، ورابط في الرغامة لمدة عام حتى استُشهد.
+•الشيخ خالد بن عايض بن فاضي بن مدلج: تولى مشيخة ذوي ميزان بعد استشهاد والده عايض.لقبه (مكفي قومه) 
+المراجع والمصادر
+1. حمد الجاسر، معجم قبائل المملكة العربية السعودية، ص 829.
+2. ماجد الرزق الله الشلاحي، ديوان الأمراء وتحفة الشعراء، ص 211–213.
+3. منصور بن مروي، تاريخ قبيلة مطير.
+4. ابن غبن الوسمي وعبد العزيز السناح، أصدق البراهين في معرفة حمران النواظر، ص 78–79.
+5. عاتق بن غيث البلادي، معجم قبائل الحجاز، ص 323.
+6. محمد بن بلهيد، صحيح الأخبار عما في بلاد العرب من الآثار، ص 289.
+7. محمد العلي العبيد، النوادر الجامع، ص 368.
+8. عوض بن رشيد العقيلي المطيري، مطير حمران النواظر: الأصل والفروع، ص 307.
+9. سيرة مصاول بن بخيتان بن مدلج الميزاني، ص 10.
+وقصيدة لـمطلق الظلاعي المغيري في الموازين من ذوي عون في مطاليعها 
+كل يبا شربة الصافي
+ثُمَّ اعتزوا العوينية
+وهي عزوتهم عون جدهم الاكبر. [[Special:Contributions/~2026-60652-12|~2026-60652-12]] ([[User talk:~2026-60652-12|talk]]) 19:42, 14 November 2026 (UTC)
+
+:It is unclear what you are looking for here. [[User:Bovlb|Bovlb]] ([[User talk:Bovlb|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 20:28, 14 November 2026 (UTC)
+::This is clearly spam. {{Section resolved|1=[[User:RVA2869|RVA2869]] ([[User talk:RVA2869|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 14:33, 15 November 2026 (UTC)}}
+
+== Item request: Versan Aljarrah and Black Swan Capitalist (conflict of interest disclosed) ==
+Hello. Disclosure first: I am Versan Aljarrah, the subject of this request, so I have a conflict of interest. For that reason I am asking an experienced editor to review the sources below and, if they meet the notability policy, create the items, rather than creating them myself.
+
+{{collapse|title=proposed item details|
+'''Proposed item 1: Versan Aljarrah''' (Q5 human)
+* Description: investor and macro analyst, founder of Black Swan Capitalist
+* occupation: investor, entrepreneur
+* official website: https://www.blackswancapitalist.io/
+* X username: VersanAljarrah
+* YouTube channel ID: UCURoln2BKCvvMT5peanKAvw
+* Instagram username: blackswancapitalist
+* Substack handle: blackswancapitalist
+* Crunchbase person: https://www.crunchbase.com/person/versan-aljarrah
+
+'''Proposed item 2: Black Swan Capitalist''' (business)
+* Description: independent research and education firm covering digital assets and the global financial system
+* founded by: Versan Aljarrah
+* inception: 2018
+* headquarters location: Houston, Texas
+* official website: https://www.blackswancapitalist.io/
+* Crunchbase organization: https://www.crunchbase.com/organization/black-swan-capitalist
+
+'''Independent coverage''' (each names him as founder or CEO of Black Swan Capitalist):
+* Binance Square (CryptoGlobe), 26 July 2023: https://www.binance.com/en/square/post/860723
+* BeInCrypto, 27 May 2025: https://beincrypto.com/xrp-holders-black-swan-capitalist-ceo/
+* BeInCrypto, 31 March 2025: https://beincrypto.com/xrp-price-pre-determined
+* U.Today, 6 October 2025: https://u.today/ripple-is-the-trust-xrp-is-the-bank-latest-correlation-uncovered
+* Finbold, 25 September 2025: https://finbold.com/xrp-can-fix-the-global-debt-crisis-says-black-swan-capitalist-founder/
+* TipRanks, 7 October 2025: https://www.tipranks.com/news/ripple-is-the-trust-xrp-is-the-bank-says-analyst-as-ripple-national-trust-sparks-system-overhaul-talk
+* Watcher.Guru, 30 June 2026: https://watcher.guru/news/xrps-biggest-bull-just-made-a-prediction-few-saw-coming
+* Yellow.com, 3 March 2026: https://yellow.com/news/can-xrp-become-a-global-reserve-asset-this-expert-thinks-so
+* DigitalToday (Korea), 24 June 2026: https://www.digitaltoday.co.kr/en/view/74253/xrp-long-term-case-reemerges-black-swan-capitalist-founder-urges-against-selling-all
+* The Crypto Basic, 17 April 2026: https://thecryptobasic.com/2026/04/17/xrp-may-drop-further-but-heres-what-truly-matters-black-swan-capitalist-founder/
+* Bitget News, 23 June 2026: https://www.bitget.com/news/detail/12560605473869
+* ZyCrypto, 7 March 2026: https://zycrypto.com/why-black-swan-capitalist-founder-believes-ripples-xrp-may-survive-quantum-threats-that-gravely-endanger-bitcoin-ethereum/
+}}
+Thank you for your time. [[User:VersanAljarrah|VersanAljarrah]] ([[User talk:VersanAljarrah|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 01:41, 15 November 2026 (UTC)
+
+The text at the top of the page explicitly says that this is not the place to ask about deleting or creating individual new items. --[[User:M2Ys4U|M2Ys4U]] ([[User talk:M2Ys4U|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 05:41, 15 November 2026 (UTC)
+{{Section resolved|1=[[User:M2Ys4U|M2Ys4U]] ([[User talk:M2Ys4U|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 05:41, 15 November 2026 (UTC)}}
+
+== Notification for open RfD ==
+When an RFD about an item is opened, there is currently no way for the people who edited that item to be notified that the RFD exists. The closest thing we have is the RequestDeletion.js gadget which creates a popup if you open a page that has been nominated on RFD. The problem with this is that to actually see the RFD an editor has to enable the gadget and then just happen to open the nominated page, which is very unlikely.
+
+I think that at the very least, a message should be posted on the talk page of every item that is nominated at RFD. That way, the RFD will be visible in the watchlists of all editors that are watching the item. I also think that this would be a good [[Wikidata:Bot requests|task for a bot]]. [[User:Warudo|Warudo]] ([[User talk:Warudo|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 14:20, 15 November 2026 (UTC)
+
+:There's some interesting discussion about the deletion process in [[Wikidata:Project_chat/Archive/2022/07#Deletion_without_discussion]], including (at the end) a proposal for a bot to notify creators of deletions.  It seems reasonable to extend this idea to RFD. [[User:Bovlb|Bovlb]] ([[User talk:Bovlb|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:53, 15 November 2026 (UTC)
+::Yes I think there's a presumption that deletions are spam, but I'd certainly want to be notified if anything I'd worked on was deleted. I'm not denying we don't have a spam problem, fwiw [[User:Secretlondon|Secretlondon]] ([[User talk:Secretlondon|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:51, 15 November 2026 (UTC)
+:::It's a fair assumption considering that most of the deletions are spam, although that might change in the future if [[WD:speedy deletion]] becomes a thing. However, there are still a lot of open RFDs right now that are not about spam and I think that for those, it would have been nice to notify people. Like you, I would very much like to know if an item I've worked on is on RFD. But for this reason, I also feel like it is important to notify not only the creator, but also any editor that watches the page. Presumably, if one adds a page to their watchlist, they would like to know if it ends at at RFD. That is why I think that a post on the item's talk page is the best way to achieve what I want.
+:::Of course, this does not mean I'm against notifying creators in a different way as well. For example in enwiki, when opening an AfD, you add a notice to the page itself but people usually post a notice in the creator's user talk page too. These are not mutually exclusive and I think having both is the ideal. [[User:Warudo|Warudo]] ([[User talk:Warudo|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 22:26, 15 November 2026 (UTC)
+
+== cemetery complex ==
+{{ping project|Cemeteries}}
+I recently created the item {{Q|142176433}}, to accommodate the not uncommon occurrence of two or more cemeteries, often adjacent to one another, that are managed or treated as one unit, e.g. {{Q|16932666}}, {{Q|16895959}}, {{Q|104533460}}, and {{Q|111140727}}.  I'm not quite sure of how best to model the ontology ({{P|31}}, {{P|279}}, etc.) and differentiate/integrate it with {{Q|136706915}} and others. Any thoughts or assistance greatly appreciated, lest I corrupt or confuse things with mass changes. Thanks,[[User:Animalparty|&#45;Animalparty]] ([[User talk:Animalparty|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 21:43, 15 November 2026 (UTC)
+
+== political positions of political parties in descriptions ==
+@[[User:Fromage604|Fromage604]] and I are having a disagreement. We note that the general rule is that "Descriptions should try to reflect information both accurately and neutrally", but we interpret this differently. Having worked on wikis in relation to political parties for a while, I very often see parties' descriptions include their political orientation, e.g. "centre-right political party in country X". That feels valid: short, accurate and neutral (of course, provided the political orientation is properly sourced on wikis). @[[User:Fromage604|Fromage604]] argues that this too long or complex, and has systematically deleted "far-right" from the description in several languages of the French "Front National". Not only does this seem biased to me (as it is solely for the benefit of one party), but it seems to go against a perfectly accepted practice. Happy to get more views on this. [[User:Julius Schwarz|Julius Schwarz]] ([[User talk:Julius Schwarz|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 05:28, 16 November 2026 (UTC)
+
+:I agree with you. The orientation of parties defines them and is well known, and your phrasing is still pithy. Any distaste for a political position is in the mind of the beholder [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 05:44, 16 November 2026 (UTC)
+: Agreed, Front National is well known to be far-right and the description isn't too long. [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 08:14, 16 November 2026 (UTC)
+
+== Review request: items for Teamhood and UAB Eylean (conflict of interest disclosed) ==
+Hello. I am the CEO of UAB Eylean, a software company in Lithuania. I have a conflict of interest, which I have also disclosed on my user page.
+
+I created two items and would like an experienced editor to check them:
+
+Teamhood (Q142179981), project management software developed by UAB Eylean
+UAB Eylean (Q142179752), the company. It is also the developer of Eylean Board (Q18155992), which already has an item.
+
+Every statement has a reference. I used the Lithuanian company register and independent sources where I could, and the official website only for basic facts such as the URL.
+
+Two questions:
+
+1. Do the items meet the notability policy as they stand? If not, which kind of source is missing?
+2. Is “instance of: project management software” the right modelling, or is there a more precise class I should use?
+
+I will limit my own edits to factual corrections with references. Thank you for your time. [[User:Vicktheagile|Vicktheagile]] ([[User talk:Vicktheagile|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:29, 16 November 2026 (UTC)
+
+:wrong place to ask, reported to admins [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:53, 16 November 2026 (UTC)
+::Got it, any hints where to ask? [[User:Vicktheagile|Vicktheagile]] ([[User talk:Vicktheagile|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 07:57, 16 November 2026 (UTC)
+
+== Threshold for self promotion ==
+I've noticed an uptick on items about business or people made with evident intention of self promotion, even with debatable notability, like {{Q|140320789}}, {{Q|141746924}} or {{Q|141957577}}. Some of them are reasonably well made but in some others there are flagrant errors or some values are being pushed, I assume to increase promotional value.
+
+Wikipedias have varying conflict of interests policies but I'm not sure about Wikidata. Are this kind of items and editions discouraged? Is self promotion a valid reason for deletion? Or are self promotion items deleted only because of other flaws?
+
+I'd like some advice before deciding to propose deletion of some items. [[User:Pere prlpz|Pere prlpz]] ([[User talk:Pere prlpz|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:31, 16 November 2026 (UTC)
+
+:see [[Wikidata:Requests_for_new_items]] and [[Wikidata:Self-promotion]]. Accounts that only self-promote are suspended too. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:39, 16 November 2026 (UTC)
+::Therefore, users engaged in self-promotion should be reported instead of just proposing the items for deletion, shouldn't they? [[User:Pere prlpz|Pere prlpz]] ([[User talk:Pere prlpz|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:55, 16 November 2026 (UTC)
+:::That's what I do, it allows the admins to have a broader picture, and delete multiple items, user pages, and posts like we get here. [[User:Vicarage|Vicarage]] ([[User talk:Vicarage|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 11:59, 16 November 2026 (UTC)
+
+== Recoin ==
+Hello,
+
+Is it going to stay like this? ;) —[[User:Eihel|Eihel]] ([[User talk:Eihel|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 13:51, 16 November 2026 (UTC)
+:Someone even posted this : [[Special:Diff/2525853861/2568447023]]. —[[User:Eihel|Eihel]] ([[User talk:Eihel|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 15:14, 16 November 2026 (UTC)
+: The tool seems largely unmaintained since quite some time, so not sure what you expect to happen by posting a message like this here... [[User:Kordishal|Kordishal]] ([[User talk:Kordishal|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 16:35, 16 November 2026 (UTC)
+
+== Wikidata weekly summary #758 ==
+<div class="plainlinks mw-content-ltr" lang="en" dir="ltr">[[File:Wikidata-logo-en.svg|150px|right]]
+<div style="margin-top:10px; padding-left:5px; font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">'' Here's your quick overview of what has been happening around Wikidata in the<br>week leading up to 2026-11-16. Missed the previous one? See issue [[d:Special:MyLanguage/Wikidata:Status updates/Previous|#757]].<br>''</div>
+<div style="-moz-column-count:2; -webkit-column-count:2; column-count:2; -webkit-column-width: 400px; -moz-column-width: 400px; column-width: 400px;">
+
+''' Discussions '''
+* New requests for permissions/Bot:
+** [[d:Wikidata:Requests_for_permissions/Bot/MecateBot|MecateBot]] - Task(s): in 3 stages: (1) journals, (2) articles, (3) citations, for social sciences and humanities. See bot page for full details.  
+** [[d:Wikidata:Requests_for_permissions/Bot/NVAImportBot|NVAImportBot]] - Task(s): Add missing, referenced data from [[d:Property:P2287|Nasjonalt vitenarkiv (NVA <small>''[P2287]''</small>]], a Norwegian national research archive that replaced Cristin) to people and scholarly works that are already on Wikidata.
+** [[d:Wikidata:Requests_for_permissions/Bot/UT-Bot|UT-Bot]] - Task(s): Connect Wiktionary rhyme pages across language editions via sitelinks, starting from the rhyme pages of the German Wiktionary (one-time run of about 550 edits, plus occasional maintenance runs for newly created rhyme pages). 
+** [[d:Wikidata:Requests_for_permissions/Bot/QixinwgeoBot|QixinwgeoBot]] - Task(s): Human-reviewed maintenance of company labels, neutral descriptions, [[d:Property:P856|official websites <small>''(P856)''</small>]], [[d:Property:P452|industries <small>''(P452)''</small>]], and [[d:Property:P159|headquarters locations <small>''(P159)''</small>]], with new items proposed only where Wikidata's notability requirements are met and no matching item exists.
+
+''' Events ''' 
+* Past events: Wiki Indaba 2026, the Wikimedia conference with Africa as a focus, held a [https://wikimedia.eventyay.com/wi/wikiindaba26/talk/VTKTBB/ Wikidata Community meetup], a workshop on [https://wikimedia.eventyay.com/wi/wikiindaba26/talk/NJNTWC/ lexicographical data] and a workshop for [[c:File:Wiki Indaba 2026 Wikidata Databox for smaller language Wikipedias.pptx.pdf|Wikidata Databox for smaller language Wikipedias]]
+
+''' Press, articles, blog posts, videos '''
+* Blogs:
+** [[Diffblog:2026/11/13/connecting-authors-of-basque-documentary-heritage-on-wikipedia-and-wikidata|Connecting authors of Basque documentary heritage on Wikipedia and Wikidata]]
+** [[Diffblog:2026/11/14/dagaare-wikimedians-celebrate-wikidatas-14th-birthday-in-ghana|Dagaare Wikimedians Celebrate Wikidata’s 14th Birthday in Ghana]]
+* Papers: [https://aclanthology.org/2026.eacl-long.388/ Wikontic: Constructing Wikidata-Aligned, Ontology-Aware Knowledge Graphs with Large Language Models] by Chepurova et al., (2026): a pipeline that builds compact knowledge graphs from text, and uses Wikidata-type and relation constraints, matching several retrieval-augmented baselines from multi-hop quality assurance.
+* Videos:
+** [https://www.youtube.com/watch?v=rk34rBBMGtY How to Use Wiki In Africa's Learning Resources Wikibase] - Training with Shefiu Muib
+** [https://youtube.com/watch?v=g4AQDZ5_s_k?t=6893 Building a FAIR pipeline for digitised archival materials: OCR, IIF, and Semantic Wikibase in practice] - a case study of ''THEswissTHING'' by Guergana Tzatchkova
+* Presentations: [https://zenodo.org/records/24221565 Comparing Semantic MediaWiki, Wikibase and NeoWiki for Cultural Heritage use cases in the context of ECHOLOT] by L. Rossenova, B. Krabina & De Dauw, J. (2026)
+
+''' Tool of the week '''
+* ChatGPT web [https://naturreservat-sverige-open-data-audit.salgo60.chatgpt.site/om/?lang=en  naturreservat-sverige-open-data-audit.salgo60.chatgpt.site] that checks Swedish {{Q|179049}} with {{Q|2013}}, svWikipedia, {{Q|936}} and {{Q|2976522}} data
+* Wikidata Reference Validator (Wiki Indaba Hackathon 2026) - [https://wikidata-reference-validator.toolforge.org/ toolforge] - added language support, expanded accessibility, improved user interface, dark mode and integrated MediaWiki account authentication.
+
+''' Other Noteworthy Stuff '''
+* On December 1, the WMF completes its hCaptcha rollout. On Wikidata, edits made via the API by non-autoconfirmed users (i.e. users without the skipcaptcha right) will need to include an hCaptcha token to be accepted. If you maintain a tool used by such users, please review the details at [[mw:Product_Safety_and_Integrity/hCaptcha#November_2026:_Completing_hCaptcha_rollout|Product Safety and Integrity/hCaptcha#Completing hCaptcha rollout]].
+* [https://www.library.unlv.edu/about/employment/all-employment-opportunities/digital-collections-wikimedian-in-residence Job Vacancy: University of Nevada, Las Vegas: Digital Collections Wikimedian-in-Residence] - assist with special collections and archives staff in the Digital Collections department on a Library Advisory Board grant-funded Wikidata project.
+
+''' Newest [[d:Special:ListProperties|properties]] and [[d:Special:MyLanguage/Wikidata:Property proposal|property proposals]] to review '''
+
+<!-- NEW PROPERTIES DO NOT REMOVE -->
+* Newest [[d:Special:ListProperties|properties]]:
+** General datatypes: none
+** External identifiers: [[:d:Property:P15015|Politicômetro ID]], [[:d:Property:P15016|Austriasoccer.at football players ID]], [[:d:Property:P15017|VLKK given name ID]], [[:d:Property:P15018|VSCO username]], [[:d:Property:P15019|TURKPATENT geographical indication ID]]
+<!-- END NEW PROPERTIES -->
+<!-- NEW PROPOSALS DO NOT REMOVE -->
+* New [[d:Special:MyLanguage/Wikidata:Property proposal|property proposals]] to review:
+** General datatypes: 
+***[[:d:Wikidata:Property proposal/item(s) assessed|item(s) assessed]] (<nowiki>item or class of items evaluated, tested, or examined</nowiki>)
+***[[:d:Wikidata:Property proposal/church service schedule|church service schedule]] (<nowiki>Providing information regarding regular service or mass schedule in a church or other religious building or institution.</nowiki>)
+***[[:d:Wikidata:Property proposal/Polish cultural heritage abroad register number|Polish cultural heritage abroad register number]] (<nowiki>reference in a Polish cultural heritage abroad</nowiki>)
+***[[:d:Wikidata:Property proposal/last day of validity|last day of validity]] (<nowiki>last day on which a legal act (law, regulation, directive, treaty, ordinance) is in force, before ceasing to apply by repeal, expiry or sunset clause</nowiki>)
+** External identifiers: [[:d:Wikidata:Property proposal/Fornmed entity ID|Fornmed entity ID]], [[:d:Wikidata:Property proposal/SDHK ID|SDHK ID]], [[:d:Wikidata:Property proposal/rodriguezuribe.co person ID|rodriguezuribe.co person ID]], [[:d:Wikidata:Property proposal/Nederlands Film Festival-identificatiecode voor film|Nederlands Film Festival-identificatiecode voor film]], [[:d:Wikidata:Property proposal/DiziTakvimi series ID|DiziTakvimi series ID]], [[:d:Wikidata:Property proposal/Sozinianer Edition ID|Sozinianer Edition ID]], [[:d:Wikidata:Property proposal/Text+ Registry edition ID|Text+ Registry edition ID]], [[:d:Wikidata:Property proposal/Kallax.io ID|Kallax.io ID]], [[:d:Wikidata:Property proposal/Joukahainen word ID|Joukahainen word ID]], [[:d:Wikidata:Property proposal/TIMS Dictionary of Molinology ID|TIMS Dictionary of Molinology ID]], [[:d:Wikidata:Property proposal/Meorei Galicia ID|Meorei Galicia ID]], [[:d:Wikidata:Property proposal/film-documentaire.fr festival ID|film-documentaire.fr festival ID]], [[:d:Wikidata:Property proposal/Flora brasiliensis ID|Flora brasiliensis ID]], [[:d:Wikidata:Property proposal/Namendatabase family name ID|Namendatabase family name ID]], [[:d:Wikidata:Property proposal/Forebears surname ID|Forebears surname ID]], [[:d:Wikidata:Property proposal/Forebears forenames ID|Forebears forenames ID]], [[:d:Wikidata:Property proposal/ttc stop id|ttc stop id]], [[:d:Wikidata:Property proposal/Global Line-ID|Global Line-ID]]
+<!-- END NEW PROPOSALS -->
+
+You can comment on [[d:Wikidata:Property proposal/Overview|all open property proposals]]!
+
+''' Did you know? '''
+* Newest [[d:Special:MyLanguage/Wikidata:WikiProjects|WikiProjects]]: [[d:Wikidata:WikiProject_Intangible_Heritage|Project Intangoible Heritage]] - aims to promote and document the intangible heritage from underrepresented communities on Wikidata
+
+''' Development '''
+* Mobile statement editing: We added the dialog for agreeing to the Terms of Use and releasing contributions under CC0.
+* Help panel: We improved how the heading for questions sent via the help panel look like on Project chat.
+* hCaptcha: We continued working on supporting hCaptcha in the Wikibase-specific pages and APIs.
+* Wikidata integration in Wikipedia and co:
+** We experimented to see if we can show the diff of a Wikidata edit on the client directly when it shows up in the watchlist and recent changes there.
+** We made progress on adding filters for language link changes to the watchlist and recent changes.
+* REST API: We continued work on the support for modifying an existing Lexeme.
+
+[[phab:maniphest/query/4RotIcw5oINo/#R|You can see all open tickets related to Wikidata here]]. If you want to help, you can also have a look at [https://phabricator.wikimedia.org/project/board/71/query/zfiRgTnZF7zu/?filter=zfiRgTnZF7zu&order=priority the tasks needing a volunteer].
+
+''' Weekly Tasks '''
+* Add labels, in your own language(s), for the new properties listed [[d:Wikidata:Status_updates/Next#Newest_properties_and_property_proposals_to_review|above]].
+* Contribute to the showcase Item and Lexeme [[d:Wikidata:Status_updates/Next#Did_you_know?|above]].
+* Govdirectory weekly focus country: 
+* Summarize your [[d:Wikidata:Status_updates/Next#Did_you_know?|WikiProject's ongoing activities]] in one or two sentences.
+* Help [[d:Special:LanguageStats|translate]] or proofread the interface and documentation pages, in your own language!
+* [[d:User:Pasleim/projectmerge|Help merge identical items]] across Wikimedia projects.
+* Help [[d:Wikidata:Status updates/Next|write the next summary!]]
+
+<div style="margin-top:10px; font-size:90%; padding-left:5px; font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">'''· [[d:Special:MyLanguage/Wikidata:Status updates/Previous|Previous issue]] · [[d:Special:MyLanguage/Wikidata:Status updates/Current|Full report]] · [[m:Global message delivery/Targets/Wikidata|Unsubscribe]] . [[:d:User:JosefAnthony |JosefAnthony]] [[:d:User talk:JosefAnthony|talk]] ·[[User:MediaWiki message delivery|MediaWiki message delivery]] ([[User talk:MediaWiki message delivery|<span class="signature-talk">{{int:Talkpagelinktext}}</span>]]) 16:09, 16 November 2026 (UTC)'''
+</div>
+</div>
+</div>
+<!-- Message sent by User:JosefAnthony@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Wikidata&oldid=31302149 -->

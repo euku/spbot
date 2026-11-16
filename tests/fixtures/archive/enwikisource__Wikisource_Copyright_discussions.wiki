@@ -1,0 +1,123 @@
+{{/header}}__NEWSECTIONLINK__
+{{autoarchive resolved section
+ | age            = 7
+ | archive        = ((FULLPAGENAME))/Archives/((year))
+ | overview       = [[/Archives]]
+ | timecompare    = resolved
+}}
+
+__TOC__
+== This editorial ==
+{{closed/s|Question answered: The work is not in the public domain.}}
+Published in 1989, [https://web.archive.org/web/20161006083928/http://www.crazyhood.com/wp-content/uploads/2014/04/KRS-opinion-piece-for-nyt-9_89.jpg would this specific editorial] be in the public domain via {{tl|PD-US-no-notice-post-1977}}? [[User:Nighfidelity|Nighfidelity]] ([[User talk:Nighfidelity|talk]]) 21:18, 16 September 2026 (UTC)
+
+: No. First, the New York Times always had a copyright notice that would have covered any non-ads. They even renewed. Secondly, September 1989 is too late for that rule; any requirement for a copyright notice ended in March 1989.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 01:22, 17 September 2026 (UTC)
+::Thanks for the info. [[User:Nighfidelity|Nighfidelity]] ([[User talk:Nighfidelity|talk]]) 13:23, 17 September 2026 (UTC)
+{{closed/e}}
+{{section resolved|1=--[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 15:05, 9 November 2026 (UTC)}}
+
+== [[Index:The Netsilik Eskimos (1931).djvu]] ==
+{{closed/s|Copyrighted until the end of December. Work in the Page namespace is paused; nothing can be transcluded into the mainspace until January 2027. This provision is exceptional due to the very short period remaining until the work enters the public domain and cannot be used as a general rule.}}
+This was published in Copenhagen in 1931, and therefore as Rasmussen died in 1933, it was renewed by the URAA, and although it's public domain in Denmark, it's still copyrighted in the States until next year. [[User:Nighfidelity|Nighfidelity]] ([[User talk:Nighfidelity|talk]]) 15:27, 18 September 2026 (UTC)
+
+:It does appear that this is still in US copyright for another few months.
+:@[[User:Eievie]] do you have any comments ? -- [[User:Beardo|Beardo]] ([[User talk:Beardo|talk]]) 03:23, 20 September 2026 (UTC)
+::I knew it was technically outside the bounds, but the file had been up for ages and it hadn't been deleted yet, so I was hoping I had misunderstood something and it wasn't really an issue. But if you need to delete it now, I've got nothing to say. Can it be deleted in such a way that the pages I've proofread can be retrieved when it's 2027, so I don't need to re-do them? [[User:Eievie|Eievie]] ([[User talk:Eievie|talk]]) 04:47, 20 September 2026 (UTC)
+:Quite honestly, as the copyright is going to expire in about three months, I do not think it is worth going through all the work of deleting all the pages and then undeleting them again. Unless deletion is being insisted on, I suggest simply stopping work on it and definitely not transcluding anything into the mainspace until January. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 20:01, 21 September 2026 (UTC)
+::Sounds reasonable. I assume that means leaving the copyvio tag on the index and removing in January. -- [[User:Beardo|Beardo]] ([[User talk:Beardo|talk]]) 03:09, 28 September 2026 (UTC)
+:::Yes. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 09:22, 28 September 2026 (UTC)
+{{closed/e}}
+
+I don't think that this section should be marked as resolved and so archived yet - I think it should be left here until January. Otherwise anybody coming here from the Index will have to go searching in the archives for the discussion. -- [[User:Beardo|Beardo]] ([[User talk:Beardo|talk]]) 16:09, 2 October 2026 (UTC)
+:OK. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 07:40, 3 October 2026 (UTC)
+
+== [[Russia and Ourselves]] ==
+This is a work published in London in 1931 by a Norwegian author who died in 1945. It's not out of copyright until next year.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 06:25, 27 September 2026 (UTC)
+:As the work's copyright is going to expire in 3 months (after this discussion is closed it will be 2½ months), I suggest deleting all the mainspace pages and stopping work on proofreading the index pages (without deleting them) until January. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 08:51, 27 September 2026 (UTC)
+::I have added the Copyvio tag to the Index. I suggest that it is left there until January. -- [[User:Beardo|Beardo]] ([[User talk:Beardo|talk]]) 02:58, 28 September 2026 (UTC)
+:::All the pages in the main NS deleted. They can be recreated in January 2027. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 21:39, 24 October 2026 (UTC)
+
+== [[Index:Last and First Men, by Olaf Stapledon.pdf]] ==
+This is the second edition, not the first edition. Despite much trying, neither Project Gutenberg nor us have found a first edition that would be clearly acceptable. On the Commons page, Yann has written "2nd edition, which doesn't seem to have anything added from the first in 1930", but without a solid scholarly comparison or a copy of the first edition, I don't know how anyone could tell if there were copyrightable changes from the first edition.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 04:31, 30 September 2026 (UTC)
+
+:Agree that this is a problem for the next few months. The copyright notice on Commons states that it was published prior to 1931, and yet it is clearly a 1931 publication. [[User:Beeswaxcandle|Beeswaxcandle]] ([[User talk:Beeswaxcandle|talk]]) 17:32, 30 September 2026 (UTC)
+:Right, well I had to extract this from a bunch of Google Snippets, but this, I think, is the entirety of what [https://books.google.co.uk/books?id=ACcOAAAAIAAJ&q=%22First+edition+,+second+impression+(+1931+)%22 Harvey J. Satty, Curtis C. Smith (1984) ''Olaf Stapledon: A Bibliography'', Bloomsbury Academic, pages 5-6], has to say about this "second edition":
+:: A3.1.2 First edition, second impression (1931)
+:: 
+:: Identical to A3.1.1 except for the alterations noted below. NOTES: Issued 8 January 1931 at 7s. 6d. in 968 copies. COLLATION: π<sup>6</sup> (± π<sub>2</sub> ) 1-21<sup>8</sup> 22<sup>10</sup>(22<sub>2</sub>=22<sup>*</sup>). page [iii]: [the words "SECOND EDITION" appear as the fifth line on the title page]. page [iv]: "First Published October 23rd 1930 Second Edition. 1931 | PRINTED IN GREAT BRITAIN". ADVERTISEMENTS: [date at foot of page 8 reads 1230 (December 1930)]. DUST JACKET: [the dust jacket for the second impression was altered in the following ways]. Front panel: [excerpts of three reviews of LAFM: E. B. Osborn in the Morning Post [21 November 1930]; uncredited review in the Observer [23 November 1930]; Roger Pippett in the Daily Herald [30 October 1930]. Rear panel: [advertisement for ten books by A. P. Herbert, first book The Water Gipsies, last book The Bomber Gipsy].
+:: 
+:: Front flap: (blurb on the front flap of the d/j of A3.1.1 is replaced by excerpts from six reviews of LAFM: Hugh Walpole in The Book Society News [date undetermined. This review is actually credited in TBSN to J. B. Priestley); Arnold Bennett in the Evening Standard [23 October 1930]; Ralph Straus in the Sunday Times [2 November 1930]; Henry Bett in the Methodist Recorder [20 November 1930]; uncredited review from the Oxford Magazine [30 October 1930]; Frank Swinnerton in the Evening News [31 October 1930].
+:: 
+:: On 5 January 1933 forty-five copies of this impression were ordered recased and issued at 3s. 6d. in a binding similar to that of A3.1.3.2.
+:: 
+:: The misprints noted under A3.1.1 were corrected in this impression . On page 5, line 15 the phrase "already in your time" replaces the phrase "already in your own time " which appeared in A3.1.1.
+:: 
+:: LOCATIONS: MH (MdU-BC, WMUW, CU-S) .
+:So according to this source, it looks like the only changes to the novel proper were the correction of some misprints and the removal of one word from page 5. [[User:Pasicles|Pasicles]] ([[User talk:Pasicles|talk]]) 17:37, 30 September 2026 (UTC)
+:: That's good enough on the novel proper. The selection of reviews is probably copyrighted, but it really doesn't matter, given we may or may not ever transcribe the ads.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 01:51, 1 October 2026 (UTC)
+:::all the reviews are dated 1930, so their copyright would have expired so why would they have copyright? [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 12:20, 1 October 2026 (UTC)
+:::: Selection copyright exists; if you pick a selection of works, especially original extracts, then you have a copyright over that collection, without having copyright over any specific piece.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 00:24, 2 October 2026 (UTC)
+:::::They aren't included in the scan anyways so this all irrelevant, if they were the standard thing would be to strip them out. Even then, since quoting a few excerpts is extremely routine practice, it is hard to have it meet either the US or the UK standard for creativity. Go through these reviews, pick a quote that is positive, and put it on the cover like almost every other book around isn't a great basis for a selection copyright claim. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 01:33, 2 October 2026 (UTC)
+:::::On a separate note, if we do decide that such material is copyrightable, then probably a bunch of works need to be localized and retagged as the copyright exists with the publisher who might have died after the author meaning it is still under life of the copyright holder + 70. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 02:15, 2 October 2026 (UTC)
+
+:Sorry, but this is completely ridiculous. This print was published in 1931, but the text was published in 1930. We have thousands of similar cases here without any issue. [[User:Yann|Yann]] ([[User talk:Yann|talk]]) 17:53, 30 September 2026 (UTC)
+::I don't even see the problem: the advertisement and reviews were also published in 1930, so they are also in the public domain. Nothing above can support a copyright claim. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 18:16, 30 September 2026 (UTC)
+:::I am not so sure. Without comparing it with the 1930 edition, we cannot be sure how similar the two editions are or whether they are completely identical (which may or may not be the case). We do not claim copyright here; we seek evidence that the book is in the public domain. Other libraries take such an approach as well. For example, HathiTrust quite commonly makes early editions of a work available while restricting access to later editions of the same work. Although I do not consider this a big issue in this particular case, as publications from 1931 are going to enter the public domain soon, I would not like us to set a precedent like this. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 20:41, 30 September 2026 (UTC)
+::::Isn't there exactly the comparison done above? The only difference being the addition of public domain advertisements and minor misprint corrections? What are you are asking for on top of a listed changes added above? [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 23:31, 30 September 2026 (UTC)
+:: Without the list above, it's just a second edition. A US work is easier; if it was published in 1931 and the last notice is 1930, the copyright on any work in the volume expired at the end of 2025. For a non-US work whose first edition is in 1930 and the second edition is in 1931, we can't use the second edition without worrying about new copyright on the changes.
+:: Note that if it hadn't been for this, this would have been uploaded at the start of the year; both I and Project Gutenberg have found only this scan and been unable to continue without a copy of the first edition or a deep comparison of the two editions.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 01:51, 1 October 2026 (UTC)
+:::We can use it since we know the scope of changes. It is one thing if you are bringing up and edition with new material such as prefaces or additional / expanded chapters. Correct, we have to strip those out per longstanding policy. But the idea that someone, somewhere fixed a typo in composition means we have to delete the whole work has never been our practice and the claim that doing so makes a new work subject to copyright isn't grounded in law, It also is a completely unworkable standard, unless we have an actual marker like a library accession date stamp, there is no way to actually verify the date it was printed. It may say 1930 on the title page but it might have been printed in a second run in 1931 with a new plate swapped in to fix a mistake or a different ad or what not. The fact that this is done without any indication shows that it is not considered copyrightable to fix a misprint. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 12:47, 1 October 2026 (UTC)
+::::If doing {{tl|SIC}} when transcribing a text and fixing a misprint grants copyright then works labeled PD here are not actually PD but CC-BY-SA / GFDL licensed because the wikisource editor making such an edit would have to release copyright and the default here are those. Secondly, making minor correction to the text isn't a way to extend copyright, oh you said the grammatically correct version of a line of our play, well we printed that correction in 1950 to our 1925 play so we get to sue you now isn't how copyright works. `[[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 14:07, 1 October 2026 (UTC)
+::::Yes, we now know the scope of changes, which makes it okay. But without that, it claims to be a second edition. We must assume from that that there have been copyrightable changes unless we know otherwise. Dates ''are'' hard; for a non-US work, we can generally assume it's okay if it says "reprint" but not "new edition", IMO. That something is done without indication would have no effect on copyright outside the US, and with a copyright notice, even a few years old, they would still have bought 20 years of copyright, which is plenty long for most purposes.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 00:24, 2 October 2026 (UTC)
+:::::The point is that a book might be the 1930 edition print run, but actually printed and bound with the advertising in 1931, which then triggers the what about copyright concern? We currently don't have the capability to do the level of bibliography to compare different printings to establish this book was actually printed and bound in 1930 (based on say a proof of sale) vs. this book is the 1930 edition (based on say the title page). Our current practice is basically, it's ''de minimis,'' such changes like sticking an updated list or sheet of quotes doesn't rise to the level of originality, etc. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 02:02, 2 October 2026 (UTC)
+:::::: I'm not fantastically concerned about advertising. I'm primarily concerned about more modern copies of works being used without concern for changes, especially when they're labeled as having significant changes on the front (e.g. in this case, saying "second edition".) I appreciate Pasicles finding the bibliography, but it should have been done before the upload.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 06:21, 2 October 2026 (UTC)
+:::::::Second edition isn't an indication of "significant changes" when it follows immediately after a first edition. It generally just means, as here, that errors were corrected in the next print run, unless there being some indication that it changes, e.g. "revised edition" or "expanded edition" or a preface highlighting changes, etc.  [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 13:35, 2 October 2026 (UTC)
+:::::::: If we're using something like Common's precautionary principle, I don't see any way we can assume that a work marked as a second edition has no copyrightable changes without other knowledge.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 03:04, 3 October 2026 (UTC)
+:::::::::It can be either, my point is that a "second edition" isn't proof that there ''are'' significant changes and shouldn't be used as proof that copyrighted material exists. The question is does it on its own imply "significant doubt"? My stance would be "second enhanced edition" or "second expanded edition" would certainly meet that line, while "second edition" with the same TOC / pagination doesn't. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 21:26, 5 November 2026 (UTC)
+:::::::::: The same TOC / pagination is hard to show without a copy of the first edition or a detailed bibliography. Even then, it sometimes could be simpler, reducing resetting or changing page references, to rewrite a section in place. In general, "second edition" meets the line of "significant doubt" IMO, barring significant bibliographic information that it doesn't.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 00:21, 6 November 2026 (UTC)
+:::::::::::That information is often in library records or even on auction / used-books stores without full scans. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 01:51, 6 November 2026 (UTC)
+:This edition seems to be an example of {{tl|Not-PD-US-URAA}}, as since Stapleton died in 1950, therefore it would be restored despite merely being a second edition. [[User:Nighfidelity|Nighfidelity]] ([[User talk:Nighfidelity|talk]]) 13:12, 2 October 2026 (UTC)
+::Why? What copyrighted content was restored? The only change is "On page 5, line 15 the phrase "already in your time" replaces the phrase "already in your own time " which appeared in A3.1.1." which isn't copyrightable. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 13:25, 2 October 2026 (UTC)
+:::I found the info from [https://www.govregs.com/regulations/title37_chapterII_part202_section202.12 here], which states that reprints outside the United States can be renewed by the URAA. [[User:Nighfidelity|Nighfidelity]] ([[User talk:Nighfidelity|talk]]) 13:32, 2 October 2026 (UTC)
+::::"(d) Works excluded. Works which are not copyrightable subject matter under title 17 of the U.S. Code, other than sound recordings fixed before February 15, 1972, shall not be registered as restored works. " is the relevant piece here. The reprint portion only says that you can send a "A reprint or re-release of the work as first published" as a record for deposit, not that you can claim a longer term on the reprint than the original.  [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 13:36, 2 October 2026 (UTC)
+
+It's only a few months out. Would anyone mind just pausing it and making it the January project instead? [[User:Eievie|Eievie]] ([[User talk:Eievie|talk]])
+:Agree. --[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 17:02, 1 October 2026 (UTC)
+::January is for another theme. [[User:Yann|Yann]] ([[User talk:Yann|talk]]) 17:25, 2 October 2026 (UTC)
+
+:I disagree, the concern raised here has been adequately addressed by posting the bibliography highlighting the difference. Until someone can point to some copyrighted content in there I don't see any reason to wait, we did the due diligence and investigation and the only response is a bunch of abstract we don't want any post 1930 works no matter what without engaging with the investigation or particulars of the case {{vk}} and close the discussion. [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 18:53, 1 October 2026 (UTC)
+::I agree with Mark. [[User:Yann|Yann]] ([[User talk:Yann|talk]]) 19:00, 1 October 2026 (UTC)
+:Agree. [[User:Nighfidelity|Nighfidelity]] ([[User talk:Nighfidelity|talk]]) 13:12, 2 October 2026 (UTC)
+
+==[[Index:Remembrance of Things Past, volume 1.pdf]]==
+{{closed/s|Deleted; public domain status not proven.}}
+This 1934 compilation had its copyright renewed: see [https://exhibits.stanford.edu/copyrightrenewals/catalog/R287031 here]. [[User:TE(æ)A,ea.|TE(æ)A,ea.]] ([[User talk:TE(æ)A,ea.|talk]]) 23:25, 25 October 2026 (UTC)
+
+:Indeed. {{vd}} -- [[User:Beardo|Beardo]] ([[User talk:Beardo|talk]]) 00:07, 26 October 2026 (UTC)
+{{closed/e}}
+{{section resolved|1=--[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 14:47, 9 November 2026 (UTC)}}
+
+== [[Index:The Century Of Life.pdf]] ==
+{{closed/s|Deleted; public domain status not proven.}}
+This looks to be a separate edition with its own copyright if I'm reading page 3 correctly. According to page 3, this is probably the third edition and was published November 1948 at earliest. If this edition has its own copyright then it definitely got URAA'd and would be under copyright in the US until 2043. [[User:ToxicPea|ToxicPea]] ([[User talk:ToxicPea|talk]]) 05:28, 30 October 2026 (UTC)
+{{closed/e}}
+{{section resolved|1=--[[User:Jan.Kamenicek|Jan Kameníček]] ([[User talk:Jan.Kamenicek|talk]]) 15:52, 14 November 2026 (UTC)}}
+
+==Decision by pseudo-judicial international body==
+I was just reading [https://cidh.oas.org/annualrep/2002eng/USA.11140.htm this] “decision,” and was wondering about copyright. I would imagine that the text is copyrighted, but would like to hear other opinions? [[User:TE(æ)A,ea.|TE(æ)A,ea.]] ([[User talk:TE(æ)A,ea.|talk]]) 19:50, 5 November 2026 (UTC)
+
+:Note: [https://www.cidh.oas.org/disclaimer.htm] has "The Executive Secretariat of the Inter-American Commission on Human Rights (IACHR) of the Organization of American States (OAS) maintains this web site for information purposes only. Users may download, copy and reprint information from the site for non-commercial purposes so long as the IACHR is cited as the source of the originating material, however, they may not resell, redistribute, or create derivative works absent the express written permission of IACHR." [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 20:58, 5 November 2026 (UTC)
+:Do we know if they are binding on citizen in any country outside the US? [[User:MarkLSteadman|MarkLSteadman]] ([[User talk:MarkLSteadman|talk]]) 21:19, 5 November 2026 (UTC)
+
+== [[Index:Ka-Sngithiang-I-Ne-Ka-Kot-Pule-Skul-Pdeng-Klass-5-6-Ed-1st.pdf]] ==
+Published 1956 in India by the author in 1956. I don't know when he died, but he must have been alive to publish it, so it would have still been in copyright in 1996 and so covered by URAA and still be in copyright in the US.
+
+(Only the preface is in English anyway.) -- [[User:Beardo|Beardo]] ([[User talk:Beardo|talk]]) 02:17, 7 November 2026 (UTC)
+
+== Letters of Helena Roerich ==
+{{closed/s|Question answered, copyright restored by the URAA will expire in 2035.}}
+Hi, Could you please confirm that the copyright of [https://archive.org/details/lettersofhelenar01reri this book] was not renewed (also available [https://archive.org/details/lettersofhelenar0001vari/ here])? I could not find any renewal, but I may be mistaken. Published in New York by Agni Yoga Society, 1954. Author is Helena Roerich (1879—1955). The second volume was published in 1967, and has a copyright notice, so not OK. Thanks, [[User:Yann|Yann]] ([[User talk:Yann|talk]]) 21:07, 8 November 2026 (UTC)
+: The Forward says it was first published in Latvia in 1939, so it would have been restored by the URAA.--[[User:Prosfilaes|Prosfilaes]] ([[User talk:Prosfilaes|talk]]) 22:21, 8 November 2026 (UTC)
+::OK, thanks. [[User:Yann|Yann]] ([[User talk:Yann|talk]]) 14:54, 9 November 2026 (UTC)
+{{closed/e}}
+{{resolved|1=[[User:Yann|Yann]] ([[User talk:Yann|talk]]) 14:54, 9 November 2026 (UTC)}}

@@ -1,0 +1,185 @@
+<!--{{/Active now?}}--><!--{{Thành viên:Hide on Rosé/Status2}}-->
+{{/Header}}
+<!--{{Khẩu hiệu Wikipedia}}-->{{autoarchive resolved section
+|age=1
+|archive=((FULLPAGENAME))/Lưu trữ/((year)) Lưu ((quarter))
+|timeout=31
+|overview=[[{{FULLPAGENAME}}/Lưu trữ|danh sách lưu trữ]]
+}}
+
+== Thư mời tham gia thảo luận cộng đồng ==
+
+Mời các bạn tham gia thảo luận cộng đồng về việc có đồng ý để Viwiki tham gia cơ chế thử nghiệm nhanh các tính năng của Wikipedia Foundation không. Xin cảm ơn các bạn.
+
+(Thông báo này được gửi đến [[:Thảo luận Thành viên:Hide on Rosé]] và được đăng tại đây do trang kia đổi hướng về trang này.)
+<!-- Tin nhắn của Thành viên:Bluetpp@viwiki gửi cho mọi người trong danh sách tại https://vi.wikipedia.org/w/index.php?title=Th%C3%A0nh_vi%C3%AAn:Tr%E1%BA%A7n_Nguy%E1%BB%85n_Minh_Huy/Danh_s%C3%A1ch_th%C6%B0&oldid=74868560 -->
+
+== Bản tin Kỹ thuật: Tuần 43-2026 ==
+<section begin="technews-2026-W43"/><div class="plainlinks">
+'''[[m:Special:MyLanguage/Tech/News|Tin tức kỹ thuật]]''' mới nhất từ cộng đồng kỹ thuật Wikimedia. Vui lòng chia sẻ với các thành viên khác về những thay đổi này. Không phải mọi thay đổi đều sẽ ảnh hưởng đến bạn. [[m:Special:MyLanguage/Tech/News/2026/43|Các bản dịch]] của bản tin này cũng có sẵn cho bạn.
+
+'''Cập nhật cho biên tập viên'''
+* Để đo lường tác động từ việc bổ sung một số [[mw:Special:MyLanguage/Readers/Reader_Growth/Image_Browsing#November 2025: Ideas and feedback|tính năng do cộng đồng yêu cầu]] đến tỷ lệ giữ chân độc giả chưa đăng nhập, một thử nghiệm về tính năng [[mw:Special:MyLanguage/Readers/Reader_Growth/Image_Browsing|Băng chuyền Hình ảnh]] (Image Carousel) sẽ được triển khai đến độc giả chưa đăng nhập. Với tính năng Băng chuyền Hình ảnh, độc giả có thể xem các hình ảnh do cộng đồng tải lên, được chọn lọc bởi các biên tập viên vì có liên quan đến bài viết cụ thể. Thử nghiệm sẽ bắt đầu vào ngày 20 tháng 11.
+* Một thông báo thử nghiệm sẽ được hiển thị tới 0,5% số độc giả chưa đăng nhập sử dụng thiết bị di động khi họ truy cập Wikipedia tiếng Anh từ Google, nhằm mời họ thêm Wikipedia vào danh sách [https://blog.google/products-and-platforms/products/search/preferred-sources/ Nguồn Ưu tiên trên Google]. Thử nghiệm nhằm mục đích đánh giá liệu thông báo này có giúp tăng tỷ lệ giữ chân độc giả và khuyến khích người dùng sử dụng Google Tìm kiếm ghé thăm Wikipedia thường xuyên hơn hay không. Thử nghiệm sẽ diễn ra từ ngày 15–29 tháng 10, sau đó kết quả sẽ được phân tích nhằm xác định tác động của nó đối với tỷ lệ giữ chân và lưu lượng truy cập từ các nguồn giới thiệu.
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Xem tất cả {{formatnum:26}} {{PLURAL:26|tác vụ}} được tạo bởi cộng đồng đã được [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|giải quyết vào tuần trước]]. Ví dụ, một sự cố khiến cho [[quarry:|Quarry]] trả về lỗi “Truy cập bị từ chối” khi người dùng cố gắng chạy các truy vấn SQL, làm cho các truy vấn không thể chạy được một cách bình thường, nay đã được khắc phục. [https://phabricator.wikimedia.org/T440966]
+
+'''Cập nhật cho những người đóng góp vào mảng kỹ thuật'''
+* [[File:Cog-icon-grey.svg|12px|link=|class=skin-invert|Đề mục nâng cao]] Do một lỗi đã tồn tại từ lâu, các ứng dụng sử dụng quy trình xác thực "client credentials" của [[mw:Special:MyLanguage/OAuth/For_Developers|OAuth 2]] để thay mặt chủ sở hữu thực hiện thao tác hiện đang bị hệ thống coi như là người dùng chưa đăng nhập. Vấn đề này sẽ được khắc phục đối với các ứng dụng mới đăng ký kể từ thứ Hai, ngày 19 tháng 10 trở đi. Một số ứng dụng bị ảnh hưởng sẽ cần phải thực hiện đăng ký lại. [https://phabricator.wikimedia.org/T420297]
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Chi tiết cập nhật mã nguồn sắp tới trong tuần này: [[mw:MediaWiki 1.48/wmf.1|MediaWiki]]
+
+'''Các cuộc họp và sự kiện'''
+* Một đề xuất tổ chức sự kiện Wikimedia Hackathon ba năm một lần, xen kẽ với các sự kiện hackathon khu vực, [[mw:Wikimedia Hackathon/Community Proposal 2026|đã được chia sẻ]]. Đề xuất này hướng tới việc giúp các cộng đồng kỹ thuật tại nhiều khu vực khác nhau có thể tiếp cận sự kiện này dễ dàng hơn. Hãy chia sẻ ý kiến ​​của bạn tại [[mw:Talk:Wikimedia Hackathon/Community Proposal 2026|trang thảo luận]] của đề xuất này trước ngày 6 tháng 11.
+
+'''''[[m:Special:MyLanguage/Tech/News|Tin tức Kỹ thuật]]''' do [[m:Special:MyLanguage/Tech/News/Writers|các biên tập viên Bản tin Kỹ thuật]] chuẩn bị và được đăng bởi [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Đóng góp]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/43|Biên dịch]]&nbsp;• [[m:Tech|Nhờ giúp đỡ]]&nbsp;• [[m:Talk:Tech/News|Phản hồi]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Đăng ký hoặc huỷ đăng ký]].''
+</div><section end="technews-2026-W43"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 14:37, ngày 19 tháng 10 năm 2026 (UTC)
+
+(Thông báo này được gửi đến [[:Thảo luận Thành viên:Tryvix1509]] và được đăng tại đây do trang kia đổi hướng về trang này.)
+<!-- Tin nhắn của Thành viên:STei (WMF)@metawiki gửi cho mọi người trong danh sách tại https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31178499 -->
+
+== LTA ==
+Hi! Regarding [https://vi.wikipedia.org/w/index.php?title=%C4%90%C3%A8n_ch%C3%B9m_b%E1%BA%A7u_tr%E1%BB%9Di_sao_%28Portaluppi%29&diff=75665232&oldid=75665220 this rollback], the LTA in question is also known as Alec Smithson (see [[:en:Wikipedia:Long-term abuse/Alec Smithson]]). Regards, – [[Thành viên:Horcrux|Horcrux]] ([[Thảo luận Thành viên:Horcrux|thảo luận]]) 15:05, ngày 24 tháng 10 năm 2026 (UTC)
+: Thanks for information. <span style="display:inline-block;text-align:center;vertical-align:bottom;line-height:0.5em;">[[User:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''VERITAS'''</span>]] <br/><br/>[[User talk:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''SAPIENTIAE'''</span>]]</span> 15:29, ngày 24 tháng 10 năm 2026 (UTC)
+
+== Bản tin Kỹ thuật: Tuần 44-2026 ==
+<section begin="technews-2026-W44"/><div class="plainlinks">
+'''[[m:Special:MyLanguage/Tech/News|Tin tức kỹ thuật]]''' mới nhất từ cộng đồng kỹ thuật Wikimedia. Vui lòng chia sẻ với các thành viên khác về những thay đổi này. Không phải mọi thay đổi đều sẽ ảnh hưởng đến bạn. [[m:Special:MyLanguage/Tech/News/2026/44|Các bản dịch]] của bản tin này cũng có sẵn cho bạn.
+
+'''Nổi bật trong tuần'''
+* Một thử nghiệm bắt đầu từ ngày 29 tháng 9 đang kiểm tra tính năng [[mw:Special:MyLanguage/Readers/Reader_Experience/Reading_recommendations|gợi ý bài viết]] dành cho những người dùng mới tạo tài khoản mà cũng tự xác định mình là độc giả. Bằng cách đề xuất các bài viết để đọc, tương tự như những gợi ý trong ứng dụng Wikipedia dành cho độc giả đã đăng nhập, thử nghiệm này hướng tới việc khuyến khích người dùng mới tạo tài khoản đọc nội dung và quay lại trang web thường xuyên hơn, với mục tiêu tăng tỷ lệ điều hướng nội bộ (internal referrals) thêm 1%. Xem thêm đề xuất có liên quan trong [[m:Community Wishlist/W505|Danh sách Mong muốn Cộng đồng]].
+* Một số dịch vụ của Wikimedia đã bị ngừng hoạt động vào tuần trước do một [https://www.php.net/archive/2026.php#2026-10-20-1 lỗ hổng bảo mật trong PHP]. Điều này là do chúng cần được cập nhật trước khi có thể an toàn để đưa trở lại trực tuyến. Đây không phải là vấn đề chỉ của phong trào Wikimedia mà còn ảnh hưởng đến rất nhiều trang web. Bạn có thể theo dõi thông tin cập nhật trên [[wikitech:Incidents/2026-10-21 PHP security update/Community|Wikitech]]. Cloud VPS và Toolforge sẽ mất nhiều thời gian hơn để đưa trở lại trực tuyến. Điều này nhằm đảm bảo rằng các ứng dụng chạy trên Cloud VPS hoặc Toolforge không bị ảnh hưởng. Những nhà phát triển công cụ có thể xem các cập nhật và thông tin chi tiết trên [https://lists.wikimedia.org/postorius/lists/cloud-announce.lists.wikimedia.org/ danh sách gửi thư thông báo trên Cloud]. [https://diff.wikimedia.org/2026/10/21/impact-of-php-vulnerabilities-on-wikimedia-tools-and-services/][https://diff.wikimedia.org/2026/10/21/impact-of-php-vulnerabilities-on-wikimedia-cloud-services/]
+* [[m:Special:MyLanguage/Tech/News/2026/43|Tuần trước, chúng tôi đã chia sẻ]] rằng để đo lường tác động của việc bổ sung một số tính năng được cộng đồng yêu cầu đối với tỷ lệ giữ chân độc giả chưa đăng nhập, một thử nghiệm cho tính năng [[mw:Special:MyLanguage/Readers/Reader Growth/Image Browsing|Băng chuyền Hình ảnh]] (Image Carousel) sẽ được triển khai tới nhóm độc giả chưa đăng nhập. Do có một vấn đề phát sinh, chúng tôi sẽ khởi chạy lại thử nghiệm này, dù vậy tính năng này sẽ bắt đầu hoạt động vào ngày 26 tháng 10, thay vì ngày 20 tháng 11 như thông báo ban đầu.
+
+'''Cập nhật cho biên tập viên'''
+* Một [[wikitech:KAPOW|hệ thống phát hiện bot]] mới được thiết kế để nhận diện tốt hơn các lưu lượng truy cập tự động vốn ngụy trang thành người dùng thật, sắp được triển khai trên các dự án wiki của Wikimedia. Thay đổi này có thể dẫn đến những biến động đột ngột trong số liệu thống kê khách truy cập kể từ ngày 26 tháng 10, áp dụng cho dữ liệu từ ngày 20 tháng 6 năm 2026 trở về trước.
+* Phần mở rộng [[mw:Special:MyLanguage/Extension:Score|Score]] dùng để hiển thị ký hiệu âm nhạc trong các trang wiki, đã tạm thời bị vô hiệu hóa trên tất cả các trang wiki do một vấn đề bảo mật. Các trang bị ảnh hưởng sẽ hiển thị thông báo thay vì các bản nhạc, nhưng mã nguồn gốc vẫn sẽ được giữ nguyên. Các biên tập viên không cần thực hiện bất kỳ thao tác nào, một bản sửa lỗi hiện đang được triển khai. Một thông báo khác sẽ được đưa ra khi phần mở rộng này được kích hoạt trở lại. Đọc thêm tại [[phab:T441579|Phabricator]].
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Xem tất cả {{formatnum:18}} {{PLURAL:18|tác vụ}} được tạo bởi cộng đồng đã được [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|giải quyết vào tuần trước]]. Ví dụ, vấn đề khiến cho trình làm nổi bật cú pháp của CodeMirror có vẻ như đã vô tình được bật cho các biên tập viên hiện có nay đã được khắc phục. [https://phabricator.wikimedia.org/T441308]
+
+'''Cập nhật cho những người đóng góp vào mảng kỹ thuật'''
+* [[m:Special:MyLanguage/Tech/Server switch|Tất cả các wiki sẽ chuyển sang chế độ chỉ đọc trong vòng vài phút]] vào thứ 4, ngày 28 tháng 10 năm 2026 lúc [https://zonestamp.toolforge.org/1793199600 15:00 UTC]. Điều này là nhằm phục vụ cho việc thử nghiệm chuyển đổi máy chủ cơ sở dữ liệu dự phòng, [[wikitech:Deployments/Yearly calendar|diễn ra hai lần trong một năm]]. Trong quá trình chuyển đổi này, toàn bộ lưu lượng trên các trang web của Wikimedia được chuyển từ trung tâm dữ liệu chính sang trung tâm dữ liệu dự phòng nhằm kiểm tra tính khả dụng và ngăn ngừa việc gián đoạn dịch vụ ngay cả trong những trường hợp khẩn cấp. [https://phabricator.wikimedia.org/T439703]
+
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Chi tiết cập nhật mã nguồn sắp tới trong tuần này: [[mw:MediaWiki 1.48/wmf.2|MediaWiki]]
+
+'''Các cuộc họp và sự kiện'''
+* Cổng nộp đơn xin học bổng và tài trợ cho [https://www.mediawiki.org/wiki/Wikimedia%20Hackathon%202027 Wikimedia Hackathon 2027] sẽ đóng lại vào thứ Sáu, ngày 30 tháng 10. Hãy gửi đơn đăng ký của bạn [https://pretix.eu/wikimedia/Hackathon-2027/ thông qua Pretix] trước thời hạn này!
+
+'''''[[m:Special:MyLanguage/Tech/News|Tin tức Kỹ thuật]]''' do [[m:Special:MyLanguage/Tech/News/Writers|các biên tập viên Bản tin Kỹ thuật]] chuẩn bị và được đăng bởi [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Đóng góp]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/44|Biên dịch]]&nbsp;• [[m:Tech|Nhờ giúp đỡ]]&nbsp;• [[m:Talk:Tech/News|Phản hồi]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Đăng ký hoặc huỷ đăng ký]].''
+</div><section end="technews-2026-W44"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 18:56, ngày 26 tháng 10 năm 2026 (UTC)
+
+(Thông báo này được gửi đến [[:Thảo luận Thành viên:Tryvix1509]] và được đăng tại đây do trang kia đổi hướng về trang này.)
+<!-- Tin nhắn của Thành viên:STei (WMF)@metawiki gửi cho mọi người trong danh sách tại https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31199592 -->
+
+== Phân loại rối ==
+Mình có nên chọn một tài khoản chủ rối nào đó để phân loại nhóm rối thường xuyên thêm nhiều biển xóa nhanh (trừ TKTT) vào các trang được không chứ gần đây tôi thấy các tài khoản này cứ thêm các biển xóa nhanh vào các bài viết và trang cá nhân của bạn khang á (bạn nên khóa trang của bạn lại để tránh trường hợp này). – [[Thành viên:Higashizakura|Đông Anh]] ([[Thảo luận Thành viên:Higashizakura|thảo luận]]) 14:08, ngày 30 tháng 10 năm 2026 (UTC)
+: @[[Thành viên:Higashizakura|Higashizakura]] Có thể theo dõi bộ lọc 88 (hiện chỉ còn chức năng phát hiện loại rối này). Nếu diễn biến không khá hơn thì cân nhắc mở đề xuất cấm tài khoản mới sửa trang thành viên của thành viên khác. <span style="display:inline-block;text-align:center;vertical-align:bottom;line-height:0.5em;">[[User:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''VERITAS'''</span>]] <br/><br/>[[User talk:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''SAPIENTIAE'''</span>]]</span> 14:23, ngày 30 tháng 10 năm 2026 (UTC)
+
+== Thư mời tham gia biểu quyết chọn điều phối viên ==
+Xin chào bạn, Wikipedia tiếng Việt hiện đang có một biểu quyết chọn điều phối viên:
+
+* [[Wikipedia:Biểu quyết chọn điều phối viên/Làm Việc Thiện (lần 3)]]
+
+Mời bạn tham gia. Cảm ơn. [[Thành viên:MediaWiki message delivery|MediaWiki message delivery]] ([[Thảo luận Thành viên:MediaWiki message delivery|thảo luận]]) 06:32, ngày 1 tháng 11 năm 2026 (UTC)
+<!-- Tin nhắn của Thành viên:Plantaest@viwiki gửi cho mọi người trong danh sách tại https://vi.wikipedia.org/w/index.php?title=Th%C3%A0nh_vi%C3%AAn:Tr%E1%BA%A7n_Nguy%E1%BB%85n_Minh_Huy/Danh_s%C3%A1ch_th%C6%B0&oldid=75572353 -->
+
+== Bản tin Kỹ thuật: Tuần 45-2026 ==
+<section begin="technews-2026-W45"/><div class="plainlinks">
+'''[[m:Special:MyLanguage/Tech/News|Tin tức kỹ thuật]]''' mới nhất từ cộng đồng kỹ thuật Wikimedia. Vui lòng chia sẻ với các thành viên khác về những thay đổi này. Không phải mọi thay đổi đều sẽ ảnh hưởng đến bạn. [[m:Special:MyLanguage/Tech/News/2026/45|Các bản dịch]] của bản tin này cũng có sẵn cho bạn.
+
+'''Nổi bật trong tuần'''
+* Nhiều công cụ Wikimedia đã phải tạm ngừng hoạt động vào tuần trước vì một [[:w:vi:PHP2Shell|lỗ hổng bảo mật trong PHP]]. Sự cố này đã ảnh hưởng đến rất nhiều trang web trên toàn cầu. [[m:Special:MyLanguage/Toolforge|Toolforge]] và [[m:Special:MyLanguage/Wikimedia Cloud Services|Cloud VPS]] đã hoạt động trở lại kể từ ngày 22 tháng 10. Nhiều công cụ quan trọng đã được dần khôi phục trở lại. Một số công cụ cần các tình nguyện viên bảo trì công cụ tương ứng khởi động lại chúng. Số khác vẫn cần phải được cập nhật lên phiên bản PHP được vá. Một số công cụ đang sử dụng các phiên bản cũ hơn của PHP không còn được các bản vá bảo mật gần đây hỗ trợ. Chúng cần phải được bảo trì viên nâng cấp lên phiên bản mới hơn. Việc này có thể cần đòi hỏi thêm nỗ lực. Bạn có thể theo dõi công việc [[:wikitech:Talk:Incidents/2026-10-21 PHP security update/Community#Exceptions|trên Wikitech]].
+
+'''Cập nhật cho biên tập viên'''
+* Một thử nghiệm tìm kiếm tùy chọn mới đang được triển khai trên ứng dụng dành cho Android và iOS đối với các phiên bản Wikipedia tiếng Ả Rập, tiếng Pháp và tiếng Nhật. Các độc giả tham gia có thể tìm kiếm trong các bài viết và mở trực tiếp các đoạn trích dẫn trong bài viết gốc của họ, mà không tạo ra bất kỳ câu trả lời hay bản tóm tắt nào. Đây là thử nghiệm đầu tiên trong số bốn thử nghiệm thuộc [[mw:Special:MyLanguage/Readers/Information%20Retrieval/Phase%202|Giai đoạn 2 của Tìm kiếm theo Ngữ nghĩa]] (Semantic Search). Thử nghiệm đã bắt đầu vào ngày 22 tháng 10 và sẽ kéo dài trong 20 ngày. Mọi phản hồi đều được hoan nghênh trên [[mw:Special:MyLanguage/Talk:Readers/Information%20Retrieval/Phase%202|trang thảo luận]] của dự án.
+* Nhóm [[m:Special:MyLanguage/Future_Audiences|Future Audiences]] đang lên kế hoạch đưa [[m:Special:MyLanguage/Future_Audiences/Share_card|Thẻ Chia sẻ]] (Share Cards) lên Wikipedia phiên bản di động. Tính năng này cho phép người dùng chia sẻ với bạn bè một chiếc thẻ có thiết kế bắt mắt, dựa trên bài viết mà họ đang đọc. Thẻ bao gồm tiêu đề bài viết, hình ảnh, đoạn mở đầu, thông tin ghi công có liên quan, cùng một đường dẫn quay lại bài viết để đọc toàn bộ nội dung. Mời các biên tập viên trải nghiệm tính năng này bằng cách thêm <code dir="ltr">?useformat=mobile&sharecard=1</code> vào URL của bất kỳ bài viết nào trong khoảng thời gian từ ngày 29 tháng 10 đến ngày 8 tháng 11. Chia sẻ bất kỳ suy nghĩ nào trên [[m:Talk:Future_Audiences/Share_card| trang thảo luận của dự án]], và báo cáo bất kỳ lỗi nào trên trên [[phab:T439161|Phabricator]]. 
+* Trình kết xuất mặc định cho các công thức toán học sẽ thay đổi vào ngày 2 tháng 11. Sau thay đổi này, máy chủ sẽ gửi công thức dưới dạng MathML và trình duyệt của bạn sẽ sử dụng MathJax để hiển thị công thức đó. Đây là bước cuối cùng trong quá trình loại bỏ Mathoid/RESTBase, nhằm đảm bảo tính bền vững và bảo mật. Bạn có thể [[w:en:Wikipedia:WikiProject Mathematics/MathFormattingBugs|đặt câu hỏi hoặc báo cáo vấn đề]]. [https://phabricator.wikimedia.org/T375238]
+* Bạn có ý tưởng về tính năng mới, hay một lỗi cần được giải quyết? [[m:Special:MyLanguage/Community Wishlist|Hãy gửi đề xuất của bạn cho danh sách mong muốn cộng đồng trước ngày 8 tháng 11!]]
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Xem tất cả {{formatnum:41}} {{PLURAL:41|tác vụ}} được tạo bởi cộng đồng đã được [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|giải quyết vào tuần trước]].
+
+'''Cập nhật cho những người đóng góp vào mảng kỹ thuật'''
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Chi tiết cập nhật mã nguồn sắp tới trong tuần này: [[mw:MediaWiki 1.48/wmf.3|MediaWiki]]
+
+'''''[[m:Special:MyLanguage/Tech/News|Tin tức Kỹ thuật]]''' do [[m:Special:MyLanguage/Tech/News/Writers|các biên tập viên Bản tin Kỹ thuật]] chuẩn bị và được đăng bởi [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Đóng góp]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/45|Biên dịch]]&nbsp;• [[m:Tech|Nhờ giúp đỡ]]&nbsp;• [[m:Talk:Tech/News|Phản hồi]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Đăng ký hoặc huỷ đăng ký]].''
+</div><section end="technews-2026-W45"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 14:22, ngày 3 tháng 11 năm 2026 (UTC)
+
+(Thông báo này được gửi đến [[:Thảo luận Thành viên:Tryvix1509]] và được đăng tại đây do trang kia đổi hướng về trang này.)
+<!-- Tin nhắn của Thành viên:Trizek (WMF)@metawiki gửi cho mọi người trong danh sách tại https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31236748 -->
+
+== Cấm tktt sửa trang thành viên  ==
+Tôi thấy không có nhu cầu để một tktt sửa trang thành viên của chính mình. Vậy BQV nghĩ sao về đề xuất này? Hay là cần sự đồng thuận lớn hơn? Nhưng vẫn để tktt sửa trang của chính mình phòng khi có người khác sửa thì tktt đó vẫn có thể tự sửa được. – [[Đặc biệt:Đóng góp/~2026-58033-56|~2026-58033-56]] ([[Thảo luận Thành viên:~2026-58033-56|thảo luận]]) 15:32, ngày 3 tháng 11 năm 2026 (UTC)
+
+: Tôi đồng tình, nhưng đang nghĩ một vài đề xuất rộng hơn:
+:* Cấm TKTT tạo/sửa trang thành viên của tất cả TKTT (bao gồm của TKTT khác và của chính mình);
+:* Cấm TKTT tạo/sửa trang thành viên của bất kỳ ai, bao gồm cả thành viên có tài khoản.
+: Tất nhiên, mọi phương án đều cần đồng thuận. – <span style="display:inline-block;text-align:center;vertical-align:bottom;line-height:0.5em;">[[User:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''VERITAS'''</span>]] <br/><br/>[[User talk:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''SAPIENTIAE'''</span>]]</span> 15:58, ngày 3 tháng 11 năm 2026 (UTC)
+::Hình như BQV không hiểu rõ ý tôi, tại tôi, ý tôi là '''Cấm tktt sửa trang thành viên''' của tất cả tv nhưng ngoại trừ trang của chính mình. Còn sự đồng thuận thì tùy BQV nhận định. – [[Đặc biệt:Đóng góp/~2026-58033-56|~2026-58033-56]] ([[Thảo luận Thành viên:~2026-58033-56|thảo luận]]) 16:09, ngày 3 tháng 11 năm 2026 (UTC)
+:::Tôi hiểu ý bạn nên câu trả lời của tôi như trên. – <span style="display:inline-block;text-align:center;vertical-align:bottom;line-height:0.5em;">[[User:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''VERITAS'''</span>]] <br/><br/>[[User talk:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''SAPIENTIAE'''</span>]]</span> 00:34, ngày 4 tháng 11 năm 2026 (UTC)
+
+== Thảo luận Thành viên:AimiqaXerni ==
+{{test1}} – [[Thành viên:PradaSaetiew|PradaSaetiew]] ([[Thảo luận Thành viên:PradaSaetiew|thảo luận]]) 09:32, ngày 4 tháng 11 năm 2026 (UTC)
+
+{{test2}}
+
+disagree, it’s bombing. i can use warning template form 1-4 under the Wikipedia’s rules and can report to admin soon.--[[Thành viên:PradaSaetiew|PradaSaetiew]] ([[Thảo luận Thành viên:PradaSaetiew|thảo luận]]) 09:34, ngày 4 tháng 11 năm 2026 (UTC)
+
+== AimiqaXerni ==
+{{test1}}
+
+do not remove my questions, reasons and my opinions for AimiqaXerni‘s case in noticeboard.--[[Thành viên:PradaSaetiew|PradaSaetiew]] ([[Thảo luận Thành viên:PradaSaetiew|thảo luận]]) 10:04, ngày 5 tháng 11 năm 2026 (UTC)
+
+== Ẩn Nội dung ==
+[https://vi.wikipedia.org/w/index.php?title=C%E1%BB%A5c_C%E1%BA%A3nh_s%C3%A1t_%C4%91i%E1%BB%81u_tra_t%E1%BB%99i_ph%E1%BA%A1m_v%E1%BB%81_tham_nh%C5%A9ng,_kinh_t%E1%BA%BF,_bu%C3%B4n_l%E1%BA%ADu&diff=prev&oldid=75695284 1] (<bdi>[[Đặc biệt:Đóng góp/~2026-58725-94|~2026-58725-94]])</bdi>
+
+[https://vi.wikipedia.org/w/index.php?title=C%E1%BB%A5c_C%E1%BA%A3nh_s%C3%A1t_%C4%91i%E1%BB%81u_tra_t%E1%BB%99i_ph%E1%BA%A1m_v%E1%BB%81_tham_nh%C5%A9ng,_kinh_t%E1%BA%BF,_bu%C3%B4n_l%E1%BA%ADu&diff=prev&oldid=75695285 2] (<bdi>[[Đặc biệt:Đóng góp/~2026-58725-94|~2026-58725-94]])</bdi>
+
+[https://vi.wikipedia.org/w/index.php?title=Ki%E1%BB%83u_ch%C3%A0o_Qu%E1%BB%91c_x%C3%A3&diff=prev&oldid=75697220 3] (<bdi>[[Đặc biệt:Đóng góp/Godlkehight2101|Godlkehight2101]])</bdi>
+
+Phiền bạn ẩn các sửa đổi này – [[Thành viên:Bảng Chữ Cái|'''Bảng Chữ Cái''']] 09:53, ngày 6 tháng 11 năm 2026 (UTC)
+
+:{{tick}} – [[Thành viên:Đơn giản là tôi|<b style="font-family: Segoe UI Light; color:Aqua; letter-spacing:">I </b>]]<sup>[[User talk:Đơn giản là tôi|<span style="color:red">So bad</span>]]</sup> 10:00, ngày 6 tháng 11 năm 2026 (UTC)
+
+== Bản tin Kỹ thuật: Tuần 46-2026 ==
+<section begin="technews-2026-W46"/><div class="plainlinks">
+'''[[m:Special:MyLanguage/Tech/News|Tin tức kỹ thuật]]''' mới nhất từ cộng đồng kỹ thuật Wikimedia. Vui lòng chia sẻ với các thành viên khác về những thay đổi này. Không phải mọi thay đổi đều sẽ ảnh hưởng đến bạn. [[m:Special:MyLanguage/Tech/News/2026/46|Các bản dịch]] của bản tin này cũng có sẵn cho bạn.
+
+'''Nổi bật trong tuần'''
+* Nhóm Ứng dụng Wikipedia đang chuẩn bị ra mắt tính năng Tổng kết Năm vào đầu tháng 12. Tổng kết Năm mang đến cho người dùng một bản tóm tắt được cá nhân hóa về cách họ đã đọc và tương tác với Wikipedia trong suốt một năm qua. Nhóm đang tìm kiếm các tình nguyện viên nhằm giúp cho tính năng này có mặt trên nhiều ngôn ngữ nhất có thể. Các biên tập viên có thể đóng góp thông qua [https://translatewiki.net/ translatewiki.net]. Với [https://translatewiki.net/w/i.php?title=Special:Translate&action=translate&group=out-wikimedia-mobile-wikipedia-android-strings&filter=%21translated Android], tìm kiếm <bdi lang="zxx" dir="ltr"><code><nowiki>yir</nowiki></code></bdi> dưới tab "Chưa dịch", và với [https://translatewiki.net/w/i.php?title=Special:Translate&action=translate&group=out-wikimedia-mobile-wikipedia-ios&filter=%21translated&optional=1 iOS], tìm kiếm <bdi lang="zxx" dir="ltr"><code><nowiki>year-in-review</nowiki></code></bdi> dưới tab "Chưa dịch".
+*  Tính năng [[mw:Special:MyLanguage/Article guidance|Chỉ dẫn bài viết]] nhằm giúp các biên tập viên tạo các bài viết tuân thủ các quy định của Wikipedia, nay đã có mặt trên tất cả các dự án Wikipedia. Các bảo quản viên và bảo quản viên giao diện có thể thiết lập và hiển thị tính năng này để các biên tập viên sử dụng thông qua [[Special:CommunityConfiguration/ArticleGuidance]]. Hiện [[mw:Special:MyLanguage/Article guidance/Community Configuration|đã có hướng dẫn thiết lập]]. Truy cập [[mw:Talk:Article guidance|trang thảo luận của dự án]] để đặt bất kỳ câu hỏi nào.
+
+'''Cập nhật cho biên tập viên'''
+* Tiếp nối việc phát hành tính năng [[mw:Special:MyLanguage/Readers/Reader Experience/Reading lists|Danh sách Đọc]] đến tất cả các dự án Wikipedia vào tháng 9, những người dùng đã đăng nhập sẽ sớm có thể [[mw:Special:MyLanguage/Readers/Reader Experience/Reading lists#October/November 2026: Custom collections and call to action|sắp xếp các bài viết được lưu trong danh sách của họ vào các thể loại có thể tùy chỉnh được]]. Điều này sẽ cho phép các độc giả tạo các bộ sưu tập và truy cập lại vào các bài viết đã lưu dựa trên mối quan tâm của họ, từ đó có thể khuyến khích việc truy cập thường xuyên vào Wikipedia hơn. Bản cập nhật này sẽ được phát hành đến tất cả người dùng Wikipedia trong khoảng thời gian từ ngày 9 đến ngày 16 tháng 11.
+* Nhóm Ứng dụng Wikipedia đang chuẩn bị khởi động thử nghiệm đầu tiên trong số hai thử nghiệm về thông báo dành cho các độc giả Wikipedia tiếng Anh trên Android mà đã chọn tham gia nhận thông báo. Thử nghiệm kéo dài 3 tuần này sẽ gửi các thông báo gợi ý danh sách đọc Khám phá (Discover) được cá nhân hóa là bộ sưu tập các bài viết Wikipedia được đề xuất dựa trên các bài viết mà độc giả đã từng xem trước đó. Mục tiêu là nhằm tìm hiểu xem những gợi ý này có giúp độc giả khám phá những nội dung có liên quan và khuyến khích họ quay trở lại ứng dụng hay không. Người dùng không cần phải thực hiện bất kỳ thao tác nào, và có thể quản lý tùy chọn thông báo của mình trong phần cài đặt ứng dụng. [[mw:Wikimedia Apps/Team/Notifications|Tìm hiểu thêm và chia sẻ phản hồi]].
+* Một lỗi trong [[m:Special:GlobalWatchlist|Danh sách Theo dõi Toàn cục]] khiến cho trang này không thể tải được với những người dùng có những thay đổi chưa được xem trên Wikimedia Commons. Lỗi này nay đã được khắc phục. Nếu bạn đã tạm thời loại bỏ <bdi lang="zxx" dir="ltr"><code><nowiki>commons.wikimedia.org</nowiki></code></bdi> khỏi [[m:Special:GlobalWatchlistSettings|cài đặt Danh sách Theo dõi Toàn cục]] cá nhân của bạn do lỗi này, bạn có thể khôi phục nó tại đó. [https://phabricator.wikimedia.org/T439203]
+* Một tính năng Beta mới với tên gọi là "Nhà" (Home) sẽ được [[mw:Special:MyLanguage/Home/Deployment|triển khai đến 10 dự án Wikipedia]] dưới dạng thử nghiệm giới hạn thời gian. Tính năng này nhằm mục đích thay thế <bdi lang="zxx" dir="ltr"><code><nowiki>Special:Homepage</nowiki></code></bdi> dành cho những người mới, đồng thời dự kiến sẽ có thêm nhiều mô đun nữa trong tương lai nhằm cải thiện trải nghiệm hiện tại. Nếu bạn muốn tham gia thử nghiệm này, vui lòng [[mw:Talk:Home|đăng ký]]. "Nhà" sẽ được phát hành đến toàn bộ người dùng vào cuối tháng này.
+* Trên Wikipedia tiếng Anh và tiếng Nga, [[m:User:Alaexis/Source Verifier|Xác minh Nguồn]] (Source Verification) nay đã có mặt dưới dạng Đề xuất thử nghiệm dành cho những biên tập viên có kinh nghiệm trong [[mw:Special:MyLanguage/VisualEditor/Suggestion_Mode|Chế độ Đề xuất]] (Suggestion Mode). Nó sử dụng mô hình LLM được vận hành trên [[wikitech:Machine_Learning/LiftWing|LiftWing]] để tìm cách kiểm tra xem một nguồn được trích dẫn có kiểm chứng được cho lời khẳng định đi kèm với nó hay không. Để thử nghiệm tính năng này, vui lòng [[phab:T426359|xem hướng dẫn thử nghiệm này]]. Nếu bạn ở dự án Wikipedia ngôn ngữ khác và cộng đồng tại đó quan tâm đến việc thử tính năng này, vui lòng [[m:User talk:Alaexis/Source Verifier|bày tỏ sự quan tâm của bạn]].
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Xem tất cả {{formatnum:35}} {{PLURAL:35|tác vụ}} được tạo bởi cộng đồng đã được [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|giải quyết vào tuần trước]]. Ví dụ, một vấn đề khiến cho ngày được truyền vào dưới dạng tham số trống đến các hàm trong mã wiki được hiểu sai là sử dụng định dạng tháng-ngày-năm thay vì định dạng ngày-tháng-năm, nay đã được khắc phục. [https://phabricator.wikimedia.org/T403884]
+
+'''Cập nhật cho những người đóng góp vào mảng kỹ thuật'''
+* Kể từ ngày 1 tháng 12 năm 2026, hCaptcha sẽ là yêu cầu bắt buộc đối với các sửa đổi được thực hiện thông qua API bởi những người dùng chưa phải là thành viên tự xác nhận. Nếu công cụ, tiện ích, hoặc đoạn mã người dùng của bạn thực hiện sửa đổi thay mặt cho người dùng mới, [[mw:Special:MyLanguage/Product Safety and Integrity/hCaptcha#November 2026: Completing hCaptcha rollout|hãy xem cách để cập nhật nó]].
+*  [[wikitech:Help talk:Toolforge/Toolforge standards committee#November 2026 committee nominations|Wikitech đang mở đề cử]] để chọn các thành viên mới của [[wikitech:Help:Toolforge/Toolforge standards committee|Ủy ban tiêu chuẩn của Toolforge]]. Ủy ban này giám sát [[wikitech:Help:Toolforge/Right to fork policy|Quy định quyền sử dụng bản sao]] và [[wikitech:Help:Toolforge/Abandoned tool policy|Quy định về công cụ bị bỏ rơi]] của Toolforge cùng nhiều nhiệm vụ khác. Cổng đề cử sẽ đóng vào ngày 22 tháng 11 năm 2026
+* Toolforge vừa giới thiệu hai tính năng beta mới. "Cảnh báo Toolforge" (Toolforge alerts) gửi thông báo qua email khi một công cụ không thể truy cập, trả về lỗi, hoặc khởi động lại thường xuyên. "Nhật ký mở rộng" (Extended logging) giúp việc điều tra các sự cố trở nên dễ dàng hơn bằng cách cung cấp nhật ký cho các sự kiện như tạo hoặc xóa tác vụ (job), cũng như các lỗi trong quá trình triển khai tác vụ thông qua lệnh <bdi lang="zxx" dir="ltr"><code><nowiki>toolforge logs</nowiki></code></bdi>. Cả hai tính năng này đều là tính năng tùy chọn (opt-in) và giúp các bảo trì viên công cụ phát hiện và giải quyết các vấn đề nhanh chóng hơn. Các bảo trì viên có thể [[wikitech:Help:Toolforge/Alerts|bật cảnh báo]] và tìm hiểu cách [[wikitech:Help:Toolforge/Running_jobs#Toolforge_logs|truy cập nhật ký mở rộng]]. Họ cũng được khuyến khích trải nghiệm các tính năng này và [[wikitech:Help:Cloud_Services_communication|gửi phản hồi]].
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Đề mục định kỳ]] Chi tiết cập nhật mã nguồn sắp tới trong tuần này: [[mw:MediaWiki 1.48/wmf.4|MediaWiki]]
+
+'''Các cuộc họp và sự kiện'''
+* Một đề xuất nhằm thay đổi cách chúng tôi tổ chức sự kiện Wikimedia Hackathon hiện nay [[mw:Special:MyLanguage/Wikimedia Hackathon/Community Proposal 2026|đã được chia sẻ]]. Nó hướng tới việc giúp cho sự kiện này dễ dàng tiếp cận các cộng đồng kỹ thuật ở những khu vực khác nhau hơn. Hãy chia sẻ ý kiến của bạn tại [[mw:Special:MyLanguage/Talk:Wikimedia Hackathon/Community Proposal 2026|trang thảo luận]] của đề xuất này; hạn chót đã được kéo dài đến ngày 13 tháng 11.
+
+'''''[[m:Special:MyLanguage/Tech/News|Tin tức Kỹ thuật]]''' do [[m:Special:MyLanguage/Tech/News/Writers|các biên tập viên Bản tin Kỹ thuật]] chuẩn bị và được đăng bởi [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Đóng góp]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/46|Biên dịch]]&nbsp;• [[m:Tech|Nhờ giúp đỡ]]&nbsp;• [[m:Talk:Tech/News|Phản hồi]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Đăng ký hoặc huỷ đăng ký]].''
+</div><section end="technews-2026-W46"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 10:33, ngày 9 tháng 11 năm 2026 (UTC)
+
+(Thông báo này được gửi đến [[:Thảo luận Thành viên:Tryvix1509]] và được đăng tại đây do trang kia đổi hướng về trang này.)
+<!-- Tin nhắn của Thành viên:STei (WMF)@metawiki gửi cho mọi người trong danh sách tại https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31249348 -->
+
+== Về biển cảnh báo bài viết [[Nghề làm tranh khắc gỗ dân gian Đông Hồ]] ==
+Xin hãy chỉ rõ điều gì trong bài viết làm bạn lưu tâm hay chỉ vì tôi hoặc cái gì đó không làm bạn hài lòng theo phương diện cá nhân. Bạn là một quản trị viên, còn tôi là người có chuyên môn biên soạn và truyền đạt về lĩnh vực này. Xin cảm ơn, hãy giúp tôi cho thấy điều này là thoả đáng – [[Thành viên:Gauxamvn|Gauxamvn]] ([[Thảo luận Thành viên:Gauxamvn|thảo luận]]) 03:01, ngày 15 tháng 11 năm 2026 (UTC)
+: @[[Thành viên:Gauxamvn|Gauxamvn]] Như đã nói, bạn nên hỏi trực tiếp [[Special:Contribs/Pminh141|người đặt biển]]. <span style="display:inline-block;text-align:center;vertical-align:bottom;line-height:0.5em;">[[User:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''VERITAS'''</span>]] <br/><br/>[[User talk:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''SAPIENTIAE'''</span>]]</span> 03:12, ngày 15 tháng 11 năm 2026 (UTC)
+
+== Khóa bài ==
+Tôi nghĩ là bạn nên khóa hết tất cả các bài hành chính về tỉnh, thành hiện tại trừ Hà Nội và Thành phố Hồ Chí Minh ra trong một thời gian để tránh bị gián đoạn bởi các tài khoản tạm thời vào thêm sửa đổi gây hại còn thêm nữa là khóa hết tất cả các bài về tỉnh cũ đã được giải thể vào năm 2025 trừ Hải Dương ra trong một thời gian để tránh bị gián đoạn bởi các tài khoản tạm thời vào thêm sửa đổi gây hại. – [[Thành viên:Big city boy 6789|Big city boy 6789]] ([[Thảo luận Thành viên:Big city boy 6789|thảo luận]]) 06:11, ngày 16 tháng 11 năm 2026 (UTC)
+: @[[Thành viên:Big city boy 6789|Big city boy 6789]] Tôi nghĩ bạn nên liệt kê danh sách bài và dẫn chứng bằng diff để dễ xem xét hơn, vì số lượng bài là tương đối lớn. Nhân tiện, bạn nên yêu cầu ở [[WP:YCKT]]. <span style="display:inline-block;text-align:center;vertical-align:bottom;line-height:0.5em;">[[User:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''VERITAS'''</span>]] <br/><br/>[[User talk:Veritas Sapientiae|<span style="font-family: Georgia, serif; color:#F6B13F">'''SAPIENTIAE'''</span>]]</span> 10:15, ngày 16 tháng 11 năm 2026 (UTC)
+::@[[Thành viên:Veritas Sapientiae|Veritas Sapientiae]] đã có người yêu cầu khóa rồi bạn mời bạn xem qua [[WP:YCKT]]. – [[Thành viên:Big city boy 6789|Big city boy 6789]] ([[Thảo luận Thành viên:Big city boy 6789|thảo luận]]) 10:51, ngày 16 tháng 11 năm 2026 (UTC)

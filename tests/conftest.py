@@ -78,6 +78,7 @@ class FakePage:
 
     def _store(self, text, summary):
         self.saves.append((text, summary))
+        self.site.saveLog.append((self._title, summary))
         self.text = text
         self._exists = True
         self.latest_revision = FakeRevision(BOT_USER, NOW)
@@ -97,6 +98,7 @@ class FakePage:
 class FakeSite:
     def __init__(self):
         self.pages = {}
+        self.saveLog = []  # (title, summary) of all saves in order
 
     def username(self):
         return BOT_USER

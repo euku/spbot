@@ -1,0 +1,1649 @@
+<!-- Header -->
+{{Benutzer:ElBe/Header}}
+<!-- Diskussionshinweis -->
+{{Benutzerdiskussionsseite}}
+<!-- Archiv -->
+{{Autoarchiv-Erledigt|Alter=2|Ziel=((Lemma))/Archiv/((Jahr))}}
+{{Archivübersicht|
+* [[/Archiv|Archiv]]
+** [[/Archiv/2021|2021]]
+** [[/Archiv/2022|2022]]
+** [[/Archiv/2023|2023]]
+** [[/Archiv/2024|2024]]
+** [[/Archiv/2025|2025]]
+** [[/Archiv/2026|2026]]
+ |prefix=Benutzer Diskussion:ElBe
+ |suchort=/Archiv/
+ |nofurther=1
+}}
+{{TOCright}}
+<div style="border-radius: unset important;" id="Es gibt Fragen?">{{Überschriftensimulation|2|Text=Es gibt Fragen?}}</div>
+Hallo, ich bin ElBe. Gibt es Fragen oder Probleme? Bitte bei mir über diese Seite melden Benutze dafür den Knopf.
+{{MediaWiki-Button |Typ=progressive|Link={{Neuer Abschnitt/URL}} |Text=neue Diskussion beginnen}}
+<!-- Diskussionen-->
+{{Anker|Bot}}
+{{Anker|Sockenpuppe}}
+{{Anker|Diskussionen}}
+
+== Nochmals zu dem Botedit ==
+
+Du müsstest schon die durch den [https://de.wikipedia.org/w/index.php?title=Spezial:Beitr%C3%A4ge/ElBe_Bot&target=ElBe+Bot&offset=&limit=44 Botlauf vom 3. April] auf etlichen Seiten verursachten Doppelungen wieder entfernen. Insbesondere dort, wo die Seiten auch so schon sehr groß waren die hier [[Spezial:Diff/243705251|+273.485 Bytes‎]]. Da sollte nicht so bleiben. --Liebe Grüße,&nbsp;[[Benutzerin:Lómelinde|Lómelinde]]&nbsp;[[Benutzerin Diskussion:Lómelinde#top|Diskussion]] 11:03, 13. Apr. 2024 (CEST)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Erinnerung: Stimm jetzt über die Mitglieder des ersten U4C ab ==
+
+<section begin="announcement-content" />
+:''[[m:Special:MyLanguage/Universal Code of Conduct/Coordinating Committee/Election/2024/Announcement – vote reminder|Diese Nachricht liegt auf Meta-Wiki auch in weitere Sprachen übersetzt vor.]] [https://meta.wikimedia.org/w/index.php?title=Special:Translate&group=page-{{urlencode:Universal Code of Conduct/Coordinating Committee/Election/2024/Announcement – vote reminder}}&language=&action=page&filter= {{int:please-translate}}]''
+
+Liebe:r Wikimedianer:in,
+
+du erhältst diese Nachricht, weil du dich zuvor am UCoC-Prozess beteiligt hast.
+
+Das ist eine Erinnerung daran, dass die Abstimmungsphase für das Koordinationskomitee des universellen Verhaltenskodex (U4C) am 9. Mai 2024 endet. Auf der [[m:Universal Code of Conduct/Coordinating Committee/Election/2024|Wahlseite im Meta-Wiki]] könnt ihr mehr über die Wahl und die Wahlberechtigung erfahren.
+
+Das Koordinationskomitee des universellen Verhaltenskodex (U4C) ist eine globale Gruppe, die sich für eine gerechte und konsequente Umsetzung des UCoC einsetzt. Communitymitglieder waren eingeladen, sich für das U4C zu bewerben. Mehr Informationen über das U4C und seine Aufgaben sind in [[m:Universal Code of Conduct/Coordinating Committee/Charter|der U4C-Satzung]] zu finden.
+
+Bitte teile diese Nachricht mit Mitgliedern deiner Community, sodass sie sich auch beteiligen können.
+
+Für das UCoC-Projektteam<section end="announcement-content" />
+
+[[m:User:RamzyM (WMF)|RamzyM (WMF)]] 01:17, 3. Mai 2024 (CEST)
+<!-- Nachricht versandt von Benutzer:RamzyM (WMF)@metawiki durch Verwendung der Liste unter https://meta.wikimedia.org/w/index.php?title=Universal_Code_of_Conduct/Coordinating_Committee/Election/2024/Previous_voters_list&oldid=26721206 -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigung am 2.5.2024 ==
+Hallo! Du hast gestern eine neue Bestätigung von {{noping|DerHexer|DerHexer}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 05:50, 3. Mai 2024 (CEST) <!-- Hilfe für den Auto-Archiv-Bot: 05:50, 3. Mai 2024 (CEST) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigungen am 8.6.2024 ==
+Hallo! Du hast gestern neue Bestätigungen von {{noping|CaroFraTyskland|CaroFraTyskland}} und {{noping|Cookroach|Cookroach}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 05:50, 9. Jun. 2024 (CEST) <!-- Hilfe für den Auto-Archiv-Bot: 05:50, 9. Jun. 2024 (CEST) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigung am 20.6.2024 ==
+Hallo! Du hast gestern eine neue Bestätigung von {{noping|Janna Siebert (WMDE)|Janna Siebert (WMDE)}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 05:50, 21. Jun. 2024 (CEST) <!-- Hilfe für den Auto-Archiv-Bot: 05:50, 21. Jun. 2024 (CEST) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Kleine Umfrage: Wie findest du die Technische-Wünsche-Reparaturhilfe? ==
+
+[[Datei:Technische Wünsche Wunschparkplatz.png|alternativtext=Ein Mensch sitzt auf einer Wolke und notiert Verbesserungsideen und Wünsche|rechts|rahmenlos|237x237px]]
+
+Hallo! Seit Anfang 2024 gibt es die [[Wikipedia:Technische Wünsche|Technische-Wünsche]]-Reparaturhilfe, bestehend aus einer [[Wikipedia:Technische Wünsche/Reparaturhilfe|Wikiseite]], auf der du Probleme notieren kannst, und einer virtuellen [[Wikipedia:Technische Wünsche/Treff|Sprechstunde]]. Das Team Technische Wünsche wüsste gerne: Hast du diese Angebote schon mal genutzt? Findest du sie hilfreich? Hast du Feedback?
+
+Wir würden uns freuen, wenn du dir 5 Minuten Zeit nehmen könntest, um dazu '''[https://wikimedia.sslsurvey.de/Umfrage_zur_Reparaturhilfe_Juli_2024 eine kleine Umfrage auf Lamapoll]''' auszufüllen. Alle Angaben sind anonym. Die Umfrage ist bis zum 25. Juli offen. -- Herzlichen Dank und beste Grüße, [[Benutzerin:Johanna Strodt (WMDE)|Johanna Strodt (WMDE)]] [[Datei:Sunflower app icon large.png|20px]] [[BD:Johanna Strodt (WMDE)|Diskussion]] [[Datei:Sunflower app icon large.png|20px]] [[WP:Technische Wünsche|Projekt Technische Wünsche]] 14:40, 27. Jun. 2024 (CEST)
+<!-- Nachricht versandt von Benutzer:Johanna Strodt (WMDE)@metawiki durch Verwendung der Liste unter https://meta.wikimedia.org/w/index.php?title=User:Johanna_Strodt_(WMDE)/MassMessageRecipients&oldid=27021684 -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (7. Juli 2024) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Wir planen für Ende 2024 ein Treffen in [[Neu-Ulm]]. Voraussichtlicher Termin ist der 15. bis 17. November, Näheres auf [[Wikipedia:Jungwikipedianer/Treffen/2024-II|dieser Seite]], bitte bei Interesse dort eintragen.
+* Ihr könnt bis Monatsende beim [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]] abstimmen.
+* Die nächste Videokonferenz findet am 29.&nbsp;Juli statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Diesmal gibt es niemanden zu begrüßen und zu verabschieden.
+
+{{Kopf|Tipps und Triqqs}}
+Diesmal gibt es ein paar hoffentlich hilfreiche Tastenkombinationen:
+* Alt + 0150: Halbgeviertstrich
+* Strg + Klick: Link im neuen Tab öffnen und auf dem aktuellen Tab bleiben
+* Doppelklick auf ein Wort: Markierung des Wortes
+* Strg + →: Cursor springt vor das nächste Wort (auch mit ← möglich)
+* Alt + 0132: „
+* Alt + 0147: ”
+* Strg + K: verlinken
+* Strg + L: Link in der Adresszeile markieren
+Kennt ihr weitere hilfreiche Tastenkombinationen? Dann schreibt sie gerne an dieser Stelle für das nächste Mal in den [[Wikipedia:JWP/N|Newsletter]]!
+
+{{Kopf|Kurioses}}
+Wenn in [[Vereinigtes Königreich|Großbritannien]] eine neue Königin oder ein neuer König den Thron besteigt, dann wählt dieser eine königliche Krone oder ein Symbol, das seine persönliche Autorität repräsentiert. Daraufhin muss das köngliche Wappen überall angepasst werden, darunter fallen sämtliche Briefkästen, Polizei- und Militäruniformen und auch sämtliche staatliche Internetseiten. Ein gerechtfertigter Aufwand?
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im März hat {{Noping|Wandelndes Lexikon|Wandelndes Lexikon}} mit diesem Artikel den vierten Platz belegt.
+{{AdT-Vorschlag
+| LEMMA            = Liste der Länderspiele der katarischen Fußballnationalmannschaft der Frauen
+| BILD             = Datei:QFA.svg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Bei Bedarf ein Text, der das Bild beschreibt
+| TEASERTEXT       = Diese '''Liste''' enthält alle offiziellen '''Länderspiele der katarischen Fußballnationalmannschaft der Frauen''', welche 2009 vom katarische Fußballverband QFA gegründet wurde. Das erste Länderspiel fand am 18. Oktober 2010 gegen Bahrain statt und ging 0:17 verloren. Seit 2014 wurde jedoch kein offizielles Länderspiel mehr ausgetragen. Bis zu diesem Zeitpunkt hatte die Mannschaft überwiegend an Freundschaftsspielen teilgenommen. Die bisher einzige Turnierteilnahme war bei der Fußball-Westasienmeisterschaft der Frauen 2014. 
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Spezial:Präfixindex/Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Archiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv/2024#Wettbewerb zum Artikel des Quartals März 2024|Abstimmung]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Machu Picchu 2023.jpg|rahmenlos|zentriert]]
+Das drittplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|Mojnsen|Mojnsen}} erstellt und zeigt die im 15. Jahrhundert erbaute Inkastadt Machu Picchu in Peru.<br>
+
+[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerbssieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv/39|Abstimmung]]
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeitete ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 14:18, 7. Jul. 2024 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2024|Wartungsbausteinwettbewerb Sommer 2024]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2024|Wartungsbausteinwettbewerb]] startet am <s>17. August</s> 18. August (für Schiedsrichter bereits einen Tag vorher). <s>Achtung, zum ersten Mal seit 2013 startet der Wettbewerb damit an einem Samstag.</s> Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 23:04, 10. Aug. 2024 (CEST) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (17. August 2024) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Wir planen für Ende 2024 ein Treffen in [[Neu-Ulm]]. Voraussichtlicher Termin ist der 15. bis 17. November, Näheres auf [[Wikipedia:Jungwikipedianer/Treffen/2024-II|dieser Seite]], bitte bei Interesse dort eintragen.
+* Nach der Verlängerung des Wettbewerbs zum Artikel des Quartals steht mit {{Noping|Ankermast|Ankermast}} der Sieger fest. Herzlichen Glückwunsch!
+* Auch die Abstimmung beim [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]] im Folgemonat wurde verlängert. Unten findet ihr den Sieger.
+* Die [[Wikipedia:Jungwikipedianer/Abstimmung/Fristen für Artikel des Quartals und Bilderwettbewerb|Abstimmung]] über eine Reform der Abstimmungszeiträume von Bilderwettbewerb und Artikel des Quartals läuft noch bis Montag.
+* Vom 4. bis zum 6. Oktober steht die [[Wikipedia:WikiCon 2024|WikiCon in Wiesbaden]] an. Meldet euch bis zum 25. August an, um von Wikimedia Deutschland eine Kostenförderung zu erhalten. Wir planen außerdem mit {{Noping|CaroFraTyskland|CaroFraTyskland}} einen [[Wikipedia:WikiCon 2024/Programmvorschläge#Eine junge Wikipedianerin, ein junger Wikipedianer – ein Oxymoron?|Vortrag]] zu jungen Menschen in der Wikipedia.
+* Die nächste Videokonferenz findet am 26.&nbsp;August statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|Langusto|Langusto}}. Herzlich willkommen!
+
+----
+
+Wir verabschieden uns von unserem Mitglied {{Noping|Nexo20|Nexo20}}, das aufgrund von Inaktivität ausscheiden musste.
+
+{{Kopf|Tipps und Triqqs}}
+Grundsätzlich sollten [[Wikipedia:Weblinks#Archivierte Versionen|Archivlinks]] nur gesetzt werden, wenn eine Website nicht mehr aufrufbar ist. Jedoch kann man [[archive.today]] oder ähnliche Archivdienste dazu nutzen, um Online-Artikel von Nachrichtendienste anzusehen, die hinter einer Paywall liegen. Dies funktioniert nicht mit allen Archivdiensten bzw. Nachrichtenportalen. Zum Beispiel ist [https://www.zeit.de/politik/ausland/2024-07/israelisch-libanesisches-grenzgebiet-leben-hisbollah-nahostkrieg-israel-libanon dieser Artikel] von [[Zeit Online]] nicht kostenlos verfügbar, kann jedoch über [https://archive.is/6xqxD dieses Archiv] vollständig aufgerufen werden.
+
+{{Kopf|Kurioses}}
+Der US-amerikanische Pizzalieferant [[Domino’s Pizza|Domino’s]] hatte lange Zeit ein Marketingversprechen, das das Unternehmen weltweit bekannt gemacht hat: eine garantierte Lieferung in  unter 30 Minuten. Als 1985 ein junger Pizzabote in der Nähe von [[Pittsburgh]] eine Pizza übergeben bekam, hatte er ein Problem: 23 Minuten waren schon vergangen! Als er eilig mit seinem Auto aus der Einfahrt fuhr, kollidierte er mit dem Auto des Ehepaars Kranack, die beiden wurden leicht verletzt. Doch anstatt den Verletzten zu helfen, übergab er die Pizza an seinen Manager, der sie mit den Worten „There’s still time“ an einen anderen Pizzaboten weitergab. Aufgrund dieses und mehrerer anderer Unfälle wurde die Garantie wenige Jahre später beendet.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Juni hat {{Noping|Ankermast|Ankermast}} mit diesem Artikel den ersten Platz belegt. Herzlichen Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Transrapid 07
+| BILD             = Datei:Transrapid 07 in Lathen (2023).jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = TR07, Lathen 2023
+| TEASERTEXT       = Der '''Transrapid 07''' (kurz ''TR07'') ist ein Magnetschwebebahn-Fahrzeug, das von ThyssenKrupp-Transrapid gebaut und auf der Transrapid-Versuchsanlage Emsland (TVE) erprobt wurde. Er stellt eine umfangreiche Weiterentwicklung seines Vorgängermodells Transrapid 06 dar und konnte 1991 als erster Zug der Transrapid-Modellreihe die technische Einsatzreife vorweisen.
+
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Spezial:Präfixindex/Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Archiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv/2024#Wettbewerb zum Artikel des Quartals Juni 2024|Abstimmung]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:The Shard at the end of St Mary at Hill Street.jpg|rahmenlos|zentriert]]
+Das erstplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|Ankermast|Ankermast}} aufgenommen und zeigt das Hochhaus [[The Shard]] aus der St Mary at Hill Street in der [[City of London]].<br>
+
+[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerbssieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv/39|Abstimmung]]
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeitete ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:Ankermast|Ankermast]] ([[Benutzer Diskussion:Ankermast|Diskussion]]) 08:50, 17. Aug. 2024 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (8. September 2024) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Wir planen für Ende 2024 ein Treffen in [[Neu-Ulm]]. Der Termin ist der 15. bis 17. November, Näheres auf [[Wikipedia:Jungwikipedianer/Treffen/2024-II|dieser Seite]], bitte bei Interesse dort eintragen.
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]] findet wieder statt. Nominiert jetzt euren Artikel!
+* Beim [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2024|Sommer-Wartungsbausteinwettbewerb]] hat das JWP-Team, bestehend aus {{Noping|Wandelndes Lexikon|Wandelndes Lexikon}}, {{Noping|Ankermast|Ankermast}} und {{Noping|MrBenjo|MrBenjo}} den sechsten Platz und damit erneut eines der besten Ergebnisse der JWP-Teams erreicht. Herzlichen Glückwunsch!
+* Die [[Wikipedia:Jungwikipedianer/Abstimmung/Fristen für Artikel des Quartals und Bilderwettbewerb|Abstimmung]] über eine Reform der Abstimmungszeiträume von Bilderwettbewerb und Artikel des Quartals ist beendet und hat ergeben, dass die Abstimmungszeiträume nun einheitlich sind. Vom 1. bis 10. eines Monats findet die Nominierungsphase statt und vom 11.-24. eines Monats die Abstimmungsphase.
+* Vom 4. bis zum 6. Oktober steht die [[Wikipedia:WikiCon 2024|WikiCon in Wiesbaden]] an. Aktuell ist nur noch die Anmeldung für eine Online-Teilnahme möglich. Nachdem wir zuletzt einen Beitrag von uns zu jungen Menschen verlinkt haben, möchten wir nun auf den Programmpunkt zu [[Wikipedia:WikiCon 2024/Programm/Wikipedia im Lebenslauf|Wikipedia im Lebenslauf]] aufmerksam machen, hier ist auch eine Aufzeichnung geplant.
+* Die nächste Videokonferenz findet am 30.&nbsp;September statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|HeyRusse|HeyRusse}}. Herzlich willkommen!
+
+----
+
+Wir verabschieden uns von unseren Mitgliedern {{Noping|Noah.Albert.ZivMilFü|Noah.Albert.ZivMilFü}}, der nun zu den großen Wikipedianern gehört, und {{Noping|Aurdi|Aurdi}}, der aufgrund von Inaktivität ausscheiden musste.
+
+{{Kopf|Tipps und Triqqs}}
+Grundsätzlich sollten [[Wikipedia:Weblinks#Archivierte Versionen|Archivlinks]] nur gesetzt werden, wenn eine Website nicht mehr aufrufbar ist. Jedoch kann man [[archive.today]] oder ähnliche Archivdienste dazu nutzen, um Online-Artikel von Nachrichtendienste anzusehen, die hinter einer Paywall liegen. Dies funktioniert nicht mit allen Archivdiensten bzw. Nachrichtenportalen. Zum Beispiel ist [https://www.zeit.de/politik/ausland/2024-07/israelisch-libanesisches-grenzgebiet-leben-hisbollah-nahostkrieg-israel-libanon dieser Artikel] von [[Zeit Online]] nicht kostenlos verfügbar, kann jedoch über [https://archive.is/6xqxD dieses Archiv] vollständig aufgerufen werden.
+
+{{Kopf|Kurioses}}
+In Berlin-Kreuzberg ging bei der Umbenennung eines Teils der Manteuffelstraße in „Audre-Lorde-Straße“ so ziemlich alles schief, was schiefgehen konnte. Obwohl die Umbenennung bereits im September 2023 offiziell beschlossen wurde, hingen monatelang noch die alten Schilder, was für Verwirrung bei Anwohnern und Zustellern sorgte. Einige Bewohner erfuhren erst durch falsch zugestellte Post, dass sie jetzt in einer anderen Straße leben. Das Chaos war perfekt, als die Europawahl mitten in diesem Namenswirrwarr stattfand und selbst die Behörden nicht nachkamen. Der Bezirk entschuldigte sich und versprach, zukünftige Umbenennungen besser zu organisieren – aber das Straßenschild-Chaos bleibt in Kreuzberg wohl erstmal Gesprächsthema. Auch der Autor dieser Zeilen fuhr vor ein paar Monaten für ein [[commons:File:Gerhart-Hauptmann-Schule (Berlin) from the front 01.jpg|Foto]] mit einem neuen Wikipedianer zu einer Bushaltestelle in dieser Straße, die aber im Fahrgastinformationssystem im Bus bereits den neuen Namen trug, in der App jedoch noch den alten, und verpasste fast die Haltestelle.
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Juni hat {{Noping|Geomaus007|Geomaus007}} mit diesem Artikel den zweiten Platz belegt. Herzlichen Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Geschichte von Weiden in der Oberpfalz
+| BILD             = Datei:Weiden (Merian).jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Alte Ansicht von Weiden
+| TEASERTEXT       = Der Artikel '''Geschichte Weidens''' behandelt die Entwicklung der deutschen Stadt Weiden in der Oberpfalz. Gegründet als kleine Siedlung in etwa um das Jahr 1150, wurde Weiden im Jahr 1247 erstmals urkundlich erwähnt. Im 14. und 15. Jahrhundert erreichte die Stadt ihre Blütezeit. Danach ging im Dreißigjährigen Krieg die Bevölkerung deutlich zurück, weshalb die Einwohnerzahl vor diesem erst im 19. Jahrhundert mit der Industrialisierung erreicht werden konnte. Da Weiden von dieser stark profitierte, hat es nun etwa 43.000 Einwohner.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Public Viewing Olympiapark München 2024.jpg|rahmenlos|zentriert]]
+Das zweitplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|958s|958s}} aufgenommen und zeigt die Fanzone im [[Olympiapark (München)|Olympiapark]] kurz vor dem Eröffnungsspiel der [[EM 2024]], das zwischen Deutschland und Schottland ausgetragen wurde.
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 16:51, 8. Sep. 2024 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (7. Oktober 2024) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Die Planungen zu unserem Treffen in [[Neu-Ulm]] vom 15.-17. November werden konkreter. Wir haben nun die Förderzusage und die Anmeldung ist ab sofort auf [[Wikipedia:Jungwikipedianer/Treffen/2024-II|dieser Seite]] möglich. Wir freuen uns auf euch!
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]] ist abgeschlossen, ihr findet den Siegerartikel unten.
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]] findet wieder statt! Gemäß den neuen Regeln geht die Nominierungsphase bis zum 10. Oktober.
+* Aktuell findet die WikiCon in Wiesbaden statt. [https://online.wikicon.org/livestream/ Hier] habt ihr die Möglichkeit, euch die Verleihung der [[Wikipedia:WikiEule|WikiEule]] online anzuschauen und mitzufiebern. Sie findet am 5. Oktober von 20:15–22:00 Uhr statt.
+* Die nächste Videokonferenz findet am 28.&nbsp;Oktober statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Dieses Mal gibt es niemanden zu begrüßen oder zu verabschieden.
+
+{{Kopf|Tipps und Triqqs}}
+Wen es stört, dass die automatisch generierten Belege oftmals unzureichend sind, für den ist [[metawiki:Web2Cit|Web2Cit]] vermutlich eine sinnvolle Erweiterung. Es wird aktiviert, in dem man den Text in [[Spezial:Meine Benutzerseite/common.js|die eigene common.js]] kopiert. Dann wird neben dem normalen Beleg ein weiterer Beleg durch das Tool generiert, man kann sich dann für den besseren Beleg entscheiden. Web2Cit wird dabei durch die Community verbessert, d.h. sollte euch ein Fehler auffallen, z. B. eine Nachrichtenseite, bei denen die Belege grundsätzlich nicht korrekt generiert werden, dann könnt ihr euch da einbringen, sodass es dann in Zukunft für alle funktioniert.
+
+{{Kopf|Kurioses}}
+In [[Toronto]] befindet sich das weltweit [[Deep Lake Water Cooling|größte See-Kühlungssystem]]. Das kalte Wasser aus den Tiefen (ca. 83 m) des [[Ontariosee|Ontariosees]] wird dazu genutzt, um über 100 Gebäude in der Stadt zu kühlen, und zwar ohne den hohen Stromverbrauch von herkömmlichen Klimaanlagen. Auf diese Art und Weise werden pro Jahr ca. 90.000 [[Wattstunde|Megawattstunden]] gespart (zum Vergleich: eine Kleinstadt benötigt ca. 40.000 MWh).
+
+Bei den [[Olympische Sommerspiele 2024|olympischen Spielen in Paris]] dieses Jahr hat die Tiefe des Pools womöglich die Ergebnisse der Schwimmwettkämpfe beeinflusst. U. a. bewegen sich die Wellen auf der Wasseroberfläche, die, wenn sie in der richtigen Geschwindigkeit sind, von den Schwimmern als "Surf-Effekt" genutzt werden können, langsamer fort bei einer niedrigeren Wassertiefe. Der Pool in Paris verfügte nicht über die normalen 3 m Tiefe, sondern war nur 2,15 m tief (vorgeschrieben sind 2 m). Da der Effekt, sofern vorhanden, alle Teilnehmenden betraf, ist es dennoch fair, jedoch erschwert es die Überbietung von Weltrekorden.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im September hat {{Noping|Wandelndes Lexikon|Wandelndes Lexikon}} mit diesem Artikel den ersten Platz belegt. Herzlichen Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Segler-Club Hansa von 1898
+| BILD             = Datei:Burgee of Segler-Club Hansa von 1898.svg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Logo des SCH
+| TEASERTEXT       = Der '''Segler-Club Hansa von 1898 e.&nbsp;V.''' (SCH) ist ein Segelclub in Lübeck und wurde im Jahre 1898 ebendort gegründet. Der Stammsitz befindet sich am Wakenitzufer. Das Bootshaus ist seit 2022 in die Denkmalliste Lübeck eingetragen. Das Segel- und Regattarevier befindet sich an der Nordwestseite am Ratzeburger See auf dem sogenannten „Schanzenberg“.
+
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:United Nations General Assembly 2024.jpg|rahmenlos|zentriert]]
+Das drittplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|Mojnsen|Mojnsen}} aufgenommen und zeigt den Hauptversammlungssaal der [[Vereinte Nationen|Vereinten Nationen]] in [[New York]].
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 09:10, 7. Okt. 2024 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2024|Wartungsbausteinwettbewerb Herbst 2024]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2024|Wartungsbausteinwettbewerb]] startet am 2. November (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 13:32, 26. Okt. 2024 (CEST) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[WP:Jungwikipedianer|Jungwikipedianer]] (2. November 2024) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Das Treffen in [[Neu-Ulm]] vom 15. bis zum 17. November steht fast vor der Tür. Wer sich spontan anmelden will, muss jetzt aber Gas geben. [[Wikipedia:Jungwikipedianer/Treffen/2024-II|Hier anmelden]], jetzt SOFORT!
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikelwettbewerb|Artikelwettbewerb]] läuft gerade. Wer hier noch einsteigen will, kann auch das noch tun.
+* Der Bilderwettbewerb hingegen ist beendet, unten findet ihr den Sieger.
+* Die nächste Videokonferenz findet am 25.&nbsp;November statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen ganze fünf neue Mitglieder {{Noping|JiaqiderKrasse|JiaqiderKrasse}}, {{Noping|Lülllliiiii|Lülllliiiii}}, {{Noping|HistorianoftheMarch|HistorianoftheMarch}}, {{Noping|Zyronical|Zyronical}} und {{Noping|LauM Architektur|LauM Architektur}}. Herzlich willkommen!
+
+{{Kopf|Tipps und Triqqs}}
+[http://listen.hatnote.com/ Listen to Wikipedia] ist eine Website, die die letzten Änderungen in der Wikipedia visualisiert. Jede eintreffende Änderung ploppt auf dem Bildschirm auf, entweder mit einem Glockenton (Erweiterung) oder einem Saitenzupfen (Kürzung des Artikels) mit einer Tonhöhe abhängig von der Größe der Änderung. Es lässt sich auch beispielsweise nach Änderungen in der deutschsprachigen Wikipedia filtern. Wer also mal ein besinnliches Hintergrundgeräusch braucht oder einen Bildschirmschoner mit Wikipedia-Bezug - bitte sehr!
+
+{{Kopf|Kurioses}}
+Der Wasserfall im Yuntai-Nationalpark in China (noch kein Artikel vorhanden!) ist der höchste Wasserfall in China und ein beliebtes Ausflugsziel. Ein Wanderer, der die Quelle des Wasserfalls sehen wollte, fand jedoch heraus, dass es sich dabei um ein dickes Rohr handelt, aus dem das Wasser sprudelt. Die Verantwortlichen gaben daraufhin zu, dass das Rohr in der Trockenzeit genutzt wird, damit die Touristen auch dann einen schönen Besuch erleben. In demselben Nationalpark kam es übrigens 2015 zu Rissen in Glasscheiben der kürzlich eröffneten Glasbrücke.
+
+Cameron Airpark Estate ist ein Viertel der Stadt [[Cameron Park (Kalifornien)|Cameron Park]] im US-Bundesstaat Kalifornien. Dort dienen die Straßen zugleich als [[Rollbahn]] zum Flugplatz [[Cameron Airpark]], sodass Hausbesitzer ihr Flugzeug in einer überdimensionalen Garage parken können und direkt von ihrem Haus aus losrollen und -fliegen können.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im September hat {{Noping|Mojnsen|Mojnsen}} mit diesem Artikel den zweiten Platz belegt. Herzlichen Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Hvidbjerg (Struer Kommune)
+| BILD             = Datei:Hvidbjerg Kirke - Thyholm Kommune.jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Die Hvidbjerg Kirke
+| TEASERTEXT       = '''Hvidbjerg '''ist ein dänischer Ort mit 1075 Einwohnern auf der Halbinsel Thyholm. Bis 2006 befand sich hier das Verwaltungszentrum der ehemaligen Thyholm Kommune. Hvidbjerg befindet sich im Zentrum von Thyholm, einer Halbinsel im äußersten Süden von Thy. Der Ort liegt im Norden der Struer Kommune und ist Teil der Kirchspielgemeinde Hvidbjerg Sogn. Hvidbjerg ist umgeben von hügeliger Moränenlandschaft und aufgrund seiner Lage auf einer verhältnismäßig kleinen Halbinsel in mehrere Richtungen weniger als 3,5 km weit von der Küste des Limfjords entfernt. Das Dorf wurde erstmals erwähnt im Jahre 1360 unter dem Namen Huidberg. 1970 wurde mit einer Kommunalreform die Thyholm Kommune gebildet, deren Verwaltungssitz Hvidbjerg als zentral gelegene und einwohnerstärkste Siedlung war. 2006 wurde, mit einer weiteren Reform, die Thyholm Kommune in die Struer Kommune eingliedert.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Wiese mit Morgentau.jpg|rahmenlos|zentriert]]
+Das erstplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|MrBenjo|MrBenjo}} aufgenommen und fängt die Morgenstimmung auf einer Wiese beim Sonnenaufgang ein. Herzlichen Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 18:35, 2. Nov. 2024 (CET)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== [[:Kategorie:Benutzer:ElBe Bot]] ==
+
+Halo, die [[:Kategorie:Benutzer:ElBe Bot]] läuft in der Fehlerliste auf, weil sie a) leer ist (ist ja nicht schlecht) und b) keine weitere Verlinkung hat (dann wäre sie auch draußen). Machst du dir bitte mal Gedanken, wie man das lösen könnte? Danke und Gruß --[[Benutzer:Mef.ellingen|Mef.ellingen]] ([[Benutzer Diskussion:Mef.ellingen|Diskussion]]) 00:33, 9. Nov. 2024 (CET)
+
+== Technische Wünsche: Tschüss, hallo und eine neue Umfrage ==
+
+[[Datei:Johanna_-_Johannes_-_Technische_Wünsche.png|rechts|500px|alt=Bildschirmfoto eines Versionsvergleiches, auf dem sich der Name Johanna zu Johannes ändert]]
+
+Hallo, du erhältst diese Nachricht, weil du den [[Wikipedia:Technische Wünsche/Newsletter|Newsletter der Technischen Wünsche]] abonniert hast. Eigentlich gibt es auf diesem Wege Informationen zu neuen Umfragen, Feedbackrunden und so weiter. Aber heute möchte ich über eine personelle Neuerung informieren: 
+
+Wie vielleicht von der WikiCon oder [[Wikipedia:Kurier#Technische_Wünsche:_Tschüss_Johanna,_hallo_Johannes|aus dem Kurier]] bereits bekannt, verlasse ich, [[User:Johanna Strodt (WMDE)|Johanna]], zum Jahresende Wikimedia Deutschland. Acht Jahre lang war ich Ansprechperson für das [[WP:Technische Wünsche|Projekt Technische Wünsche]]. Nun ziehe ich weiter. Mir ist die Entscheidung wirklich nicht leicht gefallen. In welchem Job kann man schon mit derart vielen engagierten, schlauen Menschen gemeinsam etwas auf die Beine stellen? Es war mir eine Ehre und ein Vergnügen, und für die gute Zusammenarbeit und für das Vertrauen möchte ich danke sagen. Ich nehme sehr viel mit – neben neuem Wissen und Fähigkeiten auch viele schöne Erinnerungen, etwa an Umfragen, Diskussionen und Dankeschöns sowie persönliche Begegnungen auf WikiCons, Tech-on-Tours und Technische-Wünsche-Treffs. Mein letzter Arbeitstag wird der 11. Dezember sein. Aber wer weiß, vielleicht sehen wir uns ja „auf der anderen Seite“ als Ehrenamtliche wieder.
+
+Dieses Ende ist auch ein Anfang. Ich darf mit großer Freude verkünden, dass [[User:Johannes Richter (WMDE)|Johannes]], der mich bereits seit Mai 2024 in der Kommunikation als Werkstudent unterstützt und auch ehrenamtlich sehr [[Special:CentralAuth/Johannnes89|engagiert in den Wikis aktiv]] ist, ab Mai 2025 meine Stelle übernimmt! Das ist in zweierlei Hinsicht toll: Keine große Umgewöhnung an einen neuen Vornamen. ;) Und vor allem ist Johannes wirklich der denkbar beste Mensch für den Job.
+
+Aufgrund der personellen Umstellung gibt es bei den Technischen Wünschen von Anfang Januar bis Ende April 2025 keine klare Ansprechperson für dieses Projekt. Das Projektteam wird versuchen, die Zeit bis Mai bestmöglich zu überbrücken. Ich bitte aber um Verständnis, falls nicht alles wie gewohnt läuft und hier und da mal eine Information etwas langsamer fließt.
+
+Ein Highlight darf ich jetzt schon ankündigen: Es wird in diesem Jahr noch eine [[WP:Umfragen/Technische Wünsche 2024|Technische-Wünsche-Umfrage]] geben. Mehr Infos folgen in Kürze, und es wird auch noch weitere Aufrufe dazu geben, zum Beispiel dazu, die Beschreibung der zur Wahl stehenden Themenschwerpunkte zu feedbacken. Aber notier dir gerne schon mal das Datum, 26. November bis 9. Dezember 2024. Dann kannst du wieder mitentschieden, in welchem Bereich das Team Technische Wünsche für technische Verbesserungen sorgen soll.
+
+– Für das Team Technische Wünsche, [[Benutzerin:Johanna Strodt (WMDE)|Johanna (WMDE)]], 12:22, 11. Nov. 2024 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigungen am 15.11.2024 ==
+Hallo! Du hast gestern neue Bestätigungen von {{noping|Ankermast|Ankermast}} und {{noping|Langusto|Langusto}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 04:50, 16. Nov. 2024 (CET) <!-- Hilfe für den Auto-Archiv-Bot: 04:50, 16. Nov. 2024 (CET) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigungen am 18.11.2024 ==
+Hallo! Du hast gestern neue Bestätigungen von {{noping|-stk|-stk}} und {{noping|Mojnsen|Mojnsen}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 04:50, 19. Nov. 2024 (CET) <!-- Hilfe für den Auto-Archiv-Bot: 04:50, 19. Nov. 2024 (CET) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Umfrage Technische Wünsche: Feedback zu den Wahloptionen bis 24.11. ==
+
+[[Datei:Technische_Wünsche_Partizipation.png|230px|rechts|alt=Menschen gehen verschiedenen Beschäftigungen nach. Ein Mensch fotografiert, ein Mensch arbeitet am Rechner, einer redet, einer denkt nach.]]Hallo, du erhältst diese Nachricht, weil du den [[Wikipedia:Technische Wünsche/Newsletter|Newsletter der Technischen Wünsche]] abonniert hast. 
+
+Die Themenschwerpunkte, über die in der kommenden Technische-Wünsche-Umfrage abgestimmt werden kann, stehen nun fest. Bis zum 24. November kannst du [[Wikipedia:Umfragen/Technische Wünsche 2024/Feedback Themenschwerpunkte|kommentieren, ob sie klar und verständlich formuliert sind]]. 
+Wir stellen die Auswahloptionen auch im [[Wikipedia:Technische Wünsche/Treff#Do, 21.11.2024, 18:00: Technische-Wünsche-Treff: Umfrage_2024|Technische-Wünsche-Treff am 21. November]] vor, und freuen uns, wenn du kommst. – Für das Team Technische Wünsche, [[Benutzerin:Johanna Strodt (WMDE)|Johanna Strodt (WMDE)]], 16:57, 19. Nov. 2024 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Abstimmen und weitersagen: Die Umfrage Technische Wünsche läuft! ==
+
+[[File:Teaser für die Umfrage Technische Wünsche.webm|thumb|thumbtime=20|alt=Mehrere Aktive aus der Wikipedia laden per Videoaufruf dazu ein, in der Umfrage Technische Wünsche abzustimmen.|'''Deine Stimme ist wichtig'''. Denn Verbesserungen sollen ''allen'' helfen, die in den Wikis mitarbeiten.]]Hallo, weil du der [[Wikipedia:Umfragen/Technische Wünsche 2024|in der Technische-Wünsche-Umfrage]] im Jahr 2022 abgestimmt hast, interessiert dich möglicherweise, dass aktuell wieder eine Umfrage läuft. Du kannst wieder darüber mitentscheiden, in welchem Bereich das [[WP:Technische Wünsche|Team Technische Wünsche]] die Arbeit in den Wikis vereinfachen soll. Zehn Themenschwerpunkte stehen dieses Jahr zur Wahl. 
+
+{{MediaWiki-Button |Text=Jetzt abstimmen |Link=Wikipedia:Umfragen/Technische Wünsche 2024 |Typ=progressive}}
+Die Abstimmung läuft noch '''bis zum 9. Dezember'''. Bitte weitersagen!
+
+Wir möchten mit der Umfrage möglichst breite Teile der Community erreichen. Falls du solche Nachrichten lieber nicht erhalten möchtest, gib bitte kurz Bescheid. 
+
+– Für das Team Technische Wünsche, [[Benutzerin:Johanna Strodt (WMDE)|Johanna Strodt (WMDE)]] [[BD:Johanna Strodt (WMDE)|(Diskussion)]] 09:45, 26. Nov. 2024 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (7. Dezember 2024) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:Die Jungwikipedianer - Logo Weihnachten ohne rel Symbole.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* [[n:Osnabrück: Sieben Bomben an einem Sonntag unschädlich gemacht|Osnabrück: Sieben Bomben an einem Sonntag unschädlich gemacht]]
+* [[n:Deutschland gewinnt 7:0 gegen Bosnien-Herzegowina in der Nations League|Deutschland gewinnt 7:0 gegen Bosnien-Herzegowina in der Nations League]]
+* [[n:Ungewöhnliche Unterbrechung im neuseeländischen Parlament|Ungewöhnliche Unterbrechung im neuseeländischen Parlament]]
+* [[n:Inflation in Bulgarien soll um 6 Prozentpunkte im Vergleich zum Vorjahr sinken|Inflation in Bulgarien soll um 6 Prozentpunkte im Vergleich zum Vorjahr sinken]]
+* [[n:Zentrale Gedenkveranstaltung zum Volkstrauertag 2024 im Bundestag|Zentrale Gedenkveranstaltung zum Volkstrauertag 2024 im Bundestag]]
+* [[n:Rodrigue Petitot, Anführer der RPPRAC auf Martinique, muss sich vor Gericht verantworten|Rodrigue Petitot, Anführer der RPPRAC auf Martinique, muss sich vor Gericht verantworten]]
+* [[n:Eurofighter kommen 2025 zurück nach Ostfriesland|Eurofighter kommen 2025 zurück nach Ostfriesland]]
+<small>sind die Rahmen des Treffens entstandenen Wikinews-Artikel.</small>
+
+{{Kopf|Und jetzt die wichtigen News}}
+* Die drei aus unserem Treffen entstandenen Abstimmungen über [[Wikipedia:Jungwikipedianer/Abstimmung/Aufnahme- und Ausschlusskriterien|Änderungen der Aufnahme- und Ausschlusskriterien]], [[Wikipedia:Jungwikipedianer/Abstimmung/Auswertung Bilderwettbewerb und AdQ|Anpassungen der Regeln zur Auswertung von Bilderwettbewerb und AdQ]] und [[Wikipedia:Jungwikipedianer/Abstimmung/Teilnahmemöglichkeiten|eine anonyme Teilnahme bei Slack für junge Wikipedianer]] laufen noch bis Montag (9. Dezember).
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]] findet wieder statt. Nominiert jetzt euren Artikel!
+* In einem knappen Rennen mit starker Beteiligung hat {{Noping|MrBenjo|MrBenjo}} den [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikelwettbewerb 2024|diesjährigen Artikelwettbewerb]] gewonnen. Den Hauptpreis, einen Wikipedia-Regenschirm, bekam er bereits während der Preisverleihung im Rahmen unseres Treffens in Neu-Ulm überreicht. Herzlichen Glückwunsch!
+* Beim [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2024|Herbst-Wartungsbausteinwettbewerb]] hat das JWP-Team, bestehend aus {{Noping|Wandelndes Lexikon|Wandelndes Lexikon}} und {{Noping|Langusto|Langusto}}, den 20. Platz erreicht. Herzlichen Glückwunsch!
+* Vom 7. bis zum 9. Februar 2025 könnt ihr [[Wikipedia:Wikimedia Deutschland/Mit Wikipedia unterwegs/Neu-Ulm 2025|Mit Wikipedia unterwegs in Neu-Ulm]] sein. Eine Teilnahme ist ab 16 Jahren möglich, von Wikimedia Deutschland gibt es eine Kostenförderung.
+* Die nächste Videokonferenz findet am 30.&nbsp;Dezember statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|Julius0900|Julius0900}}. Herzlich willkommen!
+
+{{Kopf|Tipps und Triqqs}}
+[http://listen.hatnote.com/ Listen to Wikipedia] ist eine Website, die die [[Spezial:Letzte Änderungen|Letzten Änderungen]] in der Wikipedia visualisiert. Jede eintreffende Änderung ploppt auf dem Bildschirm auf, entweder mit einem Glockenton (Erweiterung) oder einem Saitenzupfen (Kürzung des Artikels) mit einer Tonhöhe abhängig von der Größe der Änderung. Auch jedes neu erstellte Benutzerkonto wird begrüßt. Es lässt sich auch beispielsweise nach Änderungen in der deutschsprachigen Wikipedia filtern. Wer also mal ein besinnliches Hintergrundgeräusch braucht oder einen Bildschirmschoner mit Wikipedia-Bezug - bitte sehr!
+
+{{Kopf|Kurioses}}
+Du denkst, chinesische Schriftzeichen sind kompliziert? Selbst in China wird es für viele zur Herausforderung, sie korrekt zu schreiben! Im digitalen Zeitalter greifen die meisten auf [[Pinyin]]-Tastaturen, Spracherkennung und Autokorrektur zurück, sodass die Kunst des Handschreibens immer seltener geübt wird. Das Phänomen, bekannt als „[[Schriftzeichen-Amnesie]]“ (deutscher Artikel noch nicht vorhanden), betrifft selbst gut ausgebildete Menschen, die manchmal nicht einmal alltägliche Wörter wie „Niesen“ oder „Ei“ schreiben können. Während die Technologie das Leben erleichtert, führt sie auch zu nostalgischen Diskussionen über den Verlust kultureller Traditionen.
+
+Wer auszieht und eine eigene Spülmaschine hat oder bei wem sich die Eltern regelmäßig z. B. über die korrekte Befüllung der Spülmaschine streiten, für den ist wahrscheinlich [https://www.youtube.com/watch?app=desktop&v=jHP942Livy0&ab_channel=TechnologyConnections dieses halbstündige Video] interessant, welches über die verschiedenen Mythen um Spülmaschinen auf humorvolle Art und Weise aufklärt.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im September hat {{Noping|Ankermast|Ankermast}} mit diesem Artikel den dritten Platz belegt. Herzlichen Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Catherine Baker Knoll
+| BILD             = Datei:Catherine Baker Knoll (2006).jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Catherine Baker Knoll (2006)
+| TEASERTEXT       = '''Catherine Baker Knoll''', geborene ''Catherine Baker'' (* 3. September 1930 in Pittsburgh, Pennsylvania; † 12. November 2008 in Washington, D.C.), war eine US-amerikanische Politikerin der Demokratischen Partei. Zwischen 2003 und 2008 war sie Vizegouverneurin des Bundesstaates Pennsylvania und damit die erste Frau, die als Vizegouverneurin von Pennsylvania amtierte. Zuvor war sie Landesschatzmeisterin, modernisierte die Behörde und führte ein College-Sparprogramm ein. Ihre politische Laufbahn war geprägt von Engagement für Bildung und öffentliche Verwaltung, mehrfachen Kandidaturen und ihrer Pionierrolle als Frau in hohen Ämtern.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Marktkirche Wiesbaden 2024.jpg|rahmenlos|zentriert]]
+Das zweitplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|MrBenjo|MrBenjo}} aufgenommen und zeigt die [[Marktkirche Wiesbaden]] bei tollen Lichtverhältnissen. Herzlichen Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 23:07, 7. Dez. 2024 (CET)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (5. Januar 2025) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:Die Jungwikipedianer - Logo Weihnachten ohne rel Symbole.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Wir planen für das Frühjahr 2025 ein neues Treffen. Als Ort wird das Dreiländereck Nordrhein-Westfalen–Niedersachsen–Hessen angestrebt, vorzugsweise die Region [[Ostwestfalen-Lippe]]. Näheres in Kürze.
+* Der Bilderwettbewerb steht an! [[Wikipedia:Jungwikipedianer/Bilderwettbewerb|Hier]] könnt ihr eure Schnappschüsse noch bis einschließlich Freitag, den 10. Januar nominieren.
+* Die drei aus unserem Treffen entstandenen Abstimmungen über [[Wikipedia:Jungwikipedianer/Abstimmung/Aufnahme- und Ausschlusskriterien|Änderungen der Aufnahme- und Ausschlusskriterien]], [[Wikipedia:Jungwikipedianer/Abstimmung/Auswertung Bilderwettbewerb und AdQ|Anpassungen der Regeln zur Auswertung von Bilderwettbewerb und AdQ]] und [[Wikipedia:Jungwikipedianer/Abstimmung/Teilnahmemöglichkeiten|eine anonyme Teilnahme bei Slack für junge Wikipedianer]] sind beendet, das Ergebnis findet ihr auf den entsprechenden Seiten.
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]] ist beendet, unten findet ihr den Siegertext.
+* Vom 7. bis zum 9. Februar 2025 könnt ihr [[Wikipedia:Wikimedia Deutschland/Mit Wikipedia unterwegs/Neu-Ulm 2025|Mit Wikipedia unterwegs in Neu-Ulm]] sein. Eine Teilnahme ist ab 16 Jahren möglich, von Wikimedia Deutschland gibt es eine Kostenförderung.
+* Die nächste Videokonferenz findet am 27.&nbsp;Januar statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|Mo-zum|Mo-zum}}. Herzlich willkommen!
+
+{{Kopf|Tipps und Triqqs}}
+Ihr wollt zu eurer näheren Umgebung Artikel bearbeiten aber wisst gar nicht, was es da so alles gibt? Oder braucht ein Bild unter einer freien Lizenz von einem Ort in der Nähe? Dann ist vielleicht die [https://wikimap.toolforge.org/ Wikimap] etwas für euch. WikiMap stellt Wikipedia-Artikel und Commons-Bilder auf einer Karte dar, sodass ihr alle Dinge seht, die in eurer Nähe oder an irgendeinem anderen Ort sind.
+
+{{Kopf|Kurioses}}
+In der Zeit reisen geht nicht? Doch! Und zwar durch die Zeitzonen und über die Datumsgrenze. So gab es am 01.01.25 den Flug CX 880 von Hongkong mit Start um 0:25 nach Los Angeles, der dort noch am 31.12.24 gegen 20:30 Uhr landete.
+
+Das große [[Tōhoku-Erdbeben 2011]] hat in [[Tōhoku|Tōhoku]], Japan, durch einen Tsunami, der die Böden versalzen ließ, 2011 fast die gesamte Landwirdschaft zerstört (und übrigens auch [[Nuklearkatastrophe von Fukushima|das AKW Fukushima zur Kernschmelze gebracht]]). Also was nun? Wie wäre es damit, in technisch hoch ausgestatteten Gewächshäusern neue Erdbeersorten zu züchten und diese für ca. 13 $ pro Stück (!) zu verkaufen? Genau dieser Industriezweig trug entscheidend dazu bei, dass sich Tohoku von den Folgen des Tsunamis erholen konnte.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Dezember hat {{Noping|HistorianoftheMarch|HistorianoftheMarch}} mit diesem Artikel den ersten Platz belegt. Herzlichen Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Kloster Maria Friedenshort
+| BILD             = Datei:20040703630DR Neuzelle Klosterkirche.jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Klosterkirche St. Mariä Himmelfahrt in Neuzelle
+| TEASERTEXT       = Das '''Kloster Maria Friedenshort''', offiziell „einfaches Priorat der seligen Jungfrau Maria von Neuzelle“, ist ein vom Stift Heiligenkreuz abhängiges Zisterzienserpriorat, das auf die Initiative des Görlitzer Bischofs Wolfgang Ipolt am 2. September 2018 kanonisch errichtet wurde. Nach anfänglichen Bemühungen, das neue Kloster im historischen Kloster Neuzelle zu etablieren, wird ein neues Kloster im Neuzeller Ortsteil Treppeln errichtet, da das historische Klostergelände samt allen klösterlichen Anlagen im Besitz der staatlichen Stiftung Stift Neuzelle ist. Voraussichtlicher Baubeginn ist 2026.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Arequipa Sunset.jpg|rahmenlos|zentriert]]
+Das drittplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|Mojnsen|Mojnsen}} aufgenommen und zeigt einen Sonnenuntergang in der zweitgrößten Stadt Perus, [[Arequipa]]. Herzlichen Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 13:19, 5. Jan. 2025 (CET)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2025|Wartungsbausteinwettbewerb Winter 2025]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2025|Wartungsbausteinwettbewerb]] startet am 18. Januar (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 16:32, 9. Jan. 2025 (CET) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (1. Februar 2025) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Wir planen für das Frühjahr 2025 ein neues Treffen. Als Ort wird das Dreiländereck Nordrhein-Westfalen–Niedersachsen–Hessen angestrebt. [[Wikipedia:Jungwikipedianer/Treffen/2025-I|Näheres auf dieser Seite]], bitte stimmt bis zum 6. Februar für Stadt und Datum ab.
+* Der Bilderwettbewerb ist ausgezählt! Unten findet sich das wunderschöne Gewinnerbild von {{Noping|Mojnsen|Mojnsen}}.
+* Die nächste Videokonferenz findet am 24.&nbsp;Februar statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unsere vier neuen Mitglieder {{Noping|Ein anonymer Wikipedianutzer|Ein anonymer Wikipedianutzer}}, {{Noping|Lelnarit|Lelnarit}}, {{Noping|Luke2101|Luke2101}} und {{Noping|JohnPaulSimon|JohnPaulSimon}}. Herzlich willkommen!
+----
+Aufgrund der neuen Ausschlusskriterien mussten wir uns am 10. Januar von {{Noping|KatastrophenKommando|KatastrophenKommando}}, {{Noping|DiskoDieter|DiskoDieter}}, {{Noping|WelchenBenutzernamengibtesnochnicht?|WelchenBenutzernamengibtesnochnicht?}}, {{Noping|TheOriginalDuck|TheOriginalDuck}}, {{Noping|Förkle|Förkle}}, {{Noping|Graf von Rüdesheim|Graf von Rüdesheim}}, {{Noping|MrBaum|MrBaum}}, {{Noping|Velwark|Velwark}}, {{Noping|TyPi|TyPi}} und {{Noping|CookyCo|CookyCo}} verabschieden.
+
+{{Kopf|Tipps und Triqqs}}
+Diesmal gibt es ein paar – hoffentlich hilfreiche – Shortcuts:
+* [[Wikipedia:Jungwikipedianer|WP:J]] – unsere Hauptseite
+* [[WP:JWP/N]] oder WP:JWPN – die Seite dieses Newsletters
+* [[WP:JWPAdQ]] – Artikel des Quartals
+* [[WP:JWPBW]] – Bilderwettbewerb
+* [[WP:JWP/M]] oder WP:JWPM – Mitgliederliste
+* [[WP:REISE]] – Seite von WMDE zur Reisekostenerstattung (z. B. für das Treffen)
+* [[WP:EHRE]] – Ehrenamtsbescheinigungen von WMDE
+* [[Wikipedia:Importwünsche|WP:IMP]] – Importwünsche
+* [[WP:RK]] – Relevanzkriterien
+* [[Wikipedia:Kurier|WP:K]] – Wikipedia:Kurier
+* [[H:REF]] oder H:EN – Hilfe zu Einzelnachweisen
+* [[H:IL]] – Hilfe zu Interwiki-Links
+Eine Liste aller Shortcuts findet ihr [[Wikipedia:Shortcuts/Schlüssel|hier]].
+
+{{Kopf|Kurioses}}
+Wer jedes Mal den ersten [[Wikilink]] in der englischsprachigen Wikipedia anklickt, landet in ca. 97 % der Fälle irgendwann beim Artikel [[:en:Wikipedia:Getting_to_Philosophy|Philosophie]]. Zumindest solange bis im [[:en:Awareness|Awareness]]-Artikel die Reihenfolge der Wikilinks [[:en:Psychology|Psychologie]] und [[:en:Philosophy|Philosophie]] geändert wurde, sodass Philosophie nicht mehr der erste Link ist, was den Anteil um ca. 25 % reduzierte. 
+Daraufhin und wegen eines [https://www.youtube.com/watch?v=-llumS2rA8I YouTube-Videos] darüber startete ein [[:en:Talk:Awareness#It_would_be_kinda_cool_to_preserve_wikipedia's_%22first-link_network%22|Edit War]] mit dem Kompromiss, dass die Reihenfolge geändert bleibt, jedoch führt Psychologie nun nach einigen Klicks auf den jeweils ersten Wikilink ebenfalls zu Philosophie, wodurch die Regel wiederhergestellt wurde.
+
+Der [[Yding Skovhøj]] galt bis 2005 als höchster natürliche Erhebung Dänemarks, wurde aber durch den [[Møllehøj]] abgelöst, da sein Gipfel ein künstlicher Grabhügel ist. Ohne diesen Grabhügel ist der Yding Skovhøj neun Zentimeter niedriger als der Møllehøj und damit nur noch der zweithöchste Berg des Landes. Dennoch überragt er weiterhin den [[Ejer Bavnehøj]], auf dem ein Aussichtsturm steht, der wiederum den höchsten Punkt des Landes markiert.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Dezember hat {{Noping|MrBenjo|MrBenjo}} mit diesem Artikel den zweiten Platz belegt.
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Commercial Lunar Payload Services
+| BILD             = Datei:NASA Selects First Commercial Moon Landing Services for Artemis Program (47974872533).jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Modelle der Lander der ersten drei vergebenen Verträge
+| TEASERTEXT       = '''Commercial Lunar Payload Services''' (CLPS [ˈklɪps], „kommerzielle Mondnutzlastdienste“) ist ein Programm der US-amerikanischen Raumfahrtbehörde NASA zur Durchführung unbemannter Mondlandungen, die zu der Erforschung des Mondes beitragen und bemannte Missionen des Artemis-Programms vorbereiten sollen. Die einzelnen CLPS-Mondflüge werden von privaten Raumfahrtunternehmen im Auftrag der NASA ausgeführt. Vor allem sollen kleinere Roboter und Rover zum Mond transportiert werden und dort nach Ressourcen suchen. Das Budget für das Programm beläuft sich auf insgesamt 2,6 Milliarden US-Dollar.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Grand Teton Scenery.jpg|rahmenlos|zentriert]]
+Das erstplatzierte Foto des Bilderwettbewerbs wurde von {{Noping|Mojnsen|Mojnsen}} aufgenommen und zeigt typisch amerikanische alte Scheune im [[Grand-Teton-Nationalpark]] in [[Wyoming]]. Herzlichen Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 20:00, 1. Feb. 2025 (CET)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung zum [[Wikipedia:Jungwikipedianer/Treffen/2025-I|JWP-Treffen im Mai]] ==
+
+Hallo ElBe,
+
+von Freitag, 9. Mai bis Sonntag, 11. Mai 2025 findet unser Jungwikipedianertreffen in Bielefeld statt. Die Veranstaltung wird von Wikimedia Deutschland gefördert, damit ist die Teilnahme für dich 100 % kostenlos. Wir haben ein spannendes Programm geplant und es wird auch viel Zeit zum persönlichen Austausch geben. Eine Betreuung während der Veranstaltung wird durch Wikimedia Deutschland sichergestellt. Wenn du teilnehmen möchtest, melde dich bitte bis zum 27. März auf [[Wikipedia:Jungwikipedianer/Treffen/2025-I|dieser Seite]] an. Wenn du noch Fragen hast, kannst du sie gerne auf der dazugehörigen Diskussionsseite oder in Slack stellen.
+
+Wir würden uns über deine Teilnahme freuen! Für die Jungwikipedianer, –[[Benutzer:MrBenjo|𝐌𝐫𝐁𝐞𝐧𝐣𝐨]] • [[Benutzer Diskussion:MrBenjo|𝐃𝐢𝐬𝐤]] • [[Wikipedia:Jungwikipedianer|𝐉𝐖𝐏]] 10:57, 23. Mär. 2025 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (9. April 2025) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+Hinweis: Aufgrund technischer Schwierigkeiten und Unachtsamkeit ist im letzten Monat kein Newsletter erschienen. Dafür bitten wir aufrichtig um Entschuldigung.
+
+{{Kopf|Neuigkeiten}}
+* Vom 09. bis zum 11. Mai findet unser nächstes Treffen in Bielefeld statt. Die Anmeldung ist abgeschlossen und für das Programm dürfen gerne weitere Vorschläge gemacht werden: alles Weitere auf [[Wikipedia:Jungwikipedianer/Treffen/2025-I|dieser Seite]]. Achtung, ein Vogel hat uns gerade gezwitschert, dass für Kurzentschlossene noch ein Plätzchen frei ist, also am besten noch schnell anmelden :)
+* Der Wettbewerb zum Artikel des Quartals ist beendet, den Gewinner findet ihr unten.
+* Im April findet wieder der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]] statt, bis zum Donnerstag, den 10. April kann nominiert, anschließend bis zum 24. April abgestimmt werden.
+* Anlässlich des Treffens läuft ab Mittwoch, den 9. April wieder einen Monat lang unser [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikelwettbewerb 2025|Artikelwettbewerb]]. Eine Teilnahme ist für alle JWP möglich, die Siegerehrung mit Preisverleihung wird beim Treffen stattfinden.
+* Die nächste Videokonferenz findet am 28.&nbsp;April statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+* Alle JWP sind herzlich eingeladen, unserem Slack-Kanal zur internen Kommunikation beizutreten! Um eine E-Mail-Einladung zu erhalten, schicke bitte eine [[Hilfe:E-Mail|Wikimail]] an eine der Vertrauenspersonen ([[Spezial:E-Mail senden/MrBenjo|MrBenjo]] und [[Spezial:E-Mail senden/Wandelndes Lexikon|Wandelndes Lexikon]]).
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unsere neuen Mitglieder {{Noping|Lukas.de2|Lukas.de2}}, {{Noping|Der Legonier|Der Legonier}}, {{Noping|ThoughtForge|ThoughtForge}}, {{Noping|Mühlenkobold|Mühlenkobold}} und {{Noping|TheRoyalOne06|TheRoyalOne06}}. Herzlich willkommen!
+----
+Wir verabschieden uns von unseren langjährigen Mitgliedern {{Noping|Sokrates2987|Sokrates2987}} und {{Noping|Girwidz|Girwidz}}, die nun zu den großen Wikipedianern gehören, sowie unserem Mitglied {{Noping|Kno52|Kno52}}, das leider wegen Inaktivität ausscheiden musste. Alles Gute Euch!
+
+{{Kopf|Tipps und Triqqs}}
+Spieltipp: [https://wikitrivia.tomjwatson.com/ Wikitrivia] ist ein von Tom J. Watson entwickeltes Browserspiel, das im Januar 2022 an Popularität gewann. Die Spieler erhalten eine Zeitleiste und eine Karte mit einem Thema und einer Datumsart (z. B. „Bosporanisches Königreich“ und „erstellt“) und müssen das Ereignis an der richtigen Stelle in der Zeitleiste (zwischen anderen Karten) platzieren. Wird eine Karte an der falschen Stelle platziert, verliert man ein Leben, und das Spiel endet, sobald man drei Leben verloren hat. Das Spiel verwendet Informationen aus Wikipedia und Wikidata. Man munkelt, dass dieses Spiel bereits auf dem Treffen seine Premiere bei den JWP finden dürfte. Wer also bei diesem entscheidenden Moment noch live dabei sein will... siehe oben.
+
+Wir erweitern den Newsletter an dieser Stelle um Tipps aus dem realen Leben: Der Autor dieser Zeilen hat festgestellt, dass er sich jetzt einen größeren Teil bei der absurd teuren Autoversicherung sparen könnte, wenn er vor einigen Jahren ein irgendwo herumstehendes Motorrad auf seinen Namen versichert hätte, da er die schadensfreien Jahre (sog. SF-Klassen) auf das Auto hätte übertragen können. Wer also in einigen Jahren (oder irgendwann) ein Auto auf seinen Namen versichern möchte, könnte mit dieser Strategie noch sparen und hat den Vorteil, dass er/sie es nun rechtzeitig weiß. Rechenbeispiel: Wer vor 3 Jahren ein Motorrad versichert hätte, der hätte nun SF-Klasse 3 und würde damit nur noch 70 % des Beitrags für die Haftpflichtversicherung des Autos zahlen statt mind. 100 % (seit mind. 3 Jahren Führerschein) oder mind. 200 % (absoluter Fahranfänger). Das wäre eine Ersparnis von mehreren hundert Euro im Jahr vs. Kosten von anfangs ca. 70&nbsp;€ pro Jahr für die Motorradversicherung, danach weniger durch den SF-Rabatt.
+
+{{Kopf|Kurioses}}
+Ein gewaltiger Erdrutsch in Ostgrönland ließ die Erde ganze neun Tage lang vibrieren – so lange wie nie zuvor beobachtet. Forscher der University College London fanden heraus, dass der Klimawandel den Hang destabilisierte, bis schließlich riesige Gesteinsmassen ins Meer stürzten. Die seismischen Wellen waren 9 Tage lang weltweit messbar, ihr Ursprung aber zunächst ein Rätsel. Als die Autoren der Studie das Signal erstmals entdeckten, notierten sie es als „USO“: unidentifiziertes seismisches Objekt. Erst Satellitenbilder zeigten das Ausmaß des Erdrutsches, der eine Fläche von über 10 Quadratkilometern betraf. Dieses außergewöhnliche Naturereignis verdeutlicht, wie der Klimawandel geologische Prozesse beeinflusst und zu unerwarteten Folgen führen kann.
+
+Auf japanischen Toiletten war es mal verbreitet, während der Benutzung die Spülung zu betätigen, um die Geräusche zu überdecken. Da auch eine Aufklärungskampagne keine Wirkung bei der Reduzierung des Wasserverbrauchs keine Wirkung zeigte, wurden seitdem Geräte verbaut, die die Geräusche der Spülung per Knopfdruck nachgeahmt haben, sogenannte „[[Toiletten in Japan#Zubehör|Geräuschprinzessinnen]]“.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Frühjahr hat {{Noping|Ankermast|Ankermast}} mit diesem Artikel den ersten Platz belegt.
+
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Transrapid Shanghai
+| BILD             = Datei:Transrapid Shanghai 2012.jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Ein Transrapid-Zug bei der Einfahrt in die Longyang Road Station (2020)
+| TEASERTEXT       = Der '''Transrapid Shanghai''' ({{enS|Shanghai Maglev Train}} (SMT) oder verkürzt ''Shanghai Maglev'') ist eine Magnetschwebebahn-Strecke, die auf 30&nbsp;km von der Station Longyang-Straße ({{zh|c=龙阳路|p=Lóngyáng-lù|b=}}) in einem Außenbezirk Shanghais (Volksrepublik China), nahe dem Messezentrum Shanghai New International Expo Centre (SNIEC) zum Shanghai Pudong International Airport führt. Die am 31. Dezember 2002 in den Probebetrieb gegangene und am 1. Januar 2004 offiziell eröffnete Strecke stellt die bislang einzige kommerzielle Anwendung des Transrapid-Systems sowie den schnellsten im kommerziellen Einsatz befindlichen Zug dar.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+<gallery mode="packed">
+Sønderborg Sunset.jpg
+Blick über das Pürgschachen Moor.jpg</gallery> 
+Die Fotos auf Platz 2 und 3 des Bilderwettbewerbs wurden von {{Noping|Mojnsen|Mojnsen}} und {{Noping|Knowledge2need|Knowledge2need}} aufgenommen. Sie zeigen einmal einen Sonnenuntergang im dänischen [[Sønderborg]] und einmal einen Blick über das [[Pürgschachen-Moor|Pürgschachener Moor]] in der [[Steiermark]].
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:Ankermast|Ankermast]] ([[Benutzer Diskussion:Ankermast|Diskussion]]) 08:05, 9. Apr. 2025 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Frühling 2025|Wartungsbausteinwettbewerb Frühling 2025]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Frühling 2025|Wartungsbausteinwettbewerb]] startet am 3. Mai (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 21:59, 18. Apr. 2025 (CEST) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (9. Mai 2025) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Vom 09. bis zum 11. Mai findet unser nächstes Treffen in Bielefeld statt. Die Anmeldung ist abgeschlossen und auch das Programm steht in großen Teilen. Alle Informationen gibt es [[Wikipedia:Jungwikipedianer/Treffen/2025-I|hier]]. Für Kurzentschlossene wäre das letzte Plätzchen immer noch frei :)
+* Der Bilderwettbewerb ist beendet, unten findet ihr den Sieger
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikelwettbewerb 2025|Artikelwettbewerb zum Treffen]] läuft noch bis zum Freitag, den 9. Mai. Bis 17:00 Uhr an dem Tag könnt ihr noch spontan einsteigen.
+* Die nächste Videokonferenz findet am 26.&nbsp;Mai statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+* Alle JWP sind erneut herzlich eingeladen, unserem Slack-Kanal zur internen Kommunikation beizutreten! Um eine E-Mail-Einladung zu erhalten, schicke bitte eine [[Hilfe:E-Mail|Wikimail]] an eine der Vertrauenspersonen ([[Spezial:E-Mail senden/MrBenjo|MrBenjo]] und [[Spezial:E-Mail senden/Wandelndes Lexikon|Wandelndes Lexikon]]).
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unsere neuen Mitglieder {{Noping|DaevonSky|DaevonSky}} und {{Noping|Orangenhirn|Orangenhirn}}. Herzlich willkommen!
+----
+
+{{Kopf|Tipps und Triqqs}}
+Spieltipp: [https://wikitrivia.tomjwatson.com/ Wikitrivia] ist ein von Tom J. Watson entwickeltes Browserspiel, das im Januar 2022 an Popularität gewann. Die Spieler erhalten eine Zeitleiste und eine Karte mit einem Thema und einer Datumsart (z. B. „Bosporanisches Königreich“ und „erstellt“) und müssen das Ereignis an der richtigen Stelle in der Zeitleiste (zwischen anderen Karten) platzieren. Wird eine Karte an der falschen Stelle platziert, verliert man ein Leben, und das Spiel endet, sobald man drei Leben verloren hat. Das Spiel verwendet Informationen aus Wikipedia und Wikidata. Man munkelt, dass dieses Spiel bereits auf dem Treffen seine Premiere bei den JWP finden dürfte. Wer also bei diesem entscheidenden Moment noch live dabei sein will... siehe oben.
+
+Wir erweitern den Newsletter an dieser Stelle um Tipps aus dem realen Leben: Der Autor dieser Zeilen hat festgestellt, dass er sich jetzt einen größeren Teil bei der absurd teuren Autoversicherung sparen könnte, wenn er vor einigen Jahren ein irgendwo herumstehendes Motorrad auf seinen Namen versichert hätte, da er die schadensfreien Jahre (sog. SF-Klassen) auf das Auto hätte übertragen können. Wer also in einigen Jahren (oder irgendwann) ein Auto auf seinen Namen versichern möchte, könnte mit dieser Strategie noch sparen und hat den Vorteil, dass er/sie es nun rechtzeitig weiß. Rechenbeispiel: Wer vor 3 Jahren ein Motorrad versichert hätte, der hätte nun SF-Klasse 3 und würde damit nur noch 70 % des Beitrags für die Haftpflichtversicherung des Autos zahlen statt mind. 100 % (seit mind. 3 Jahren Führerschein) oder mind. 200 % (absoluter Fahranfänger). Das wäre eine Ersparnis von mehreren hundert Euro im Jahr vs. Kosten von anfangs ca. 70&nbsp;€ pro Jahr für die Motorradversicherung, danach weniger durch den SF-Rabatt.
+
+{{Kopf|Kurioses}}
+In [[Frankfurt-Oberrad]] steht ein [[Grüne-Soße-Denkmal|einzigartiges Denkmal]] – gewidmet keinem Helden, sondern einem Gericht: der [[Grüne Sauce|Grünen Soße]]. Seit 2007 erinnern dort sieben kleine, grün schimmernde Gewächshäuser an die sieben Kräuter der hessischen Spezialität. Entworfen von einer Offenbacher Designstudentin, dienen die gläsernen Häuschen nicht dem Anbau, sondern als Kunstobjekte mit Bezug zur umliegenden Anbaufläche. Bei Nacht illuminiert, ist das Denkmal auch Teil der Frankfurter ''Luminale'' – und wohl das kurioseste kulinarische Denkmal Deutschlands.
+
+Zwischen den Bahnhöfen JR [[Tsurumi-ku (Yokohama)|Tsurumi]] und Keikyu Kagetsu-Soji in [[Yokohama]] befindet sich einer der ungewöhnlichsten Bahnübergänge Japans und womöglich auch weltweit. Er führt über insgesamt zehn Gleise – sieben von [[East Japan Railway Company|JR East]] und drei der [[Keikyū-Hauptlinie|Keikyu-Linie]] – und misst rund 66 Meter von Schranke zu Schranke. Aufgrund des dichten Zugverkehrs wird der Übergang nur ca. drei Mal pro Stunde geöffnet, jeweils für ca. 30 Sekunden. In dieser kurzen Zeit ist es für Fußgänger und Fahrzeuge kaum möglich, die gesamte Strecke zu überqueren. Entsprechend nutzen viele stattdessen eine nahe gelegene Überführung.
+Der Bahnübergang ist ein seltenes Beispiel für die Herausforderungen, die komplexe Schienennetze im urbanen Raum mit sich bringen.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Frühjahr hat {{Noping|Kito9999|Kito9999}} mit diesem Artikel den zweiten Platz belegt.
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Sandown International Motor Raceway
+| BILD             = Datei:Sandown (Australia) track map.svg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = 
+| TEASERTEXT       = Der '''Sandown International Motor Raceway''' ist eine Motorsport-Rennstrecke in Springvale in Australien. Der Kurs wurde als Austragungsort des Sandown 500 im Rahmen der Supercars bekannt.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+<gallery mode="packed">
+Sønderborg Sunset.jpg
+Blick über das Pürgschachen Moor.jpg</gallery> 
+Die Fotos auf Platz 2 und 3 des Bilderwettbewerbs wurden von {{Noping|Mojnsen|Mojnsen}} und {{Noping|Knowledge2need|Knowledge2need}} aufgenommen. Sie zeigen einmal einen Sonnenuntergang im dänischen [[Sønderborg]] und einmal einen Blick über das [[Pürgschachen-Moor|Pürgschachener Moor]] in der [[Steiermark]].
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 17:25, 9. Mai 2025 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigungen am 10.5.2025 ==
+Hallo! Du hast gestern neue Bestätigungen von {{noping|JiaqiDerKrasse|JiaqiDerKrasse}} und {{noping|MinchenBienchen|MinchenBienchen}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 05:50, 11. Mai 2025 (CEST) <!-- Hilfe für den Auto-Archiv-Bot: 05:50, 11. Mai 2025 (CEST) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== neue Bestätigung am 11.5.2025 ==
+Hallo! Du hast gestern eine neue Bestätigung von {{noping|TofuGans|TofuGans}} bei [[WP:Persönliche Bekanntschaften|Persönliche Bekanntschaften]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --[[Benutzer:SpBot|SpBot]] 05:50, 12. Mai 2025 (CEST) <!-- Hilfe für den Auto-Archiv-Bot: 05:50, 12. Mai 2025 (CEST) -->
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (10. Juni 2025) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Vom 9. bis zum 11. Mai hat unser [[Wikipedia:Jungwikipedianer/Treffen/2025-I|Treffen in Bielefeld]] stattgefunden. Es wurde über Themen wie unsere Hauptseite, Denglisch und Jugend editiert beratschlagt sowie Bielefeld für mehr oder weniger existent erklärt. Das Protokoll ist [https://etherpad.wikimedia.org/p/JWP-Treffen_2025-I hier] zu finden, den Kurierartikel vom 14. Mai gibt es [[Wikipedia:Kurier#JWP treffen sich in ... Ostwestfalen|hier]].
+* Kaum ist das eine Treffen vorbei, beginnen auch schon die Planungen für das nächste. Diesen Herbst soll es nach Fürth gehen. Tragt euch auf [[Wikipedia:Jungwikipedianer/Treffen/2025-II|der Seite]] gerne als Interessierte ein und nehmt an der Terminabstimmung teil.
+* Den [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikelwettbewerb 2025|Artikelwettbewerb im Vorfeld des Treffens]] hat mit 1522 Punkten und weitem Abstand {{Noping|Knowledge2need|Knowledge2need}} gewonnen. Herzlichen Glückwunsch und viel Spaß mit dem Preis!
+* Die nächste Videokonferenz findet am 30.&nbsp;Juni statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|BeeaBee|BeeaBee}}. Herzlich willkommen!
+----
+
+{{Kopf|Tipps und Triqqs}}
+Wer den herkömmlichen Aufbau der Wikipedia nicht attraktiv findet und moderne Social-Media-Apps gewöhnt ist, für den ist [https://wikitok.net/ WikiTok] vielleicht eine willkommene Abwechslung. Dort werden Wikipedia-Artikel mit viel Bild und wenig Text eingeblendet und wie bei Kurzvideos lässt sich herunterscrollen, um den nächsten Artikel zu sehen. Achtung Suchtpotential!
+
+Du bist der Meinung, dass du beispielsweise in diesem Newsletter einen Fakt gefunden hast, der eigentlich auch in einen Wikipedia-Artikel gehört? Der normale Prozess wäre nun: Schauen, welcher Artikel passend ist, ob es schon da drin steht, ggf. hinzufügen, umformulieren, Quelle einfügen und speichern. Ganz schön aufwendig. Daher gibt es ein '''experimentelles '''AI-Tool, mit dem man den Fakt markieren kann und die anderen Schritte automatisch übernommen werden. Zumindest fast, denn der Vorschlag landet dann zunächst auf der Diskussionsseite des Artikels, wo du ihn später selber hinzufügen kannst oder andere darüber diskutieren können. Funktioniert allerdings bisher nur in der englischsprachigen Wikipedia. Vielleicht zeigt es aber auch auf, wie unsere Arbeit sich in Zukunft verändern könnte.
+
+{{Kopf|Kurioses}}
+[[Ø]] kann sowohl eine durchgestrichene Null (zur Unterscheidung von „O“) als auch ein durchgestrichenes [[O]] (zur Unterscheidung von „0“) darstellen. Es ist also ein Zeichen, das je nach Situation genau das Gegenteil bedeuten kann (und damit auch eigentlich den Sinn konterkariert)!
+
+[[Adolphe Sax]], der Erfinder des [[Saxophon|Saxophons]], überlebte in seiner Kindheit gleich mehrere haarsträubende Unfälle: Er fiel aus dem dritten Stock, trank eine Säure, schluckte eine Nadel, erlitt Verbrennungen durch Explosionen, stürzte mit dem Kopf auf eine heiße Bratpfanne – und wurde sogar von einem Stein am Kopf getroffen und ist in einen Fluss gefallen. Seine Nachbarn nannten ihn „das kleine Gespenst“. Glück für die Musikgeschichte, dass er all das überlebt hat – sonst gäbe es heute vielleicht kein Saxophon! Wobei nicht alle seiner Ideen umgesetzt wurde, beispielsweise die "Saxotonnerre", eine gigantische, lokomotivenbetriebene Orgel, die so laut sein sollte, dass man sie in ganz Paris hören können sollte. Gebaut wurde sie jedoch leider nie.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Frühjahr hat {{Noping|Geomaus007|Geomaus007}} mit diesem Artikel den dritten Platz belegt.
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Straßenbahn Regensburg
+| BILD             = Datei:MAN und Rathgeber Straßenbahntriebwagen in Regensburg.jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = 
+| TEASERTEXT       = Die Straßenbahn Regensburg war ein öffentliches Nahverkehrsmittel in Regensburg, das von 1903 bis 1964 in Betrieb war und anschließend durch Omnibusse ersetzt wurde. In der räumlich beengten Altstadt von Regensburg, deren seit 1924 eingemeindeter Stadtteil Stadtamhof jenseits der Donau nur über die Steinerne Brücke angefahren werden konnte, war die Entwicklung und Erbauung eines Streckennetzes eine schwierige Aufgabe, die in der Bevölkerung auch auf Widerstand stieß.
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+Wir gratulieren außerdem unserem Mitglied {{Noping|HistorianoftheMarch|HistorianoftheMarch}} zur [[Wikipedia:Lesenswert|Lesenswert]]-Auszeichnung des Artikels des Quartals aus dem vergangenen Dezember, [[Kloster Maria Friedenshort]] [[Datei:Qsicon_lesenswert.svg|15x15px]].
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Hosios Loukas Monastery.jpg|center|250px]]
+Das Foto auf dem ersten Platz des Bilderwettbewerbs im März wurde aufgenommen von {{Noping|Mojnsen|Mojnsen}}. Es zeigt das [[Kloster Hosios Lukas]] in Griechenland, einen der wohl friedlichsten Orte überhaupt, wie man behauptet.
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 15:02, 10. Jun. 2025 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Technische-Wünsche-Treff am 16. Juli: Deine Wünsche zu Einzelnachweisen ==
+
+[[File:Logo Wiederverwendung von Einzelnachweisen Technische Wünsche (cropped).png|frameless|150px|right]]
+Herzliche Einladung zum nächsten [[Wikipedia:Technische Wünsche/Treff#Mi, 16.07.2025, 18:00: Technische-Wünsche-Treff: Einzelnachweise|Technische-Wünsche-Onlinetreff]]! Während wir aktuell – [[Wikipedia:Kurier#Subreferenzierung – ein Dauerwunsch wird wahr|wie kürzlich im Kurier berichtet]] – mit Hochdruck an [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung|Subreferenzierung]] arbeiten, befinden wir uns gerade in der Recherchephase für künftige technische Verbesserungen zu Einzelnachweisen. Dazu möchten wir uns [[Wikipedia:Technische Wünsche/Treff#Mi, 16.07.2025, 18:00: Technische-Wünsche-Treff: Einzelnachweise|am 16. Juli um 18 Uhr]] mit dir austauschen.
+
+Wo drückt der Schuh bei Einzelnachweisen? Welche (auch kleineren) technischen Änderungen zu Einzelnachweisen könnten in deinen Augen die größte Wirkung erzielen? Welche Probleme aus der [[Wikipedia:Technische Wünsche/Topwünsche/Wiederverwendung von Einzelnachweisen/Recherche|Recherche]] zum alten Themenschwerpunkt „[[Wikipedia:Technische Wünsche/Topwünsche/Wiederverwendung von Einzelnachweisen|Wiederverwendung von Einzelnachweisen vereinfachen]]“ sind weiterhin besonders relevant für dich? Wir freuen uns über deine Gedanken im Technische-Wünsche-Treff, was wir im neuen [[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise|Themenschwerpunkt Einzelnachweise]] angehen sollten. 
+
+Keine Zeit am 16.07.? Gerne kannst du auch [[Wikipedia Diskussion:Technische Wünsche/Topwünsche/Einzelnachweise|auf unserer Projektdiskussion]] schreiben, welche Verbesserungsideen du hast. Danke für dein Feedback!
+
+<small>PS: Du erhältst diese Nachricht, weil du im [[Wikipedia:Technische Wünsche/Newsletter|Newsletter der Technischen Wünsche]] angemeldet bist. Wenn du keine weiteren Einladungen zu Treffen erhalten möchtest, kannst du deinen Eintrag [[Wikipedia:Technische Wünsche/Newsletter#Ich möchte informiert werden über|hier]] ändern.</small> --[[User:Johannes Richter (WMDE)|Johannes Richter (WMDE)]] ([[User talk:Johannes Richter (WMDE)|Diskussion]]) 12:05, 25. Jun. 2025 (CEST)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (5. Juli 2025) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Kopf|Neuigkeiten}}
+* Nach der Abstimmung zum Termin für das Treffen in Fürth steht der Termin mit dem '''21. bis 23. November''' fest. Tragt euch auf [[Wikipedia:Jungwikipedianer/Treffen/2025-II|der Seite]] gerne als Interessierte ein und bringt unten auf der Seite eure Ideen zur Programmgestaltung ein!
+* Im Herbst, vom 3.-5. Oktober, findet in [[Potsdam]] außerdem die [[Wikipedia:WikiCon|WikiCon]], das jährliche Treffen der deutschsprachigen Wikimedia-Community, statt. Hier könnt ihr euch im Gegensatz zu unserem Treffen schon jetzt [[Wikipedia:WikiCon 2025/Anmeldung|anmelden]].
+* Der nächste [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]] findet statt, bis zum 10. Juli können wie gewohnt Bilder nominiert werden.
+* Die nächste Videokonferenz findet am 28.&nbsp;Juli statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neuen Mitglieder {{Noping|Dovahiki|Dovahiki}} und {{Noping|ShepHale|ShepHale}}. Herzlich willkommen!
+----
+
+{{Kopf|Tipps und Triqqs}}
+Wer den herkömmlichen Aufbau der Wikipedia nicht attraktiv findet und moderne Social-Media-Apps gewöhnt ist, für den ist [https://wikitok.net/ WikiTok] vielleicht eine willkommene Abwechslung. Dort werden Wikipedia-Artikel mit viel Bild und wenig Text eingeblendet und wie bei Kurzvideos lässt sich herunterscrollen, um den nächsten Artikel zu sehen. Achtung Suchtpotential!
+
+Du bist der Meinung, dass du beispielsweise in diesem Newsletter einen Fakt gefunden hast, der eigentlich auch in einen Wikipedia-Artikel gehört? Der normale Prozess wäre nun: Schauen, welcher Artikel passend ist, ob es schon da drin steht, ggf. hinzufügen, umformulieren, Quelle einfügen und speichern. Ganz schön aufwendig. Daher gibt es ein '''experimentelles '''AI-Tool, mit dem man den Fakt markieren kann und die anderen Schritte automatisch übernommen werden. Zumindest fast, denn der Vorschlag landet dann zunächst auf der Diskussionsseite des Artikels, wo du ihn später selber hinzufügen kannst oder andere darüber diskutieren können. Funktioniert allerdings bisher nur in der englischsprachigen Wikipedia. Vielleicht zeigt es aber auch auf, wie unsere Arbeit sich in Zukunft verändern könnte.
+
+{{Kopf|Kurioses}}
+Wieso hat eine [[Militärische Funkstation Pierre-sur-Haute|militärische Funkstation irgendwo in Frankreich]] in 42 Sprachen einen Wikipedia-Artikel? Der [[Direction générale de la sécurité intérieure|französische Geheimdienst]] wollte die Löschung des Artikels erzwingen – erreichte jedoch das Gegenteil. Der Geheimdienst beeinflusste den damaligen Präsidenten vom Wikimedia France und Administrator, den Artikel zu entfernen. Er wurde jedoch von anderen wiederhergestellt und außerdem in weitere Sprachen übersetzt. Zudem wurde der Artikel seitdem wesentlich häufiger gelesen, da mehrere Medien darüber berichteten.
+
+Die griechische Sängerin [[Maria Callas]] (1923-1977) war so kurzsichtig, dass sie selbst den Dirigentenstab auf der Bühne nicht sehen konnte, außerdem wurde ihr ein Mal ein Radieschenstrauß auf die Bühne geworfen, den sie fälschlicherweise als Blumenstrauß erkannt hat. Ein [[Luchino Visconti|Regisseur]] legte ihr parfümgetränkte Taschentücher auf die Bühne, um für eine Orientierungsmöglichkeit zu sorgen. Eine Brille wollte sie auf der Bühne nicht tragen.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Beim Wettbewerb zum Artikel des Quartals im Juni hat {{Noping|MrBenjo|MrBenjo}} mit diesem Artikel gewonnen:
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Deep Space Atomic Clock
+| BILD             = Datei:Deep_Space_Atomic_Clock-DSAC.jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = 
+| TEASERTEXT       = Die '''Deep Space Atomic Clock''' (DSAC; englisch für Weltraum-Atomuhr) ist eine hochpräzise Quecksilberionen-Atomuhr, welche zur Erforschung der Navigation mit Atomuhren in der Raumfahrt genutzt wurde. Die DSAC ist die erste Atomuhr, die entwickelt wurde, um an Bord eines Raumfahrzeugs zu arbeiten, das sich außerhalb der Erdumlaufbahn befindet. Dementsprechend ist die Uhr vergleichsweise klein und hat etwa die Größe eines Toasters, dennoch ist sie extrem genau. Die Uhr verliert innerhalb von 10 Millionen Jahren ungefähr eine Sekunde an Genauigkeit. Damit ist sie um ein Vielfaches stabiler als die Uhren, die zurzeit in Satelliten genutzt werden. Die Entwicklung der Deep Space Atomic Clock wurde vom Jet Propulsion Laboratory der NASA in Pasadena geleitet, und gehört zum U.S. Air Forces Space Test Program 2 (STP-2).
+}}
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Innenstadt von Bad Salzungen am Burgseeufer.jpg|center|250px]]
+Auf dem zweiten Platz des Bilderwettbewerbs im April landete ein Foto der Innenstadt vom thüringischen [[Bad Salzungen]], entstanden an der Promenade des Burgsees. Es wurde aufgenommen von {{Noping|Ankermast|Ankermast}}.
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 20:00, 5. Jul. 2025 (CEST)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2025|Wartungsbausteinwettbewerb Sommer 2025]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2025|Wartungsbausteinwettbewerb]] startet am 19. Juli (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 11:40, 6. Jul. 2025 (CEST) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Wir würden gerne von dir über deine Erfahrungen mit temporären Konten hören. ==
+
+<section begin="body" />
+Das Team für Produktsicherheit und -integrität möchte von dir über deine Erfahrungen mit temporären Konten hören. Deine Teilnahme an dieser Umfrage ist äußerst wertvoll, um uns zu helfen, zu verstehen, wie gut temporäre Konten funktionieren und was wir für die Zukunft verbessern können. Das Ausfüllen sollte höchstens 5 Minuten dauern.
+
+Die Datenschutzrichtlinie für diese Umfrage kann [[foundation:Special:MyLanguage/Legal:Survey:Temporary_Accounts_Second_Pilot_Feedback_Privacy_Statement|über diesen Link]] eingesehen werden. Mit dem Ausfüllen der Umfrage erklärst du dich mit den Bestimmungen dieser Datenschutzrichtlinie einverstanden.
+
+Wenn du von uns eine Reaktion erhalten möchtest, lass uns bitte deinen Wiki-Benutzernamen wissen.
+
+'''<big>[https://wikimedia.qualtrics.com/jfe/form/SV_emJJxsotBxVpS18?Q_Language=DE An der Umfrage teilnehmen]</big>'''.
+
+Danke!<section end="body" />
+
+<bdi lang="en" dir="ltr">[[m:User:Quiddity (WMF)|Quiddity (WMF)]]</bdi> 00:30, 27. Aug. 2025 (CEST)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Technische Wünsche – Subreferenzen kommen ==
+
+[[File:Sub-referencing reuse visual.png|400px|right|alt=Beispielbild Subreferenzierung]]
+Ein Dauerwunsch wird wahr! [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung/Historie und Recherche|Seit der ersten Technische-Wünsche-Umfrage]] vor über 10 Jahren begleitet uns der Wunsch nach Wiederverwendung von Einzelnachweisen mit unterschiedlichen Details. 2022 hat die Community dann mit über 400 Stimmen das Technische-Wünsche-Team beauftragt, [[Wikipedia:Technische Wünsche/Topwünsche/Wiederverwendung von Einzelnachweisen|Wiederverwendung von Einzelnachweisen zu vereinfachen]]. Das war der Startschuss, [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung|Subreferenzierung]] endlich Realität werden zu lassen.
+
+Hinter uns liegt eine herausfordernde Entwicklungsphase, aber nun ist es so weit: Nächste Woche führen wir Subreferenzierung in der deutschsprachigen Wikipedia ein. Künftig können euch in Wikipedia-Artikeln somit Fußnoten im Stil [1.1] begegnen, wenn eine Quelle mehrfach, aber mit unterschiedlichen Details (z.B. unterschiedlichen Seitenzahlen) verwendet wird.
+
+'''Worum geht's nochmal?'''
+
+In vielen Wikipediaartikeln gibt es Einzelnachweise, die sich fast identisch wiederholen, aber sich durch Details wie die Seitenzahl unterscheiden. Das führt zu unübersichtlich langen Einzelnachweislisten ([[Explosion des Oppauer Stickstoffwerkes#Einzelnachweise|Beispiel]]), die Lesenden Zeit kosten, wenn sie erfassen möchten, wie viele unterschiedliche Quellen eigentlich genutzt werden. Und anders als bei [[Hilfe:Einzelnachweise#Mehrfache Referenzierung derselben Quelle|identischer Wiederverwendung]] musste man bei [[Hilfe:Einzelnachweise#Mehrfache Referenzierung desselben Werks mit verschiedenen Seitenangaben|Einzelnachweisen mit unterschiedlichen Details]] bisher die vollständige Angabe duplizieren, was zu längerem Wikitext führt und gerade im VisualEditor auch zu mehr Zeitaufwand.
+
+[[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung|Subreferenzierung]] löst diese Probleme. [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung#Wikitext|Im Wikitext]] kann man künftig das Attribut <code><nowiki>details="..."</nowiki></code> zusammen mit <code><nowiki>name="..."</nowiki></code> nutzen. [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung#VisualEditor|Im VisualEditor]] gibt es dafür einen "Details hinzufügen"-Button. [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung#So funktioniert’s|Auf unserer Projektseite]] erfährst du mehr dazu, wie alles funktioniert.
+
+'''Wie geht es weiter?'''
+
+Mit eurem Feedback nach der Bereitstellung wollen wir Subreferenzierung weiterentwickeln. Aktuell interessiert uns, [[Wikipedia Diskussion:Technische Wünsche/Topwünsche/Subreferenzierung#Vorlagen in Subreferenzen|ob (und wie) wir die Nutzung von Vorlagen innerhalb von Subreferenzen besser unterstützen]] sollten – bisher braucht es im VisualEditor einen weiteren Schritt, um dort eine Vorlage anstelle des freien Eingabefeldes auszufüllen. Mehr dazu [[Wikipedia Diskussion:Technische Wünsche/Topwünsche/Subreferenzierung#Vorlagen in Subreferenzen|auf unserer Projektdiskussion]], wo wir uns über eure Gedanken freuen!
+
+In den kommenden Wochen wollen wir [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung#In Arbeit|ein paar kleine Verbesserungen]] zum VisualEditor und VisualDiff abschließen, die gerade noch in Arbeit sind. Bevor wir dann Subreferenzierung in anderen Projekten einführen, müssen wir noch Anpassungen zur Kompatibilität mit Vorlagen wie [[:en:Template:reflist|<nowiki>{{reflist}}</nowiki>]] vornehmen, die in anderen Projekten oft die Einzelnachweisliste ([[Hilfe:Einzelnachweise#Formatierung einfacher Einzelnachweise|<nowiki><references /></nowiki>]]) ersetzen. Außerdem sprechen wir in den kommenden Monaten mit euch über Ideen zu weiteren [[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise|Verbesserungen zu Einzelnachweisen]].
+
+'''Du kannst nicht genug von den Technischen Wünschen bekommen?'''
+
+Triff uns bei der [[Wikipedia:WikiCon 2025|WikiCon]]! Unser Kurzvortrag zu [[Wikipedia:WikiCon 2025/Programm/Komplizierte Softwareentwicklung|Herausforderungen bei der Umsetzung von technischen Wünschen]] am 04.10. um 14:50 Uhr wird auch online übertragen, unser [[Wikipedia:WikiCon 2025/Programm/Wünsch dir was|Workshop zu euren Wünschen für Einzelnachweise]] findet am 05.10. um 10 Uhr in Präsenz statt. Außerdem sind wir mit einem Technische-Wünsche-Stand vor Ort, wo wir mit euch die Einführung von Subreferenzen feiern möchten, uns über euer Feedback und Ideen für die Zukunft freuen, und mit unseren Entwickler*innen gerne helfen, Wiki-Technikprobleme zu lösen. Auf unseren Projektseiten stehen wir natürlich auch jederzeit für Fragen und Feedback zur Verfügung.
+
+<small>Du erhältst diese Nachricht, weil du im [[Wikipedia:Technische Wünsche/Newsletter|Technische-Wünsche-Newsletter]] für Infos zu umgesetzten Wünschen oder Technische-Wünsche-Veranstaltungen angemeldet bist oder ''einmalig'', weil du bei der [[Wikipedia:Umfragen/Technische Wünsche 2022 Themenschwerpunkte|Technische-Wünsche-Umfrage]] für den Themenschwerpunkt [[Wikipedia:Technische Wünsche/Topwünsche/Wiederverwendung von Einzelnachweisen|Wiederverwendung von Einzelnachweisen vereinfachen]] gestimmt hast. Deine Newsletterpräferenzen kannst du [[Wikipedia:Technische Wünsche/Newsletter#Ich möchte informiert werden über|hier]] ändern.</small>
+
+Herzliche Grüße vom Technische-Wünsche-Team und bis bald hoffentlich! --[[User:Johannes Richter (WMDE)|Johannes Richter (WMDE)]] ([[User talk:Johannes Richter (WMDE)|Diskussion]]) 15:52, 18. Sep. 2025 (CEST)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung zum JWP-Treffen in Fürth: 21.–23. November! ==
+
+Hallo ElBe,
+das nächste Treffen der JWP steht an: Vom 21. bis 23. November in [[Fürth]] gibt es wieder viel Zeit für Austausch untereinander und spannende neue Projekte. Das Treffen wird von Wikimedia Deutschland gefördert, wodurch die Teilnahme für dich '''komplett kostenlos''' ist. Eine Betreuung ist dadurch ebenfalls gewährleistet. Anmelden kannst du dich noch bis zum '''2. November''' auf '''[[Wikipedia:Jungwikipedianer/Treffen/2025-II|dieser Seite]]'''. Für Fragen ist dort auf der [[Wikipedia Diskussion:Jungwikipedianer/Treffen/2025-II|Diskussionsseite]] oder auf Slack Raum.
+Wir freuen uns auf dich! --[[Benutzer:Ankermast|Ankermast]] ([[Benutzer Diskussion:Ankermast|Diskussion]]) 11:33, 26. Okt. 2025 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (27. Oktober 2025) ==
+<!-- ******************** Ab hier Anfang des Newsletters ******************** -->
+<onlyinclude>{{<includeonly>subst:</includeonly>Wikipedia:Jungwikipedianer/Newsletter/Vorlage
+<noinclude><!--***Nur Dateiname ohne vorangestelltes „File:“; sonst:Jungwikipedianer-Logo 2015.svg***--></noinclude>
+|Jungwikipedianer - Halloween.svg
+|Anrede=Hallo {{<includeonly>safesubst:</includeonly>#titleparts:{{<includeonly>safesubst:</includeonly>BASEPAGENAME}}|1}}
+|Nachricht=<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+<!--{{Kopf|Erst einmal etwas in eigener Sache}}-->
+{{Kopf|Neuigkeiten}}
+* Ihr könnt euch ab sofort für unser Treffen '''[[Wikipedia:Jungwikipedianer/Treffen/2025-II#Verbindliche Anmeldung|anmelden]]'''! Bringt euch außerdem unten auf der Seite gerne noch mit euren Ideen zur Programmgestaltung ein!
+* Wir sind aktuell mit einer Delegation auf der WikiCon und veranstalten dort eine Diskussionsrunde zu jungen Lesern und wie sie besser angesprochen werden können. Falls ihr nicht ohnehin als Online-Teilnehmer dabei seid, wird  Session auch aufgezeichnet, das Video dazu ist bald '''[[Wikipedia:WikiCon 2025/Programm/Wie erreichen wir die Wikipedia-Leser*innen von morgen?|hier]]''' verfügbar.
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]] steht an! Bis zum 10. Oktober könnt ihr eure besten Aufnahmen nominieren.
+* Die nächste Videokonferenz findet am 27.&nbsp;Oktober statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|Perfekter Marsianer|Perfekter Marsaianer}}. Herzlich willkommen! Außerdem verabschieden wir unser leider inaktiv gewordenes Mitglied {{Noping|HeyRusse|HeyRusse}}.
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+Das Erklimmen des Berges an veralteten Artikeln in der deutschsprachigen Wikipedia oder z. B. der ungesichteten Änderungen ist nicht leicht, daher gibt es in [https://www.youtube.com/watch?v=kohoA918qGg diesem Video] ein paar Tipps und Triqqs zum Erklimmen von Bergen.
+
+Falls ihr mal wissen wollt, was zu Wikipedia im Bundestag erzählt wurde, dann könnt ihr es [https://de.openparliament.tv/search?q=wikipedia hier] herausfinden. Die Seite ist eine Suchmaschine für alle Parlamentsdebatten und bietet neben den Textausschnitten auch Verknüpfungen zu den entsprechenden Stellen in den Reden an. Idee für euren nächsten Vortrag zu irgendeinem Thema als Einstieg: Gebt das Thema dort ein und klickt auf "Alle automatisch abspielen" und es ist für allgemeine Heiterkeit gesorgt.
+
+{{Kopf|Kurioses}}
+Eine [[Entenvögel|Ente]] in der Schweiz hat es am 13. April diesen Jahres geschafft, mit 52 km/h Fluggeschwindigkeit in der 30er-Zone geblitzt zu werden. Dies ist 7 Jahre zuvor ebenfalls am gleichen Tag in 2018 an der gleichen Stelle einer ähnlich aussehenden Ente passiert. Womöglich war es auch ein und dieselbe Ente.
+
+Im Jahr 2006 hat BBC News ein [[w:en:Guy Goma BBC interview|Interview]] mit dem Technikjournalisten Guy Kewney zu einem Rechtsstreit in der Tech-Szene geplant. Unglücklicherweise landete jedoch Guy Coma im Studio, der am selben Tag zu einem Vorstellungsgespräch als Datenbereiniger eingeladen war. Die Verwechslung beruhte auf den identischen Vornamen. Als er dann live in der Sendung vorgestellt wurde und das Missverständnis realisiert hat, wollte er nicht zu viel Aufsehen erregen und hat versucht, die Fragen bestmöglich zu beantworten. Danach hat er noch an seinem ursprünglich geplanten Bewerbungsgespräch teilgenommen, er wurde jedoch nicht eingestellt. [https://www.youtube.com/watch?v=e6Y2uQn_wvc Hier] gibt es das Video dazu.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Der neue Artikel des Quartals wurde geschrieben von {{Noping|HistorianoftheMarch|HistorianoftheMarch}}; herzlichen Glückwunsch zum Sieg!
+{{AdT-Vorschlag
+| DATUM            = <!--Dieses Feld vorerst frei lassen-->
+| LEMMA            = Ines Schwerdtner
+| BILD             = File:Ines Schwerdtner 2025.jpg
+| BILDGROESSE      = 100px<!--kann variiert werden-->
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = 
+| TEASERTEXT       = '''Ines Schwerdtner''' (* 26. August 1989 in Werdau) ist eine deutsche Publizistin und Politikerin (Die Linke). Sie ist seit Oktober 2024 zusammen mit Jan van Aken Bundesvorsitzende ihrer Partei und seit 2025 direktgewählte Abgeordnete im Deutschen Bundestag. Ab 2014 war sie freiberuflich als Journalistin tätig und schrieb für einige linksorientierte Zeitungen. Von 2014 bis 2019 leitete sie die Zeitschrift Das Argument. Im Jahr 2020 gründete sie zusammen mit anderen die deutschsprachige Ausgabe des ursprünglich aus den USA stammenden sozialistischen Magazins Jacobin. Im Jahr 2023 trat Schwerdtner in die Linkspartei ein, nachdem sie die Partei zuvor journalistisch begleitet hatte. Sie ordnet sich dem sozialistischen und gewerkschaftsnahen Parteiflügel zu.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Canal de Bruxelles from Boulevard Léopold II.jpg|center|250px]]
+Mit diesem Foto des Canal des Bruxelles in der belgischen Hauptstadt [[Brüssel]] hat {{Noping|MrBenjo|MrBenjo}} den dritten Platz des Bilderwettbewerbs im Juli belegt, herzlichen Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+
+}}</onlyinclude>
+<!--Mögliche Inhalte: Neu aufgenommene oder ausgetretene JWP diesen Monat? Steht ein Bilderwettbewerb oder ein AdQ an? Gibt es wichtige Themen auf der JWP-Disk?--> --[[Benutzer:Amwenti|Amwenti]] ([[Benutzer Diskussion:Amwenti|Diskussion]]) 20:17, 27. Okt. 2025 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2025|Wartungsbausteinwettbewerb Herbst 2025]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2025|Wartungsbausteinwettbewerb]] startet am 15. November (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 20:17, 1. Nov. 2025 (CET) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (3. November 2025) ==
+<onlyinclude>{{<includeonly>subst:</includeonly>Wikipedia:Jungwikipedianer/Newsletter/Vorlage
+<noinclude><!--***Nur Dateiname ohne vorangestelltes „File:“; sonst:Jungwikipedianer-Logo 2015.svg***--></noinclude>
+|Jungwikipedianer - Halloween.svg
+|Anrede=Hallo {{<includeonly>safesubst:</includeonly>#titleparts:{{<includeonly>safesubst:</includeonly>BASEPAGENAME}}|1}}
+|Nachricht=<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+<!--{{Kopf|Erst einmal etwas in eigener Sache}}-->
+{{Kopf|Neuigkeiten}}
+* Unser nächstes '''[[Wikipedia:Jungwikipedianer/Treffen/2025-II|Treffen]]''' findet vom 21. bis zum 23. November in [[Fürth]] statt. Bis zum '''2. November''' könnt ihr euch noch anmelden!
+* Das Video unserer Wikicon-Session ist jetzt '''[[Wikipedia:WikiCon 2025/Programm/Wie erreichen wir die Wikipedia-Leser*innen von morgen?|hier]]''' verfügbar.
+* Der [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]] steht im Dezember an: Schreibt also schonmal fleißig einen guten Artikel und denkt daran, ihn ab 1. Dezember (Service: An dem Tag an dem ihr das erste Türchen in eurem Adventskalender öffnet) zu nominieren!
+* Die nächste Videokonferenz findet außerplanmäßig am 15.&nbsp;Dezember statt, kombiniert für November (entfällt wegen Treffen) und Dezember (entfällt wegen Weihnachten). Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|NebelFrosch|NebelFrosch}}. Herzlich willkommen!
+
+Leider ist {{Noping|Lülllliiiii|Lülllliiiii}} aufgrund von Inaktivität als Mitglied ausgeschieden. Vorerst Abschied nehmen müssen wir auch von {{Noping|Alexander MRQ|Alexander MRQ}}, der eine längere Wikipause einlegt.
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+Das Erklimmen des Berges an veralteten Artikeln in der deutschsprachigen Wikipedia oder z. B. der ungesichteten Änderungen ist nicht leicht, daher gibt es in [https://www.youtube.com/watch?v=kohoA918qGg diesem Video] ein paar Tipps und Triqqs zum Erklimmen von Bergen.
+
+Falls ihr mal wissen wollt, was zu Wikipedia im Bundestag erzählt wurde, dann könnt ihr es [https://de.openparliament.tv/search?q=wikipedia hier] herausfinden. Die Seite ist eine Suchmaschine für alle Parlamentsdebatten und bietet neben den Textausschnitten auch Verknüpfungen zu den entsprechenden Stellen in den Reden an. Idee für euren nächsten Vortrag zu irgendeinem Thema als Einstieg: Gebt das Thema dort ein und klickt auf "Alle automatisch abspielen" und es ist für allgemeine Heiterkeit gesorgt.
+
+{{Kopf|Kurioses}}
+Dieses Jahr blühte nach einigen Jahren wieder der [[Titanenwurz]] - die größte Blume der Welt – im Botanischen Garten in Berlin. Die Blüte dauert nur wenige Tage, währenddessen verströmt die Blume über weite Entfernungen einen intensiven [[Aas]]geruch - also eigentlich das Gegenteil, was von einer Blume zu erwarten wäre. Im Anschluss entwickelt die Pflanze ein einziges großes Laubblatt, das mehrere Meter hoch werden kann. Der Blütenstand erreicht eine Höhe von bis zu drei Metern, die unterirdische Knolle kann sogar bis zu 100 kg wiegen. Der wissenschaftliche Name „Amorphophallus titanum“ lässt sich übersetzen zu „unförmiger Riesenpenis“.
+
+Welches Land verfügt über die meisten Bunker der Welt? Man könnte meinen, dass das womöglich ein Land ist, wo besonders viele Kriege stattfinden, doch tatsächlich ist die Schweiz das Land mit den meisten Bunkern pro Kopf weltweit. Es sind insgesamt ca. 370.000 Schutzräume für ca. neun Millionen Einwohner vorhanden. Alle seit 1963 gebauten Wohngebäude müssen über einen Schutzraum verfügen – alternativ ist die Zahlung eines Ersatzbeitrags notwendig. Die Kosten für den Unterhalt und die Wartung tragen die Hauseigentümer.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Dieser Artikel zur Expo 2025 von {{Noping|Ankermast|Ankermast}} belegte den zweiten Platz beim Artikel des Quartals im September, herzlichen Glückwunsch!
+{{AdT-Vorschlag
+| DATUM            = <!--Dieses Feld vorerst frei lassen-->
+| LEMMA            = Expo 2025
+| BILD             = Datei:空から見た大阪・関西万博2025.jpg
+| BILDGROESSE      = 125px<!--kann variiert werden-->
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Luftbild des Geländes
+| TEASERTEXT       = Die Weltausstellung '''Expo 2025''' findet vom 13. April bis zum 13. Oktober 2025 in Osaka, Japan statt. Der Austragungsort wurde am 23. November 2018 durch das Bureau International des Expositions (BIE) ausgewählt. Weitere Bewerber waren Jekaterinburg, Baku und Paris. Die Ausstellung steht unter dem Motto ''Designing Future Society for Our Lives'' (deutsch „Die zukünftige Gesellschaft für unsere Leben gestalten“). Es ist die zweite Weltausstellung in der Präfektur Osaka nach der Expo ’70, welche in Suita, einem Vorort von Osaka, stattfand.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Sternwarte Gummer.jpg|center|250px]]
+{{Noping|Amwenti|Amwenti}} hat mit diesem wunderschönen Foto einer Sternwarte in den Alpen den Bilderwettbewerb des letzten Quartals dieses Jahres gewonnen. Herzlichen Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+
+}}</onlyinclude>
+<!--Mögliche Inhalte: Neu aufgenommene oder ausgetretene JWP diesen Monat? Steht ein Bilderwettbewerb oder ein AdQ an? Gibt es wichtige Themen auf der JWP-Disk?--> --[[Benutzer:Amwenti|Amwenti]] ([[Benutzer Diskussion:Amwenti|Diskussion]]) 22:34, 3. Nov. 2025 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Wikimedia Hackathon Northwestern Europe 2026 ==
+
+Hello! I noticed you're a bot operator, so I thought you might be interested in a hackathon we're organizing: the [[mw:Wikimedia Hackathon Northwestern Europe 2026|Wikimedia Hackathon Northwestern Europe 2026]], on 13–14 March in Arnhem, Netherlands.
+
+It's a two-day, technically oriented hackathon bringing together Wikimedians from the region. Whether you want to work on bot frameworks, tools, or other technical projects, this could be a great opportunity to collaborate with fellow developers. Registration closes mid-January or when full. Let me know if there are any questions. Hope to see you there! [[Benutzer:Daanvr|Daanvr]] ([[Benutzer Diskussion:Daanvr|Diskussion]]) 09:55, 12. Jan. 2026 (CET)
+: I’d be thrilled to attend the next one after that, but I won’t be able to make it to this one. Thanks for the invitation tho! --[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (27. Januar 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+* Der unten präsentierte Artikel [[Kloster Neuzelle]] von {{Noping|HistorianoftehMarch|HistorianoftheMarch}} ist neuer [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]]. Herzlichen Glückwunsch!
+* Die nächste Videokonferenz findet am 23.&nbsp;Februar statt. Für nähere Infos siehe [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir heißen {{Noping|HeyRusse|HeyRusse}} herzlich willkommen zurück in unserem Kreis, nachdem er aus dem dunklen Abgrund der Inaktivität zurückgetreten ist.
+
+Wir verabschieden unsere langgedienten Mitglieder {{Noping|Wandelndes Lexikon|Wandelndes Lexikon}} und {{Noping|TiLaton|TiLaton}}, die mit der Vollendung ihres 21. Lebensjahres in den Club der alten Säcke eingetreten sind.
+
+Ebenso sagen wir {{Noping|Julius0900|Julius0900}}, {{Noping|Rosalind Elsie F|Rosalind Elsie F}} und {{Noping|Mo-zum|Mo-zum}} Ade
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+Habt ihr euch immer schon gefragt, wieso ihr z. B. bei unterschiedlichen Seitenzahlen aus einer Quelle jeweils nochmal die ganze Quelle neu angeben müsst, jeweils mit der geänderten Seitenzahl? Das ist inzwischen nicht mehr so, denn nun gibt es die Möglichkeit der Subreferenzierung. Mit der Subreferenzierung könnt ihr relativ einfach mehrere Seitenzahlen oder andere unterschiedliche Merkmale zu einer Quelle ergänzen, ohne jeweils den gesamten Beleg zu kopieren. Diese werden dann in der Einzelnachweisliste unter der jeweiligen Hauptreferenz gruppiert. Um eine Subreferenzierung zu nutzen, müsst  ihr im visuellen Editor auf den bestehenden Beleg klicken, dann dort auf „Details hinzufügen“ Ein kleiner Wehrmutstropfen: Dadurch werden eure Bearbeitungen kleiner. Mehr Infos dazu [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung|hier]].
+
+Wenn ihr die Subreferenzierung mit der oben stehenden Anleitung nutzen wollt, dies aber gar nicht tun könnt, da die Anleitung sich auf den visuellen Editor bezieht und ihr im Wikipedia-Namensraum diesen nicht nutzen könnt, dann gibt es für euch einen Tipp, wie ihr das anpassen könnt. Ändert einfach bei dem jeweiligen Link, nachdem ihr auf Bearbeiten geklickt habt, „action=edit“ zu „veaction=edit“. Oder ihr ergänzt folgendes auf eurer Special:MyPage/common.js ([[Benutzer:New York-air/common.js|Beispiel]]):
+<syntaxhighlight lang="js">
+// [[:en:User:Novem Linguae/Scripts/VisualEditorEverywhere]]
+mw.loader.load('https://en.wikipedia.org/w/index.php?title=User:Novem_Linguae/Scripts/VisualEditorEverywhere.js&action=raw&ctype=text/javascript');
+</syntaxhighlight>
+Dann wird euch neben dem Button für die Bearbeitung des Quelltextes auch wie gewohnt einer für den visuellen Editor angezeigt.
+
+{{Kopf|Kurioses}}
+[[En:Internet-in-a-Box|Internet-in-a-Box]] ist eine kleine digitale Bibliothek, die aus einem drahtlosen Zugangspunkt mit Speicherplatz besteht, mit dem sich Nutzer*innen in der Nähe verbinden können. Es besteht aus einem Raspberry Pi mit einer austauschbaren Speicherkarte, die unter anderem die gesamte englischsprachige Wikipedia enthält oder beispielsweise OpenStreetMap oder Ted Talks. Es wurde vorrangig für abgelegene Gebiete ohne Internetzugang entwickelt, um dort Zugriff auf Wikipedia zu haben. Es gab jedoch unerwartete Absätze aus den USA von Leuten, die es zum Preppen für ihre Bunker nutzen wollen.
+
+Was ist das Beste?
+Es gibt einige tolle Dinge. Mit [[Wikidata]] hat [[Tom Scott (YouTuber)|Tom Scott]] zunächst alle Objekte heruntergeladen. Im Anschluss hat er Menschen, Dinge mit geografischen Koordinaten, fiktionale Dinge und Dinge, die nicht in mind. 50 Sprachen einen Wikipedia-Artikel haben, herausgefiltert. Somit kam er auf 8850 Dinge. Anschließend wurden manuell Dinge wie Rituale, Flaggen, Vandalismus etc. herausgefiltert. Somit blieben 7200 Dinge, über die er auf seiner Website seine Zuschauerschaft abstimmen ließ. Er bezeichnet seine Zuschauerschaft als "english-speaking extremely-online nerds" (der Autor dieser Zeilen reibt sich verwundert die Augen und überlegt, ob dies jetzt auch auf ihn zutrifft). 1,2 Millionen Votes später stand fest, dass die mit Abstand schlechteste Sache das [[Lyme-Borreliose]] ist, gefolgt vom Coronavirus (das Video enstand 2020).
+Pizza ist auf Platz 9 gelandet, Umarmungen auf Platz 5. Auf Platz 3 landete das Magnetfeld der Erde, auf Platz 2 Elektrizität. Orgasmus landete auf Platz 69, die Lieblingsfarbe der meisten war schwarz. 
+Auf Platz 1 landete tatsächlich Schlaf.
+Also vielleicht denkt ihr ja daran, wenn ihr das nächste Mal ins Bett geht.
+[https://www.youtube.com/watch?v=ALy6e7GbDRQ Hier] gibt es das ganze Video.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Dieser Artikel zur Expo 2025 von {{Noping|Ankermast|Ankermast}} belegte den zweiten Platz beim Artikel des Quartals im September, herzlichen Glückwunsch!
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Expo 2025
+| BILD             = Datei:空から見た大阪・関西万博2025.jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Luftbild des Geländes
+| TEASERTEXT       = Die Weltausstellung '''Expo 2025''' findet vom 13. April bis zum 13. Oktober 2025 in Osaka, Japan statt. Der Austragungsort wurde am 23. November 2018 durch das Bureau International des Expositions (BIE) ausgewählt. Weitere Bewerber waren Jekaterinburg, Baku und Paris. Die Ausstellung steht unter dem Motto ''Designing Future Society for Our Lives'' (deutsch „Die zukünftige Gesellschaft für unsere Leben gestalten“). Es ist die zweite Weltausstellung in der Präfektur Osaka nach der Expo ’70, welche in Suita, einem Vorort von Osaka, stattfand.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Sportpark Nord nach Renovierung bei bestem Wetter.jpg|center|250px]]
+Diese Aufnahme von {{Noping|JiaqiDerKrasse|JiaqiDerKrasse}} erreichte im Bilderwettbewerb des letzten Quartals dieses Jahres den dritten Platz. Abgebildet ist das Fußballfeld des Bonner [[Sportpark Nord (Bonn)|Sportpark Nord]].
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:Mojnsen|Mojnsen]] ([[Benutzer Diskussion:Mojnsen|Diskussion]]) • ''[[Wikipedia:Jungwikipedianer|JWP]]'' • 19:27, 27. Jan. 2026 (CET)
+
+<div style="clear:both;"></div></div>
+
+{{Erledigt|--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:52, 25. Feb. 2026 (CET)}}
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2026|Wartungsbausteinwettbewerb Winter 2026]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2026|Wartungsbausteinwettbewerb]] startet am 14. Februar (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 15:18, 30. Jan. 2026 (CET) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+== Wikiläum ==
+
+{{Wikiläum|Bronze|ElBe|[[Benutzerin:Sophie Elisabeth|Sophie]] [[Benutzerin Diskussion:Sophie Elisabeth|<small>(talk)</small>]] 12:00, 25. Feb. 2026 (CET)}}
+Hallo ElBe
+
+Heute sind es nun genau 5 Jahre, seit Du am 25. Februar 2021 hier zum ersten Mal editiert hast und es ist mir daher eine besondere Freude, Dir zum bronzenen Wikiläum gratulieren zu können. Inzwischen hast Du über 4000 Edits gemacht. In den letzten 5 Jahren hast du 13 Artikel erstellt. Besonders zu nennen ist Dein Engagement bei den [[WP:JWP|Jungwikipedianern]].
+
+Ich hoffe, dass Du weiter dabei bleibst und dass die Arbeit hier Dir weiterhin Freude macht. Liebe Grüße und frohes Schaffen [[Benutzerin:Sophie Elisabeth|Sophie]] [[Benutzerin Diskussion:Sophie Elisabeth|<small>(talk)</small>]] 12:00, 25. Feb. 2026 (CET)<br />
+PS: Wenn Du es wünschst, kann Dir auch eine Wikiläums-Medaille zugeschickt werden. Details siehe [[WP:Wikiläum#Medaillen|hier]].
+
+:Vielen, vielen Dank dafür! Es ist und bleibt mir eine Ehre, hier beitragen zu dürfen. 13 Artikel und 4000 Edits sind zwar nicht gerade viel, aber trotzdem (denke ich zumindest) habe ich der Wikipedia weitergeholfen. Auf fünf weitere Jahre erfolgreiche Zusammenarbeit! :D
+:PS: Ich bin mal so frech und klaue mir das für [[Benutzer:ElBe/Auszeichnungen]].
+:--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 21:28, 25. Feb. 2026 (CET)
+:: Gerne doch! In der Zeit finde ich das schon viel, jeder sinnvolle Edit zählt. Vllt ''sehen'' wir uns in fünf Jahren dann wieder. Klau dir das ruhig. ;) Liebe Grüße, [[Benutzerin:Sophie Elisabeth|Sophie]] [[Benutzerin Diskussion:Sophie Elisabeth|<small>(talk)</small>]] 21:55, 25. Feb. 2026 (CET)
+
+== Auszeichnung zum [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2026|Wartungsbausteinwettbewerb Winter 2026]] ==
+
+{{Wikipedia:Wartungsbausteinwettbewerb/Vorlage Auszeichnung|Teammitglieder=[[Benutzer:Amwenti|Amwenti]], [[Benutzer:JiaqiDerKrasse|JiaqiDerKrasse]]|Benutzername=ElBe|Artikelanzahl=7|Gesamtwertung=17.|Team=x|Datum=Winter 2026|Signatur=[[Benutzer:Doc Taxon|Doc Taxon]] ([[Benutzer Diskussion:Doc Taxon|Diskussion]])}}
+
+== Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (9. März 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5);; border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts{{!}}link=WP:Jungwikipedianer]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+* Die Vor-Abstimmungen für Ort und Zeit unseres [[Wikipedia:JWP/Treffen/2026-I|Treffens in diesem Frühjahr]] sind beendet und ihr dürft euch das Wochenende vom '''17. bis 19. April in Leipzig''' vormerken. Die Anmeldung wie auch genauere Planungen starten alsbald.
+* Wir dürfen verkünden, dass unser Online-Format „Jugend editiert“ für neue junge Autoren in den Startlöchern steht. Im März und April möchten wir die ersten Sessions abhalten. Man darf gespannt sein!
+* Gratuliert sei {{Noping|NebelFrosch|NebelFrosch}} für den Siegerbeitrag zum [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Bild-des-Quartals-Wettbewerb]]. Ihre Aufnahme findet ihr weiter unten.
+* Die nächste Videokonferenz findet am 30.&nbsp;März statt. Weiterführende Infos gibt es [[Wikipedia:Jungwikipedianer/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir heißen herzlich unser neues Mitglied {{Noping|Schwarzmeister|Schwarzmeister}} im Kreise der Unsrigen willkommen.
+
+Abschied nehmen wir dagegen von {{Noping|Lukas.de2|Lukas.de2}} und {{Noping|DerLegonier|DerLegonier}}, deren Mitgliedschaft wegen Inaktivität geendet ist.
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+Mal wieder was fürs echte Leben: Die Browsererweiterung [https://www.coupert.com/ Coupert] kann für euch sämtliche online verfügbaren Gutscheincodes (von Seiten wie mydealz etc.) beim Kauf in einem beliebigen Online-Shop durchprobieren, und ihr müsst dafür nur einen Klick machen. Der Verfasser dieser Zeilen hat damit bereits schonmal Geld gespart.
+
+Wenn ihr mal wieder einen Motivationsschub für euere Arbeit haben wollt, so sind die [https://spenden.wikimedia.de/list-comments.html Spendenkommentare] sehr zu empfehlen.
+Ein Auszug:
+<blockquote>DANKE für die kontinuierliche Arbeit und Bereitstellung der Möglichkeiten. Freies Wissen ist die GRUNDLAGE für alles. Dafür spende ich.</blockquote>
+<blockquote>Wikipedia ist die beste Erffindung seit es das Internet gibt! Macht weiter so, und lasst Euch von (Möchtegern-)Diktatoren niht unterkriegen!</blockquote>
+<blockquote>Jimmy, ich hoffe doch, dass für meine Spende wenigstens anteilig ein nagelneuer Porsche 911 992.1 GT3 RS für Dich drin ist, oder? ;-)</blockquote> (Dieser Kommentar kam von einer 5 € Spende)
+{{Kopf|Kurioses}}
+Wie wäre es mal mit einer anderen [[Tastatur]]? Zum Beispiel einer Tastatur, wo die Buchstaben jongliert werden und im richtigen Moment mit der Maus angetippt werden müssen? Oder eine, wo die Buchstaben einzeln auf den Tisch geworfen wurden und in dieser Position festgeklebt wurden? Oder eine in Würfelform? Diese und weitere gibt es [https://bsky.app/profile/foone.bsky.social/post/3lyvontitm22y hier].
+
+Das [[MacBook]] hat einen [[Neigungssensor]] im Display verbaut, sodass das Zuklappen ausgelesen werden kann und mit einer Sounddatei versehen werden kann. [https://hachyderm.io/@samhenrigold/115159295473019599]
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Mit diesem Artikel über das Kloster Neuzelle gewann {{Noping|HistorianoftheMarch|HistorianoftheMarch}} den Wettstreit um den [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]].
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Kloster Neuzelle
+| BILD             = Datei:St.Marien in Neuzelle (29346208682).jpg
+| BILDGROESSE      = 125px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Bei Bedarf ein Text, der das Bild beschreibt
+| TEASERTEXT       = Das '''Kloster Neuzelle''' (lateinisch Monasterium Nova Cella) ist ein ehemaliges Zisterzienserkloster im Landkreis Oder-Spree. Die frühere Abtei in der Gemeinde Neuzelle wurde im 13. Jahrhundert vom Haus Wettin gegründet, bestand bis 1817 und wurde von der Regierung Preußens säkularisiert. Die Klostergüter gingen an das staatlich verwaltete Stift Neuzelle, das bis zu dessen Verstaatlichung im Jahr 1955 bestand. Im Jahr 1996 wurde die Stiftung Stift Neuzelle als Stiftung öffentlichen Rechts des Landes Brandenburg neu errichtet. Die Klosterkirche St. Mariä Himmelfahrt ist Wallfahrts- und Pfarrkirche.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Beleuchtete Straße von Huangshan bei Nacht.jpg|center|250px]]
+Diese Aufnahme von {{Noping|NebelFrosch|NebelFrosch}} erreichte im ersten Bilderwettbewerb 2026 den ersten Platz. Auf dem Foto zu sehen ist eine mit Neonlichtern beleuchtete Straße in [[Huangshan (Stadt)|Huangshan]].
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:Jungwikipedianer/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+-----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:Jungwikipedianer/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:Jungwikipedianer/Newsletter&action=edit hier].</small> --[[Benutzer:ElBe Bot|ElBe Bot]] ([[Benutzer Diskussion:ElBe Bot|Diskussion]]) 01:47, 9. Mär. 2026 (CET)
+
+<div style="clear:both;"></div></div>
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Frühling 2026|Wartungsbausteinwettbewerb Frühling 2026]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Frühling 2026|Wartungsbausteinwettbewerb]] startet am 9. Mai (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 22:05, 25. Apr. 2026 (CEST) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+== Möglicherweise bist du bei der U4C-Wahl wahlberechtigt! ==
+
+<section begin="announcement-content" />
+Ich wende mich an dich, da Du bereits an früheren Wahlen zum Koordinierungsausschuss für den [[m:Special:MyLanguage/Universal_Code_of_Conduct/Coordinating_Committee|Universellen Verhaltenskodex (U4C)]] teilgenommen hast. Möglicherweise bist du bei der aktuellen U4C-Wahl wahlberechtigt, die derzeit läuft und am 2. Juni 2026 endet. Weitere Informationen zu den Kandidaten und zur Wahl findest du auf der [[m:Special:MyLanguage/Universal_Code_of_Conduct/Coordinating_Committee/Election/2026|Wahlseite auf Meta]]; von dort aus gelangst du auch zur Abstimmung. Deine Teilnahme an diesen Wahlen ist für die Funktion der Wikimedia-Communities von großer Bedeutung, und wir wissen es sehr zu schätzen, dass du dir die Zeit nimmst, dich über die Kandidaten zu informieren und deine Stimme abzugeben.
+
+-- In Zusammenarbeit mit dem U4C, [[m:User:Keegan (WMF)|Keegan (WMF)]] ([[m:User talk:Keegan (WMF)|talk]])<section end="announcement-content" />
+
+[[m:Keegan (WMF)|Keegan (WMF)]] ([[m:User_talk:Keegan (WMF)|talk]]) 19:15, 20. Mai 2026 (CEST)
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (7. Juni 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+* Das erste [[Wikipedia:JWP/Treffen/2026-I|Treffen 2026 in Dresden]] hat erfolgreich stattgefunden. Ganze drei Mitglieder waren erstmals anwesend und durften das ausladende Bildungsprogramm und die ausgezeichnete Diskussionskultur genießen.
+* Unser Online-Format „Jugend editiert“ hat ebenfalls zum ersten Mal am 16. April stattgefunden, im Mai gab es bereits die zweite Ausgabe. 
+* Wir gratulieren {{Noping|Mojnsen|Mojnsen}} für sein Siegerbild zum [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]], das man unten bewundern kann.
+* Die nächste Videokonferenz findet am 29.&nbsp;Juni statt. Weiterführende Infos gibt es [[Wikipedia:JWP/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unsere neuen Mitglieder {{Noping|Die Neugier In Person|Die Neugier In Person}} und {{Noping|Ovinator|Ovinator}}.
+
+Abschied nehmen wir dagegen von {{Noping|DaevonSky|DaevonSky}}, dessen Mitgliedschaft wegen Inaktivität geendet ist.
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+[https://bldrwnsch.toolforge.org/ Hier] findet ihr Orte in eurer Umgebung, für die noch Bilder auf der deutschsprachigen Wikipedia gesucht werden - vielleicht ist ja auch für dich etwas in deiner Nähe?
+
+{{Kopf|Kurioses}}
+Anfang diesen Jahres standen 4000 Tonnen Kartoffeln südlich von Leipzig kurz vor der Vernichtung. Da der Kartoffelpreis gefallen war, war ein Verkauf nicht mehr möglich. In einer Rettungsaktion wurden die Kartoffeln nach Berlin transportiert und dort auf ca. 200 Abholstationen verteilt, sodass schlussendlich 218 Tonnen Kartoffeln auf diese Art und Weise gerettet wurden.
+
+Die Bergbaustadt [[Centralia (Pennsylvania)|Centralia]] in Pennsylvania wurde berühmt, weil unter ihr seid 1962 ein unterirdisches Kohlefeuer brennt. Die Stadt wurde nach mehreren Unfällen, die auf den erhitzten Boden zurückgeführt wurden, nahezu komplett verlassen. Die Natur erobert sich das Land seitdem jedoch zurück, obwohl das Feuer weiterhin aktiv ist.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Der zweitplatzierte Artikel im Wettbewerb um den [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Artikel des 1. Quartals 2026]] wurde geschrieben von {{Noping|JiaqiDerKrasse|JiaqiDerKrasse}}. Glückwunsch!
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Anti-asiatischer Rassismus
+| BILD             = Datei:Union Square Vigil (51053178878).jpg
+| BILDGROESSE      = 200px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Bei Bedarf ein Text, der das Bild beschreibt
+| TEASERTEXT       ='''Anti-asiatischer Rassismus''' bzw. '''Antiasiatischer Rassismus''' beschreibt eine Form des Rassismus gegenüber Menschen, denen eine „asiatische“ Herkunft zugeordnet wird. Anti-asiatischer Rassismus ist im öffentlichen Diskurs unterrepräsentiert. Das liege beispielsweise daran, dass asiatische Menschen oft als „Vorzeige-Migranten“ (Model Minority) dargestellt werden. Deshalb wird ihnen häufig abgesprochen, dass sie Rassismus erleben.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Dome of Antwerpen Centraal.jpg|center|250px]]
+Mit diesem kunstvoll-symmetrischen Foto des Doms vom [[Bahnhof Antwerpen-Centraal]] erreichte {{Noping|Ankermast|Ankermast}} den zweiten Platz beim Bilderwettbewerb. Gratulation!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 7. Jun. 2026 (CEST)
+
+<div style="clear:both;"></div></div>
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (5. Juli 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+
+* Wir haben eine seeeeeeeehr wichtige Umfrage für euch: Wer liest eigentlich noch den Nesletter?! Stimmt dringend [https://jungwikipedianer-innen.limesurvey.net/583818?lang=de&newtest=Y hier] ab, um euren Newsletter vor der neoliberalen Sparmaschinerie zu schützen!
+* Wir gratulieren {{Noping|Kito9999|Kito9999}} für sein Sieg beim [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Artikel des Quartals]] mit dem Artikel [[Stefano Bonaccini]].
+* Die nächste Videokonferenz findet am 27.&nbsp;Juli statt. Weiterführende Infos gibt es [[Wikipedia:JWP/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unsere neuen Mitglieder {{Noping|Schreiber123qwer}} und {{Noping|DerTribun753}}.
+
+Abschied nehmen wir dagegen von {{Noping|HeyRusse}}, {{Noping|TheRoyalOne06}}, {{Noping|Zyronical}} und {{Noping|ShepHale}} deren Mitgliedschaft wegen Inaktivität geendet ist.
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+Mit dem Skript [[Benutzer:Wiegels/js/age.js|age.js]] wird euch in Personenartikeln oben rechts ein kleines Kästchen angezeigt, in dem das aktuelle oder ungefähre Alter einer Person, basierend auf ihren Lebensdaten, angezeigt wird.
+
+{{Kopf|Kurioses}}
+Anfang diesen Jahres standen 4000 Tonnen Kartoffeln südlich von Leipzig kurz vor der Vernichtung. Da der Kartoffelpreis gefallen war, war ein Verkauf nicht mehr möglich. In einer Rettungsaktion wurden die Kartoffeln nach Berlin transportiert und dort auf ca. 200 Abholstationen verteilt, sodass schlussendlich 218 Tonnen Kartoffeln auf diese Art und Weise gerettet wurden.
+
+Die Bergbaustadt [[Centralia (Pennsylvania)|Centralia]] in Pennsylvania wurde berühmt, weil unter ihr seid 1962 ein unterirdisches Kohlefeuer brennt. Die Stadt wurde nach mehreren Unfällen, die auf den erhitzten Boden zurückgeführt wurden, nahezu komplett verlassen. Die Natur erobert sich das Land seitdem jedoch zurück, obwohl das Feuer weiterhin aktiv ist.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Der Sieger im Wettbewerb um den [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Artikel des 2. Quartals 2026]] wurde geschrieben von {{Noping|Kito9999|Kito9999}}. Glückwunsch!
+{{AdT-Vorschlag
+| DATUM            = 
+| LEMMA            = Stefano Bonaccini
+| BILD             = Datei:1719930276898 20240702 BONACCINI Stefano IT 003.jpg
+| BILDGROESSE      = 100px
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Bei Bedarf ein Text, der das Bild beschreibt
+| TEASERTEXT       = '''Stefano Bonaccini''' (* 1. Januar 1967 in Campogalliano) ist ein italienischer Politiker (PD). Seit dem 23. März 2023 ist er Präsident des Partito Democratico und war von 2014 bis 2024 Regionalpräsident der Emilia-Romagna. Seit 2024 ist er Mitglied des Europäischen Parlaments, als Teil der Fraktion der Progressiven Allianz der Sozialdemokraten.
+
+Bonaccini war ursprünglich Mitglied des Partito Comunista Italiano und gilt als einer der wichtigsten Vertreter des reformistischen Flügels der Partito Democratico.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei:Stromboli_2026.jpg|center|250px]]
+Mit diesem Foto des italienischen Vulkans [[Stromboli]] erreichte {{Noping|Mojnsen|Mojnsen}} den 3. Platz und konnte sich außerdem den begehrten Bildtitel [[:Datei:Stromboli_2026.jpg]] sichern. Glückwunsch!
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 5. Jul. 2026 (CEST)
+
+<div style="clear:both;"></div></div>
+
+== Happy Birthday ==
+
+Hey ElBe,
+alles Gute zum Geburtstag unter uns JWP's. Bleib gesund, hab Spaß, und bleib fleißig und Spaß am Editieren. Feier noch schön!
+Warum weiß ich das so genau? Naja, ich habe mich in die Geburtstagsliste eingetragen, nämlich auch am 8. Juli ;D. Aus Interesse habe ich geschaut, wer da noch so hat und dann bist du mir direkt ins Auge gestochen, da ich dein Pseudonym noch aus der Mitgliederliste der JWP's kannte - was ein Zufall. Viele Grüße aus Straßburg!--[[Benutzer:SG Globetrotter FC|SGGFC]] ⚽️ ([[Benutzer Diskussion:SG Globetrotter FC|Teambesprechung]]) ⚽️ ''[[Wikipedia:Jungwikipedianer|JWP]]'' 19:32, 8. Jul. 2026 (CEST)
+
+:Vielen Dank!
+:Ich wünsche dir auch alles Gute zum Geburtstag nachträglich (hätte ich Mal vorher meine Diskussionsseite gelesen...)!
+:Viele Grüße aus Kanada!
+:Vielleicht sieht man sich ja Mal auf einem JWP-Treffen {{Smiley}}. 
+:--[[Benutzer:ElBe|<span style="color: black;">ElBe</span>]] <sup>[[Benutzer:ElBe|1]] &#124; [[Benutzer Diskussion:ElBe|2]] &#124; [[Wikipedia:Jungwikipedianer|JWP]]</sup> 00:11, 9. Jul. 2026 (CEST)
+
+== [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2026|Wartungsbausteinwettbewerb Sommer 2026]] ==
+
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2026|Wartungsbausteinwettbewerb]] startet am 15. August (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 19:24, 28. Jul. 2026 (CEST) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (2. August 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+Diesmal gibt es leider keinen Newsletter. Seid gespannt auf den nächsten Newsletter! Damit das nicht nochmal vorkommt, seid ihr als JWP herzlich eingeladen, auch den Newsletter mit zu bearbeiten. Details in unseren [[Wikipedia:JWP/Kommunikation|Kommunikationskanälen]].
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 2. Aug. 2026 (CEST)
+
+<div style="clear:both;"></div></div>
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (9. August 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+Diesmal gibt es leider keinen Newsletter. Seid gespannt auf den nächsten Newsletter! Damit das nicht nochmal vorkommt, seid ihr als JWP herzlich eingeladen, auch den Newsletter mit zu bearbeiten. Details in unseren [[Wikipedia:JWP/Kommunikation|Kommunikationskanälen]].
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 9. Aug. 2026 (CEST)
+
+<div style="clear:both;"></div></div>
+
+== Technische Wünsche: News und Einladung zum Nutzungstest ==
+
+[[File:WMDE Technische Wünsche Sticker.png|thumb|Grüße vom [[Wikipedia:Technische Wünsche|Technische-Wünsche-Team]]]]
+Ein ereignisreicher Sommer geht für das [[Wikipedia:Technische Wünsche|Technische-Wünsche-Team]] zu Ende. Bei der Wikimania haben wir [[:File:Make a wish – Wikimania 2026.pdf|über aktuelle Projekte und Ideen für die Zukunft gesprochen]] und [[:File:A brand new citation option – introducing sub-referencing. Wikimania 2026.pdf|Subreferenzierung vorgestellt]]. Nun möchten wir dich treffen:
+
+Sprich mit uns bei der '''[[Wikipedia:WikiCon 2026|WikiCon]]''' am Stand von Wikimedia Deutschland, wo wir unsere Projekte vorstellen und Wünsche für unsere Technische-Wünsche-Umfrage 2027 sammeln. Außerdem veranstalten wir einen WikiCon-Workshop zu [[Wikipedia:WikiCon 2026/Programm/Technische Wünsche für Wikimedia Commons|Wünschen für Commons]]. Zudem haben wir eine '''[[Wikipedia:Technische Wünsche/Nutzungsforschung|Interviewreihe]]''' gestartet. Jeden zweiten Mittwoch möchten wir in 1:1 Videointerviews mit Autor*innen über ihre Nutzungserfahrung sprechen. Teilnehmen können alle, unabhängig von ihren Kenntnissen, wir freuen uns über jede Perspektive! '''[https://greatquestion.co/wikimediadeutschland/gBDkkfeL Jetzt anmelden]''' oder [[Wikipedia:Technische Wünsche/Nutzungsforschung|mehr auf unserer Projektseite erfahren]].
+
+'''Projektupdates'''
+
+Wir sind auf der Zielgeraden mit '''[[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung|Subreferenzierung]]''': Die Funktion ist nun in [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung#Letzte Änderungen und nächste Schritte|fast allen Wikimediaprojekten]] verfügbar. Bis Oktober hoffen wir, auch die Bereitstellung in den verbliebenen Projekten abzuschließen, einschließlich der englischsprachigen Wikipedia. Währenddessen beheben wir einige Anwendungsfehler, u.a. treten beim Kopieren von Subreferenzen im VisualEditor in andere Artikel manchmal Fehler auf ([[:phab:T418324]]).
+
+Wir haben unsere Arbeit an '''[[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Einzelnachweisnamen im VisualEditor|Einzelnachweisnamen im VisualEditor]]''' gestartet. Künftig wird der VisualEditor beim Wiederverwenden von Einzelnachweisen nicht mehr Namen wie <syntaxhighlight lang="wikitext" inline><ref name=":0"></syntaxhighlight> erstellen, sondern kann mit entsprechender Konfiguration inhaltsbasierte Namen erstellen (z.B. <syntaxhighlight lang="wikitext" inline><ref name="Richter2026"></syntaxhighlight>) und erhält onwiki definierbare Fallback-Optionen, falls kein inhaltsbasierter Name erstellt werden kann (z.B. <syntaxhighlight lang="wikitext" inline><ref name="Einzelnachweis-1"></syntaxhighlight>). Wenn der Mechanismus verfügbar ist, möchten wir wie üblich mit der deutschsprachigen Wikipedia als Pilotwiki starten. Folge dem Projekt auf [[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Einzelnachweisnamen im VisualEditor|unserer Projektseite]] oder in [[:phab:T430051]].
+
+Vorerst pausiert ist unser Projekt, die '''[[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Citoid PDF|automatische Belegfunktion im VisualEditor für PDF-Links nutzbar zu machen]]'''. Wir warten auf eine Analyse des WMF Securityteams zu unserem Ansatz, Metadaten von PDFs zu nutzen.
+
+Außerdem haben wir im Sommer unser '''[[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Einzelnachweisvorschau|Experiment zur Einzelnachweisvorschau]]''' abgeschlossen. Unsere vorläufige Datenanalyse scheint zu bestätigen, dass die meisten Lesenden lieber die Einzelnachweisvorschau nutzen möchten, als die Einzelnachweisliste anzusteuern, allerdings gab es in der Testgruppe einen leichten Rückgang wiederkehrender Lesender, weshalb wir das Projekt vorerst nicht weiter verfolgen.
+
+Danke an alle, die uns mit ihrem Feedback unterstützen! Wir hoffen, bald wieder von euch zu hören, sei es in unseren Nutzungsinterviews, bei der WikiCon, onwiki oder auf Discord.
+
+'''WMF Community Wishlist'''
+
+Unsere Freunde von der WMF Community Wishlist [[Wikipedia:Projektdiskussion#Community-Wunschliste 2027: Feedback und Ideen erwünscht|bitten um Feedback]]. Ließ dir den Vorschlag zum [[:m:Community Wishlist/Community Wishlist 2027/de|neuen Community Wishlist]] durch und teile dein Feedback – entweder [[Wikipedia:Projektdiskussion#Community-Wunschliste 2027: Feedback und Ideen erwünscht|in der Projektdiskussion]] oder [[:m:Talk:Community Wishlist/Community Wishlist 2027|auf Meta]] (gerne auch auf Deutsch).
+
+<small>PS: Du erhältst diese Nachricht, weil du den [[Wikipedia:Technische Wünsche/Newsletter|Technische-Wünsche-Newsletter]] abonniert hast. [[Wikipedia:Technische Wünsche/Newsletter|Hier]] kannst du deine Benachrichtigungseinstellungen anpassen.</small> --[[User:Johannes Richter (WMDE)|Johannes Richter (WMDE)]] ([[User talk:Johannes Richter (WMDE)|Diskussion]]) 16:19, 4. Sep. 2026 (CEST)
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (6. September 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Sommerlogo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+* Der nächste [[Wikipedia:JWP/Wettbewerbe/Artikelwettbewerb 2026|Artikelwettbewerb]] startet am 12. September und läuft einen Monat. Ran an die Tasten!
+* Die Nominierungsphase des [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Artikels des 3. Quartals 2026]] läuft noch; wir brauchen Kandidaten!
+* Das zweite [[Wikipedia:JWP/Treffen/2026-II|Treffen 2026 in München]] findet nach Abstimmung vom 20. bis 22. November statt.
+* Vom 18. bis 20. September steht außerdem die [[Wikipedia:WikiCon 2026|WikiCon in Regensburg]] an. Für die Online-Teilnahme ist die Anmeldung noch bis zum 17. September möglich.
+* Und jetzt zum Ergebnis der äußerst wichtigen Umfrage: Liest eigentlich noch jemand den JWP-Newsletter? 26 Leute haben die Umfrage vollständig ausgefüllt, davon haben 22 mit „Ja“ gestimmt. Der Newsletter darf also vorerst weiterleben!
+* Die nächste Videokonferenz findet am 28.&nbsp;September statt. Weiterführende Infos gibt es [[Wikipedia:JWP/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unsere neuen Mitglieder {{Noping|Radium73}} und {{Noping|Cyclopropinon}}.
+
+Abschied nehmen wir dagegen von {{Noping|DezidierterDezember}}, der nun dezidiert zu alt ist.
+
+----
+
+{{Kopf|Tipps und Triqqs}}
+Dieses Mal werden euch zwei Tools auf Commons für die Vereinfachung von Massenbearbeitungen vorgestellt.
+Das erste Tool, [[C:Help:Gadget-Cat-a-lot|Cat-A-lot]], dient der Bearbeitung von Kategorien von mehreren Mediendateien auf einmal. Es kann über die Einstellungen aktiviert werden. Im Anschluss taucht auf jeder Kategorien-Seite ein entsprechendes Symbol auf, um die zu verschiebenden Dateien auszuwählen.
+
+Ein ähnliches Tool ist [[C:User:Suyash.dwivedi/userscripts/Templ-a-lot|Templ-a-lot]]. Es kann über die [[Spezial:Meine Benutzerseite/common.js|Special:MyPage/common.js]] aktiviert werden und funktioniert dann ähnlich wie das Cat-A-lot-Tool, bloß, dass es hier um das Hinzufügen bzw. Entfernen von Vorlagen geht.
+
+{{Kopf|Kurioses}}
+Wieso haben [[Bürostuhl|Bürostühle]] fünf Beine? Vielleicht hast du dir diese Frage auch schonmal gestellt, schließlich haben normale Stühle ja in der Regel vier Beine. Mathematisch gesehen wären zunächst drei Beine optimal, da dann auch Unebenheiten im Boden ausgeglichen werden können. Jedoch ist damit die Stabilität beeinträchtigt. Wenn du dich nur ein bisschen zur Seite lehnst, kann der Stuhl umkippen. Daher haben die meisten Stühle vier Beine, hier gibt es den größten Gewinn bei der Stabilität im Vergleich zum zusätzlichen Material - mehr Beine bringen immer weniger zusätzliche Stabilität. Für Stühle, die sich nach hinten neigen lassen, sind daher fünf Beine für die dafür erforderliche zusätzliche Stabilität sinnvoll. Außerdem sind fünf Beine auf unebenen Flächen besser als vier Beine, da sie nicht so leicht kippeln. Diese Sätze wurden auf einem fünfbeinigen Bürostuhl geschrieben.
+
+Es ist möglich, die gleiche Frage zu stellen und andere Ergebnisse zu erhalten, abhängig davon welche Fragen zuvor gestellt wurden: [https://www.youtube.com/watch?v=ahgjEjJkZks Link]. Dieser Comedy-Sketch wurde auch in der Realität an 1000 Personen getestet mit dem Ergebnis, dass tatsächlich in der einen Variante 38 % gegen die Wiedereinführung der Wehrpflicht waren und in der anderen Variante 48 % - abhängig von den zuvor gestellten Fragen.
+
+Die [https://libraryoftime.xyz/ Library of Time] zeigt für jedes Datum an, welchem Datum es in diversen anderen Kalender entspricht. Beipielsweise hat der Autor dieser Zeilen festgestellt, dass er im chinesischen [[Chinesische Astrologie|Jahr des Pferdes]] geboren wurde.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Mit folgendem Artikel zu einem [[Kraftklub]]-Album gewann {{Noping|JiaqiDerKrasse|JiaqiDerKrasse}} den Wettbewerb um den  [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|2. Artikel des Quartals]], Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = Dieses Feld vorerst frei lassen
+| LEMMA            = Sterben in Karl-Marx-Stadt
+| BILD             = 
+| BILDGROESSE      = 
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Bei Bedarf ein Text, der das Bild beschreibt
+| TEASERTEXT       =  '''Sterben in Karl-Marx-Stadt''' ist das fünfte Studioalbum der deutschen Rockband Kraftklub, das im November 2025 erschien.
+}}
+
+<hr />
+<div class="mehr" style="font-size:90%;">[[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals/Sieger|Frühere ''Artikel des Quartals'']] • [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals/Archiv|Abstimmungsarchiv]] • [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|Wettbewerbsseite]]</div>
+<div style="clear:both;"></div>
+
+{{Kopf|Neues aus dem Fotostudio}}
+[[Datei: Brabo Fountain and Antwerpen Cathedral.jpg |center|250px]]
+Dieses Foto des [[Brabobrunnen]]s und der [[Antwerpen]]er [[Liebfrauenkathedrale (Antwerpen)|Liebrauenkathedrale]] schoss {{Noping|Ankermast|Ankermast}} aus jenem Winkel, der es ermöglichte, die Pracht des Kirchturms einfangen zu können und erreichte den 4. Platz im Bilderwettbewerb; der Turm schleiche sich ohnehin immer ins Bild, wenn man unterwegs sei in der belgischen Großstadt.
+
+<div class="mehr" style="font-size:90%;">[[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb/Sieger|Frühere ''Bilder des Quartals'']] • [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb/Archiv|Abstimmungsarchiv]] • [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Wettbewerbsseite]]</div>
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 6. Sep. 2026 (CEST)
+
+<div style="clear:both;"></div></div>
+
+== [[Wikipedia:JWP/Wettbewerbe/Artikelwettbewerb 2026|JWP-Artikelwettbewerb 2026]] ==
+
+Hallo ElBe!
+
+Vom 12. September bis zum 12. Oktober findet unser [[Wikipedia:JWP/Wettbewerbe/Artikelwettbewerb 2026|JWP-Artikelwettbewerb]] statt und wir würden uns sehr darüber freuen, wenn du teilnehmen würdest! 
+Wahrscheinlich gibt es für die Sieger:innen auch wieder etwas Schönes zu gewinnen. Also: Anmelden und ran an die Tasten! --[[Benutzer:Mojnsen|Mojnsen]] ([[Benutzer Diskussion:Mojnsen|Diskussion]]) • ''[[Wikipedia:Jungwikipedianer|JWP]]'' • 15:25, 8. Sep. 2026 (CEST)
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (4. Oktober 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+* Der nächste [[Wikipedia:JWP/Wettbewerbe/Artikelwettbewerb 2026|Artikelwettbewerb]] läuft noch bis zum 12. Oktober. Ran an die Tasten!
+* Die Nominierungsphase des [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Bild des 3. Quartals 2026]] läuft noch; wir brauchen Kandidaten!
+* Das zweite [[Wikipedia:JWP/Treffen/2026-II|Treffen 2026 in München]] findet vom 20. bis 22. November statt. Die Anmeldephase ist offiziell beendet. Inoffizielle nachträgliche Anmeldungen sind nicht ausgeschlossen ;)
+* Kennt ihr schon [https://www.wikimedia.de/veranstaltungen/jugend-editiert-online/ Jugend editiert online]? Falls Leute in eurem Umfeld Interesse an Wikipedia haben, dann weist sie gerne auf die monatlich stattfindende Veranstaltung hin!
+* ... und falls diese Leute ebenfalls an dem [https://jugendhackt.org/events/jugend-hackt-congress/ Jugend-Hackt-Congress] diesen Monat in Berlin teilnehmen: Dort sind wir auch vertreten!
+* Die nächste Videokonferenz findet am 26.&nbsp;Oktober statt. Weiterführende Infos gibt es [[Wikipedia:JWP/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|Hallilogod}}. 
+
+Diesmal muss niemand verabschiedet werden.
+----
+
+{{Kopf|Tipps und Triqqs}}
+
+Dieses Mal werden euch zwei Tools auf Commons für die Vereinfachung von Massenbearbeitungen vorgestellt.
+Das erste Tool, [[C:Help:Gadget-Cat-a-lot|Cat-A-lot]], dient der Bearbeitung von Kategorien von mehreren Mediendateien auf einmal. Es kann über die Einstellungen aktiviert werden. Im Anschluss taucht auf jeder Kategorien-Seite ein entsprechendes Symbol auf, um die zu verschiebenden Dateien auszuwählen.
+
+Ein ähnliches Tool ist [[C:User:Suyash.dwivedi/userscripts/Templ-a-lot|Templ-a-lot]]. Es kann über die [[Spezial:Meine Benutzerseite/common.js|Special:MyPage/common.js]] aktiviert werden und funktioniert dann ähnlich wie das Cat-A-lot-Tool, bloß, dass es hier um das Hinzufügen bzw. Entfernen von Vorlagen geht.
+
+<small>Eine Aktualisierung dieses Abschnitts erfolgt alle zwei Monate</small>
+
+{{Kopf|Kurioses}}
+Der [[Bärenpavian]] [[Jack (Pavian)|Jack]] hat einen Streckenwärter an einer Eisenbahnstrecke in Südafrika neun Jahre lang unterstützt. Der nach einem Arbeitsunfall behinderte Wärter hat den Pavian auf einem lokalen Markt gekauft, damit er ihn bei der Arbeit unterstützen kann. Über die Jahre bediente er auf Anweisung des Wärters die Signalhebel und übernahm stetig mehr Aufgaben. Jack wurde schließlich sogar von der [[Cape Government Railways|Eisenbahngesellschaft]] angestellt und bekam 20 ct pro Tag als Lohn sowie eine halbe Flasche Bier pro Woche. Jack starb nach neun Jahren 1890 an Tuberkulose.
+
+{{Kopf|Neues aus der Artikelwerkstatt}}
+Mit folgendem Artikel zu einem fiktivem Affenmann gewann {{Noping|Schreiber123qwer|Schreiber123qwer}} den Wettbewerb um den  [[Wikipedia:JWP/Wettbewerbe/Artikel des Quartals|3. Artikel des Quartals]], Glückwunsch!
+
+{{AdT-Vorschlag
+| DATUM            = Dieses Feld vorerst frei lassen
+| LEMMA            = Affenmann von Delhi 
+| BILD             = 
+| BILDGROESSE      = 
+| BILDUMRANDUNG    = JA
+| BILDBESCHREIBUNG = Bei Bedarf ein Text, der das Bild beschreibt
+| TEASERTEXT       = Der '''Affenmann von Delhi''', in Indien auch als Kala Bandar (deutsch:„Schwarzer Affe“) bekannt, ist eine der bekanntesten urbanen Legenden in [[Indien]], die 2001 in der indischen Millionenmetropole [[Delhi]] eine [[Massenhysterie]] auslöste. Der Affenmann trat ab dem Mai im Jahr 2001 in Delhi und benachbarten [[Liste der Bundesstaaten und Unionsterritorien in Indien|Bundesstaaten]] nachts auf und soll zahlreiche Menschen angegriffen haben. Von Augenzeugen wird der Affenmensch als [[Affen|affenähnliches]] Wesen mit dichtem schwarzen Fell beschrieben.
+}}
+ 
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 4. Okt. 2026 (CEST)
+
+<div style="clear:both;"></div></div>
+
+== Technische-Wünsche-Wunschupdate ==
+[[File:WMDE Technische Wünsche Sticker.png|thumb|Herzliche Grüße vom [[Wikipedia:Technische Wünsche|Technische-Wünsche-Team]]!]]
+Herzliche Grüße vom [[Wikipedia:Technische Wünsche|Technische-Wünsche-Team]]! Unsere Arbeit am [[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise|Themenschwerpunkt Einzelnachweise]] macht Fortschritte:
+
+Seit dieser Woche können Wikis die '''[[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Einzelnachweisnamen im VisualEditor|automatisch generierten Einzelnachweisnamen des VisualEditor konfigurieren]]''', damit bei Wiederverwendung von bisher unbenannten Einzelnachweisen anstelle von <syntaxhighlight lang="wikitext" inline><ref name=":1"></syntaxhighlight> inhaltsbasierte Namen erstellt werden (z.B. <syntaxhighlight lang="wikitext" inline><ref name="NachnameJahr-1"></syntaxhighlight>). Falls das fehlschlägt, wird ein simpler Fallbackname genutzt, der ebenfalls durch die Community konfigurierbar ist (aktuell <syntaxhighlight lang="wikitext" inline><ref name="Einzelnachweis-1"></syntaxhighlight>) und für bessere Lesbarkeit sorgen soll. In der deutschsprachigen Wikipedia sind erste Namensänderungen seit Donnerstagabend wirksam, auch andere große Sprachversionen wie die englisch- oder französischsprachige Wikipedia haben bereits verbesserte Einzelnachweisnamen für den VisualEditor definiert. Mehr Infos auf [[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Einzelnachweisnamen im VisualEditor|unserer Projektseite]].
+
+Seit dieser Woche ist zudem '''[[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung|Subreferenzierung]]''' in der englischsprachigen Wikipedia verfügbar. Bis Ende Oktober erfolgt die Einführung in Wikis mit linksläufigem Schriftsystem (z.B. Arabische Wikipedia) und in Wikisource, wofür wir noch Kleinigkeiten anpassen mussten. Dann ist die Funktion [[Wikipedia:Technische Wünsche/Topwünsche/Subreferenzierung#Letzte Änderungen und nächste Schritte|in allen Wikimediaprojekten]] nutzbar.
+
+Gleichzeitig haben wir unsere Arbeit wieder aufgenommen, '''[[Wikipedia:Technische Wünsche/Topwünsche/Einzelnachweise/Citoid PDF|PDF-Links in der automatischen Belegfunktion im VisualEditor nutzbar zu machen]]'''. Wir sind zuversichtlich, in Zusammenarbeit mit der Wikimedia Foundation einen passenden Weg zu finden. Weitere Ideen, die wir aktuell untersuchen, sind mögliche Verbesserungen beim Arbeiten mit Einzelnachweisvorlagen sowie Unterstützung für Autor*innen, [[Retraction|retracted Paper]] in Einzelnachweisen zu identifizieren.
+
+'''Triff die Technischen Wünsche'''
+
+Am '''[[Wikipedia:Digitaler Themenabend#141. DTA: 19. Oktober, 19:00 Uhr „Wünsch dir was – neue Funktionen fürs Wiki“|Montag, den 19. Oktober, um 19 Uhr]]''', sind die Technischen Wünsche beim '''[[Wikipedia:Digitaler Themenabend|Digitalen Themenabend]]''' zu Gast. Wir sprechen über unsere aktuelle Arbeit an Einzelnachweisen und über die nächste Technische-Wünsche-Umfrage, die voraussichtlich im Frühsommer 2027 stattfindet – und beantworten alle erdenklichen Fragen.
+
+Zudem haben wir eine '''[[Wikipedia:Technische Wünsche/Nutzungsforschung|Interviewreihe]]''' gestartet. Jeden zweiten Dienstag und Mittwoch möchten wir in 1:1 Videointerviews mit Autor*innen über ihre Nutzungserfahrung sprechen. Teilnehmen können alle, unabhängig von ihren Kenntnissen, wir freuen uns über jede Perspektive! '''[https://greatquestion.co/wikimediadeutschland/gBDkkfeL Jetzt anmelden]''' oder [[Wikipedia:Technische Wünsche/Nutzungsforschung|mehr auf unserer Projektseite erfahren]].
+
+'''WMF Community Wishlist'''
+
+Im Januar 2027 findet die Abstimmung bei der '''[[:m:Community Wishlist/Community Wishlist 2027/de|WMF Community Wunschliste 2027]]''' statt. Noch bis zum 8. November können dafür Wünsche eingereicht werden. Das [https://meta.wikimedia.org/wiki/Special:WishlistIntake?uselang=de Formular] dazu ist auch auf Deutsch verfügbar und ausfüllbar.
+
+<small>PS: Du erhältst diese Nachricht, weil du den [[Wikipedia:Technische Wünsche/Newsletter|Technische-Wünsche-Newsletter]] abonniert hast. [[Wikipedia:Technische Wünsche/Newsletter|Hier]] kannst du deine Benachrichtigungseinstellungen anpassen.</small>
+
+Wie immer freuen wir uns über Feedback auf den Diskussionsseiten unseres Projekts – oder einfach als Antwort auf diese Nachricht! Viele Grüße --[[User:Johannes Richter (WMDE)|Johannes Richter (WMDE)]] ([[User talk:Johannes Richter (WMDE)|Diskussion]]) 10:17, 16. Okt. 2026 (CEST)
+
+== Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (1. November 2026) ==
+
+<div style="margin:5px; padding:15px; background-image: linear-gradient(to left, #f2f8fc, #d5dedf, #bcc4c2, #a5aba5); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px;">
+[[Datei:JWP-Logo.svg|200px|rechts|link=WP:JWP]]
+Hallo ElBe,
+<br />
+viel Spaß beim Durchlesen des Newsletters!
+
+{{Absatz}}
+{{Kopf|Neuigkeiten}}
+* Unser [[Wikipedia:JWP/Treffen/2026-II|zweites Treffen für dieses Jahr]] findet vom 20. bis 22. November in München statt, die Vorbereitungsmaschine rattert.
+* Der [[Wikipedia:JWP/Wettbewerbe/Artikelwettbewerb 2026|Artikelwettbewerb]] ist beendet. Die Preisverleihung und Siegerehrung findet beim Treffen statt.
+* Gratulation an {{Noping|Hallilogod|Hallilogod}} zum Sieg beim [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Bilderwettbewerb]]! Das Siegerbild mit Langzeitbelichtung ist unten zu sehen.
+* Kennt ihr schon [https://www.wikimedia.de/veranstaltungen/jugend-editiert-online/ Jugend editiert online]? Wenn ihr Leute in eurem Umfeld kennt, die sich für Wikipedia interessieren, weist sie gerne auf die monatlich stattfindende Veranstaltung hin!
+* Die nächste Videokonferenz findet am 30.&nbsp;November statt. Weiterführende Infos gibt es [[Wikipedia:JWP/Kommunikation#Videokonferenzen|hier]].
+
+{{Kopf|Hin und Weg}}
+Wir begrüßen unser neues Mitglied {{Noping|Hallilogod}}. 
+
+Nachträglich verabschiedet werden soll auch unser langjähriges Mitglied [[Benutzer:FWS AM|FWS AM]], das seine exzellenten Artikel nun als Alter Sack verfassen muss.
+----
+
+{{Kopf|Tipps und Triqqs}}
+
+[[s:Hauptseite|Wikisource]] ist ein Schwesterprojekt der Wikipedia, in dem Texte unterschiedlichster Art verfügbar sind, alle unter freien Lizenzen oder lizenzfrei. Darunter zählen Gedichte, Belletristik, Sagen und Märchen und historische Sachtexte. Besonders ist, dass man parallel eine Abschrift des jeweiligen Dokuments und einen Scan desselben betrachten und abgleichen kann. Ob ihr also eure Deutschlektüre mitlesen oder euch durch das Vermächtnis Schillers wühlen, vielleicht aber auch einmal direkt in einem hunderte Jahre alten Archiv stöbern wollt, das Projekt ist nebenan.
+
+<small>Eine Aktualisierung dieses Abschnitts erfolgt alle zwei Monate</small>
+
+{{Kopf|Kurioses}}
+Der [[Bärenpavian]] [[Jack (Pavian)|Jack]] hat einen Streckenwärter an einer Eisenbahnstrecke in Südafrika neun Jahre lang unterstützt. Der nach einem Arbeitsunfall behinderte Wärter hat den Pavian auf einem lokalen Markt gekauft, damit er ihn bei der Arbeit unterstützen kann. Über die Jahre bediente er auf Anweisung des Wärters die Signalhebel und übernahm stetig mehr Aufgaben. Jack wurde schließlich sogar von der [[Cape Government Railways|Eisenbahngesellschaft]] angestellt und bekam 20 ct pro Tag als Lohn sowie eine halbe Flasche Bier pro Woche. Jack starb nach neun Jahren 1890 an Tuberkulose.
+
+{{Kopf|Neues aus dem Fotostudio}}
+Mit folgendem Bild des Berliner Doms bei Nacht hat {{Noping|Hallilogod |Hallilogod }} den Wettbewerb um das  [[Wikipedia:JWP/Wettbewerbe/Bilderwettbewerb|Bild des Quartals]] im Oktober gewonnen. Glückwunsch! 
+
+[[Datei: Berliner Dom nachts.jpg |center|250px]]
+
+ 
+
+----
+<small>Wenn du keinen Newsletter mehr bekommen möchtest, dann entferne diese Seite aus der [[Wikipedia:JWP/Newsletterliste|Opt-In-Liste]]. Falls du einen Eintrag in den Newsletter tätigen willst, dann bearbeite ihn [//de.wikipedia.org/w/index.php?title=Wikipedia:JWP/Newsletter&action=edit hier].</small><br />--[[Benutzerin:TaxonBota|TaxonBota]] ([[Benutzerin Diskussion:TaxonBota|Diskussion]]) 02:00, 1. Nov. 2026 (CET)
+
+<div style="clear:both;"></div></div>
+
+== Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2026|Wartungsbausteinwettbewerb Herbst 2026]] ==
+Hallo ElBe, der nächste [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2026|Wartungsbausteinwettbewerb]] startet am 14. November (für Schiedsrichter bereits einen Tag vorher). Du bist wie immer als Teilnehmer und/oder Schiri willkommen! 
+
+Wir feiern Jubiläum: die 75. Ausgabe steht vor der Tür und wir haben uns diesmal ein paar Sonderregeln überlegt, damit wir das Jubiläum auch so ein bisschen feiern können. Insbesondere werden diesmal Zufallteams ausgelost, daher bitten wir um rechtzeitige Anmeldung. Außerdem dreht sich vieles um die Zahl 75.
+
+Falls du fortan keine Einladung mehr auf deiner Diskussionsseite erhalten möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Diskussionsseiten-Benachrichigungen|hier]] aus. Falls du per Echo über wichtige Neuigkeiten, Terminabstimmungen usw. informiert werden möchtest, trag dich bitte [[Wikipedia:Wartungsbausteinwettbewerb/Einladung#Echo-Benachrichtigungen|hier]] ein. <small>[[Benutzer:MediaWiki message delivery|MediaWiki message delivery]] ([[Benutzer Diskussion:MediaWiki message delivery|Diskussion]]) 15:58, 2. Nov. 2026 (CET) im Auftrag von [[Benutzer:Gripweed|Gripweed]]</small>

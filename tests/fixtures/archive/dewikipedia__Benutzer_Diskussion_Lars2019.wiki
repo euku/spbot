@@ -1,0 +1,49 @@
+{{Archivübersicht|
+[[Benutzer Diskussion:Lars2019/Archiv/2021/01|2021/01]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2021/02|2021/02]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2021/03|2021/03]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2021/04|2021/04]]<br >[[Benutzer Diskussion:Lars2019/Archiv/2022/01|2022/01]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2022/02|2022/02]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2022/03|2022/03]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2022/04|2022/04]]<br >[[Benutzer Diskussion:Lars2019/Archiv/2023/01|2023/01]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2023/02|2023/02]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2023/03|2023/03]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2023/04|2023/04]]<br >[[Benutzer Diskussion:Lars2019/Archiv/2024/01|2024/01]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2024/02|2024/02]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2024/03|2024/03]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2024/04|2024/04]]<br >[[Benutzer Diskussion:Lars2019/Archiv/2025/01|2025/01]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2025/02|2025/02]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2025/03|2025/03]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2025/04|2025/04]]<br >[[Benutzer Diskussion:Lars2019/Archiv/2026/01|2026/01]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2026/02|2026/02]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2026/03|2026/03]] ⦁ [[Benutzer Diskussion:Lars2019/Archiv/2026/04|2026/04]]
+|nofurther=1}}
+{|class="hintergrundfarbe1"
+ |Du kannst mir eine neue Nachricht hinterlassen, indem du auf diese Taste klickst.
+ |-
+ |{{MediaWiki-Button |Text=Neuen Abschnitt hinzufügen |Link=https://de.wikipedia.org/w/index.php?title=Benutzer_Diskussion:Lars2019&action=edit&section=new |Typ=progressive |Groß=1 |Icon=Pictogram voting support.svg |Tooltip=Mir eine neue Nachricht hinterlassen |Zentriert=ja}}
+ |-
+ |Denke immer daran, deine Beiträge mit der Taste [[File:Signature icon april 2018.png]] zu signieren. Solltest du schon einen Abschnitt angelegt haben, schreibe deine Antworten bitte auch direkt in diesen Abschnitt. Rücke sie mit Hilfe von <code>:</code> (evtl. mehrfach) ein. Sollte ich auf deiner Diskussionsseite eine Nachricht geschrieben haben, anteworte bitte auch dort. Für Nachrichten, die auf keinen Fall öffentlich sein dürfen, kannst du mir [[Spezial:E-Mail senden/Lars2019|eine E-Mail senden]].
+
+''Wenn du mehr über Diskussionsseiten erfahren möchtest, lies bitte [[WP:DISK]].''
+|}
+{{Autoarchiv-Erledigt
+ |Alter=0
+ |Ziel='((VOLLER_SEITENNAME))/Archiv/((Jahr))/((Quartal:##))'
+ |Zeitbeschränkung=60
+ |Zeigen=Ja
+}}
+== Willkommen ==
+
+<div style="margin:5px; padding:15px; background:rgb(243, 243, 243); border:1px solid; border-color:#e5e5e5 #dbdbdb #d2d2d2; -webkit-box-shadow:rgba(0,0,0,0.3) 0 1px 3px; -moz-box-shadow:rgba(0,0,0,0.3) 0 1px 3px; box-shadow:rgba(0,0,0,0.3) 0 1px 3px; border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px; -o-border-radius:4px; -khtml-border-radius:4px;">
+[[Datei:Jungwikipedianer-Logo 2015.svg|200px|rechts|link=WP:Jungwikipedianer]]
+Hallo Lars2019!
+Erstmal herzlichen Glückwunsch zu deiner Aufnahme! Wir freuen uns, dich als neues Mitglied begrüßen zu dürfen. Hier eine kurze Einführung für dich, damit du dich schnell zurechtfindest.
+
+Die Jungwikipedianer (JWP) gibt es seit dem 24. Dezember 2007. Natürlich bist du als Mitglied auch bei JWP-internen Angelegenheiten stimmberechtigt. Um dich an den verschiedenen Aktivitäten beteiligen zu können, solltest du – falls noch nicht getan – folgendes tun:
+
+* Trage dich in die [[Wikipedia:Jungwikipedianer/Mitglieder#Anleitung|Mitgliederliste]] ein. {{#ifexist: Benutzer:{{PAGENAME}}/Beitragszahl||Dafür solltest du zuerst [[Benutzer:{{PAGENAME}}/Beitragszahl|diese Seite]] mit dem Inhalt <code>0</code> anlegen.}}
+* Verewige dich zusätzlich in der [[Wikipedia:Jungwikipedianer/JWP-Zeitleiste|Zeitleiste der JWP]].
+* Außerdem ist es empfehlenswert, dass du den Newsletter [[Wikipedia:Jungwikipedianer/Newsletterliste|abonnierst]].
+* Du kannst die [[Wikipedia Diskussion:Jungwikipedianer|Diskussionsseite]] auf deine [https://de.wikipedia.org/w/index.php?title=Wikipedia_Diskussion%3AJungwikipedianer&action=watch Beobachtungsliste] setzen. Dort ist Platz für JWP-Angelegenheiten, aber gerne auch für Unterhaltungen und Diskussionen über andere Themen.
+* Andere Seiten, die du ebenfalls auf deine Beobachtungsliste setzen kannst, sind:<br />[[Wikipedia:Jungwikipedianer/Bilderwettbewerb|Bilderwettbewerb]], [[Wikipedia:Jungwikipedianer/Artikel des Monats|Artikel des Monats]], [[Wikipedia:Jungwikipedianer/Review|Review]], [[Wikipedia:Jungwikipedianer/Artikelwerkstatt|Artikelwerkstatt]], [[Wikipedia:Jungwikipedianer/Mängelbekämpfung|Mängelbekämpfung]], [[Wikipedia:Jungwikipedianer/Aufnahme|Aufnahme]], [[Wikipedia:Jungwikipedianer/Abstimmung|interne Abstimmungen]] und [[Wikipedia:Jungwikipedianer/Regelwerk|das Regelwerk]]
+* [[Wikipedia:Jungwikipedianer/Chat|Chat]]: Die JWP haben einen eigenen [[Slack (Software)|Slack]]-Channel zur entspannten Unterhaltung oder um bequem diskutieren zu können.
+* Wenn du auf deiner Benutzerseite zeigen möchtest, dass du Jungwikipedianer bist, stehen dir eine [[Benutzer:Jungwikipedianer/Vorlage/Mitglied|Babelvorlage]] und eine [[Benutzer:Jungwikipedianer/Vorlage/Mitglied-Infoleiste|Infoleiste]] zur Verfügung.
+* Wenn du möchtest, kannst du dich außerdem in die [[Wikipedia:Jungwikipedianer/JWP-Karte|JWP-Karte]] eintragen.
+* Um andere auf uns aufmerksam zu machen, kannst du in den Einstellungen auf der ersten Seite im Feld ''Signatur'' folgendes einfügen: <nowiki>[[Benutzer:<dein Benutzername>|<dein Benutzername>]] ([[Benutzer Diskussion:<dein Benutzername>|Diskussion]]) • ''[[Wikipedia:Jungwikipedianer|Mitglied der Jungwikipedianer]]''</nowiki>
+Und natürlich gilt: Nichts ist unveränderlich; wenn du Ideen oder Anregungen hast: Nur raus damit! It’s a wiki!
+
+–[[Benutzer:DiskoDieter|𝕯𝖎𝖘𝖐𝖔]][[Benutzer Diskussion:DiskoDieter|𝕯𝖎𝖊𝖙𝖊𝖗]] • [[Wikipedia:Jungwikipedianer|𝕵𝖂𝕻]] 11:31, 7. Mär. 2021 (CET)
+</div>
+{{nicht archivieren}}
+
+== Auszeichnung zum [[WP:WBW/A|Wartungsbausteinwettbewerb]] ==
+
+{{Wikipedia:Wartungsbausteinwettbewerb/Vorlage Auszeichnung|Teammitglieder=[[Benutzer:Kazanlak Dani|Kazanlak Dani]], [[Benutzer:Manticoco|Manticoco]]|Benutzername=Lars2019|Artikelanzahl=158|Gesamtwertung=8.|Team=x|Datum=Frühling 2021|Signatur=[[Benutzer:Gripweed|Gripweed]] ([[Benutzer Diskussion:Gripweed|Diskussion]])}}
+
+== Auszeichnung zum [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2021|Wartungsbausteinwettbewerb im Sommer 2021]] ==
+
+{{Wikipedia:Wartungsbausteinwettbewerb/Vorlage Auszeichnung|Teammitglieder=[[Benutzer:Morneo06|Morneo06]], [[Benutzer:DiskoDieter|DiskoDieter]]|Benutzername=Lars2019|Artikelanzahl=40|Gesamtwertung=10.|Team=x|Datum=Sommer 2021|Signatur=[[Benutzer:HvW|Harro]] ([[Benutzer Diskussion:HvW|Diskussion]])}}

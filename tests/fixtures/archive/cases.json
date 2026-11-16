@@ -1,0 +1,2379 @@
+[
+ {
+  "project": "dewikipedia",
+  "title": "Wikipedia:Fragen zur Wikipedia",
+  "why": "week variable, timeout, two targets",
+  "file": "dewikipedia__Wikipedia_Fragen_zur_Wikipedia.wiki",
+  "now": "2026-11-16T22:25:30",
+  "revid": 272224021,
+  "lastEditTime": "2026-11-16T21:13:34Z",
+  "lastUser": "Guardian of Arcadia",
+  "source": "https://de.wikipedia.org/w/index.php?oldid=272224021",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Hat [[Jimmy Wales|Jimbo]] wirklich …",
+     "firstAge": 9.35,
+     "signatures": 18,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 45",
+     "mark": ""
+    },
+    {
+     "headline": ".pdff, .htmll usw.",
+     "firstAge": 8.08,
+     "signatures": 16,
+     "resolvedAge": 0.05,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 45",
+     "mark": "resolved"
+    },
+    {
+     "headline": "Karten-Update durch KI",
+     "firstAge": 5.51,
+     "signatures": 18,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Frage zu Zugpferden, mit Wikidata-Bezug",
+     "firstAge": 5.35,
+     "signatures": 5,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Aktualisierung Tabelle Übernachtungszahlen",
+     "firstAge": 4.27,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Darf alles, was bei Munzinger steht, auch in der Wikipedia stehen?",
+     "firstAge": 4.17,
+     "signatures": 7,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Test-Wikipedia",
+     "firstAge": 3.59,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Einbinden von Medien: Umschreiben der Parameter: ''File'' zu ''Datei'' und ''thumb'' zu ''mini ''",
+     "firstAge": 3.53,
+     "signatures": 11,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Die Authentifizierung war erfolgreich...",
+     "firstAge": 3.34,
+     "signatures": 5,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46",
+     "mark": ""
+    },
+    {
+     "headline": "Warum ist diese Seite unsicher?",
+     "firstAge": 0.58,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 47",
+     "mark": ""
+    },
+    {
+     "headline": "Grafik-Bug in MS Edge",
+     "firstAge": 0.57,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 47",
+     "mark": ""
+    },
+    {
+     "headline": "Darstellungsfehler Captcha",
+     "firstAge": 0.31,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 47",
+     "mark": ""
+    },
+    {
+     "headline": "Aktualisierung der Beobachtungsliste langsamer",
+     "firstAge": 0.06,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 47",
+     "mark": ""
+    }
+   ],
+   "editComments": [
+    "Archiviere 1 Abschnitt von [[Wikipedia:Fragen zur Wikipedia]] (ab Abschnitt [[Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 45#Hat_Jimbo_wirklich_…|Hat_Jimbo_wirklich_…]])",
+    "Archiviere 2 Abschnitte von [[Wikipedia:Fragen zur Wikipedia]] (ab Abschnitt [[Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46#Frage_zu_Zugpferden,_mit_Wikidata-Bezug|Frage_zu_Zugpferden,_mit_Wikidata-Bezug]])",
+    "Archiviere 3 Abschnitte: 1 nach [[Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 45]], 2 nach [[Wikipedia:Fragen zur Wikipedia/Archiv/2026/Woche 46]] - letzte Bearbeitung: [[:User:Guardian of Arcadia|Guardian of Arcadia]], 2026-11-16 22:13"
+   ],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 13,
+   "numberToArchive": 3
+  }
+ },
+ {
+  "project": "dewikipedia",
+  "title": "Benutzer Diskussion:Lars2019",
+  "why": "ALTER=0, ((Quartal:##)), timeout 60",
+  "file": "dewikipedia__Benutzer_Diskussion_Lars2019.wiki",
+  "now": "2026-11-16T22:25:30",
+  "revid": 272171111,
+  "lastEditTime": "2026-11-15T03:11:11Z",
+  "lastUser": "SpBot",
+  "source": "https://de.wikipedia.org/w/index.php?oldid=272171111",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Willkommen",
+     "firstAge": 2080.5,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:Lars2019/Archiv/2021/01",
+     "mark": ""
+    },
+    {
+     "headline": "Auszeichnung zum [[WP:WBW/A|Wartungsbausteinwettbewerb]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:Lars2019/Archiv/2026/04",
+     "mark": ""
+    },
+    {
+     "headline": "Auszeichnung zum [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2021|Wartungsbausteinwettbewerb im Sommer 2021]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:Lars2019/Archiv/2026/04",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 3,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "dewikipedia",
+  "title": "Benutzer Diskussion:ElBe",
+  "why": "three targets, one archive is a redirect to another subpage",
+  "file": "dewikipedia__Benutzer_Diskussion_ElBe.wiki",
+  "now": "2026-11-16T22:25:30",
+  "revid": 271834780,
+  "lastEditTime": "2026-11-02T14:58:11Z",
+  "lastUser": "MediaWiki message delivery",
+  "source": "https://de.wikipedia.org/w/index.php?oldid=271834780",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Nochmals zu dem Botedit",
+     "firstAge": 947.52,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Erinnerung: Stimm jetzt über die Mitglieder des ersten U4C ab",
+     "firstAge": 927.92,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigung am 2.5.2024",
+     "firstAge": 927.73,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigungen am 8.6.2024",
+     "firstAge": 890.73,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigung am 20.6.2024",
+     "firstAge": 878.73,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Kleine Umfrage: Wie findest du die Technische-Wünsche-Reparaturhilfe?",
+     "firstAge": 872.37,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (7. Juli 2024)",
+     "firstAge": 862.38,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "[[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2024|Wartungsbausteinwettbewerb Sommer 2024]]",
+     "firstAge": 828.02,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (17. August 2024)",
+     "firstAge": 821.61,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (8. September 2024)",
+     "firstAge": 799.27,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (7. Oktober 2024)",
+     "firstAge": 770.59,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2024|Wartungsbausteinwettbewerb Herbst 2024]]",
+     "firstAge": 751.41,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[WP:Jungwikipedianer|Jungwikipedianer]] (2. November 2024)",
+     "firstAge": 744.2,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "[[:Kategorie:Benutzer:ElBe Bot]]",
+     "firstAge": 737.95,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": ""
+    },
+    {
+     "headline": "Technische Wünsche: Tschüss, hallo und eine neue Umfrage",
+     "firstAge": 735.46,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigungen am 15.11.2024",
+     "firstAge": 730.77,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigungen am 18.11.2024",
+     "firstAge": 727.77,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Umfrage Technische Wünsche: Feedback zu den Wahloptionen bis 24.11.",
+     "firstAge": 727.27,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Abstimmen und weitersagen: Die Umfrage Technische Wünsche läuft!",
+     "firstAge": 720.57,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (7. Dezember 2024)",
+     "firstAge": 709.01,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2024",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (5. Januar 2025)",
+     "firstAge": 680.42,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2025|Wartungsbausteinwettbewerb Winter 2025]]",
+     "firstAge": 676.29,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (1. Februar 2025)",
+     "firstAge": 653.14,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung zum [[Wikipedia:Jungwikipedianer/Treffen/2025-I|JWP-Treffen im Mai]]",
+     "firstAge": 603.52,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (9. April 2025)",
+     "firstAge": 586.64,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Frühling 2025|Wartungsbausteinwettbewerb Frühling 2025]]",
+     "firstAge": 577.06,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (9. Mai 2025)",
+     "firstAge": 556.25,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigungen am 10.5.2025",
+     "firstAge": 554.73,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "neue Bestätigung am 11.5.2025",
+     "firstAge": 553.73,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (10. Juni 2025)",
+     "firstAge": 524.35,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Technische-Wünsche-Treff am 16. Juli: Deine Wünsche zu Einzelnachweisen",
+     "firstAge": 509.47,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (5. Juli 2025)",
+     "firstAge": 499.14,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2025|Wartungsbausteinwettbewerb Sommer 2025]]",
+     "firstAge": 498.49,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Wir würden gerne von dir über deine Erfahrungen mit temporären Konten hören.",
+     "firstAge": 446.96,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Technische Wünsche – Subreferenzen kommen",
+     "firstAge": 424.32,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung zum JWP-Treffen in Fürth: 21.–23. November!",
+     "firstAge": 386.5,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (27. Oktober 2025)",
+     "firstAge": 385.13,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2025|Wartungsbausteinwettbewerb Herbst 2025]]",
+     "firstAge": 380.13,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (3. November 2025)",
+     "firstAge": 378.04,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2025",
+     "mark": "archive"
+    },
+    {
+     "headline": "Wikimedia Hackathon Northwestern Europe 2026",
+     "firstAge": 308.56,
+     "signatures": 3,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": "archive"
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (27. Januar 2026)",
+     "firstAge": 293.17,
+     "signatures": 2,
+     "resolvedAge": 264.07,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": "archive"
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2026|Wartungsbausteinwettbewerb Winter 2026]]",
+     "firstAge": 290.34,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Wikiläum",
+     "firstAge": 264.48,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Auszeichnung zum [[Wikipedia:Wartungsbausteinwettbewerb/Winter 2026|Wartungsbausteinwettbewerb Winter 2026]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:Jungwikipedianer|Jungwikipedianer]] (9. März 2026)",
+     "firstAge": 252.9,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Frühling 2026|Wartungsbausteinwettbewerb Frühling 2026]]",
+     "firstAge": 205.06,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Möglicherweise bist du bei der U4C-Wahl wahlberechtigt!",
+     "firstAge": 180.17,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (7. Juni 2026)",
+     "firstAge": 162.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (5. Juli 2026)",
+     "firstAge": 134.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Happy Birthday",
+     "firstAge": 131.16,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:Wartungsbausteinwettbewerb/Sommer 2026|Wartungsbausteinwettbewerb Sommer 2026]]",
+     "firstAge": 111.17,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (2. August 2026)",
+     "firstAge": 106.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (9. August 2026)",
+     "firstAge": 99.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Technische Wünsche: News und Einladung zum Nutzungstest",
+     "firstAge": 73.3,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (6. September 2026)",
+     "firstAge": 71.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:JWP/Wettbewerbe/Artikelwettbewerb 2026|JWP-Artikelwettbewerb 2026]]",
+     "firstAge": 69.33,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (4. Oktober 2026)",
+     "firstAge": 43.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Technische-Wünsche-Wunschupdate",
+     "firstAge": 31.55,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Newsletter der [[Wikipedia:JWP|Jungwikipedianer]] (1. November 2026)",
+     "firstAge": 15.89,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Einladung für den [[Wikipedia:Wartungsbausteinwettbewerb/Herbst 2026|Wartungsbausteinwettbewerb Herbst 2026]]",
+     "firstAge": 14.31,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:ElBe/Archiv/2026",
+     "mark": ""
+    }
+   ],
+   "editComments": [
+    "Archiviere 19 Abschnitte von [[Benutzer Diskussion:ElBe]] (ab Abschnitt [[Benutzer Diskussion:ElBe/Archiv/2024#Nochmals_zu_dem_Botedit|Nochmals_zu_dem_Botedit]])",
+    "Archiviere 19 Abschnitte von [[Benutzer Diskussion:ElBe]] (ab Abschnitt [[Benutzer Diskussion:ElBe/Archiv/2025#Newsletter_der_Jungwikipedianer_(5._Januar_2025)|Newsletter_der_Jungwikipedianer_(5._Januar_2025)]])",
+    "Archiviere 2 Abschnitte von [[Benutzer Diskussion:ElBe]] (ab Abschnitt [[Benutzer Diskussion:ElBe/Archiv/2026#Wikimedia_Hackathon_Northwestern_Europe_2026|Wikimedia_Hackathon_Northwestern_Europe_2026]])",
+    "Archiviere 40 Abschnitte: 19 nach [[Benutzer Diskussion:ElBe/Archiv/2024]], 19 nach [[Benutzer Diskussion:ElBe/Archiv/2025]], 2 nach [[Benutzer Diskussion:ElBe/Archiv/2026]] - letzte Bearbeitung: [[:User:MediaWiki message delivery|MediaWiki message delivery]], 2026-11-02 15:58"
+   ],
+   "redirects": {
+    "Benutzer Diskussion:ElBe/Archiv/2025": "Benutzer Diskussion:ElBe/Archiv/2026"
+   },
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 60,
+   "numberToArchive": 40
+  }
+ },
+ {
+  "project": "dewikipedia",
+  "title": "Wikipedia:Bibliotheksrecherche/Anfragen",
+  "why": "((Quartal:I))",
+  "file": "dewikipedia__Wikipedia_Bibliotheksrecherche_Anfragen.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 272223666,
+  "lastEditTime": "2026-11-16T20:58:05Z",
+  "lastUser": "Drahreg01",
+  "source": "https://de.wikipedia.org/w/index.php?oldid=272223666",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Loyal bei [[Javelin_Medium_Antiarmor_Weapon_System]]",
+     "firstAge": 6.39,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV",
+     "mark": ""
+    },
+    {
+     "headline": "Geburtsdatum Mehringer-Einsle, Gertrud",
+     "firstAge": 2.51,
+     "signatures": 3,
+     "resolvedAge": 1.3,
+     "target": "Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV",
+     "mark": "archive"
+    },
+    {
+     "headline": "Wunderschlitten im Eiskanal – Die Engelberger Bobgeschichte",
+     "firstAge": 1.27,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV",
+     "mark": ""
+    },
+    {
+     "headline": "Buchbesprechung hinter Bezahlschranke",
+     "firstAge": 1.26,
+     "signatures": 3,
+     "resolvedAge": 1.23,
+     "target": "Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV",
+     "mark": "archive"
+    },
+    {
+     "headline": "Helga (Rezension)",
+     "firstAge": 0.43,
+     "signatures": 11,
+     "resolvedAge": 0.06,
+     "target": "Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV",
+     "mark": "resolved"
+    },
+    {
+     "headline": "Artikel zu [[sus scrofa]] im Journal  Mammal Research",
+     "firstAge": 0.41,
+     "signatures": 3,
+     "resolvedAge": 0.38,
+     "target": "Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV",
+     "mark": "resolved"
+    }
+   ],
+   "editComments": [
+    "Archiviere 2 Abschnitte von [[Wikipedia:Bibliotheksrecherche/Anfragen]] (ab Abschnitt [[Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV#Geburtsdatum_Mehringer-Einsle,_Gertrud|Geburtsdatum_Mehringer-Einsle,_Gertrud]])",
+    "Archiviere 2 Abschnitte: 2 nach [[Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV]] (ab Abschnitt [[Wikipedia:Bibliotheksrecherche/Anfragen/Archiv/2026/IV#Geburtsdatum_Mehringer-Einsle,_Gertrud|Geburtsdatum_Mehringer-Einsle,_Gertrud]]) - letzte Bearbeitung: [[:User:Drahreg01|Drahreg01]], 2026-11-16 21:58"
+   ],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 6,
+   "numberToArchive": 2
+  }
+ },
+ {
+  "project": "dewikipedia",
+  "title": "Benutzer Diskussion:NatiSythen",
+  "why": "((Monat:Kurz)), timeout",
+  "file": "dewikipedia__Benutzer_Diskussion_NatiSythen.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 272171056,
+  "lastEditTime": "2026-11-15T03:08:24Z",
+  "lastUser": "SpBot",
+  "source": "https://de.wikipedia.org/w/index.php?oldid=272171056",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Einladung zum GLAM-Treffen am 26. und 27. März 2022",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/AddF_2022-02-28]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:Ruhrgebiet#78. Treffen am 2. April 2022 in Herne]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/BKN_2022-03-21]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/SFB933_2022-04-25]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/IMD_2022-05-16]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/Digitaltag_2022]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/EST 2022-06-13]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:Ruhrgebiet#79. Treffen am 3. September 2022 in Dortmund]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/WLM_2022-09-19]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "Stammtisch in Münster am Samstag, 12. November 2022",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/WH 2022-10-17]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_hybrid2022/]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/WH 2022-11-14]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/CBA 2023-02-13]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/Belvedere 2023-03-13]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "Einladung zum [[WP:Wuppertal|Stammtisch Wuppertal]] am 10. Juni 2023",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "Wikipedia-Aktuelles (37. Kalenderwoche)",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "Wikipedia-Aktuelles (42. Kalenderwoche)",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/SORB 2024-01-29]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:Ruhrgebiet#83. Treffen am Samstag, den 23. März 2024 in Hörde]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/MKSN 2024-02-19]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/Volkskundemuseum Wien 2024-03-18|GLAMdigital Volkskundemuseum Wien 2024-03-18]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM_digital/WLD1 2024-04-29]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/WLD2 2024-05-13]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/WLD3 2024-06-03]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:GLAM/GLAM digital/WLLG 2024-10-21]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "Einladung zur [[Wikipedia:Wikipedianische KulTour/Schloss Tratzberg 2025|Wikipedianischen KulTour zum Schloss Tratzberg in Jenbach (Tirol)]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "Erinnerung an die [[Wikipedia:Wikipedianische KulTour/Schloss Tratzberg 2025|Wikipedianischen KulTour zum Schloss Tratzberg in Jenbach (Tirol)]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wikipedia:Ruhrgebiet#85. Treffen am Samstag, den 21. Februar 2026 in Dortmund]]",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Benutzer Diskussion:NatiSythen/Archiv/2026/Nov",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 30,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "dewikipedia",
+  "title": "Portal:Luftfahrt/Überarbeiten",
+  "why": "EBENE=3",
+  "file": "dewikipedia__Portal_Luftfahrt_Überarbeiten.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 270149917,
+  "lastEditTime": "2026-09-01T15:23:23Z",
+  "lastUser": "Adtonko",
+  "source": "https://de.wikipedia.org/w/index.php?oldid=270149917",
+  "expected": {
+   "rows": [
+    {
+     "headline": "[[Seventh Air Force]]",
+     "firstAge": 2334.51,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Kritisches Triebwerk]]",
+     "firstAge": 2186.35,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Liste der Flughäfen in Indien]]",
+     "firstAge": 335.59,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Militärflugplatz Lachta]]",
+     "firstAge": 76.26,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Militärflugplatz Marinowka]]",
+     "firstAge": 76.26,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Flughafen Kirowsk-Apatity]]",
+     "firstAge": 76.25,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Flughafen Chibini]]",
+     "firstAge": 76.25,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "[[Luftwaffenbasis Montschegorsk]]",
+     "firstAge": 76.25,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Portal:Luftfahrt/Überarbeiten/Archiv",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 8,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "commons",
+  "title": "Commons:สภากาแฟ",
+  "why": "((half-year:i)), non-latin title",
+  "file": "commons__Commons_สภากาแฟ.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 1301389874,
+  "lastEditTime": "2026-11-15T03:07:17Z",
+  "lastUser": "SpBot",
+  "source": "https://commons.wikimedia.org/w/index.php?oldid=1301389874",
+  "expected": {
+   "rows": [
+    {
+     "headline": "ขอความช่วยเหลือเรื่อง...",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Commons:สภากาแฟ/Archive/2026/ii",
+     "mark": ""
+    },
+    {
+     "headline": "<span lang=\"en\" dir=\"ltr\" class=\"mw-content-ltr\">Wikimania 2023 Welcoming Program Submissions</span>",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Commons:สภากาแฟ/Archive/2026/ii",
+     "mark": ""
+    },
+    {
+     "headline": "Reusing references: Can we look over your shoulder?",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Commons:สภากาแฟ/Archive/2026/ii",
+     "mark": ""
+    },
+    {
+     "headline": "วิกิของคุณจะอยู่ในโหมดอ่านอย่างเดียวเท่านั้นในเร็ว ๆ นี้",
+     "firstAge": 21.35,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Commons:สภากาแฟ/Archive/2026/ii",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 4,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "commons",
+  "title": "User talk:Gamemaster669",
+  "why": "relative target '/Archiv' -> main namespace, refused",
+  "file": "commons__User_talk_Gamemaster669.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 600573037,
+  "lastEditTime": "2021-10-20T10:17:00Z",
+  "lastUser": "Matutinho",
+  "source": "https://commons.wikimedia.org/w/index.php?oldid=600573037",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Kategorisierungen",
+     "firstAge": 4731.27,
+     "signatures": 7,
+     "resolvedAge": 2562.02,
+     "target": "/Archiv",
+     "mark": "archive"
+    },
+    {
+     "headline": "{{Autotranslate|1=File:Haus zum Torggel Berneck.jpeg|base=Image source/heading}}",
+     "firstAge": 4167.16,
+     "signatures": 2,
+     "resolvedAge": 2562.02,
+     "target": "/Archiv",
+     "mark": "archive"
+    },
+    {
+     "headline": "{{Autotranslate|1=File:Littenbach zusammenfluss Fallbach Sulzbächli.jpg|base=Image license/heading}}",
+     "firstAge": 2562.02,
+     "signatures": 2,
+     "resolvedAge": 2562.02,
+     "target": "/Archiv",
+     "mark": "archive"
+    },
+    {
+     "headline": "[[:Category:Katholische_Pfarrkirche_Unserer_Lieben_Frau_(Berneck)]]",
+     "firstAge": 4140.95,
+     "signatures": 2,
+     "resolvedAge": 2562.02,
+     "target": "/Archiv",
+     "mark": "archive"
+    },
+    {
+     "headline": "{{Autotranslate|1=File:Katholische Kirche Berneck Ostansicht.jpg|base=Image license/heading}}",
+     "firstAge": 4140.51,
+     "signatures": 2,
+     "resolvedAge": 2562.02,
+     "target": "/Archiv",
+     "mark": "archive"
+    },
+    {
+     "headline": "[[:User:Beckenrandschwimmer]]",
+     "firstAge": 2575.63,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "/Archiv",
+     "mark": ""
+    },
+    {
+     "headline": "File:Schwörfinger",
+     "firstAge": 1853.51,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "/Archiv",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": true,
+   "error": null,
+   "numberOfSections": 7,
+   "numberToArchive": 5
+  }
+ },
+ {
+  "project": "enwikisource",
+  "title": "Wikisource:Copyright discussions",
+  "why": "TIMECOMPARE=resolved",
+  "file": "enwikisource__Wikisource_Copyright_discussions.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 16464319,
+  "lastEditTime": "2026-11-15T03:06:11Z",
+  "lastUser": "SpBot",
+  "source": "https://en.wikisource.org/w/index.php?oldid=16464319",
+  "expected": {
+   "rows": [
+    {
+     "headline": "This editorial",
+     "firstAge": 61.05,
+     "signatures": 4,
+     "resolvedAge": 7.31,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": "archive"
+    },
+    {
+     "headline": "[[Index:The Netsilik Eskimos (1931).djvu]]",
+     "firstAge": 59.29,
+     "signatures": 8,
+     "resolvedAge": null,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Russia and Ourselves]]",
+     "firstAge": 50.67,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Index:Last and First Men, by Olaf Stapledon.pdf]]",
+     "firstAge": 47.75,
+     "signatures": 32,
+     "resolvedAge": null,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Index:Remembrance of Things Past, volume 1.pdf]]",
+     "firstAge": 21.96,
+     "signatures": 3,
+     "resolvedAge": 7.32,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": "archive"
+    },
+    {
+     "headline": "[[Index:The Century Of Life.pdf]]",
+     "firstAge": 17.71,
+     "signatures": 2,
+     "resolvedAge": 2.27,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": "resolved"
+    },
+    {
+     "headline": "Decision by pseudo-judicial international body",
+     "firstAge": 11.11,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Index:Ka-Sngithiang-I-Ne-Ka-Kot-Pule-Skul-Pdeng-Klass-5-6-Ed-1st.pdf]]",
+     "firstAge": 9.84,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Letters of Helena Roerich",
+     "firstAge": 8.06,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikisource:Copyright discussions/Archives/2026",
+     "mark": ""
+    }
+   ],
+   "editComments": [
+    "archiving 2 sections from [[Wikisource:Copyright discussions]] (after section [[Wikisource:Copyright discussions/Archives/2026#This_editorial|This_editorial]])",
+    "archive 2 sections: 2 to [[Wikisource:Copyright discussions/Archives/2026]] (after section [[Wikisource:Copyright discussions/Archives/2026#This_editorial|This_editorial]]) - previous edit: [[:User:SpBot|SpBot]], 2026-11-15 03:06"
+   ],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 9,
+   "numberToArchive": 2
+  }
+ },
+ {
+  "project": "incubator",
+  "title": "Incubator:Requests for deletion",
+  "why": "incubator localization",
+  "file": "incubator__Incubator_Requests_for_deletion.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 7402531,
+  "lastEditTime": "2026-11-15T03:08:05Z",
+  "lastUser": "SpBot",
+  "source": "https://incubator.wikimedia.org/w/index.php?oldid=7402531",
+  "expected": {
+   "rows": [
+    {
+     "headline": "[[Wt/grc]]",
+     "firstAge": 492.58,
+     "signatures": 10,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2025",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wp/atv]]",
+     "firstAge": 367.05,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2025",
+     "mark": ""
+    },
+    {
+     "headline": "Multiple projects",
+     "firstAge": 312.83,
+     "signatures": 12,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wp/ase]]",
+     "firstAge": 272.98,
+     "signatures": 16,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Wikinews test projects",
+     "firstAge": 230.21,
+     "signatures": 79,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wb/ary]], [[Wp/ars]], [[Wt/acm]], [[Wy/acm]], [[Wp/ayl]], [[Wq/ary]], [[Wp/afb]]",
+     "firstAge": 188.43,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wp/xzh]]",
+     "firstAge": 76.72,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wt/mxi]]",
+     "firstAge": 76.72,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "Tungusic Wiktionaries",
+     "firstAge": 75.2,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wb/udm]]",
+     "firstAge": 73.31,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    },
+    {
+     "headline": "[[Wp/mjd]]",
+     "firstAge": 20.11,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Incubator:Requests for deletions/Archive/2026",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 11,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "itwikipedia",
+  "title": "Discussioni progetto:Coordinamento/Connettività",
+  "why": "it localization, Italian signatures",
+  "file": "itwikipedia__Discussioni_progetto_Coordinamento_Connettività.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 153402614,
+  "lastEditTime": "2026-11-16T19:26:51Z",
+  "lastUser": "Giuseppe Masino",
+  "source": "https://it.wikipedia.org/w/index.php?oldid=153402614",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Serie di spostamenti di disambigue",
+     "firstAge": 52.57,
+     "signatures": 19,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/09",
+     "mark": ""
+    },
+    {
+     "headline": "Ancora sui redirect da grafia errata",
+     "firstAge": 43.23,
+     "signatures": 25,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Marsala",
+     "firstAge": 41.28,
+     "signatures": 14,
+     "resolvedAge": 7.51,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": "archive"
+    },
+    {
+     "headline": "Disambiguanti di episodi TV",
+     "firstAge": 37.19,
+     "signatures": 12,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Gallipoli",
+     "firstAge": 37.06,
+     "signatures": 11,
+     "resolvedAge": 7.51,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": "archive"
+    },
+    {
+     "headline": "Ragusa",
+     "firstAge": 37.05,
+     "signatures": 12,
+     "resolvedAge": 7.51,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": "archive"
+    },
+    {
+     "headline": "Rinvii da utente/sandbox a ns0",
+     "firstAge": 36.57,
+     "signatures": 15,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Asiago",
+     "firstAge": 36.46,
+     "signatures": 13,
+     "resolvedAge": 7.51,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": "archive"
+    },
+    {
+     "headline": "Conte Dracula",
+     "firstAge": 35.4,
+     "signatures": 18,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Disagio",
+     "firstAge": 35.14,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Polittico",
+     "firstAge": 29.27,
+     "signatures": 11,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Petardo",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Bozza:Padiglione degli Stati Uniti",
+     "firstAge": 27.52,
+     "signatures": 7,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Le maiuscole disambiguano?",
+     "firstAge": 27.42,
+     "signatures": 9,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Nani Tedeschi",
+     "firstAge": 26.14,
+     "signatures": 17,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Loira",
+     "firstAge": 22.13,
+     "signatures": 26,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Kick",
+     "firstAge": 17.35,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Martelli",
+     "firstAge": 14.41,
+     "signatures": 6,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Anniversario della liberazione",
+     "firstAge": 13.45,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Dado",
+     "firstAge": 13.21,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Converso",
+     "firstAge": 12.46,
+     "signatures": 5,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Somec",
+     "firstAge": 12.23,
+     "signatures": 8,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Cavallino rampante",
+     "firstAge": 12.19,
+     "signatures": 13,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Opus",
+     "firstAge": 10.3,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Eliogabalo (disambigua)",
+     "firstAge": 10.22,
+     "signatures": 5,
+     "resolvedAge": 2.01,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": "resolved"
+    },
+    {
+     "headline": "Spostamento voce \"Pacchiana\"",
+     "firstAge": 9.54,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Redirect per disambiguare Palestina",
+     "firstAge": 9.4,
+     "signatures": 23,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Il Salvatore Esposito meno noto",
+     "firstAge": 9.03,
+     "signatures": 6,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Categoria:Redirect da orfanizzare",
+     "firstAge": 8.3,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Petah Tikva",
+     "firstAge": 6.34,
+     "signatures": 7,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Penisola araba",
+     "firstAge": 6.3,
+     "signatures": 9,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Art Brut",
+     "firstAge": 6.13,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Mover e AV",
+     "firstAge": 5.49,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Anima mia",
+     "firstAge": 5.46,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Pazza idea",
+     "firstAge": 5.46,
+     "signatures": 8,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Pazzo",
+     "firstAge": 5.42,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Disambiguanti strani per le compilation di Fabrizio De André",
+     "firstAge": 5.22,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Segnalazione: Disambiguante \"termine\"",
+     "firstAge": 5.05,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Quello che non ho",
+     "firstAge": 4.3,
+     "signatures": 7,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Fiume Sand Creek",
+     "firstAge": 3.46,
+     "signatures": 8,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Merendero",
+     "firstAge": 1.09,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Tomba degli Auguri",
+     "firstAge": 0.94,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Wari",
+     "firstAge": 0.42,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Desolazione (segnalazione)",
+     "firstAge": 0.11,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Riduzione della giornata lavorativa",
+     "firstAge": 0.08,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
+     "mark": ""
+    }
+   ],
+   "editComments": [
+    "archiviazione di 6 sezioni da [[Discussioni progetto:Coordinamento/Connettività]] (dopo la sezione [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10#Marsala|Marsala]])",
+    "archiviate 6 sezioni: 6 in [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10]] (dopo la sezione [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10#Marsala|Marsala]]) - modifica precedente: [[:User:Giuseppe Masino|Giuseppe Masino]], 2026-11-16 19:26"
+   ],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 45,
+   "numberToArchive": 6
+  }
+ },
+ {
+  "project": "jawikipedia",
+  "title": "ノート:Kaya (歌手)",
+  "why": "ja localization, target in main namespace",
+  "file": "jawikipedia__ノート_Kaya_歌手.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 99219574,
+  "lastEditTime": "2024-02-12T00:46:01Z",
+  "lastUser": "Isamit",
+  "source": "https://ja.wikipedia.org/w/index.php?oldid=99219574",
+  "expected": {
+   "rows": [
+    {
+     "headline": "肖像写真について",
+     "firstAge": 1977.92,
+     "signatures": 2,
+     "resolvedAge": 1008.9,
+     "target": "Kaya (歌手)/過去ログ/2021年",
+     "mark": "archive"
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": true,
+   "error": null,
+   "numberOfSections": 1,
+   "numberToArchive": 1
+  }
+ },
+ {
+  "project": "jawikipedia",
+  "title": "利用者‐会話:TSE 014",
+  "why": "template missing -> NoOptions",
+  "file": "jawikipedia__利用者_会話_TSE_014.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 76359591,
+  "lastEditTime": "2020-02-26T06:52:08Z",
+  "lastUser": "TSE 014",
+  "source": "https://ja.wikipedia.org/w/index.php?oldid=76359591",
+  "expected": {
+   "rows": [],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": "Main template not found."
+  }
+ },
+ {
+  "project": "meta",
+  "title": "Meta:Requests for deletion",
+  "why": "LEVEL=3, meta localization",
+  "file": "meta__Meta_Requests_for_deletion.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 31295939,
+  "lastEditTime": "2026-11-15T03:07:08Z",
+  "lastUser": "SpBot",
+  "source": "https://meta.wikimedia.org/w/index.php?oldid=31295939",
+  "expected": {
+   "rows": [
+    {
+     "headline": "MediaWiki:Checkuser-global-contributions-registered-user-tools",
+     "firstAge": 2.66,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Meta:Requests for deletion/Archives/2026",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 1,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "meta",
+  "title": "User talk:XXBlackburnXx",
+  "why": "AGE=0, ((quarter:I))",
+  "file": "meta__User_talk_XXBlackburnXx.wiki",
+  "now": "2026-11-16T22:26:30",
+  "revid": 31295946,
+  "lastEditTime": "2026-11-15T03:07:25Z",
+  "lastUser": "SpBot",
+  "source": "https://meta.wikimedia.org/w/index.php?oldid=31295946",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Tech News: 2026-43",
+     "firstAge": 28.33,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    },
+    {
+     "headline": "About [[zh:Wikipedia:傀儡調查/案件/XiaoFui]]",
+     "firstAge": 26.56,
+     "signatures": 11,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    },
+    {
+     "headline": "Global",
+     "firstAge": 25.03,
+     "signatures": 5,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    },
+    {
+     "headline": "Tech News: 2026-44",
+     "firstAge": 21.15,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    },
+    {
+     "headline": "Why did XXBlackburnXx ban me?",
+     "firstAge": 14.12,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    },
+    {
+     "headline": "Tech News: 2026-45",
+     "firstAge": 13.34,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    },
+    {
+     "headline": "Tech News: 2026-46",
+     "firstAge": 7.5,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "User talk:XXBlackburnXx/2026-IV",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 7,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "viwikipedia",
+  "title": "Thảo luận Thành viên:Veritas Sapientiae",
+  "why": "vi localization, ((quarter))",
+  "file": "viwikipedia__Thảo_luận_Thành_viên_Veritas_Sapientiae.wiki",
+  "now": "2026-11-16T22:27:30",
+  "revid": 75730065,
+  "lastEditTime": "2026-11-16T19:08:10Z",
+  "lastUser": "SpBot",
+  "source": "https://vi.wikipedia.org/w/index.php?oldid=75730065",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Thư mời tham gia thảo luận cộng đồng",
+     "firstAge": 0.0,
+     "signatures": 0,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Bản tin Kỹ thuật: Tuần 43-2026",
+     "firstAge": 28.33,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "LTA",
+     "firstAge": 23.31,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Bản tin Kỹ thuật: Tuần 44-2026",
+     "firstAge": 21.15,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Phân loại rối",
+     "firstAge": 17.35,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Thư mời tham gia biểu quyết chọn điều phối viên",
+     "firstAge": 15.66,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Bản tin Kỹ thuật: Tuần 45-2026",
+     "firstAge": 13.34,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Cấm tktt sửa trang thành viên",
+     "firstAge": 13.29,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Thảo luận Thành viên:AimiqaXerni",
+     "firstAge": 12.54,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "AimiqaXerni",
+     "firstAge": 11.52,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Ẩn Nội dung",
+     "firstAge": 10.52,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Bản tin Kỹ thuật: Tuần 46-2026",
+     "firstAge": 7.5,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Về biển cảnh báo bài viết [[Nghề làm tranh khắc gỗ dân gian Đông Hồ]]",
+     "firstAge": 1.81,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    },
+    {
+     "headline": "Khóa bài",
+     "firstAge": 0.68,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Thảo luận Thành viên:Veritas Sapientiae/Lưu trữ/2026 Lưu 4",
+     "mark": ""
+    }
+   ],
+   "editComments": [],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 14,
+   "numberToArchive": 0
+  }
+ },
+ {
+  "project": "wikidata",
+  "title": "Wikidata:Project chat",
+  "why": "many sections, ((month:##)), timeout",
+  "file": "wikidata__Wikidata_Project_chat.wiki",
+  "now": "2026-11-16T22:27:30",
+  "revid": 2570478830,
+  "lastEditTime": "2026-11-16T18:31:44Z",
+  "lastUser": "Infrastruktur",
+  "source": "https://www.wikidata.org/w/index.php?oldid=2570478830",
+  "expected": {
+   "rows": [
+    {
+     "headline": "Disagreement about image ([[Property:P18|P18]]) versus image of cosplay ([[Property:P13632|P13632]])",
+     "firstAge": 29.15,
+     "signatures": 26,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/10",
+     "mark": ""
+    },
+    {
+     "headline": "Proposal: mainpage improvements",
+     "firstAge": 14.49,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "labels for untranslated works - a candidate for mul?",
+     "firstAge": 13.53,
+     "signatures": 16,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "New character items for 12 works: linking them from {{P|P725}} and {{P|P161}}",
+     "firstAge": 12.28,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Should {{Q|178065}} be split into a building and an organisation?",
+     "firstAge": 10.54,
+     "signatures": 8,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Surnames and disambiguation pages",
+     "firstAge": 9.63,
+     "signatures": 6,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Possible duplicate or namesake? Camilla Treadwell (Q142033728) and Camille Treadwell (Q124660661)",
+     "firstAge": 9.53,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Authors with and without items",
+     "firstAge": 9.46,
+     "signatures": 5,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Modifications to property scheduled service destination including renaming",
+     "firstAge": 9.11,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Copyright status (P6216) of vibe-coded software?",
+     "firstAge": 8.63,
+     "signatures": 11,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "ODNB move",
+     "firstAge": 8.59,
+     "signatures": 7,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Full name of people accused of crime",
+     "firstAge": 8.43,
+     "signatures": 9,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Interior VS exterior shutters",
+     "firstAge": 8.14,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Wikidata weekly summary #757",
+     "firstAge": 7.27,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Non-championship races with {{P|P361}} a Formula One World Championship season",
+     "firstAge": 6.35,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Question About External Website Links on Wikidata",
+     "firstAge": 5.29,
+     "signatures": 12,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "November 2026 Wikimedia Café: the Newcomer homepage & Home experience",
+     "firstAge": 4.94,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Merge request",
+     "firstAge": 3.9,
+     "signatures": 2,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Identity review: Sita Achaya / Sita Acharya",
+     "firstAge": 3.41,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Warning on using \"refine date\" specifying a season",
+     "firstAge": 3.35,
+     "signatures": 3,
+     "resolvedAge": 0.28,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": "resolved"
+    },
+    {
+     "headline": "Versioning of engineering standards publications and SysML v2",
+     "firstAge": 3.19,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Ateş Kuan",
+     "firstAge": 2.78,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "نسب ذوي ميزان",
+     "firstAge": 2.11,
+     "signatures": 3,
+     "resolvedAge": 1.33,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": "archive"
+    },
+    {
+     "headline": "Item request: Versan Aljarrah and Black Swan Capitalist (conflict of interest disclosed)",
+     "firstAge": 1.87,
+     "signatures": 3,
+     "resolvedAge": 1.7,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": "archive"
+    },
+    {
+     "headline": "Notification for open RfD",
+     "firstAge": 1.34,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "cemetery complex",
+     "firstAge": 1.03,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "political positions of political parties in descriptions",
+     "firstAge": 0.71,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Review request: items for Teamhood and UAB Eylean (conflict of interest disclosed)",
+     "firstAge": 0.62,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Threshold for self promotion",
+     "firstAge": 0.46,
+     "signatures": 4,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Recoin",
+     "firstAge": 0.36,
+     "signatures": 3,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    },
+    {
+     "headline": "Wikidata weekly summary #758",
+     "firstAge": 0.26,
+     "signatures": 1,
+     "resolvedAge": null,
+     "target": "Wikidata:Project chat/Archive/2026/11",
+     "mark": ""
+    }
+   ],
+   "editComments": [
+    "archiving 8 sections from [[Wikidata:Project chat]] (after section [[Wikidata:Project chat/Archive/2026/11#Proposal:_mainpage_improvements|Proposal:_mainpage_improvements]])",
+    "archive 8 sections: 8 to [[Wikidata:Project chat/Archive/2026/11]] (after section [[Wikidata:Project chat/Archive/2026/11#Proposal:_mainpage_improvements|Proposal:_mainpage_improvements]]) - previous edit: [[:User:Infrastruktur|Infrastruktur]], 2026-11-16 18:31"
+   ],
+   "redirects": {},
+   "mainNamespaceRefused": false,
+   "error": null,
+   "numberOfSections": 31,
+   "numberToArchive": 8
+  }
+ }
+]
