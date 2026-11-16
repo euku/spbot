@@ -44,7 +44,7 @@ class Discussion:
         self.content             = ""     # content of disc/section
         self.firstContributionAge = 0.0    # How old is the discussion? in days
         self.lastContributionAge = 0.0     # How old is the last timestamp? in days
-        self.timestampClearedFlag= None    # The timestamp found in the clead template
+        self.timestampClearedFlag= None    # The timestamp of the newest resolved template (seconds since 1970), None if not resolved
         self.ageByResolvedTemplate = 0     # How long this discussion has a resolved flag in days. 0 if not resolved
         self.numberOfContributions = 0     # How many contributions were made to this discussion
         self.firstContribution   = None    # Date of the first contribution
@@ -148,6 +148,7 @@ class Discussion:
         agesList, timestampList = self._extractTimeStampsAndAges(bot, sectResolvedPattern, clearedContent, now)
         if agesList != []:
             self.ageByResolvedTemplate = min(agesList)
+            self.timestampClearedFlag = max(timestampList)  # the newest resolved template
 
     def _examineAllTimestamps(self, bot, clearedContent: str, now: datetime):
         agesList, timestampList = self._extractTimeStampsAndAges(bot, bot.localBot.timeStampRegEx, clearedContent, now)
@@ -178,7 +179,7 @@ class Discussion:
         """
         targetPath = wikiDoc.archivingTargetPattern
         bot = wikiDoc.bot
-        if wikiDoc.archivingUseTimeComparatorCleared:
+        if wikiDoc.archivingUseTimeComparatorCleared and self.timestampClearedFlag is not None:
             timestampToUse = localtime(self.timestampClearedFlag)
         else:
             timestampToUse = localtime(self.firstContribution)
@@ -586,11 +587,13 @@ class WikiDocument:
                 else:
                     self.headlineLevel   = 2
 
-                if self.bot.localBot.paramTimeComparator in optionsDict and optionsDict[self.bot.localBot.paramTimeComparator] != '':
-                    self.archivingUseTimeComparatorCleared = (optionsDict[self.bot.localBot.paramTimeComparator] != None
-                            and optionsDict[self.bot.localBot.paramTimeComparator] == self.bot.localBot.paramTimeComparatorCleared)
-                if self.bot.localBot.paramTimeComparator in optionsDict and optionsDict[self.bot.localBot.paramTimeComparator] != '':
-                    self.thresholdAgeByTimeout = float(optionsDict[self.bot.localBot.paramTimeComparator])
+                # Zeitvergleich=erledigt / timecompare=resolved: sort into the archive by the timestamp of the resolved template
+                timeComparator = optionsDict.get(self.bot.localBot.paramTimeComparator, '')
+                self.archivingUseTimeComparatorCleared = \
+                    timeComparator.lower() == self.bot.localBot.paramTimeComparatorCleared.lower()
+                timeout = optionsDict.get(self.bot.localBot.paramTimeout, '')
+                if timeout != '':
+                    self.thresholdAgeByTimeout = float(timeout)
             except KeyError as ke:
                 raise NoOptions()
             except ValueError:

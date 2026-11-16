@@ -27,7 +27,7 @@ class LocalBotKo(LocalBot):
         self.paramLevel = '단위'
         self.paramTimeComparator = '시간 비교'
         self.paramTimeComparatorCleared = '완료된 토론'
-        self.paramTimeComparator = '타임아웃'
+        self.paramTimeout = '타임아웃'
         #edit summaries/편집 요약
         self.archiveSumTargetS = "1개의 문단을 [[{sourcePage}]] 에서 가져옴"
         self.archiveSumTargetP = "{numOfSections}개의 문단을 [[{sourcePage}]] 에서 가져옴"

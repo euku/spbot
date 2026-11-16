@@ -282,3 +282,53 @@ def test_generate_report():
     assert "Number of sections: '''4'''" in doc.reportText
     assert "Number of sections to archive: '''1'''" in doc.reportText
     assert "[[Benutzer Diskussion:Test/Archiv/2026|&rarr;]]" in doc.reportText
+
+
+# ---------------------------------------------------------------- Zeitvergleich / timecompare
+
+CLEARED_PAGE = """{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'%s}}
+== Lang offen ==
+Frage --A 10:00, 20. Sep. 2026 (CEST)
+{{Erledigt|1=--A 10:00, 3. Okt. 2026 (CEST)}}
+:noch was --B 10:00, 1. Nov. 2026 (CET)
+{{Erledigt|1=--A 10:00, 2. Nov. 2026 (CET)}}
+== Ohne Erledigt ==
+Frage --A 10:00, 20. Sep. 2026 (CEST)
+"""
+
+
+@pytest.mark.parametrize("options, cleared, timeout", [
+    ("", False, 0),
+    ("|Zeitvergleich=erledigt", True, 0),
+    ("|Zeitvergleich = Erledigt ", True, 0),
+    ("|Zeitvergleich=", False, 0),
+    ("|Zeitvergleich=ältester", False, 0),
+    ("|Zeitvergleich=erledigt|Zeitbeschränkung=14", True, 14.0),
+    ("|Zeitbeschränkung=14", False, 14.0),
+])
+def test_find_options_time_comparator(options, cleared, timeout):
+    doc = makeDoc(CLEARED_PAGE % options)
+    doc.findOptions()
+    assert doc.archivingUseTimeComparatorCleared is cleared
+    assert doc.thresholdAgeByTimeout == timeout
+
+
+@pytest.mark.parametrize("options, expectedTargets", [
+    # default: oldest signature (September)
+    ("", {"Benutzer Diskussion:Test/Archiv/2026/09": 1}),
+    # Zeitvergleich=erledigt: newest {{Erledigt}} (November)
+    ("|Zeitvergleich=erledigt", {"Benutzer Diskussion:Test/Archiv/2026/11": 1}),
+    # a section without {{Erledigt}} (archived by timeout) falls back to the oldest signature
+    ("|Zeitvergleich=erledigt|Zeitbeschränkung=30", {"Benutzer Diskussion:Test/Archiv/2026/11": 1,
+                                                   "Benutzer Diskussion:Test/Archiv/2026/09": 1}),
+])
+def test_archiving_target_by_time_comparator(options, expectedTargets):
+    doc = prepared(CLEARED_PAGE % options)
+    assert doc.archiveJobCounterByTarget == expectedTargets
+
+
+def test_timecompare_resolved_english():
+    text = ("{{Autoarchive resolved section|age=1|archive=((FULLPAGENAME))/Archive/((year))-((month:##))|timecompare=resolved}}\n"
+            "== A ==\nq --A 10:00, 30 September 2026 (UTC)\n{{Section resolved|1=--A 10:00, 2 November 2026 (UTC)}}\n")
+    doc = prepared(text, bot=makeBot("meta"), title="Talk:Foo")
+    assert list(doc.archiveJobCounterByTarget) == ["Talk:Foo/Archive/2026-11"]

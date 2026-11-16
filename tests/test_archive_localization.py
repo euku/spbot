@@ -51,7 +51,8 @@ def test_local_bot_is_complete(projectId):
     for attr in ("timeStampRegEx", "optionsRegEx", "templDoNotArchive", "sectResolvedRegEx"):
         re.compile(getattr(lb, attr))
     for attr in ("archiveTemplateName", "headTemplate", "errorCategory", "errorText", "errorTextSummary",
-                 "paramAge", "paramArchive", "paramLevel", "paramTimeComparator",
+                 "paramAge", "paramArchive", "paramLevel", "paramTimeComparator", "paramTimeComparatorCleared",
+                 "paramTimeout",
                  "archiveSumTargetS", "archiveSumTargetP", "archiveSumOriginS", "archiveSumOriginP",
                  "archiveSumOriginMulti", "firstNewSectionInArchiveSummary", "archiveSumLastEdit",
                  "archiveOverallSummary", "sectResolved1P", "sectResolved2P"):
@@ -110,3 +111,10 @@ def test_en_timestamp_regex(signature):
     m = re.search(lb.timeStampRegEx, "--[[User:A|A]] " + signature)
     assert m is not None
     lb.convertMonthNameToNumber(m.group("MM"))
+
+
+@pytest.mark.parametrize("projectId", sorted(PROJECTS))
+def test_time_comparator_and_timeout_are_different_parameters(projectId):
+    lb = LocalBotFactory().createLocalBot(projectId)
+    assert lb.paramTimeComparator != lb.paramTimeout
+    assert "COMAPARE" not in lb.paramTimeComparator   # old typo

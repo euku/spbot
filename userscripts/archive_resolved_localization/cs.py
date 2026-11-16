@@ -26,9 +26,9 @@ class LocalBotCs(LocalBot):
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
-        self.paramTimeComparator = 'TIMECOMAPARE'
+        self.paramTimeComparator = 'TIMECOMPARE'
         self.paramTimeComparatorCleared = 'resolved'
-        self.paramTimeComparator = 'TIMEOUT'
+        self.paramTimeout = 'TIMEOUT'
         # edit summaries
         self.archiveSumTargetS = "archivuji 1 vlákno z [[{sourcePage}]]"
         self.archiveSumTargetP = "archivuji {numOfSections} vláken z [[{sourcePage}]]"

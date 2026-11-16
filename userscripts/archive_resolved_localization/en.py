@@ -29,9 +29,9 @@ class LocalBotEn(LocalBot):
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
-        self.paramTimeComparator = 'TIMECOMAPARE'
+        self.paramTimeComparator = 'TIMECOMPARE'
         self.paramTimeComparatorCleared = 'resolved'
-        self.paramTimeComparator = 'TIMEOUT'
+        self.paramTimeout = 'TIMEOUT'
         # edit summaries
         self.archiveSumTargetS = "archiving 1 section from [[{sourcePage}]]"
         self.archiveSumTargetP = "archiving {numOfSections} sections from [[{sourcePage}]]"

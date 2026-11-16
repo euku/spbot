@@ -25,9 +25,9 @@ class LocalBotJa(LocalBot):
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
-        self.paramTimeComparator = 'TIMECOMAPARE'
+        self.paramTimeComparator = 'TIMECOMPARE'
         self.paramTimeComparatorCleared = 'resolved'
-        self.paramTimeComparator = 'TIMEOUT'
+        self.paramTimeout = 'TIMEOUT'
         # edit summaries
         self.archiveSumTargetS = "[[{sourcePage}]] から節 1 個を過去ログ化"
         self.archiveSumTargetP = "[[{sourcePage}]] から節 {numOfSections} 件を過去ログ化"

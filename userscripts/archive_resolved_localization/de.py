@@ -35,7 +35,7 @@ class LocalBotDe(LocalBot):
         self.paramLevel = 'EBENE'
         self.paramTimeComparator = 'ZEITVERGLEICH'
         self.paramTimeComparatorCleared = 'erledigt'
-        self.paramTimeComparator = 'ZEITBESCHRÄNKUNG'
+        self.paramTimeout = 'ZEITBESCHRÄNKUNG'
         # edit summaries
         self.archiveSumTargetS = "Archiviere 1 Abschnitt von [[{sourcePage}]]"
         self.archiveSumTargetP = "Archiviere {numOfSections} Abschnitte von [[{sourcePage}]]"
