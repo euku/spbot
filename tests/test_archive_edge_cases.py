@@ -47,7 +47,8 @@ def assertNothingLost(doc):
 
 def balanced(text):
     return all(text.count(a) == text.count(b) for a, b in
-               [("<!--", "-->"), ("<nowiki>", "</nowiki>"), ("<pre>", "</pre>")])
+               [("<!--", "-->"), ("<nowiki>", "</nowiki>"), ("<pre>", "</pre>"),
+                ("<syntaxhighlight", "</syntaxhighlight>")])
 
 
 # ---------------------------------------------------------------- {{Erledigt}} hidden in markup
@@ -63,7 +64,6 @@ def test_resolved_template_in_markup_is_ignored(hidden):
     assert not isResolved("== A ==\nq %s\n%s\n" % (SIG, hidden % RESOLVED))
 
 
-@pytest.mark.xfail(strict=True, reason="removeCommentsAndOther only knows <nowiki>, <code>, <pre> without attributes, lower case")
 @pytest.mark.parametrize("hidden", [
     '<pre style="color:red">%s</pre>',
     '<syntaxhighlight lang="wikitext">%s</syntaxhighlight>',
@@ -73,6 +73,19 @@ def test_resolved_template_in_markup_is_ignored(hidden):
 ])
 def test_resolved_template_in_other_markup_is_ignored(hidden):
     assert not isResolved("== A ==\nq %s\n%s\n" % (SIG, hidden % RESOLVED))
+
+
+def test_unclosed_comment_hides_the_rest():
+    """MediaWiki hides everything after an unclosed <!--"""
+    doc = prepared("== A ==\nq %s\n<!-- %s\n== B ==\nx\n" % (SIG, RESOLVED))
+    assert sections(doc) == ["A"]
+    assert not doc.hasWorkToDo()
+
+
+def test_self_closing_nowiki_hides_nothing():
+    doc = prepared("== A ==\nq <nowiki/> %s\n%s\n<nowiki />\n== B ==\nb\n" % (SIG, RESOLVED))
+    assert sections(doc) == ["A", "B"]
+    assert doc.hasWorkToDo()
 
 
 def test_resolved_template_broken_by_nowiki_tag_is_ignored():
@@ -182,9 +195,9 @@ def test_text_after_last_section_is_archived_with_it():
     assert doc.modifiedText == OPTIONS
 
 
-@pytest.mark.xfail(strict=True, reason="divideIntoSlices works on the raw text: headings inside "
-                                       "<!-- -->, <nowiki> or <pre> split a section and the archiving cuts the markup apart")
-@pytest.mark.parametrize("open_, close", [("<!--", "-->"), ("<nowiki>", "</nowiki>"), ("<pre>", "</pre>")])
+@pytest.mark.parametrize("open_, close", [("<!--", "-->"), ("<nowiki>", "</nowiki>"), ("<pre>", "</pre>"),
+                                         ('<syntaxhighlight lang="wikitext">', "</syntaxhighlight>"),
+                                         ("<!--\n== Muster ==\n", "-->")])
 def test_heading_inside_markup_is_not_a_section(open_, close):
     body = "== A ==\nq %s\n%s\n== Vorlage ==\n%s\n%s\n== B ==\nb\n" % (SIG, open_, close, RESOLVED)
     doc = prepared(body)

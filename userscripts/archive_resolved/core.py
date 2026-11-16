@@ -12,6 +12,14 @@ from pywikibot import textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
 
+# Markup whose content MediaWiki does not parse: comments (an unclosed one hides the
+# rest of the page) and <nowiki>, <pre>, <code>, <syntaxhighlight>, <source> with any
+# attributes and in any case. Self-closing <nowiki/> does not hide anything.
+HIDDEN_MARKUP = re.compile(
+    r"<!--.*?(?:-->|\Z)"
+    r"|<(?P<tag>nowiki|pre|code|syntaxhighlight|source)(?:\s[^>]*)?(?<!/)>.*?</(?P=tag)\s*>",
+    re.IGNORECASE | re.DOTALL)
+
 #
 # Local exceptions
 #
@@ -259,10 +267,14 @@ class WikiDocument:
         p = re.compile(regex, re.IGNORECASE|re.M)
         # ... and iterate through it
         headlineIterator = p.finditer(self.originalText)
-        
+        # headlines inside comments, <nowiki>, <pre> etc. are no headlines
+        hiddenSpans = [m.span() for m in HIDDEN_MARKUP.finditer(self.originalText)]
+
         counter = 0
         possibleDiscs = []
         for singleHeadline in headlineIterator:
+            if any(start <= singleHeadline.start() < end for start, end in hiddenSpans):
+                continue
             possibleDiscs.append(Discussion(self.originPageName))
             possibleDiscs[counter].setTitleOffsetStart(singleHeadline.span()[0])
             possibleDiscs[counter].setContentOffsetStart(singleHeadline.span()[1])
@@ -552,10 +564,8 @@ class WikiDocument:
     
     @staticmethod
     def removeCommentsAndOther(originalText: str) -> str:
-        clearedContent = textlib.replaceExcept(originalText, r"(?s)<!\-\-.*?\-\->", "", [])
-        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<nowiki>.*?</nowiki>", "", [])
-        clearedContent = textlib.replaceExcept(clearedContent, r"(?s)<code>.*?</code>", "", [])
-        return textlib.replaceExcept(clearedContent, r"(?s)<pre>.*?</pre>", "", [])
+        """Removes comments, <nowiki>, <pre>, <code>, <syntaxhighlight> and <source> blocks."""
+        return HIDDEN_MARKUP.sub("", originalText)
 
     def findOptions(self):
         """
