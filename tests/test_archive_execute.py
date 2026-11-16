@@ -184,3 +184,19 @@ def test_robot_skips_excluded_pages():
     page = bot.site.page("Vorlage:Erledigt", PAGE)
     robot(bot)._runOnPage(page)
     assert bot.site.saved() == {}
+
+
+def test_robot_survives_unreadable_page():
+    """Regression: an error before the WikiDocument exists must not end in UnboundLocalError."""
+    bot = makeBot()
+    robot(bot)._runOnPage(bot.site.page("Benutzer Diskussion:Gibt es nicht"))
+    assert bot.site.saved() == {}
+
+
+def test_save_report_writes_utf8(tmp_path):
+    doc = makeDoc(PAGE)
+    doc.reportText = "== Bericht ==\nÄrger"
+    logFile = tmp_path / "archiv.log"
+    doc.saveReport(True, str(logFile))
+    doc.saveReport(False, str(logFile))
+    assert logFile.read_text(encoding="utf-8") == "== Bericht ==\nÄrger\n"

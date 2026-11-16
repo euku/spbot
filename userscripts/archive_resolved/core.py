@@ -334,11 +334,8 @@ class WikiDocument:
     def saveReport(self, saveLocalLogs: bool, localLogFilePath: str):
         if saveLocalLogs:
             pywikibot.output("Save local file ... ")
-            fd = open(localLogFilePath, 'a')
-            writeMe = self.reportText + "\n" 
-            writeMe = writeMe.encode('utf-8')
-            fd.write(writeMe)
-            fd.close()
+            with open(localLogFilePath, 'a', encoding='utf-8') as fd:
+                fd.write(self.reportText + "\n")
             pywikibot.output("Done.\n")
 
     def prepareArchiving(self):

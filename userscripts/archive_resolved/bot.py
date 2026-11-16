@@ -66,6 +66,7 @@ class ArchiveRobot:
         self.localLogFile = os.getcwd() + strftime(f"/logs/archiv-{currentProject}-%Y-%m-%d.log", localtime())
 
     def _runOnPage(self, page):
+        wdoc = None
         try:
             if page.title() in self.localBot.excludeList:
                 pywikibot.output("Skipping page: " + page.title())
@@ -90,13 +91,15 @@ class ArchiveRobot:
                 if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
                     # paste only, if there is no such message
                     page.put(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), summary=self.localBot.errorTextSummary, bot=False, minor=False, force=False)
-                wdoc.generateErrorReport()
-                wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
+                if wdoc is not None:
+                    wdoc.generateErrorReport()
+                    wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
         except:
             pywikibot.output("\n<<lightpurple>>Error at %s<<default>> skip page\n" % page.title())
             pywikibot.output("Unexpected error: " + str(traceback.format_exc()))
-            wdoc.generateErrorReport()
-            wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
+            if wdoc is not None:
+                wdoc.generateErrorReport()
+                wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
 
     def run(self):
         """
