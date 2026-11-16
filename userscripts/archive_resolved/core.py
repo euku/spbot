@@ -20,6 +20,9 @@ HIDDEN_MARKUP = re.compile(
     r"|<(?P<tag>nowiki|pre|code|syntaxhighlight|source)(?:\s[^>]*)?(?<!/)>.*?</(?P=tag)\s*>",
     re.IGNORECASE | re.DOTALL)
 
+# optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
+TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
+
 #
 # Local exceptions
 #
@@ -159,7 +162,7 @@ class Discussion:
 
     def _examineAllResolvedTemplate(self, bot, clearedContent: str, now: datetime):
         # Now examine if discussion has a "cleared" flag and
-        sectResolvedPattern = r"\{\{\s{0,50}" + bot.localBot.sectResolvedRegEx + r"\s{0,50}\|.*?" + bot.localBot.timeStampRegEx + r".*?\}\}"
+        sectResolvedPattern = r"\{\{\s{0,50}" + TEMPLATE_PREFIX + bot.localBot.sectResolvedRegEx + r"\s{0,50}\|.*?" + bot.localBot.timeStampRegEx + r".*?\}\}"
         agesList, timestampList = self._extractTimeStampsAndAges(bot, sectResolvedPattern, clearedContent, now)
         if agesList != []:
             self.ageByResolvedTemplate = min(agesList)
@@ -369,11 +372,16 @@ class WikiDocument:
             Substitutes the templates
         """
         # subst erledigt
-        old = re.compile(r"\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + r"\ {0,5}\|(?:1=)?([^}]*?" + self.bot.localBot.timeStampRegEx + r")\ *?\|(?:2=.*?)?([^}]*?)\ *\}\}", re.UNICODE | re.DOTALL)
-        originalText = textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved2P, ["comment", "nowiki"])
-        
-        old = re.compile(r"\{\{\ {0,5}" + self.bot.localBot.sectResolvedRegEx + r"\ {0,5}\|(?:1=)?([^}]*?[^}|*]?" + self.bot.localBot.timeStampRegEx + r")\ *?\}\}", re.UNICODE | re.DOTALL)
-        return textlib.replaceExcept(originalText, old, self.bot.localBot.sectResolved1P, ["comment", "nowiki"])
+        # group 1: signature with timestamp, groups 2-6: parts of the timestamp, group 7: 2nd parameter (reason)
+        lb = self.bot.localBot
+        start = r"\{\{\s*" + TEMPLATE_PREFIX + lb.sectResolvedRegEx + r"\s*\|(?:1=)?"
+        old = re.compile(start + r"([^}]*?" + lb.timeStampRegEx + r")\s*\|(?:2=)?([^}]*?)\s*\}\}", re.UNICODE | re.DOTALL)
+        # an empty 2nd parameter is treated like a missing one
+        withReason = lambda m: m.expand(lb.sectResolved2P if m.group(7).strip() else lb.sectResolved1P)
+        originalText = textlib.replaceExcept(originalText, old, withReason, ["comment", "nowiki"])
+
+        old = re.compile(start + r"([^}]*?[^}|*]?" + lb.timeStampRegEx + r")\s*\}\}", re.UNICODE | re.DOTALL)
+        return textlib.replaceExcept(originalText, old, lb.sectResolved1P, ["comment", "nowiki"])
 
     def _showDiffs(self, pageName: str, originalText: str, modifiedText: str):
         if originalText != modifiedText:
@@ -559,6 +567,9 @@ class WikiDocument:
             self.archiveJobCounterByTarget[target] = 1
         
         if target not in self.archiveJobFirstTitleByTarget:
+            # remove comments and HTML tags (keeping their content), like MediaWiki does for anchors
+            headline = re.sub(r"(?s)<!--.*?-->", "", headline)
+            headline = re.sub(r"</?[A-Za-z][^<>]*>", "", headline)
             # remove headline marker == abc ==
             headline = textlib.replaceExcept(headline, r"=+\s*(.*?)\s*=+\s*", "\\1", [])
             # [[abc|xyz]] -> yxz

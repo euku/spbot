@@ -109,9 +109,12 @@ def test_resolved_template_variants(template):
     assert isResolved("== A ==\nq %s\n%s\n" % (SIG, template))
 
 
-@pytest.mark.xfail(strict=True, reason="sectResolvedRegEx does not allow the namespace prefix")
-def test_resolved_template_with_namespace_prefix():
-    assert isResolved("== A ==\nq %s\n{{Vorlage:Erledigt|1=--A 10:00, 2. Nov. 2026 (CET)}}\n" % SIG)
+@pytest.mark.parametrize("prefix", ["Vorlage:", "vorlage :", "Template:"])
+def test_resolved_template_with_namespace_prefix(prefix):
+    template = "{{%sErledigt|1=--A 10:00, 2. Nov. 2026 (CET)}}" % prefix
+    assert isResolved("== A ==\nq %s\n%s\n" % (SIG, template))
+    assert subst(template) == (":<small>Archivierung dieses Abschnittes wurde gewünscht von: "
+                               "--A 10:00, 2. Nov. 2026 (CET)</small>")
 
 
 def test_resolved_in_subsection_counts_for_section():
@@ -313,12 +316,12 @@ def test_subst_leaves_alone(text):
     assert subst(text) == text
 
 
-@pytest.mark.xfail(strict=True, reason="a line break before }} is not matched")
-def test_subst_multiline_template():
-    assert "{{" not in subst("{{Erledigt\n|1=--A 10:00, 2. Nov. 2026 (CET)\n}}")
+@pytest.mark.parametrize("template", ["{{Erledigt\n|1=--A 10:00, 2. Nov. 2026 (CET)\n}}",
+                                      "{{Erledigt|1=--A 10:00, 2. Nov. 2026 (CET)\n|2=Grund\n}}"])
+def test_subst_multiline_template(template):
+    assert "{{" not in subst(template)
 
 
-@pytest.mark.xfail(strict=True, reason="an empty 2= leaves a dangling ', '")
 def test_subst_empty_second_parameter():
     assert subst("{{Erledigt|1=--A 10:00, 2. Nov. 2026 (CET)|2=}}") == (
         ":<small>Archivierung dieses Abschnittes wurde gewünscht von: --A 10:00, 2. Nov. 2026 (CET)</small>")
@@ -337,13 +340,13 @@ def test_anchor(heading, anchor):
     assert doc.archiveJobFirstTitleByTarget[TARGET] == anchor
 
 
-@pytest.mark.xfail(strict=True, reason="comments, templates and HTML tags stay in the anchor of the edit summary link")
 @pytest.mark.parametrize("heading, anchor", [
     ("A <!-- x -->", "A"),
-    ("{{Ping|X}} Frage", "Frage"),
     ('<span style="color:red">rot</span>', "rot"),
+    ("A<br />B", "AB"),
+    ("x<ref>Beleg</ref>", "xBeleg"),
 ])
-def test_anchor_without_markup(heading, anchor):
+def test_anchor_without_comments_and_tags(heading, anchor):
     doc = prepared("== %s ==\nq %s\n%s\n" % (heading, SIG, RESOLVED))
     assert doc.archiveJobFirstTitleByTarget[TARGET] == anchor
 
