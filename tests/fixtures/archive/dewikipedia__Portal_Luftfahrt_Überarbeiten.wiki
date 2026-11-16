@@ -1,0 +1,60 @@
+__NEWSECTIONLINK__ {{Portal:Luftfahrt/Navigation}}
+{| style="width:100%; background:#FFFFFF; border:solid 1px #4682B4;" cellspacing="0" cellpadding="0"
+| align="left" colspan="3" valign="middle" | <!-- Zeile 1: Kopf -->
+{| cellpadding="0" cellspacing="0" style="width:100%; margin-bottom:3px; background-color:#FFFFFF;"
+|- valign="top" 
+| style="width:100%; padding:10px;" | 
+{{Wikipedia:WikiProjekt Luftfahrt/Überarbeiten/Intro}}
+{{Autoarchiv-Erledigt |Alter=5 |Ziel='((VOLLER_SEITENNAME))/Archiv' |Zeigen=Ja |Ebene=3}}
+{|
+|-
+| valign="top" width="50%" | __TOC__
+| valign="top" width="50%" |
+<div style="background-color:#B0E2FF; color: #000000; border:0px solid #000000; padding:10px; line-height: 1.5">
+<div style="margin-left:1em; margin-right:1em">
+;Automatische Baustellensuche
+{{catscan Portal|Luftfahrt}}
+</div>
+</div>
+|}
+|- valign="top"
+|  style="width:100%; padding:10px;" |
+
+== [[Wikipedia:WikiProjekt Luftfahrt/Überarbeiten/MB-WORKLIST|Artikel in einer Wartungskategorie]] ==
+{{nicht archivieren|Zeigen=nein|Grund=Dauerhaft notwendig --[[Benutzer:My name|my name]] 17:48, 30. Apr. 2009 (CEST)}}
+{{Wikipedia:WikiProjekt Luftfahrt/Überarbeiten/MB-WORKLIST}}
+
+|-
+| valign="top" width="0%" |
+|}
+|}
+
+== Aktuelle Problemfälle ==
+
+=== [[Seventh Air Force]] ===
+Geschichte ab 1945 fehlt praktisch völlig. Aähnlich sieht es bei der 14th Air Force aus. Werde mal schauen was mein Bücherschrank so hergibt. Hat jemand noch Tipps für nützliche Literatur bzgl. US Luftflotten? [[Benutzer:HptmRumpelstoss|HptmRumpelstoss]] ([[Benutzer Diskussion:HptmRumpelstoss|Diskussion]]) 11:10, 26. Jun. 2020 (CEST)
+
+=== [[Kritisches Triebwerk]] ===
+Belege und Vollprogramm bitte. --[[Benutzer:Uli Elch|Uli Elch]] ([[Benutzer Diskussion:Uli Elch|Diskussion]]) 15:01, 21. Nov. 2020 (CET)
+
+=== [[Liste der Flughäfen in Indien]] ===
+Moinsen, wie umseitig bereits bemängelt, sind in den meisten Artikeln in dieser Liste (es ist zu viel die hier alle einzutragen), grobe Verstöße gegen die Formatvorlage Flughafen und auch die Belegregeln vorhanden. Daher stelle ich nicht die Liste an sich, sondern die dort gelisteten Artikel zur QS. --[[Benutzerin:Adtonko|Ad]]<sup>[[Benutzerin Diskussion:Adtonko|ton]]</sup>ko 09:12, 16. Dez. 2025 (CET)
+
+<small>(Die nachfolgende Auflistung wird durch Einbindung der Unterseite [[/Indische Flughäfen|Indische Flughäfen]] erzeugt)</small>
+{{/Indische Flughäfen}}
+
+=== [[Militärflugplatz Lachta]] ===
+Vollprogramm --[[Benutzerin:Adtonko|Ad]]<sup>[[Benutzerin Diskussion:Adtonko|ton]]</sup>ko 17:17, 1. Sep. 2026 (CEST)
+
+=== [[Militärflugplatz Marinowka]] ===
+
+Vollprogramm --[[Benutzerin:Adtonko|Ad]]<sup>[[Benutzerin Diskussion:Adtonko|ton]]</sup>ko 17:19, 1. Sep. 2026 (CEST)
+
+=== [[Flughafen Kirowsk-Apatity]] ===
+Vollprogramm --[[Benutzerin:Adtonko|Ad]]<sup>[[Benutzerin Diskussion:Adtonko|ton]]</sup>ko 17:21, 1. Sep. 2026 (CEST)
+
+=== [[Flughafen Chibini]] ===
+Vollprogramm --[[Benutzerin:Adtonko|Ad]]<sup>[[Benutzerin Diskussion:Adtonko|ton]]</sup>ko 17:22, 1. Sep. 2026 (CEST)
+
+=== [[Luftwaffenbasis Montschegorsk]] ===
+Vollprogramm --[[Benutzerin:Adtonko|Ad]]<sup>[[Benutzerin Diskussion:Adtonko|ton]]</sup>ko 17:23, 1. Sep. 2026 (CEST)

@@ -1,0 +1,23 @@
+{{dynamite|title=:Meta:Requests for deletion/Header}}
+[[Category:Meta-Wiki requests]]
+[[Category:Deletions]]
+[[Category:Meta-Wiki maintenance]]
+{{RF}}
+{{autotranslate|base=Meta}}
+<!-- BEGIN OF AUTOMATIC ARCHIVAL CONFIGURATION -->
+{{Autoarchive resolved section | age = 1 | level = 3 | archive = 'Meta:Requests for deletion/Archives/((year))' | show = yes}}
+
+== Pages ==
+''Submit your page deletion request at the bottom of '''this''' section.''
+
+=== MediaWiki:Checkuser-global-contributions-registered-user-tools ===
+According to [[phab:T444806]], this page prevents people from seeing the localized message "MediaWiki:Wikimedia-checkuser-global-contributions-registered-user-tools". Since only a few users are stewards, I request the page to be deleted. --'''[[User:Pristome|<span style="color:#739042;">Pr</span>]][[User talk:Pristome|<span style="color:#890842;">is</span>]][[Special:Contributions/Pristome|<span style="color:#304530;">tome</span>]]''' 06:39, 14 November 2026 (UTC)
+
+* '''Keep'''. [[MediaWiki:Checkuser-global-contributions-registered-user-tools|Checkuser-]] now transcludes [[MediaWiki:Checkuser-global-contributions-registered-user-tools|Wikimedia-checkuser-]] correctly. [[User:NguoiDungKhongDinhDanh|<span class="skin-invert" style="color:black;font-family:Monotype Corsiva,sans-serif;font-size:110%;font-weight:normal;line-height:normal">NguoiDungKhongDinhDanh</span>]] 08:05, 14 November 2026 (UTC)
+
+== Files ==
+''Submit your image deletion request at the bottom of '''this''' section.''
+== Redirects ==
+''Submit your redirect deletion request at the bottom of '''this''' section.''
+== Requests for undeletion ==
+''Submit your undeletion request at the bottom of '''this''' section.''

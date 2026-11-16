@@ -1,0 +1,141 @@
+{{Autoarchive resolved section
+ | age     = 0
+ | archive = 'User talk:XXBlackburnXx/((year))-((quarter:I))'
+ | show    = yes
+ | timeout = 30
+}}
+
+== Tech News: 2026-43 ==
+<section begin="technews-2026-W43"/><div class="plainlinks">
+Latest '''[[m:Special:MyLanguage/Tech/News|tech news]]''' from the Wikimedia technical community. Please tell other users about these changes. Not all changes will affect you. [[m:Special:MyLanguage/Tech/News/2026/43|Translations]] are available.
+
+'''Updates for editors'''
+* To measure the impact of incorporating some [[mw:Special:MyLanguage/Readers/Reader_Growth/Image_Browsing#November 2025: Ideas and feedback|community-requested features]] on logged-out reader retention, a test for [[mw:Special:MyLanguage/Readers/Reader_Growth/Image_Browsing|Image Carousel]] will be pushed to logged-out readers. With the Image Carousel feature, readers browse community-uploaded images, selected by editors as relevant to specific articles. The test starts on November 20.
+* An experimental notice will be pushed to 0.5% of logged-out mobile readers who come to English Wikipedia from Google, asking them to add Wikipedia as a [https://blog.google/products-and-platforms/products/search/preferred-sources/ Google Preferred Source]. The test is to see if this notice increases reader retention and encourages people who use Google Search to visit Wikipedia more often. It will run from October 15–29 and will be assessed for its impact on retention and referrals.
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] View all {{formatnum:26}} community-submitted {{PLURAL:26|task|tasks}} that were [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|resolved last week]]. For example, an issue where [[quarry:|Quarry]] returned an “Access denied” error when users tried to run SQL queries, preventing queries from running normally, has now been fixed. [https://phabricator.wikimedia.org/T440966]
+
+'''Updates for technical contributors'''
+* [[File:Cog-icon-grey.svg|12px|link=|class=skin-invert|Advanced item]] Due to a long-standing bug, applications that use the [[mw:Special:MyLanguage/OAuth/For_Developers|OAuth 2]] client credentials flow to act on their owners’ behalf are treated as if they are logged out. This will be fixed for new applications registered on or after Monday, October 19. Some affected applications need to re-register. [https://phabricator.wikimedia.org/T420297]
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] Detailed code updates later this week: [[mw:MediaWiki 1.48/wmf.1|MediaWiki]]
+
+'''Meetings and events'''
+* A proposal to hold the Wikimedia Hackathon every three years, with regional hackathons in between, [[mw:Wikimedia Hackathon/Community Proposal 2026|has been shared]]. It explores making the event more accessible to technical communities in different regions. Share your feedback on the proposal’s [[mw:Talk:Wikimedia Hackathon/Community Proposal 2026|talk page]] before November 6.
+
+'''''[[m:Special:MyLanguage/Tech/News|Tech news]]''' prepared by [[m:Special:MyLanguage/Tech/News/Writers|Tech News writers]] and posted by [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Contribute]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/43|Translate]]&nbsp;• [[m:Tech|Get help]]&nbsp;• [[m:Talk:Tech/News|Give feedback]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Subscribe or unsubscribe]].''
+</div><section end="technews-2026-W43"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 14:35, 19 October 2026 (UTC)
+<!-- Message sent by User:STei (WMF)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31178499 -->
+
+== About [[zh:Wikipedia:傀儡調查/案件/XiaoFui]] ==
+（please forgive me for using Chinese directly）
+
+请问阁下方便说明怀疑[[User:菠蘿麵包67676767]]为[[User:XiaoFui]]傀儡的原因吗 [[User:剑客小鹿|剑客小鹿]] ([[User talk:剑客小鹿|talk]]) 08:58, 21 October 2026 (UTC)
+
+:我也不知道，而且他们盘的傀儡很大一部分其实都不是我实际控制的，也就是说，当中只有几个是我控制的。 [[User:XiaoFui|XiaoFui]] ([[User talk:XiaoFui|talk]]) 09:09, 21 October 2026 (UTC)
+::但与其增加更多的压力，我直接承认得了，刚好也能避开薏仁將和一开口即怀疑的椿。 [[User:XiaoFui|XiaoFui]] ([[User talk:XiaoFui|talk]]) 09:11, 21 October 2026 (UTC)
+:::他们已经咬定我违反傀儡方针了 [[User:XiaoFui|XiaoFui]] ([[User talk:XiaoFui|talk]]) 09:11, 21 October 2026 (UTC)
+:Thanks for your message. I'll email the details to an SPI clerk I'm in contact with once I'm done with my university work. --&nbsp;[[User:XXBlackburnXx|XXBlackburnXx]] ([[User talk:XXBlackburnXx#top|talk]]) 09:40, 21 October 2026 (UTC)
+::Sorry I was about to send YGM here and I saw this message. Anyway, YGM. :) [[User:Hamish|<span style="background:White;color:Blue;border-radius:999px">Hamish </span>]][[User talk:Hamish|<span style="font:10px Arial; color:#8A2BE2;font-weight:bold">one great show can change the world</span>]] 09:46, 21 October 2026 (UTC)
+:::請問閣下方便說一下為什麼我會是[[User:XiaoFui]]傀儡,謝謝 [[User:菠蘿麵包67676767|菠蘿麵包67676767]] ([[User talk:菠蘿麵包67676767|talk]]) 14:57, 21 October 2026 (UTC)
+: @[[User:XXBlackburnXx|XXBlackburnXx]] Could it be possibly of VPN bump into each other? Anyway if you said likely then probably not the VPN issue. [[User:Lemonaka|Lemonaka]] ([[User talk:Lemonaka|talk]]) 13:58, 22 October 2026 (UTC)
+::@[[User:Lemonaka|Lemonaka]]: This wasn't the usual VPN bump we see all the time. This one was on a mobile network. I've shared some more details with Hamish, along with a note. --&nbsp;[[User:XXBlackburnXx|XXBlackburnXx]] ([[User talk:XXBlackburnXx#top|talk]]) 14:02, 22 October 2026 (UTC)
+:::Hi - It seems like XiaoFui has been globally locked now after xwiki abuse. Would it be possible for you to do a sleeper check per [[:zh:WP:CUP#1]] and lock all socks? [[User:ATannedBurger|<font size="0.01%"><math>\int</math></font>]]（[[User_talk:ATannedBurger|☎]]）dt 16:44, 24 October 2026 (UTC)
+::::Yep, in an hour or so. Thanks for asking. --&nbsp;[[User:XXBlackburnXx|XXBlackburnXx]] ([[User talk:XXBlackburnXx#top|talk]]) 16:45, 24 October 2026 (UTC)
+
+== Global ==
+i want to be globally blocked [[User:Miggy302913|Miggy302913]] ([[User talk:Miggy302913|talk]]) 21:48, 22 October 2026 (UTC)
+
+:That’s nice --&nbsp;[[User:XXBlackburnXx|XXBlackburnXx]] ([[User talk:XXBlackburnXx#top|talk]]) 22:05, 22 October 2026 (UTC)
+::i ment global block, not global lock, unlock it because you locked me [[Special:Contributions/~2026-58044-19|~2026-58044-19]] ([[User talk:~2026-58044-19|talk]]) 19:54, 31 October 2026 (UTC)
+:::Not my lock, not my responsibility. --&nbsp;[[User:XXBlackburnXx|XXBlackburnXx]] ([[User talk:XXBlackburnXx#top|talk]]) 19:55, 31 October 2026 (UTC)
+:{{done}} I also request a deletion on the page [[User:Miggy302913]] for fulfilling their purpose too. [[User:TienMinh-mun6xnChing|TienMinh-mun6xnChing]] ([[User talk:TienMinh-mun6xnChing|talk]]) 21:04, 31 October 2026 (UTC)
+
+== Tech News: 2026-44 ==
+<section begin="technews-2026-W44"/><div class="plainlinks">
+Latest '''[[m:Special:MyLanguage/Tech/News|tech news]]''' from the Wikimedia technical community. Please tell other users about these changes. Not all changes will affect you. [[m:Special:MyLanguage/Tech/News/2026/44|Translations]] are available.
+
+'''Weekly highlight'''
+* An experiment launched on September 29 is testing [[mw:Special:MyLanguage/Readers/Reader_Experience/Reading_recommendations|article recommendations]] for new account holders who also identify as readers. By suggesting articles to read, similar to recommendations in the Wikipedia app for logged-in readers, the experiment aims to encourage new account holders to read and return to the website regularly, with the goal of increasing internal referrals by 1%. See the related [[m:Community Wishlist/W505|Community Wishlist]] proposal.
+* Several Wikimedia services were taken offline last week because of a [https://www.php.net/archive/2026.php#2026-10-20-1 security vulnerability in PHP]. This is because they need to be updated before they are safe to put back online. This is not a problem just for the Wikimedia movement but affects a lot of websites. You can follow updates on [[wikitech:Incidents/2026-10-21 PHP security update/Community|Wikitech]]. Cloud VPS and Toolforge will take longer to bring back online. This is to make sure that applications which run on Cloud VPS or Toolforge are not affected. Tool developers can see updates and more information on the [https://lists.wikimedia.org/postorius/lists/cloud-announce.lists.wikimedia.org/ Cloud-announce mailing list]. [https://diff.wikimedia.org/2026/10/21/impact-of-php-vulnerabilities-on-wikimedia-tools-and-services/][https://diff.wikimedia.org/2026/10/21/impact-of-php-vulnerabilities-on-wikimedia-cloud-services/]
+* [[m:Special:MyLanguage/Tech/News/2026/43|Last week we shared]] that to measure the impact of incorporating some community-requested features on logged-out reader retention, a test for the [[mw:Special:MyLanguage/Readers/Reader Growth/Image Browsing|Image Carousel]] feature would be pushed to logged-out readers. Due to an issue, we will be restarting the test, but it will be live on October 26, not November 20 as initially announced.
+
+'''Updates for editors'''
+* A new [[wikitech:KAPOW|bot detection system]] to better identify automated traffic that disguises itself as human visitors, is coming to the Wikimedia wikis. This might cause sudden changes to visitor statistics starting from 26 October, going back to 20 June 2026.
+* The [[mw:Special:MyLanguage/Extension:Score|Score extension]] which renders musical notation inside wiki pages, has been temporarily disabled on all wikis due to a security issue. Affected pages will display a notice instead of musical scores, but the underlying code remains intact. No action is needed from editors, and a fix is in progress. A separate announcement will follow when the extension is re-enabled. Read more on [[phab:T441579|Phabricator]].
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] View all {{formatnum:18}} community-submitted {{PLURAL:18|task|tasks}} that were [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|resolved last week]]. For example, the issue where CodeMirror syntax highlighter appears to have been enabled in error for existing editors has been fixed. [https://phabricator.wikimedia.org/T441308]
+
+'''Updates for technical contributors'''
+* [[m:Special:MyLanguage/Tech/Server switch|All wikis will be read-only]] for a few minutes on Wednesday, October 28 2026 at [https://zonestamp.toolforge.org/1793199600 15:00 UTC]. This is for the datacenter server switchover backup tests, [[wikitech:Deployments/Yearly calendar|which happen twice a year]]. During the switchover, all Wikimedia website traffic is shifted from one primary data center to the backup data center to test availability and prevent service disruption even in emergencies. [https://phabricator.wikimedia.org/T439703]
+
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] Detailed code updates later this week: [[mw:MediaWiki 1.48/wmf.2|MediaWiki]]
+
+'''Meetings and events'''
+* Scholarship and sponsorship applications for the [https://www.mediawiki.org/wiki/Wikimedia%20Hackathon%202027 2027 Wikimedia Hackathon] will close on Friday, October 30th. Submit your application [https://pretix.eu/wikimedia/Hackathon-2027/ through Pretix] before the deadline!
+
+'''''[[m:Special:MyLanguage/Tech/News|Tech news]]''' prepared by [[m:Special:MyLanguage/Tech/News/Writers|Tech News writers]] and posted by [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Contribute]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/44|Translate]]&nbsp;• [[m:Tech|Get help]]&nbsp;• [[m:Talk:Tech/News|Give feedback]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Subscribe or unsubscribe]].''
+</div><section end="technews-2026-W44"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 18:53, 26 October 2026 (UTC)
+<!-- Message sent by User:STei (WMF)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31199592 -->
+
+== Why did XXBlackburnXx ban me? ==
+I was about to edit some corrections when suddenly a message appeared saying I was banned from editing for 4 years.
+
+Sure I've made some mistakes, but nothing worth 4 years of being banned, you need to source what exactly it was that earned me a ban [[User:Greensulatns69|Greensulatns69]] ([[User talk:Greensulatns69|talk]]) 19:34, 2 November 2026 (UTC)
+
+:@[[User:Greensulatns69|Greensulatns69]] It seems like your IP address range is blocked about 4 years period, you may reset you modem or (more intelligent) request global IP exemption right if the block notification keeps appearing, especially when you're editing an article. Again open proxy provided by third-party services is heavily restricted, if you're using VPN, please disable it. [[User:TienMinh-mun6xnChing|TienMinh-mun6xnChing]] ([[User talk:TienMinh-mun6xnChing|talk]]) 05:03, 6 November 2026 (UTC)
+
+== Tech News: 2026-45 ==
+<section begin="technews-2026-W45"/><div class="plainlinks">
+Latest '''[[m:Special:MyLanguage/Tech/News|tech news]]''' from the Wikimedia technical community. Please tell other users about these changes. Not all changes will affect you. [[m:Special:MyLanguage/Tech/News/2026/45|Translations]] are available.
+
+'''Weekly highlight'''
+* Many Wikimedia tools were taken offline last week because of a [[:w:PHP2Shell|security vulnerability in PHP]]. This affected many websites worldwide. [[m:Special:MyLanguage/Toolforge|Toolforge]] and [[m:Special:MyLanguage/Wikimedia Cloud Services|Cloud VPS]] have been back up since October 22. Many important tools have been gradually restored. Some tools need the respective volunteer maintainers to restart them. Others still need to upgrade to a patched PHP version. Some tools were using older versions of PHP which are not supported by the recent security patches. They will require maintainers to upgrade to a more recent version. This might require additional effort. You can follow the work [[:wikitech:Talk:Incidents/2026-10-21 PHP security update/Community#Exceptions|on Wikitech]].
+
+'''Updates for editors'''
+* A new optional search experiment is running in the Wikipedia Android and iOS apps for Arabic, French, and Japanese Wikipedias. Participating readers can search inside articles and open quoted passages directly in their source articles, no answers or summaries are generated. This is the first of four experiments in [[mw:Special:MyLanguage/Readers/Information%20Retrieval/Phase%202|Phase 2 of Semantic Search]]. It began on October 22 and runs for 20 days. Feedback is welcome on the project’s [[mw:Special:MyLanguage/Talk:Readers/Information%20Retrieval/Phase%202|discussion page]].
+* The [[m:Special:MyLanguage/Future_Audiences|Future Audiences]] team is planning to bring [[m:Special:MyLanguage/Future_Audiences/Share_card|Share Cards]] to Wikipedia on mobile. This feature gives users the option to share a visually appealing card with friends, based on the article they are reading. The card contains the article’s title, image, opening text, and related attribution, and links back to the article for full reading. Editors are invited to try out this feature by adding <code dir="ltr">?useformat=mobile&sharecard=1</code> to any article URL from October 29 to November 8. Share any thoughts on the [[m:Talk:Future_Audiences/Share_card| project talk page]] and report any bugs on [[phab:T439161|Phabricator]]. 
+* The default renderer for math formulas will change on November 2. After the change, the server sends the formula as MathML, and your browser uses MathJax to show it. This is the last step towards the Mathoid/RESTBase deprecation process, for sustainability and security reasons. You can [[w:en:Wikipedia:WikiProject Mathematics/MathFormattingBugs|ask questions or report problems]]. [https://phabricator.wikimedia.org/T375238]
+* Do you have an idea for a new feature, or a bug that needs fixing? [[m:Special:MyLanguage/Community Wishlist|Submit your suggestion for the community wish list by November 8!]]
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] View all {{formatnum:41}} community-submitted {{PLURAL:41|task|tasks}} that were [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|resolved last week]].
+
+'''Updates for technical contributors'''
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] Detailed code updates later this week: [[mw:MediaWiki 1.48/wmf.3|MediaWiki]]
+
+'''''[[m:Special:MyLanguage/Tech/News|Tech news]]''' prepared by [[m:Special:MyLanguage/Tech/News/Writers|Tech News writers]] and posted by [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Contribute]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/45|Translate]]&nbsp;• [[m:Tech|Get help]]&nbsp;• [[m:Talk:Tech/News|Give feedback]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Subscribe or unsubscribe]].''
+</div><section end="technews-2026-W45"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 14:20, 3 November 2026 (UTC)
+<!-- Message sent by User:Trizek (WMF)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31236748 -->
+
+== Tech News: 2026-46 ==
+<section begin="technews-2026-W46"/><div class="plainlinks">
+Latest '''[[m:Special:MyLanguage/Tech/News|tech news]]''' from the Wikimedia technical community. Please tell other users about these changes. Not all changes will affect you. [[m:Special:MyLanguage/Tech/News/2026/46|Translations]] are available.
+
+'''Weekly highlight'''
+* The Wikipedia Apps team is preparing to launch Year in Review in early December. Year in Review gives app users a personalized recap of how they read and engaged with Wikipedia throughout the year. The team is looking for volunteers to help make it available in as many languages as possible. Translators can contribute through [https://translatewiki.net/ translatewiki.net]. For [https://translatewiki.net/w/i.php?title=Special:Translate&action=translate&group=out-wikimedia-mobile-wikipedia-android-strings&filter=%21translated Android], search for <bdi lang="zxx" dir="ltr"><code><nowiki>yir</nowiki></code></bdi> under the "Untranslated" tab, and for [https://translatewiki.net/w/i.php?title=Special:Translate&action=translate&group=out-wikimedia-mobile-wikipedia-ios&filter=%21translated&optional=1 iOS], search for <bdi lang="zxx" dir="ltr"><code><nowiki>year-in-review</nowiki></code></bdi> under the "Untranslated" tab.
+*  The [[mw:Special:MyLanguage/Article guidance|Article guidance]] feature that helps editors create articles that follow a Wikipedia’s policies, is now available on all Wikipedias. Administrators and interface admins can configure and expose it for editors to use via [[Special:CommunityConfiguration/ArticleGuidance]]. A [[mw:Special:MyLanguage/Article guidance/Community Configuration|configuration guide is available]]. Visit [[mw:Talk:Article guidance|the project talk page]] to ask any questions.
+
+'''Updates for editors'''
+* Following the release of [[mw:Special:MyLanguage/Readers/Reader Experience/Reading lists|Reading Lists]] to all Wikipedias in September, logged-in users will soon be able to [[mw:Special:MyLanguage/Readers/Reader Experience/Reading lists#October/November 2026: Custom collections and call to action|organize articles saved in their lists into customizable categories]]. This will enable readers to create collections and revisit saved articles based on their interests, potentially encouraging frequent visits to Wikipedia. The update will roll out to all Wikipedia users between November 9 and 16.
+* The Wikipedia Apps team is preparing to launch the first of two notification experiments for English Wikipedia readers on Android who have opted in to notifications. The three-week experiment will send notifications suggesting personalized Discover reading lists which are collections of Wikipedia articles recommended based on articles the reader has previously viewed. The goal is to understand whether these recommendations help readers discover relevant content and encourage them to return to the app. No action is required, and users can manage their notification preferences in the app settings. [[mw:Wikimedia Apps/Team/Notifications|Learn more and share feedback]].
+* A bug in the [[m:Special:GlobalWatchlist|Global Watchlist]] was causing the page to fail to load for users who have unseen changes on Wikimedia Commons. The bug has now been fixed. If you temporarily removed <bdi lang="zxx" dir="ltr"><code><nowiki>commons.wikimedia.org</nowiki></code></bdi> from your personal [[m:Special:GlobalWatchlistSettings|Global Watchlist settings]] due to the bug, you can restore it there. [https://phabricator.wikimedia.org/T439203]
+* A new Beta feature called "Home" will be [[mw:Special:MyLanguage/Home/Deployment|deployed to 10 Wikipedias]] for a limited test. This new feature aims to replace <bdi lang="zxx" dir="ltr"><code><nowiki>Special:Homepage</nowiki></code></bdi> for newcomers, with additional modules planned for the future to improve upon the current experience. If you want to participate in the test, please [[mw:Talk:Home|sign up]]. "Home" will be released to all users later this month.
+* On English and Russian Wikipedias, [[m:User:Alaexis/Source Verifier|Source Verification]] is now available as an experimental Suggestion for experienced editors within [[mw:Special:MyLanguage/VisualEditor/Suggestion_Mode|Suggestion Mode]]. It uses an LLM hosted on [[wikitech:Machine_Learning/LiftWing|LiftWing]] to try to check whether a cited source supports the claim it’s attached to. To try it out, please [[phab:T426359|see these testing instructions]]. If you are at another language Wikipedia and your community is interested in trying it out, please [[m:User talk:Alaexis/Source Verifier|express your interest]].
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] View all {{formatnum:35}} community-submitted {{PLURAL:35|task|tasks}} that were [[m:Special:MyLanguage/Tech/News/Recently resolved community tasks|resolved last week]]. For example, an issue where dates passed as blank parameters to functions in wikitext were incorrectly interpreted using the month-day-year format instead of the day-month-year format, has now been fixed. [https://phabricator.wikimedia.org/T403884]
+
+'''Updates for technical contributors'''
+* Starting on 1 December 2026, hCaptcha will be required for edits made via the API by non-autoconfirmed users. If your tool, gadget, or user script makes edits on behalf of newcomer users, [[mw:Special:MyLanguage/Product Safety and Integrity/hCaptcha#November 2026: Completing hCaptcha rollout|see how to update it]].
+*  [[wikitech:Help talk:Toolforge/Toolforge standards committee#November 2026 committee nominations|Nominations are open on Wikitech]] for new [[wikitech:Help:Toolforge/Toolforge standards committee|Toolforge standards committee]] members. The committee oversees the Toolforge [[wikitech:Help:Toolforge/Right to fork policy|Right to fork policy]] and [[wikitech:Help:Toolforge/Abandoned tool policy|Abandoned tool policy]] among other duties. Nominations close on 22 November 2026.
+* Toolforge has introduced two new beta features. "Toolforge alerts" send email notifications when a tool becomes unavailable, returns errors, or restarts frequently. "Extended logging" makes it easier to investigate problems by providing logs for events such as job creation, deletion, and deployment failures through the <bdi lang="zxx" dir="ltr"><code><nowiki>toolforge logs</nowiki></code></bdi> command. Both features are opt-in and help tool maintainers become aware of and resolve problems with their tools more quickly. Maintainers can [[wikitech:Help:Toolforge/Alerts|enable alerts]] and learn how to [[wikitech:Help:Toolforge/Running_jobs#Toolforge_logs|access extended logs]]. They are also encouraged to try the features and [[wikitech:Help:Cloud_Services_communication|provide feedback]].
+* [[File:Reload icon with two arrows.svg|12px|link=|class=skin-invert|Recurrent item]] Detailed code updates later this week: [[mw:MediaWiki 1.48/wmf.4|MediaWiki]]
+
+'''Meetings and events'''
+* A proposal to change how we currently organize the Wikimedia Hackathon [[mw:Special:MyLanguage/Wikimedia Hackathon/Community Proposal 2026|has been shared]]. It explores making the event more accessible to technical communities in different regions. Share your feedback on the proposal’s [[mw:Special:MyLanguage/Talk:Wikimedia Hackathon/Community Proposal 2026|talk page]]; the deadline has been extended to November 13th.
+
+'''''[[m:Special:MyLanguage/Tech/News|Tech news]]''' prepared by [[m:Special:MyLanguage/Tech/News/Writers|Tech News writers]] and posted by [[m:Special:MyLanguage/User:MediaWiki message delivery|bot]]&nbsp;• [[m:Special:MyLanguage/Tech/News#contribute|Contribute]]&nbsp;• [[m:Special:MyLanguage/Tech/News/2026/46|Translate]]&nbsp;• [[m:Tech|Get help]]&nbsp;• [[m:Talk:Tech/News|Give feedback]]&nbsp;• [[m:Global message delivery/Targets/Tech ambassadors|Subscribe or unsubscribe]].''
+</div><section end="technews-2026-W46"/>
+
+<bdi lang="en" dir="ltr">[[User:MediaWiki message delivery|MediaWiki message delivery]]</bdi> 10:31, 9 November 2026 (UTC)
+<!-- Message sent by User:STei (WMF)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Global_message_delivery/Targets/Tech_ambassadors&oldid=31249348 -->

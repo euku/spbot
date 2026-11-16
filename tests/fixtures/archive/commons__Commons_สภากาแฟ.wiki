@@ -1,0 +1,66 @@
+{{Village pump header/th}}
+{{Autoarchive resolved section
+|age=2
+|archive='((FULLPAGENAME))/Archive/((year))/((half-year:i))'
+|overview=[[Special:PrefixIndex/{{FULLPAGENAME}}/Archive/|Archive/]]
+|timeout=60
+|latest archive=[[/Archive/{{CURRENTYEAR}}|Archive/{{CURRENTYEAR}}]]
+}}
+
+== ขอความช่วยเหลือเรื่อง... ==
+
+บุคคลอื่นนำข้อมุลมาใช้ {{unsignedIP2|22:09, 16 November 2022|2403:6200:8847:7487:D017:6824:470A:EDCC}}
+
+== <span lang="en" dir="ltr" class="mw-content-ltr">Wikimania 2023 Welcoming Program Submissions</span> ==
+
+<div lang="en" dir="ltr" class="mw-content-ltr">
+<section begin="wikimania-program-submissions"/>[[File:Wikimedia_Singapore_Logo.svg|right|frameless]]Do you want to host an in-person or virtual session at Wikimania 2023? Maybe a hands-on workshop, a lively discussion, a fun performance, a catchy poster, or a memorable lightning talk? [[wmania:Special:MyLanguage/2023:Program/Submissions|'''Submissions are open until March 28''']]. The event will have dedicated hybrid blocks, so virtual submissions and pre-recorded content are also welcome. If you have any questions, please join us at an upcoming conversation on March 12 or 19, or reach out by email at wikimania@wikimedia.org or on Telegram. More information on-wiki.<section end="wikimania-program-submissions"/>
+</div>
+<!-- Message sent by User:CKoerner (WMF)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Distribution_list/Global_message_delivery&oldid=24390465 -->
+
+== Reusing references: Can we look over your shoulder? ==
+
+''Apologies for writing in English.''
+
+The Technical Wishes team at Wikimedia Deutschland is planning to [[m:WMDE Technical Wishes/Reusing references|make reusing references easier]]. For our research, we are looking for wiki contributors willing to show us how they are interacting with references.
+
+* The format will be a 1-hour video call, where you would share your screen. [https://wikimedia.sslsurvey.de/User-research-into-Reusing-References-Sign-up-Form-2024/en/ More information here].
+* Interviews can be conducted in English, German or Dutch.
+* [[mw:WMDE_Engineering/Participate_in_UX_Activities#Compensation|Compensation is available]].
+* Sessions will be held in January and February.
+* [https://wikimedia.sslsurvey.de/User-research-into-Reusing-References-Sign-up-Form-2024/en/ Sign up here if you are interested.]
+* Please note that we probably won’t be able to have sessions with everyone who is interested. Our UX researcher will try to create a good balance of wiki contributors, e.g. in terms of wiki experience, tech experience, editing preferences, gender, disability and more. If you’re a fit, she will reach out to you to schedule an appointment.
+
+We’re looking forward to seeing you, [[m:User:Thereza Mengs (WMDE)| Thereza Mengs (WMDE)]]
+<!-- Message sent by User:Thereza Mengs (WMDE)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=WMDE_Technical_Wishes/Technical_Wishes_News_list_all_village_pumps&oldid=25956752 -->
+
+== วิกิของคุณจะอยู่ในโหมดอ่านอย่างเดียวเท่านั้นในเร็ว ๆ นี้ ==
+<section begin="server-switch"/><div class="plainlinks">
+[[:m:Special:MyLanguage/Tech/Server switch|อ่านในภาษาอื่น]] • [https://meta.wikimedia.org/w/index.php?title=Special:Translate&group=page-Tech%2FServer+switch&language=&action=page&filter= {{int:please-translate}}]
+
+เนื่องด้วยทาง[[foundation:|มูลนิธิวิกิมีเดีย]]จะมีการทดสอบการสลับการเยี่ยมชมเว็บไซต์ระหว่างศูนย์ข้อมูล ซึ่งการทดสอบนี้จะทำให้วิกิพีเดียและวิกิอื่น ๆ ของวิกิมีเดียยังสามารถออนไลน์อยู่ได้หากเกิดภัยพิบัติ
+
+โดยเราจะสับการจราจรทั้งหมดกลับมาในวันที่ '''{{#time:j xg|2026-10-28|th}}''' การทดสอบจะเริ่มต้นในเวลา '''[https://zonestamp.toolforge.org/{{#time:U|2026-10-28T15:00|en}} {{#time:H:i e|2026-10-28T15:00}}]''' (21:00 น. ตามเวลาประเทศไทย)
+
+โชคไม่ดีนัก ด้วยข้อจำกัดบางอย่างใน[[mw:Special:MyLanguage/Manual:What is MediaWiki?|มีเดียวิกิ]] การแก้ไขทั้งหมดต้องถูกหยุดชั่วคราวระหว่างการสับเปลี่ยนศูนย์ข้อมูล เราขออภัยในความไม่สะดวก และเราจะทำงานเพื่อลดการรบกวนให้เหลือน้อยที่สุดในอนาคต 
+
+แบนเนอร์จะปรากฏขึ้น 30 นาทีก่อนการสับเปลี่ยนจะเริ่มต้น แบนเนอร์นี้จะยังคงมองเห็นได้จนกว่าการดำเนินการจะสิ้นสุด 
+คุณสามารถช่วยแปลหรือแก้ไข [https://meta.wikimedia.org/w/index.php?title=Special%3ATranslate&group=Centralnotice-tgroup-read_only_banner&task=view&language=&filter=&action=translate] ของแบนเนอร์นี้
+
+'''คุณจะยังสามารถอ่านวิกิทั้งหมด แต่จะไม่สามารถแก้ไขได้ภายในระยะเวลาอันสั้น'''
+
+* คุณอาจไม่สามารถแก้ไขได้นับชั่วโมงใน{{#time:l j xg Y|2026-10-28|th}}
+* ถ้าคุณลองแก้ไขหรือบันทึกระหว่างช่วงเวลาเหล่านี้ คุณจะเห็นข้อความแสดงข้อผิดพลาด เราหวังว่าการแก้ไขจะไม่สูญหายไปในระหว่างนั้น แต่เราก็ไม่สามารถรับประกันได้ ถ้าคุณเห็นข้อความแสดงความผิดพลาด กรุณารอจนกว่าทุกสิ่งจะกลับเข้าสู่ภาวะปกติ จากนั้นคุณจึงควรจะสามารถบันทึกการแก้ไขของคุณได้ แต่เราแนะนำว่า คุณควรจะคัดลอกการเปลี่ยนแปลงของคุณไว้ก่อนเป็นอันดับแรก ในกรณีเช่นว่านั้น
+
+''ผลกระทบอื่น ๆ'':
+
+* แบคกราวน์จ็อบจะทำงานช้าลง และอาจถูกตัดทิ้งจากคิว ลิงก์แดงอาจไม่ได้ปรับปรุงอย่างรวดเร็วเหมือนภาวะปกติ ถ้าคุณสร้างบทความที่ถูกเชื่อมโยงในที่อื่นเรียบร้อยแล้ว ลิงก์แดงในหน้าที่โยงมานั้นอาจจะยังคงเป็นสีแดงนานกว่าปกติ สคริปต์แบบลองรันนิ่งอาจต้องหยุดทำงานระยะหนึ่ง
+* เราหวังว่าจะสามารถอัปเดตและเปิดใช้งานโค้ดได้ภายในไม่กี่สัปดาห์ต่อจากนั้น อย่างไรก็ตาม อาจมีการฟรีซโค้ดเพิ่มเติมหากจำเป็น
+* [[mw:Special:MyLanguage/GitLab|GitLab]] จะไม่พร้อมให้บริการเป็นเวลาราว 90 นาที
+
+โครงการนี้อาจถูกเลื่อนออกไปหากจำเป็น คุณสามารถอ่าน[[wikitech:Switch_Datacenter|กำหนดการได้ที่ wikitech.wikimedia.org]] การเปลี่ยนแปลงใด ๆ จะถูกแจ้งในตารางนั้น 
+
+'''กรุณาแบ่งปันข้อมูลนี้ในชุมชนของคุณ'''</div><section end="server-switch"/>
+
+[[user:Trizek_(WMF)|Trizek_(WMF)]] 14:00, 26 October 2026 (UTC)
+<!-- Message sent by User:Trizek (WMF)@metawiki using the list at https://meta.wikimedia.org/w/index.php?title=Distribution_list/Non-Technical_Village_Pumps_distribution_list&oldid=30513874 -->

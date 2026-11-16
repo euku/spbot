@@ -1,0 +1,27 @@
+{{Template:Blp}}
+{{利用者:ArchiverBot/config
+|archive = Kaya (歌手)/過去ログ%(counter)d
+|algo = old(180d)
+|counter = 1
+|maxarchivesize = 70K
+|archiveheader = {{Archives|Kaya (歌手)}}
+|minthreadsleft = 5
+|minthreadstoarchive = 2
+}}
+{{Autoarchive resolved section
+|age=7
+|archive=Kaya (歌手)/過去ログ/((year))年
+}}
+{{過去ログbox
+| size = 
+| head = 
+| title = 
+| content = 
+#[[Kaya (歌手)/過去ログ1]]
+#[[Kaya (歌手)/過去ログ/2024年]]
+}}
+
+== 肖像写真について ==
+[[File:Kaya (迦夜, Japanese visual kei musician) in Anime Expo 2013.jpg|thumb|left]]
+*いま掲載されている肖像写真の除去を Kaya 氏本人は望んでいるようです[https://twitter.com/Kaya_rose/status/1397861282687053824]。変顔とまでは言わないにせよ、写りがあまり良くないのは確かで、誤った人物イメージを与えかねないので敢えて掲載しない選択もあるのでないかと思ったのですが。--[[利用者:毒島みるく|毒島みるく]]（[[利用者‐会話:毒島みるく|会話]]） 2021年6月18日 (金) 00:18 (UTC)
+{{Section resolved|1=--[[利用者:Isamit|Isamit]]（[[利用者‐会話:Isamit|会話]]） 2024年2月12日 (月) 00:45 (UTC)}}

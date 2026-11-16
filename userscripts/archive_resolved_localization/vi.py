@@ -27,9 +27,9 @@ class LocalBotVi(LocalBot):
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
         self.paramLevel = 'LEVEL'
-        self.paramTimeComparator = 'TIMECOMAPARE'
+        self.paramTimeComparator = 'TIMECOMPARE'
         self.paramTimeComparatorCleared = 'resolved'
-        self.paramTimeComparator = 'TIMEOUT'
+        self.paramTimeout = 'TIMEOUT'
         # edit summaries
         self.archiveSumTargetS = "Lưu trữ một đề mục từ [[{sourcePage}]]"
         self.archiveSumTargetP = "Lưu trữ {numOfSections} đề mục từ [[{sourcePage}]]"

@@ -32,7 +32,7 @@ class LocalBotIt(LocalBot):
         self.paramLevel = 'LIVELLO'
         self.paramTimeComparator = 'RIFERIMENTO'
         self.paramTimeComparatorCleared = 'resolved'
-        self.paramTimeComparator = 'TIMEOUT'
+        self.paramTimeout = 'TIMEOUT'
         # edit summaries
         self.archiveSumTargetS = "archiviazione di 1 sezione da [[{sourcePage}]]"
         self.archiveSumTargetP = "archiviazione di {numOfSections} sezioni da [[{sourcePage}]]"

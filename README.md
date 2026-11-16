@@ -30,3 +30,8 @@ minthrottle = 0
 pyvenv/bin/python src/userscripts/archive-resolved-bot.py -project:dewikipedia -page:Benutzer_Diskussion:Werner_von_Basil -dryrun
 pyvenv/bin/python -m unittest discover -s src/userscripts -p 'test_pers_bek*'
 ```
+
+## Tests
+
+`tests/` holds unit tests (pytest) that run without wiki access, also in GitHub CI
+(`.github/workflows/tests.yml`). See `tests/README.md`.
