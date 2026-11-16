@@ -26,17 +26,24 @@ HIDDEN_MARKUP = re.compile(
 class ArchivingError(Exception):
     """Archiving error"""
 
-class NoOptions(ArchivingError):
+class OptionsError(ArchivingError):
+    """The archive template is missing or has wrong parameters; msg is shown on the talk page."""
     def __init__(self, msg=None):
-        pywikibot.output("\t *** No archive template found or wrong format ***\n")
+        super().__init__(msg)
         self.msg = msg
 
     def getMsg(self):
         return self.msg
 
-class WrongOptions(ArchivingError):
-    def __init__(self):
+class NoOptions(OptionsError):
+    def __init__(self, msg=None):
+        pywikibot.output("\t *** No archive template found or wrong format ***\n")
+        super().__init__(msg)
+
+class WrongOptions(OptionsError):
+    def __init__(self, msg=None):
         pywikibot.output("\t *** Parameters have a wrong format ***\n")
+        super().__init__(msg)
 
 #
 # *** DECLARATIONS ***
@@ -585,33 +592,42 @@ class WikiDocument:
             for nam, num in optionsDict.items():
                 pywikibot.output("%s = %s" % (nam, num))              
             
-            try:
-                if self.bot.localBot.paramAge not in optionsDict:
-                   raise NoOptions(f"<<lightpurple>>'{self.bot.localBot.paramAge}' is missing.<<default>>")
-                if self.bot.localBot.paramArchive not in optionsDict:
-                   raise NoOptions(f"<<lightpurple>>'{self.bot.localBot.paramArchive}' is missing.<<default>>")
+            lb = self.bot.localBot
 
-                self.thresholdAgeResolvedTemplate    = float(optionsDict[self.bot.localBot.paramAge])
-                self.archivingTargetPattern = optionsDict[self.bot.localBot.paramArchive].replace("'", "") # remove '
-                if self.bot.localBot.paramLevel in optionsDict and optionsDict[self.bot.localBot.paramLevel] != '':
-                    self.headlineLevel   = int(optionsDict[self.bot.localBot.paramLevel])
-                else:
-                    self.headlineLevel   = 2
+            def number(param, convert):
+                value = optionsDict[param]
+                try:
+                    return convert(value)
+                except ValueError:
+                    raise WrongOptions(f"'{param}' must be a number, not '{value}'.")
 
-                # Zeitvergleich=erledigt / timecompare=resolved: sort into the archive by the timestamp of the resolved template
-                timeComparator = optionsDict.get(self.bot.localBot.paramTimeComparator, '')
-                self.archivingUseTimeComparatorCleared = \
-                    timeComparator.lower() == self.bot.localBot.paramTimeComparatorCleared.lower()
-                timeout = optionsDict.get(self.bot.localBot.paramTimeout, '')
-                if timeout != '':
-                    self.thresholdAgeByTimeout = float(timeout)
-            except KeyError as ke:
-                raise NoOptions()
-            except ValueError:
-                raise WrongOptions()
+            if lb.paramAge not in optionsDict:
+                raise NoOptions(f"'{lb.paramAge}' is missing.")
+            if lb.paramArchive not in optionsDict:
+                raise NoOptions(f"'{lb.paramArchive}' is missing.")
+
+            self.thresholdAgeResolvedTemplate = number(lb.paramAge, float)
+            if self.thresholdAgeResolvedTemplate < 0:
+                raise WrongOptions(f"'{lb.paramAge}' must not be negative.")
+            self.archivingTargetPattern = optionsDict[lb.paramArchive].replace("'", "") # remove '
+            if optionsDict.get(lb.paramLevel, '') != '':
+                self.headlineLevel = number(lb.paramLevel, int)
+                if not 1 <= self.headlineLevel <= 6:
+                    raise WrongOptions(f"'{lb.paramLevel}' must be between 1 and 6.")
+            else:
+                self.headlineLevel = 2
+
+            # Zeitvergleich=erledigt / timecompare=resolved: sort into the archive by the timestamp of the resolved template
+            timeComparator = optionsDict.get(lb.paramTimeComparator, '')
+            self.archivingUseTimeComparatorCleared = \
+                timeComparator.lower() == lb.paramTimeComparatorCleared.lower()
+            if optionsDict.get(lb.paramTimeout, '') != '':
+                self.thresholdAgeByTimeout = number(lb.paramTimeout, float)
+                if self.thresholdAgeByTimeout < 0:
+                    raise WrongOptions(f"'{lb.paramTimeout}' must not be negative.")
 
         else:
-            raise NoOptions(f"<<lightpurple>>Main template not found.<<default>>")
+            raise NoOptions("Main template not found.")
     
     def hasWorkToDo(self):
         """

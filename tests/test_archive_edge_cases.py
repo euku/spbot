@@ -258,17 +258,35 @@ def test_wrong_age(value):
         prepared("== A ==\n", "{{Autoarchiv-Erledigt|Alter=%s|Ziel=X/Y}}\n" % value)
 
 
-@pytest.mark.xfail(strict=True, reason="a negative age archives every section, also unresolved ones")
 def test_negative_age_is_rejected():
     with pytest.raises(core.WrongOptions):
         prepared("== A ==\nq %s\n" % SIG, "{{Autoarchiv-Erledigt|Alter=-1|Ziel=X/Y}}\n")
 
 
-@pytest.mark.xfail(strict=True, reason="Ebene=0 ends in re.error instead of WrongOptions, so no error notice")
 @pytest.mark.parametrize("level", ["0", "-1", "7"])
 def test_invalid_level_is_rejected(level):
     with pytest.raises(core.WrongOptions):
         prepared("== A ==\n", "{{Autoarchiv-Erledigt|Alter=1|Ziel=X/Y|Ebene=%s}}\n" % level)
+
+
+@pytest.mark.parametrize("options, message", [
+    ("Alter=1,5|Ziel=X/Y", "'ALTER' must be a number, not '1,5'."),
+    ("Alter=|Ziel=X/Y", "'ALTER' must be a number, not ''."),
+    ("Alter=-1|Ziel=X/Y", "'ALTER' must not be negative."),
+    ("Alter=1|Ziel=X/Y|Ebene=zwei", "'EBENE' must be a number, not 'zwei'."),
+    ("Alter=1|Ziel=X/Y|Ebene=0", "'EBENE' must be between 1 and 6."),
+    ("Alter=1|Ziel=X/Y|Zeitbeschränkung=30d", "'ZEITBESCHRÄNKUNG' must be a number, not '30d'."),
+    ("Alter=1|Ziel=X/Y|Zeitbeschränkung=-3", "'ZEITBESCHRÄNKUNG' must not be negative."),
+])
+def test_wrong_options_message(options, message):
+    with pytest.raises(core.WrongOptions) as e:
+        prepared("== A ==\n", "{{Autoarchiv-Erledigt|%s}}\n" % options)
+    assert e.value.getMsg() == message
+
+
+@pytest.mark.parametrize("options", ["Ebene=1", "Ebene=6", "Zeitbeschränkung=0", "Ebene=", "Zeitbeschränkung="])
+def test_valid_border_values(options):
+    prepared("== A ==\n", "{{Autoarchiv-Erledigt|Alter=1|Ziel=X/Y|%s}}\n" % options)
 
 
 def test_age_zero_archives_resolved_sections_only():

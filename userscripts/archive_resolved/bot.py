@@ -9,7 +9,7 @@ import pywikibot        # Wikipedia-pybot-framework
 from pywikibot import pagegenerators
 from time import localtime, strftime
 from archive_resolved_localization.local_bot_factory import LocalBotFactory
-from archive_resolved.core import ArchivingError, NoOptions, WikiDocument
+from archive_resolved.core import ArchivingError, OptionsError, WikiDocument
 
 
 def parseArgs(args) -> dict:
@@ -82,10 +82,10 @@ class ArchiveRobot:
             if wdoc.hasWorkToDo():
                 wdoc.executeArchiving()
 
-        except NoOptions as no:
+        except OptionsError as no:
             # Write error report to the same page
                 pywikibot.output("\t<<lightpurple>>Report error for %s<<default>>\n" % page.title())
-                hintMsg = no.getMsg() if no.getMsg() != None else ''
+                hintMsg = no.getMsg() or ''
                 pywikibot.output("Reason was: " + hintMsg)
                 page = pywikibot.Page(self.site, page.title())
                 if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
