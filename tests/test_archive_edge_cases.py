@@ -167,7 +167,6 @@ def test_heading_variants(heading, title):
     assert doc.hasWorkToDo()
 
 
-@pytest.mark.xfail(strict=True, reason="the heading regex needs at least 2 characters between the = signs")
 @pytest.mark.parametrize("heading", ["==A==", "==1=="])
 def test_one_character_heading(heading):
     doc = prepared("== X ==\nq %s\n%s\n%s\nb\n" % (SIG, RESOLVED, heading))
