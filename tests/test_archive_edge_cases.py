@@ -191,13 +191,76 @@ def test_level_1_heading_ends_section_but_is_not_archived():
     assert doc.modifiedText == OPTIONS + "= Neu =\ntext\n"
 
 
-def test_text_after_last_section_is_archived_with_it():
-    """Known limitation: there is no end marker for the last section, so categories,
-    navigation templates etc. below it go to the archive."""
-    body = "== A ==\nq %s\n%s\n\n[[Kategorie:Foo]]\n" % (SIG, RESOLVED)
-    doc = prepared(body)
-    assert doc.archiveJobTextByTarget[TARGET] == body
+SECTION_A = "== A ==\nq %s\n%s\n" % (SIG, RESOLVED)
+
+
+@pytest.mark.parametrize("footer", [
+    "\n[[Kategorie:Foo]]\n",
+    "[[Kategorie:Foo]]",
+    "\n[[Kategorie:Foo|Sortierung]]\n[[ category : Bar ]]\n\n",
+    "\n{{SORTIERUNG:Foo}}\n[[Kategorie:Foo]]\n",
+    "__NOTOC__\n__KEIN_INHALTSVERZEICHNIS__\n",
+    "\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
+    "\n{{Autoarchiv-Erledigt\n|Alter=1\n|Ziel='((Lemma))/Archiv/((Jahr))'\n}}\n[[Kategorie:Foo]]",
+])
+def test_footer_after_last_section_stays_on_page(footer):
+    """Categories, sort keys, magic words and the archive template below the last section
+    belong to the page, not to the section."""
+    doc = prepared(SECTION_A + footer)
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
+    assert doc.modifiedText == OPTIONS + footer
+    assertNothingLost(doc)
+
+
+@pytest.mark.parametrize("notFooter", [
+    "\n[[:Kategorie:Foo]] ist ein Link\n",
+    "\nWeitere Fragen? [[Kategorie:Foo]]\n",
+    "\n{{Navigationsleiste}}\n",
+])
+def test_other_text_after_last_section_is_archived_with_it(notFooter):
+    """There is no end marker for the last section: anything else below it is part of it."""
+    doc = prepared(SECTION_A + notFooter)
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A + notFooter
     assert doc.modifiedText == OPTIONS
+
+
+def test_footer_after_last_section_that_stays():
+    doc = prepared(SECTION_A + "== B ==\noffen\n\n[[Kategorie:Foo]]\n")
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
+    assert doc.modifiedText == OPTIONS + "== B ==\noffen\n\n[[Kategorie:Foo]]\n"
+
+
+def test_section_with_archive_template_is_not_archived():
+    """On the archive page, the template would archive again and again (Lars2019, 2024)."""
+    template = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}"
+    doc = prepared("== A ==\nq %s\n%s\n%s\nmehr Text\n" % (SIG, template, RESOLVED), options="")
+    assert not doc.hasWorkToDo()
+    # but in a comment it does not count
+    doc = prepared("== A ==\nq %s\n<!-- %s -->\n%s\nmehr Text\n" % (SIG, template, RESOLVED))
+    assert doc.hasWorkToDo()
+
+
+@pytest.mark.parametrize("target", [
+    "{{Lemma}}/Archives/((Jahr))",
+    "((Lemma))/Archiv/{{CURRENTYEAR}}",
+    "[[((Lemma))/Archiv]]",
+    "((Lemma))/Archiv <((Jahr))>",
+    "   ",
+])
+def test_invalid_archive_target_is_reported(target):
+    with pytest.raises(core.WrongOptions):
+        prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s'}}\n" % target)
+
+
+@pytest.mark.parametrize("pageName", ["{{FULLPAGENAME}}", "{{fullpagename}}", "{{VOLLER_SEITENNAME}}"])
+def test_fullpagename_template_works_like_the_variable(pageName):
+    doc = prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s/Archiv/((Jahr))'}}\n" % pageName)
+    assert list(doc.archiveJobTextByTarget) == [TARGET]
+
+
+def test_variables_with_hash_are_valid():
+    doc = prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'}}\n")
+    assert list(doc.archiveJobTextByTarget) == [TARGET + "/11"]
 
 
 @pytest.mark.parametrize("open_, close", [("<!--", "-->"), ("<nowiki>", "</nowiki>"), ("<pre>", "</pre>"),

@@ -24,6 +24,17 @@ HIDDEN_MARKUP = re.compile(
 # optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
 TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
 
+# The last line of a page if it belongs to the page and not to the last section: a category,
+# a sort key or a magic word like __NOTOC__. Such lines stay on the page when the last section
+# is archived.
+FOOTER_LINE = re.compile(
+    r"(?:^|\n)[ \t]*(?:\[\[\s*(?:Kategorie|Category|Kategoria|Categoria|Catégorie|Thể\ loại|분류|カテゴリ)\s*:[^\[\]\n]*\]\]"
+    r"|\{\{\s*(?:DEFAULTSORT|SORTIERUNG|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)\s*:[^{}\n]*\}\}"
+    r"|__[A-ZÄÖÜ_]+__)[ \t]*\Z", re.IGNORECASE)
+
+# characters that are not allowed in page titles; a ((variable)) never produces them
+INVALID_TITLE_CHARS = re.compile(r"[\[\]{}<>|#]")
+
 #
 # Local exceptions
 #
@@ -58,6 +69,7 @@ class Discussion:
         self.title               = ""     # Title of disc
         self.titleClear          = ""
         self.hasDoNotArchiveTmpl = False  # is a temple used for this section, that denies archiving
+        self.hasArchiveTemplate  = False  # the archive template itself is in this section
         self.contentOffsetStart  = 0      # offset, where text starts
         self.contentOffsetEnd    = 0      # offset, where text ends
         self.content             = ""     # content of disc/section
@@ -134,6 +146,8 @@ class Discussion:
         # using original self.content because for EN and commons there is not visible template but you can find this in the code:
         # <!-- [[User:DoNotArchiveUntil]] 19:24, 13 March 2035 (UTC) -->
         self.hasDoNotArchiveTmpl = doNotArchivePattern.search(self.content) != None
+        # never archive the archive template: on the archive page it would archive again (recursively)
+        self.hasArchiveTemplate = re.search(bot.localBot.optionsRegEx, clearedContent, re.DOTALL) is not None
 
     def _extractTimeStampsAndAges(self, bot, regex: str, clearedContent: str, now: datetime):
         """
@@ -184,7 +198,7 @@ class Discussion:
             self.numberOfContributions = len(agesList) # 1 date = 1 contribution
 
     def shouldBeArchived(self, thresholdAgeResolvedTemplate: float, thresholdAgeByTimeout: float) -> bool:
-        return not self.hasDoNotArchiveTmpl \
+        return not self.hasDoNotArchiveTmpl and not self.hasArchiveTemplate \
             and (self.ageByResolvedTemplate > thresholdAgeResolvedTemplate \
                     or (thresholdAgeByTimeout > 0 and self.lastContributionAge >= thresholdAgeByTimeout) \
                 )
@@ -304,13 +318,41 @@ class WikiDocument:
                 possibleDiscs[counter - 1].retrieveContent(self.originalText)
             counter += 1
         if (len(possibleDiscs) != 0):
-            possibleDiscs[counter - 1].setContentOffsetEnd(len(self.originalText))
-            possibleDiscs[counter - 1].retrieveContent(self.originalText)
+            lastDisc = possibleDiscs[counter - 1]
+            lastDisc.setContentOffsetEnd(self._endOfLastSection(lastDisc.getTitleOffsetStart()))
+            lastDisc.retrieveContent(self.originalText)
 
         for i in possibleDiscs:
             if i.getHeadlineLevel() == self.headlineLevel:
                 self.listDiscussions.append(i)
                 self.numberDiscussions += 1
+
+    def _endOfLastSection(self, start: int) -> int:
+        """
+            The last section ends with the page, except for categories, sort keys, magic words
+            and the archive template on the last lines: they belong to the page and stay there.
+        """
+        text = self.originalText
+        footerStart = len(text)
+        while True:
+            contentEnd = start + len(text[start:footerStart].rstrip())
+            footer = FOOTER_LINE.search(text, start, contentEnd)
+            if footer is None:
+                templates = list(re.finditer(self.bot.localBot.optionsRegEx, text[start:contentEnd], re.DOTALL))
+                footer = templates[-1] if templates and start + templates[-1].end() == contentEnd else None
+                if footer is not None and not text[start:start + footer.start()].endswith("\n"):
+                    footer = None  # the template is not on a line of its own
+                offset = start
+            else:
+                offset = 0
+            if footer is None:
+                break
+            footerStart = offset + footer.start()
+        if footerStart == len(text):
+            return footerStart
+        # keep the line break after the last line of the section
+        contentEnd = start + len(text[start:footerStart].rstrip())
+        return contentEnd + 1 if text[contentEnd:contentEnd + 1] == "\n" else contentEnd
 
     def examineDiscussions(self):
         for singleDiscussion in self.listDiscussions:
@@ -423,18 +465,68 @@ class WikiDocument:
                          f'redirects to [[{redirectTarget.title()}]], which is not a subpage of the origin page.<<default>>')
         return None
 
+    def _isArchiveOfItself(self, targetPageName: str) -> bool:
+        """
+            True if the origin page would archive into itself or looks like an archive page made
+            by its own target pattern, e.g. X/Archiv/2024/01 archiving into X/Archiv/2024/01/Archiv/2024/01.
+            This happens when the archive template got into an archive page.
+        """
+        origin = self.originPageName
+        if targetPageName == origin:
+            return True
+        if not targetPageName.startswith(origin + '/'):
+            return False
+        # the part of the pattern after the page name variable, e.g. /Archiv/((Jahr))/((Monat:##))
+        m = re.match(r"\s*\(\([^()]*\)\)(.+)", self.archivingTargetPattern)
+        if m is None:
+            return False
+        if origin.endswith(targetPageName[len(origin):]):
+            return True
+        # a ((variable)) gives a number (year, month, week, quarter, maybe roman), sometimes with text
+        suffix = r"(?:[^/]*\d[^/]*|[IVXivx]+)".join(re.escape(part) for part in re.split(r"\(\([^()]*\)\)", m.group(1)))
+        return re.search(suffix + r"\Z", origin) is not None
+
+    def _resolveTargets(self) -> bool:
+        """
+            Checks all archive pages before anything is saved and replaces redirects to a subpage
+            of the origin page by their target, so the edit summaries name the page really written.
+            Returns False if the origin page must be skipped.
+        """
+        textByTarget, counterByTarget, firstTitleByTarget = {}, {}, {}
+        for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
+            if self._isArchiveOfItself(targetPageName):
+                pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it would archive into '
+                                 f'[[{targetPageName}]], it seems to be an archive page itself.<<default>>')
+                return False
+            try:
+                targetPage = self._resolveTargetPage(targetPageName)
+            except pywikibot.exceptions.InvalidTitleError as e:
+                raise WrongOptions(f"The archive page '{targetPageName}' is not a valid page title ({e}).")
+            if targetPage is None:
+                return False
+            if not targetPage.botMayEdit():
+                pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
+                return False
+            title = targetPage.title()
+            if title in textByTarget:
+                textByTarget[title] += discussionsAsText
+                counterByTarget[title] += self.archiveJobCounterByTarget[targetPageName]
+            else:
+                textByTarget[title] = discussionsAsText
+                counterByTarget[title] = self.archiveJobCounterByTarget[targetPageName]
+                firstTitleByTarget[title] = self.archiveJobFirstTitleByTarget[targetPageName]
+        self.archiveJobTextByTarget = textByTarget
+        self.archiveJobCounterByTarget = counterByTarget
+        self.archiveJobFirstTitleByTarget = firstTitleByTarget
+        return True
+
     def executeArchiving(self):
         # first, check if we can edit all the pages
         if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
             pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it is protected.<<default>>')
             return
-        for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
-            targetPage = self._resolveTargetPage(targetPageName)
-            if targetPage is None:
-                return
-            if not targetPage.botMayEdit():
-                pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
-                return
+        if not self._resolveTargets():
+            return
 
         if len(self.archiveJobTextByTarget) >= 1:
             skipThisPage = False
@@ -458,11 +550,7 @@ class WikiDocument:
                 newText = None
                 try:
                     pywikibot.output(f"Opening page [[{targetPageName}]]")
-                    targetPage = self._resolveTargetPage(targetPageName)
-                    if targetPage is None:
-                        skipThisPage = True
-                        break
-                    targetPageName = targetPage.title()
+                    targetPage = pywikibot.Page(self.bot.site, targetPageName)  # redirects are resolved already
                     if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
                         pywikibot.output("Archiving into the (Main) namespace 0!")
                         skipThisPage = True
@@ -628,6 +716,15 @@ class WikiDocument:
             if self.thresholdAgeResolvedTemplate < 0:
                 raise WrongOptions(f"'{lb.paramAge}' must not be negative.")
             self.archivingTargetPattern = optionsDict[lb.paramArchive].replace("'", "") # remove '
+            # {{FULLPAGENAME}} instead of ((FULLPAGENAME)) is a common mistake; it even looks right on the page
+            self.archivingTargetPattern = re.sub(r"\{\{\s*(?:FULLPAGENAME|VOLLER_SEITENNAME)\s*\}\}", "((FULLPAGENAME))",
+                                                 self.archivingTargetPattern, flags=re.IGNORECASE)
+            if not self.archivingTargetPattern.strip():
+                raise WrongOptions(f"'{lb.paramArchive}' is empty.")
+            if INVALID_TITLE_CHARS.search(re.sub(r"\(\([^()]*\)\)", "", self.archivingTargetPattern)):
+                raise WrongOptions(f"'{lb.paramArchive}' must be a page title with ((variables)), "
+                                   f"without templates, links or the characters [ ] {{ }} < > # |: "
+                                   f"'{self.archivingTargetPattern}'.")
             if optionsDict.get(lb.paramLevel, '') != '':
                 self.headlineLevel = number(lb.paramLevel, int)
                 if not 1 <= self.headlineLevel <= 6:

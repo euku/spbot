@@ -97,6 +97,68 @@ def test_archive_redirect_to_subpage_is_followed():
     assert bot.site.page(ARCHIVE).text == "#WEITERLEITUNG [[x]]"
 
 
+def test_archive_redirect_summaries_name_the_real_page():
+    """ElBe: Archiv/2025 redirects to Archiv/2026; both targets are merged into one save."""
+    bot = makeBot()
+    options = "{{Autoarchiv-Erledigt|Alter=3|Ziel='((Lemma))/Archiv/((Jahr))'}}\n"
+    old2025 = ("== Älter ==\nFrage --A 10:00, 1. Nov. 2025 (CET)\n"
+               "{{Erledigt|1=--A 12:00, 5. Nov. 2026 (CET)}}\n")
+    moved = ORIGIN + "/Archiv/2026"
+    bot.site.page(ORIGIN + "/Archiv/2025", "#WEITERLEITUNG [[x]]").redirectTo = moved
+    bot.site.page(moved, "{{Archiv}}")
+    run(bot, options + old2025 + OLD + OPEN)
+    saved = bot.site.saved()
+    assert set(saved) == {moved, ORIGIN}
+    [(archiveText, archiveSummary)] = saved[moved]
+    assert archiveSummary == f"Archiviere 2 Abschnitte von [[{ORIGIN}]] (ab Abschnitt [[{moved}#Älter|Älter]])"
+    assert archiveText.startswith("{{Archiv}}\n\n== Älter ==") and "== Alt ==" in archiveText
+    [(originText, originSummary)] = saved[ORIGIN]
+    assert originText == options + OPEN
+    assert originSummary.startswith(f"Archiviere 2 Abschnitte: 2 nach [[{moved}]] (ab Abschnitt [[{moved}#Älter|Älter]])")
+    assert "/Archiv/2025" not in originSummary
+
+
+@pytest.mark.parametrize("title, target", [
+    # Lars2019: the template was archived, the archive page archived into a subpage of itself
+    (ORIGIN + "/Archiv/2026/11", "((Lemma))/Archiv/((Jahr))/((Monat:##))"),
+    (ORIGIN + "/Archiv/2026/11/Archiv/2026/11", "((Lemma))/Archiv/((Jahr))/((Monat:##))"),
+    (ORIGIN + "/Archiv/2025/12", "((Lemma))/Archiv/((Jahr))/((Monat:##))"),
+    # month names are only recognized if they are the same (here: November); there is no
+    # number in "Dezember" to tell it from a normal page name
+    (ORIGIN + "/Archiv/2026/November", "((Lemma))/Archiv/((Jahr))/((Monat:Lang))"),
+    (ORIGIN + "/Archiv/2026/IV", "((Lemma))/Archiv/((Jahr))/((Quartal:I))"),
+    (ORIGIN + "/Archiv/2026", "Benutzer Diskussion:Test/Archiv/((Jahr))"),  # into itself
+])
+def test_archive_page_does_not_archive_into_itself(title, target):
+    bot = makeBot()
+    run(bot, "{{Autoarchiv-Erledigt|Alter=3|Ziel='%s'}}\n" % target + OLD + OPEN, title=title)
+    assert bot.site.saved() == {}
+
+
+@pytest.mark.parametrize("title, target, archive", [
+    (ORIGIN, "((Lemma))/Archiv/((Jahr))/((Monat:##))", "/Archiv/2026/11"),
+    ("Benutzer Diskussion:Archiv/2026/11", "((Lemma))/Archiv/((Jahr))/((Monat:##))", "/Archiv/2026/11"),
+    # commons, MediaWiki talk:Gadget-AjaxQuickDelete.js/auto-errors
+    ("Benutzer Diskussion:Test/auto-errors", "((Lemma))/((Jahr))-((Monat:##))", "/2026-11"),
+])
+def test_normal_pages_are_not_mistaken_for_archives(title, target, archive):
+    bot = makeBot()
+    run(bot, "{{Autoarchiv-Erledigt|Alter=3|Ziel='%s'}}\n" % target + OLD + OPEN, title=title)
+    assert set(bot.site.saved()) == {title, title + archive}
+
+
+def test_archive_target_with_invalid_title_is_reported():
+    """e.g. a title over 255 bytes; pywikibot raises InvalidTitleError when the page is used."""
+    bot = makeBot()
+
+    def invalid():
+        raise pywikibot.exceptions.InvalidTitleError("too long")
+    bot.site.page(ARCHIVE).isRedirectPage = invalid
+    with pytest.raises(core.WrongOptions):
+        run(bot)
+    assert bot.site.saved() == {}
+
+
 def test_archive_redirect_outside_origin_is_not_followed():
     bot = makeBot()
     bot.site.page(ARCHIVE, "#WEITERLEITUNG [[x]]").redirectTo = "Benutzer Diskussion:Anderer/Archiv"
