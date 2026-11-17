@@ -12,6 +12,7 @@ from pywikibot import textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
 from pytz import timezone, utc
+from archive_resolved_localization.local_bot import TEMPLATE_PREFIX
 
 # Markup whose content MediaWiki does not parse: comments (an unclosed one hides the
 # rest of the page) and <nowiki>, <pre>, <code>, <syntaxhighlight>, <source> with any
@@ -21,8 +22,6 @@ HIDDEN_MARKUP = re.compile(
     r"|<(?P<tag>nowiki|pre|code|syntaxhighlight|source)(?:\s[^>]*)?(?<!/)>.*?</(?P=tag)\s*>",
     re.IGNORECASE | re.DOTALL)
 
-# optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
-TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
 
 # The last line of a page if it belongs to the page and not to the last section: a category,
 # a sort key or a magic word like __NOTOC__. Such lines stay on the page when the last section
@@ -601,10 +600,6 @@ class WikiDocument:
                     skipThisPage = True
                 except pywikibot.exceptions.LockedPageError:
                     pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
-                    skipThisPage = True
-                except pywikibot.exceptions.InvalidTitleError:
-                    # don't care, some bug in the title
-                    pywikibot.output("<<lightpurple>>Page skipped because of pywikibot.exceptions.InvalidTitleError<<default>>")
                     skipThisPage = True
                 except:
                     # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138

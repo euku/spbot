@@ -7,6 +7,9 @@ from datetime import datetime, timedelta, timezone as dt_timezone
 import time
 from pytz import timezone
 
+# optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
+TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
+
 # The options of the archive template up to its closing }}; a nested {{WORD}} (e.g. {{FULLPAGENAME}}) is skipped.
 # Each character can be matched in only one way, so the regex stays linear even without a closing }}
 # (the former "(?:\{\{\w*\}\}|.*?)*?" took minutes for an unclosed template followed by a line of text).
