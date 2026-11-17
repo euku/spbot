@@ -45,6 +45,10 @@ class LocalBotKo(LocalBot):
         self.sectResolved1P = ":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1</small>"
         self.sectResolved2P = ":<small>이 문단은 다음 사용자의 요청에 의해 보존되었습니다: \\1 \\7</small>"
     
+    def _getTimezone(self) -> str:
+        # signatures on this wiki are in local time (server timezone of the wiki)
+        return "Asia/Seoul"
+
     def _getAllWeekVariablesForTargetPath(self) -> list:
         return ["((주:##))", "((주))"]
     

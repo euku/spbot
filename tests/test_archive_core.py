@@ -1,10 +1,13 @@
 """Tests for archive_resolved.core without any wiki access: options, sections, ages, targets."""
 import time
+from datetime import timedelta
 
 import pytest
 
+from pytz import timezone
+
 from archive_resolved import core
-from conftest import makeBot, makeDoc
+from conftest import NOW, makeBot, makeDoc
 
 OPTIONS = "{{Autoarchiv-Erledigt|Alter=3|Ziel='((Lemma))/Archiv/((Jahr))'}}\n"
 
@@ -147,6 +150,25 @@ def test_examine_ages():
     assert 1.0 < fresh.getAgeByResolvedTemplate() < 1.2
     assert open_.getAgeByResolvedTemplate() == 0
     assert keep.hasDoNotArchiveTmpl
+
+
+@pytest.mark.parametrize("project, offsetHours, signature", [
+    # NOW = 2026-11-16 12:00 UTC; each signature is exactly one day earlier in the wiki's local time
+    ("dewikipedia", 1, "--A 13:00, 15. Nov. 2026 (CET)"),
+    ("cswikipedia", 1, "--A 15. 11. 2026, 13:00 (CET)"),
+    ("itwikipedia", 1, "--A 13:00, 15 nov 2026 (CET)"),
+    ("kowikipedia", 9, "--A 2026년 11월 15일 (일) 21:00 (KST)"),
+    ("jawikipedia", 0, "--A 2026年11月15日 (日) 12:00 (UTC)"),
+    ("viwikipedia", 0, "--A 12:00, ngày 15 tháng 11 năm 2026 (UTC)"),
+])
+def test_signature_age_uses_local_time_of_the_wiki(project, offsetHours, signature):
+    bot = makeBot(project)
+    offset = timezone(bot.localBot._getTimezone()).utcoffset(NOW)   # at NOW, not at the time the test runs
+    assert offset == timedelta(hours=offsetHours)
+    bot.localBot.getUtcDiff = lambda: offset
+    disc = core.Discussion("Test")
+    ages, _ = disc._extractTimeStampsAndAges(bot, bot.localBot.timeStampRegEx, "q " + signature, NOW)
+    assert ages == [pytest.approx(1.0)]
 
 
 def test_examine_ignores_signatures_in_comments_and_nowiki():

@@ -43,6 +43,10 @@ class LocalBotCs(LocalBot):
         self.sectResolved1P = ":<small>Tato sekce byla archivována na žádost uživatele: \\1</small>"
         self.sectResolved2P = ":<small>Tato sekce byla archivována na žádost uživatele: \\1 \\7</small>"
     
+    def _getTimezone(self) -> str:
+        # signatures on this wiki are in local time (server timezone of the wiki)
+        return "Europe/Prague"
+
     def convertMonthNumberToShortName(self, monthNumber) -> str:
         """
             monthNumber: a month number as string or int

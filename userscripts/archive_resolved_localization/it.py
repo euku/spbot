@@ -47,6 +47,10 @@ class LocalBotIt(LocalBot):
         self.sectResolved1P = ":<small>Questa sezione è stata archiviata su richiesta di: \\1</small>"
         self.sectResolved2P = ":<small>Questa sezione è stata archiviata su richiesta di \\1 \\7</small>"
 
+    def _getTimezone(self) -> str:
+        # signatures on this wiki are in local time (server timezone of the wiki)
+        return "Europe/Rome"
+
     def convertMonthNameToNumber(self, month: str) -> int:
         """
             month: a month name or number fetched from the signature
