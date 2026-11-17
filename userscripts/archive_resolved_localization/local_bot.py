@@ -3,7 +3,7 @@
 """
     This file extracts all the project and translation related stuff from the main bot code
 """
-from datetime import datetime
+from datetime import datetime, timedelta, timezone as dt_timezone
 import time
 from pytz import timezone
 
@@ -38,15 +38,14 @@ class LocalBot():
     def _getTimezone(self) -> str:
         return "UTC"
 
-    def getUtcDiff(self) -> datetime:
+    def getUtcDiff(self, at: datetime = None) -> timedelta:
         """
-            Difference between the UTC and local timezone
+            Difference between the local timezone of the wiki and UTC at the time 'at'
+            (naive, UTC; None = now), e.g. 1 hour for Europe/Berlin in winter, 2 hours in summer.
         """
-        tz = timezone(self._getTimezone())
-        utc = timezone('UTC')
-        now = datetime.now()
-        utc.localize(now)
-        return utc.localize(now) - tz.localize(now)
+        if at is None:
+            at = datetime.now(dt_timezone.utc).replace(tzinfo=None)
+        return timezone('UTC').localize(at).astimezone(timezone(self._getTimezone())).utcoffset()
     
     def convertMonthNameToNumber(self, month: str) -> int:
         """

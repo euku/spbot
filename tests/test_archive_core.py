@@ -1,10 +1,8 @@
 """Tests for archive_resolved.core without any wiki access: options, sections, ages, targets."""
 import time
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import pytest
-
-from pytz import timezone
 
 from archive_resolved import core
 from conftest import NOW, makeBot, makeDoc
@@ -163,12 +161,22 @@ def test_examine_ages():
 ])
 def test_signature_age_uses_local_time_of_the_wiki(project, offsetHours, signature):
     bot = makeBot(project)
-    offset = timezone(bot.localBot._getTimezone()).utcoffset(NOW)   # at NOW, not at the time the test runs
-    assert offset == timedelta(hours=offsetHours)
-    bot.localBot.getUtcDiff = lambda: offset
+    assert bot.localBot.getUtcDiff(NOW) == timedelta(hours=offsetHours)
     disc = core.Discussion("Test")
     ages, _ = disc._extractTimeStampsAndAges(bot, bot.localBot.timeStampRegEx, "q " + signature, NOW)
     assert ages == [pytest.approx(1.0)]
+
+
+@pytest.mark.parametrize("project, at, hours", [
+    ("dewikipedia", datetime(2026, 1, 15, 12, 0), 1),
+    ("dewikipedia", datetime(2026, 7, 15, 12, 0), 2),
+    ("dewikipedia", datetime(2026, 10, 25, 0, 59), 2),   # 02:59 CEST, the last minute of summer time
+    ("dewikipedia", datetime(2026, 10, 25, 1, 0), 1),    # 02:00 CET
+    ("kowikipedia", datetime(2026, 7, 15, 12, 0), 9),
+    ("commons", datetime(2026, 7, 15, 12, 0), 0),
+])
+def test_utc_diff_at_a_given_time(project, at, hours):
+    assert makeBot(project).localBot.getUtcDiff(at) == timedelta(hours=hours)
 
 
 def test_examine_ignores_signatures_in_comments_and_nowiki():

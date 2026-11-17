@@ -34,6 +34,7 @@ FOOTER_LINE = re.compile(
 
 # characters that are not allowed in page titles; a ((variable)) never produces them
 INVALID_TITLE_CHARS = re.compile(r"[\[\]{}<>|#]")
+UTC_TIMESTAMP_END = re.compile(r"\(UTC\)\s*\Z", re.IGNORECASE)
 
 #
 # Local exceptions
@@ -159,7 +160,7 @@ class Discussion:
         """
         agesList = []
         timestampList = []
-        today = mktime((now + bot.localBot.getUtcDiff()).timetuple())
+        today = mktime((now + bot.localBot.getUtcDiff(now)).timetuple())
         localTz = timezone(bot.localBot._getTimezone())
         timestampPattern = re.compile(bot.localBot.timeStampRegEx, re.IGNORECASE | re.DOTALL)
         matches = re.compile(regex, re.IGNORECASE | re.DOTALL).finditer(clearedContent)
@@ -168,8 +169,7 @@ class Discussion:
             try:
                signatureTime = datetime(int(YY), int(bot.localBot.convertMonthNameToNumber(MM)), int(dd), int(hh), int(mm))
                # all times are local time of the wiki; a signature in UTC (e.g. "(UTC)" on dewiki) is converted
-               timestamp = timestampPattern.search(m.group(0))
-               if localTz.zone != "UTC" and timestamp and timestamp.group(0).rstrip().endswith("(UTC)"):
+               if localTz.zone != "UTC" and UTC_TIMESTAMP_END.search(timestampPattern.search(m.group(0)).group(0)):
                    signatureTime = utc.localize(signatureTime).astimezone(localTz).replace(tzinfo=None)
                dateToCheck = mktime(signatureTime.timetuple()[:8] + (0,))  # seconds since 1970
                actualAgeInDays = (today - dateToCheck)/60/60/24
@@ -643,7 +643,7 @@ class WikiDocument:
             numberOfSectionsRemovedFromOriginStr = self.bot.localBot.archiveSumOriginP.format(numberOfSectionsRemovedFromOrigin=numberOfSectionsRemovedFromOrigin)
         
         # add last contributor + time
-        lastEditTime = self.lastEditTime + self.bot.localBot.getUtcDiff()
+        lastEditTime = self.lastEditTime + self.bot.localBot.getUtcDiff(self.lastEditTime)
         lastEditTime = ("%s-%02d-%02d %02d:%02d" % (lastEditTime.year, lastEditTime.month, lastEditTime.day, lastEditTime.hour, lastEditTime.minute))
         lastEditComment = self.bot.localBot.archiveSumLastEdit % (self.lastUser, self.lastUser, lastEditTime)
         firstNewSectionInArchiveSummary = '' # fallback

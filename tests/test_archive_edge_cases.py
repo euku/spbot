@@ -310,6 +310,7 @@ def test_heading_inside_markup_is_not_a_section(open_, close):
 @pytest.mark.parametrize("utc, local, month", [
     ("23:30, 31. Okt. 2026 (UTC)", "00:30, 1. Nov. 2026 (CET)", "11"),   # winter time: +1 h
     ("22:30, 31. Jul. 2026 (UTC)", "00:30, 1. Aug. 2026 (CEST)", "08"),  # summer time: +2 h
+    ("23:30, 31. Okt. 2026 (utc)", "00:30, 1. Nov. 2026 (CET)", "11"),   # the timestamp regex ignores the case
 ])
 def test_utc_signature_is_converted_to_local_time(utc, local, month):
     """dewiki signatures with "(UTC)" (users with a UTC preference) are Berlin time + 1/2 h."""
