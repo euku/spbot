@@ -13,6 +13,7 @@ from PyPI (see `requirements.txt`), not vendored.
 - `logs/` – job logs; the scripts write their own logs relative to the
   working directory, so jobs must run with the tool home as working directory
 - `toolforge-jobs.yaml` → `bot/jobs/toolforge-jobs.yaml`
+- `www/python/src` → `bot/web` and `www/python/venv` – the status web page (see below)
 
 ## Settings that used to be patches in the pywikibot checkout
 
@@ -35,3 +36,21 @@ pyvenv/bin/python -m unittest discover -s bot/userscripts -p 'test_pers_bek*'
 
 `tests/` holds unit tests (pytest) that run without wiki access, also in GitHub CI
 (`.github/workflows/tests.yml`). See `tests/README.md`.
+
+## Status web page (https://spbot.toolforge.org/)
+
+`web/` is a Flask app (webservice `python3.13`), in the style of pb.toolforge.org. It only reads:
+
+- `jobs/toolforge-jobs.yaml` and the job logs (`logs/`, `logs/YYYY-MM-DD/`) for the services overview,
+- the run summaries of the archive bot: `logs/archive-resolved-<project>.jsonl`, one JSON line
+  per page with the options, the sections and the decision (written by
+  `userscripts/archive_resolved/summary.py` in every full run, not for `-page` runs; `-nosummary`
+  switches it off), and `logs/archive-runs.jsonl` (one line per run),
+- the wiki replicas (bot flag, blocks, edits of SpBot), cached for 15 minutes.
+
+`/archive?project=<project>&page=<title>` shows the last bot run of one page. The archive templates
+can link there, e.g. `https://spbot.toolforge.org/archive?project=dewikipedia&page={{FULLPAGENAMEE}}`.
+
+Setup (once): `mkdir -p ~/www/python && ln -s ~/bot/web ~/www/python/src`, create the venv in the
+webservice image (`python3 -m venv ~/www/python/venv && ~/www/python/venv/bin/pip install -r ~/bot/web/requirements.txt`),
+then `toolforge webservice python3.13 start`. After code changes: `toolforge webservice restart`.
