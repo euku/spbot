@@ -1436,7 +1436,7 @@
  {
   "project": "itwikipedia",
   "title": "Discussioni progetto:Coordinamento/Connettività",
-  "why": "it localization, Italian signatures",
+  "why": "it localization, Italian signatures; ages and last-edit time +1 h since itwiki uses Europe/Rome (recorded with UTC)",
   "file": "itwikipedia__Discussioni_progetto_Coordinamento_Connettività.wiki",
   "now": "2026-11-16T22:26:30",
   "revid": 153402614,
@@ -1447,7 +1447,7 @@
    "rows": [
     {
      "headline": "Serie di spostamenti di disambigue",
-     "firstAge": 52.57,
+     "firstAge": 52.61,
      "signatures": 19,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/09",
@@ -1455,7 +1455,7 @@
     },
     {
      "headline": "Ancora sui redirect da grafia errata",
-     "firstAge": 43.23,
+     "firstAge": 43.27,
      "signatures": 25,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1463,15 +1463,15 @@
     },
     {
      "headline": "Marsala",
-     "firstAge": 41.28,
+     "firstAge": 41.32,
      "signatures": 14,
-     "resolvedAge": 7.51,
+     "resolvedAge": 7.55,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
      "mark": "archive"
     },
     {
      "headline": "Disambiguanti di episodi TV",
-     "firstAge": 37.19,
+     "firstAge": 37.23,
      "signatures": 12,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1479,23 +1479,23 @@
     },
     {
      "headline": "Gallipoli",
-     "firstAge": 37.06,
+     "firstAge": 37.1,
      "signatures": 11,
-     "resolvedAge": 7.51,
+     "resolvedAge": 7.55,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
      "mark": "archive"
     },
     {
      "headline": "Ragusa",
-     "firstAge": 37.05,
+     "firstAge": 37.09,
      "signatures": 12,
-     "resolvedAge": 7.51,
+     "resolvedAge": 7.55,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
      "mark": "archive"
     },
     {
      "headline": "Rinvii da utente/sandbox a ns0",
-     "firstAge": 36.57,
+     "firstAge": 36.61,
      "signatures": 15,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1503,15 +1503,15 @@
     },
     {
      "headline": "Asiago",
-     "firstAge": 36.46,
+     "firstAge": 36.5,
      "signatures": 13,
-     "resolvedAge": 7.51,
+     "resolvedAge": 7.55,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
      "mark": "archive"
     },
     {
      "headline": "Conte Dracula",
-     "firstAge": 35.4,
+     "firstAge": 35.44,
      "signatures": 18,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1519,7 +1519,7 @@
     },
     {
      "headline": "Disagio",
-     "firstAge": 35.14,
+     "firstAge": 35.18,
      "signatures": 4,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1527,7 +1527,7 @@
     },
     {
      "headline": "Polittico",
-     "firstAge": 29.27,
+     "firstAge": 29.31,
      "signatures": 11,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1543,7 +1543,7 @@
     },
     {
      "headline": "Bozza:Padiglione degli Stati Uniti",
-     "firstAge": 27.52,
+     "firstAge": 27.56,
      "signatures": 7,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1551,7 +1551,7 @@
     },
     {
      "headline": "Le maiuscole disambiguano?",
-     "firstAge": 27.42,
+     "firstAge": 27.46,
      "signatures": 9,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1559,7 +1559,7 @@
     },
     {
      "headline": "Nani Tedeschi",
-     "firstAge": 26.14,
+     "firstAge": 26.18,
      "signatures": 17,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1567,7 +1567,7 @@
     },
     {
      "headline": "Loira",
-     "firstAge": 22.13,
+     "firstAge": 22.17,
      "signatures": 26,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1575,7 +1575,7 @@
     },
     {
      "headline": "Kick",
-     "firstAge": 17.35,
+     "firstAge": 17.39,
      "signatures": 3,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10",
@@ -1583,7 +1583,7 @@
     },
     {
      "headline": "Martelli",
-     "firstAge": 14.41,
+     "firstAge": 14.45,
      "signatures": 6,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1591,7 +1591,7 @@
     },
     {
      "headline": "Anniversario della liberazione",
-     "firstAge": 13.45,
+     "firstAge": 13.49,
      "signatures": 3,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1599,7 +1599,7 @@
     },
     {
      "headline": "Dado",
-     "firstAge": 13.21,
+     "firstAge": 13.25,
      "signatures": 4,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1607,7 +1607,7 @@
     },
     {
      "headline": "Converso",
-     "firstAge": 12.46,
+     "firstAge": 12.5,
      "signatures": 5,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1615,7 +1615,7 @@
     },
     {
      "headline": "Somec",
-     "firstAge": 12.23,
+     "firstAge": 12.27,
      "signatures": 8,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1623,7 +1623,7 @@
     },
     {
      "headline": "Cavallino rampante",
-     "firstAge": 12.19,
+     "firstAge": 12.23,
      "signatures": 13,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1631,7 +1631,7 @@
     },
     {
      "headline": "Opus",
-     "firstAge": 10.3,
+     "firstAge": 10.34,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1639,15 +1639,15 @@
     },
     {
      "headline": "Eliogabalo (disambigua)",
-     "firstAge": 10.22,
+     "firstAge": 10.26,
      "signatures": 5,
-     "resolvedAge": 2.01,
+     "resolvedAge": 2.05,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
      "mark": "resolved"
     },
     {
      "headline": "Spostamento voce \"Pacchiana\"",
-     "firstAge": 9.54,
+     "firstAge": 9.58,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1655,7 +1655,7 @@
     },
     {
      "headline": "Redirect per disambiguare Palestina",
-     "firstAge": 9.4,
+     "firstAge": 9.44,
      "signatures": 23,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1663,7 +1663,7 @@
     },
     {
      "headline": "Il Salvatore Esposito meno noto",
-     "firstAge": 9.03,
+     "firstAge": 9.07,
      "signatures": 6,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1671,7 +1671,7 @@
     },
     {
      "headline": "Categoria:Redirect da orfanizzare",
-     "firstAge": 8.3,
+     "firstAge": 8.34,
      "signatures": 2,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1679,7 +1679,7 @@
     },
     {
      "headline": "Petah Tikva",
-     "firstAge": 6.34,
+     "firstAge": 6.38,
      "signatures": 7,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1687,7 +1687,7 @@
     },
     {
      "headline": "Penisola araba",
-     "firstAge": 6.3,
+     "firstAge": 6.34,
      "signatures": 9,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1695,7 +1695,7 @@
     },
     {
      "headline": "Art Brut",
-     "firstAge": 6.13,
+     "firstAge": 6.17,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1703,7 +1703,7 @@
     },
     {
      "headline": "Mover e AV",
-     "firstAge": 5.49,
+     "firstAge": 5.53,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1711,7 +1711,7 @@
     },
     {
      "headline": "Anima mia",
-     "firstAge": 5.46,
+     "firstAge": 5.5,
      "signatures": 3,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1719,7 +1719,7 @@
     },
     {
      "headline": "Pazza idea",
-     "firstAge": 5.46,
+     "firstAge": 5.5,
      "signatures": 8,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1727,7 +1727,7 @@
     },
     {
      "headline": "Pazzo",
-     "firstAge": 5.42,
+     "firstAge": 5.46,
      "signatures": 3,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1735,7 +1735,7 @@
     },
     {
      "headline": "Disambiguanti strani per le compilation di Fabrizio De André",
-     "firstAge": 5.22,
+     "firstAge": 5.26,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1743,7 +1743,7 @@
     },
     {
      "headline": "Segnalazione: Disambiguante \"termine\"",
-     "firstAge": 5.05,
+     "firstAge": 5.09,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1751,7 +1751,7 @@
     },
     {
      "headline": "Quello che non ho",
-     "firstAge": 4.3,
+     "firstAge": 4.34,
      "signatures": 7,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1759,7 +1759,7 @@
     },
     {
      "headline": "Fiume Sand Creek",
-     "firstAge": 3.46,
+     "firstAge": 3.5,
      "signatures": 8,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1767,7 +1767,7 @@
     },
     {
      "headline": "Merendero",
-     "firstAge": 1.09,
+     "firstAge": 1.13,
      "signatures": 3,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1775,7 +1775,7 @@
     },
     {
      "headline": "Tomba degli Auguri",
-     "firstAge": 0.94,
+     "firstAge": 0.98,
      "signatures": 3,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1783,7 +1783,7 @@
     },
     {
      "headline": "Wari",
-     "firstAge": 0.42,
+     "firstAge": 0.46,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1791,7 +1791,7 @@
     },
     {
      "headline": "Desolazione (segnalazione)",
-     "firstAge": 0.11,
+     "firstAge": 0.15,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1799,7 +1799,7 @@
     },
     {
      "headline": "Riduzione della giornata lavorativa",
-     "firstAge": 0.08,
+     "firstAge": 0.12,
      "signatures": 1,
      "resolvedAge": null,
      "target": "Discussioni progetto:Coordinamento/Connettività/Archivio/2026/11",
@@ -1808,7 +1808,7 @@
    ],
    "editComments": [
     "archiviazione di 6 sezioni da [[Discussioni progetto:Coordinamento/Connettività]] (dopo la sezione [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10#Marsala|Marsala]])",
-    "archiviate 6 sezioni: 6 in [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10]] (dopo la sezione [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10#Marsala|Marsala]]) - modifica precedente: [[:User:Giuseppe Masino|Giuseppe Masino]], 2026-11-16 19:26"
+    "archiviate 6 sezioni: 6 in [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10]] (dopo la sezione [[Discussioni progetto:Coordinamento/Connettività/Archivio/2026/10#Marsala|Marsala]]) - modifica precedente: [[:User:Giuseppe Masino|Giuseppe Masino]], 2026-11-16 20:26"
    ],
    "redirects": {},
    "mainNamespaceRefused": false,

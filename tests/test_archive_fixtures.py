@@ -7,7 +7,6 @@ import os
 from datetime import datetime
 
 import pytest
-from pytz import timezone
 
 from archive_resolved import core
 from conftest import makeBot
@@ -26,9 +25,6 @@ def parseTime(value):
 def setUp(case):
     bot = makeBot(case["project"])
     now = parseTime(case["now"])
-    # UTC offset of the wiki at the time of the recorded run (not at the time the test runs)
-    offset = timezone(bot.localBot._getTimezone()).utcoffset(now)
-    bot.localBot.getUtcDiff = lambda: offset
     with open(os.path.join(FIXTURES, case["file"]), encoding="utf-8") as f:
         text = f.read()
     page = bot.site.page(case["title"], text)

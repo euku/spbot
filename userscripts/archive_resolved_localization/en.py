@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from archive_resolved_localization.local_bot import LocalBot
+from archive_resolved_localization.local_bot import LocalBot, OPTIONS_BODY
 from time import strftime
 from datetime import datetime
 
@@ -24,7 +24,7 @@ class LocalBotEn(LocalBot):
         self.errorTextSummary = "reporting an error"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section" + OPTIONS_BODY
         self.templDoNotArchive = r'<!--\ *\[\[User\:DoNotArchiveUntil\]\]\ +' + self.timeStampRegEx
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'

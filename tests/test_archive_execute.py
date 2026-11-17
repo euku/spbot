@@ -123,9 +123,9 @@ def test_archive_redirect_summaries_name_the_real_page():
     (ORIGIN + "/Archiv/2026/11", "((Lemma))/Archiv/((Jahr))/((Monat:##))"),
     (ORIGIN + "/Archiv/2026/11/Archiv/2026/11", "((Lemma))/Archiv/((Jahr))/((Monat:##))"),
     (ORIGIN + "/Archiv/2025/12", "((Lemma))/Archiv/((Jahr))/((Monat:##))"),
-    # month names are only recognized if they are the same (here: November); there is no
-    # number in "Dezember" to tell it from a normal page name
     (ORIGIN + "/Archiv/2026/November", "((Lemma))/Archiv/((Jahr))/((Monat:Lang))"),
+    (ORIGIN + "/Archiv/2025/Dezember", "((Lemma))/Archiv/((Jahr))/((Monat:Lang))"),
+    (ORIGIN + "/2025/Mrz", "((Lemma))/((Jahr))/((Monat:Kurz))"),
     (ORIGIN + "/Archiv/2026/IV", "((Lemma))/Archiv/((Jahr))/((Quartal:I))"),
     (ORIGIN + "/Archiv/2026", "Benutzer Diskussion:Test/Archiv/((Jahr))"),  # into itself
 ])
@@ -140,6 +140,11 @@ def test_archive_page_does_not_archive_into_itself(title, target):
     ("Benutzer Diskussion:Archiv/2026/11", "((Lemma))/Archiv/((Jahr))/((Monat:##))", "/Archiv/2026/11"),
     # commons, MediaWiki talk:Gadget-AjaxQuickDelete.js/auto-errors
     ("Benutzer Diskussion:Test/auto-errors", "((Lemma))/((Jahr))-((Monat:##))", "/2026-11"),
+    # subpages that only look a bit like a variable value
+    ("Benutzer Diskussion:Test/Baustelle2", "((Lemma))/((Jahr))", "/2026"),
+    ("Benutzer Diskussion:Test/2024 election", "((Lemma))/((Jahr))", "/2026"),
+    ("Benutzer Diskussion:Test/vi", "((Lemma))/((Jahr))", "/2026"),
+    ("Benutzer Diskussion:Test/Mai-Treffen", "((Lemma))/((Monat:Lang))", "/November"),
 ])
 def test_normal_pages_are_not_mistaken_for_archives(title, target, archive):
     bot = makeBot()

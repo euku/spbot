@@ -12,6 +12,7 @@ from pywikibot import textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
 from pytz import timezone, utc
+from archive_resolved_localization.local_bot import TEMPLATE_PREFIX
 
 # Markup whose content MediaWiki does not parse: comments (an unclosed one hides the
 # rest of the page) and <nowiki>, <pre>, <code>, <syntaxhighlight>, <source> with any
@@ -21,19 +22,25 @@ HIDDEN_MARKUP = re.compile(
     r"|<(?P<tag>nowiki|pre|code|syntaxhighlight|source)(?:\s[^>]*)?(?<!/)>.*?</(?P=tag)\s*>",
     re.IGNORECASE | re.DOTALL)
 
-# optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
-TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
 
 # The last line of a page if it belongs to the page and not to the last section: a category,
 # a sort key or a magic word like __NOTOC__. Such lines stay on the page when the last section
 # is archived.
-FOOTER_LINE = re.compile(
-    r"(?:^|\n)[ \t]*(?:\[\[\s*(?:Kategorie|Category|Kategoria|Categoria|Catégorie|Thể\ loại|분류|カテゴリ)\s*:[^\[\]\n]*\]\]"
-    r"|\{\{\s*(?:DEFAULTSORT|SORTIERUNG|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)\s*:[^{}\n]*\}\}"
-    r"|__[A-ZÄÖÜ_]+__)[ \t]*\Z", re.IGNORECASE)
+# Names from the siteinfo of the wikis the bot runs on (namespace 14 with aliases, magic word
+# defaultsort); magic words like __NOTOC__, __目次非表示__ or __목차숨김__ are matched by \w.
+FOOTER_ITEM = (
+    r"(?:\[\[\s*(?:Kategorie|Category|Kat|CAT|Kategoria|Categoria|Catégorie|Thể\ loại|분류|カテゴリ)\s*:[^\[\]\n]*\]\]"
+    r"|\{\{\s*(?:DEFAULTSORT|DEFAULTSORTKEY|DEFAULTCATEGORYSORT|SORTIERUNG|KLÍČŘAZENÍ|デフォルトソート"
+    r"|デフォルトソートキー|デフォルトカテゴリソート|기본정렬|XẾP_MẶC_ĐỊNH|XẾPMẶCĐỊNH)\s*[:：][^{}\n]*\}\}"
+    r"|__\w+__)")
+FOOTER_LINE = re.compile(r"(?:^|\n)[ \t]*" + FOOTER_ITEM + r"(?:[ \t]*" + FOOTER_ITEM + r")*[ \t]*\Z", re.IGNORECASE)
+
+# nothing but comments and whitespace
+COMMENTS_ONLY = re.compile(r"(?:\s*<!--.*?-->)*\s*", re.DOTALL)
 
 # characters that are not allowed in page titles; a ((variable)) never produces them
 INVALID_TITLE_CHARS = re.compile(r"[\[\]{}<>|#]")
+UTC_TIMESTAMP_END = re.compile(r"\(UTC\)\s*\Z", re.IGNORECASE)
 
 #
 # Local exceptions
@@ -147,7 +154,10 @@ class Discussion:
         # <!-- [[User:DoNotArchiveUntil]] 19:24, 13 March 2035 (UTC) -->
         self.hasDoNotArchiveTmpl = doNotArchivePattern.search(self.content) != None
         # never archive the archive template: on the archive page it would archive again (recursively)
-        self.hasArchiveTemplate = re.search(bot.localBot.optionsRegEx, clearedContent, re.DOTALL) is not None
+        # (only a real one with a target, not a mention like "{{Autoarchiv-Erledigt einbauen" followed by any }})
+        template = re.search(bot.localBot.optionsRegEx, clearedContent, re.DOTALL)
+        self.hasArchiveTemplate = template is not None and re.search(
+            r"\|\s*" + re.escape(bot.localBot.paramArchive) + r"\s*=", template.group('options'), re.IGNORECASE) is not None
 
     def _extractTimeStampsAndAges(self, bot, regex: str, clearedContent: str, now: datetime):
         """
@@ -156,7 +166,7 @@ class Discussion:
         """
         agesList = []
         timestampList = []
-        today = mktime((now + bot.localBot.getUtcDiff()).timetuple())
+        today = mktime((now + bot.localBot.getUtcDiff(now)).timetuple())
         localTz = timezone(bot.localBot._getTimezone())
         timestampPattern = re.compile(bot.localBot.timeStampRegEx, re.IGNORECASE | re.DOTALL)
         matches = re.compile(regex, re.IGNORECASE | re.DOTALL).finditer(clearedContent)
@@ -165,8 +175,7 @@ class Discussion:
             try:
                signatureTime = datetime(int(YY), int(bot.localBot.convertMonthNameToNumber(MM)), int(dd), int(hh), int(mm))
                # all times are local time of the wiki; a signature in UTC (e.g. "(UTC)" on dewiki) is converted
-               timestamp = timestampPattern.search(m.group(0))
-               if localTz.zone != "UTC" and timestamp and timestamp.group(0).rstrip().endswith("(UTC)"):
+               if localTz.zone != "UTC" and UTC_TIMESTAMP_END.search(timestampPattern.search(m.group(0)).group(0)):
                    signatureTime = utc.localize(signatureTime).astimezone(localTz).replace(tzinfo=None)
                dateToCheck = mktime(signatureTime.timetuple()[:8] + (0,))  # seconds since 1970
                actualAgeInDays = (today - dateToCheck)/60/60/24
@@ -314,12 +323,14 @@ class WikiDocument:
             possibleDiscs[counter].setHeadlineLevel(singleHeadline.group('hls').count("="))
 
             if counter > 0:
-                possibleDiscs[counter - 1].setContentOffsetEnd(possibleDiscs[counter].getTitleOffsetStart())
-                possibleDiscs[counter - 1].retrieveContent(self.originalText)
+                previousDisc = possibleDiscs[counter - 1]
+                previousDisc.setContentOffsetEnd(self._endOfSection(previousDisc.getTitleOffsetStart(),
+                                                                    possibleDiscs[counter].getTitleOffsetStart(), False))
+                previousDisc.retrieveContent(self.originalText)
             counter += 1
         if (len(possibleDiscs) != 0):
             lastDisc = possibleDiscs[counter - 1]
-            lastDisc.setContentOffsetEnd(self._endOfLastSection(lastDisc.getTitleOffsetStart()))
+            lastDisc.setContentOffsetEnd(self._endOfSection(lastDisc.getTitleOffsetStart(), len(self.originalText), True))
             lastDisc.retrieveContent(self.originalText)
 
         for i in possibleDiscs:
@@ -327,32 +338,55 @@ class WikiDocument:
                 self.listDiscussions.append(i)
                 self.numberDiscussions += 1
 
-    def _endOfLastSection(self, start: int) -> int:
+    def _endOfSection(self, start: int, end: int, isLast: bool) -> int:
         """
-            The last section ends with the page, except for categories, sort keys, magic words
-            and the archive template on the last lines: they belong to the page and stay there.
+            A section ends where the next one starts, except for the archive template (with comments
+            around it) on its own lines at the end: it belongs to the page and stays there, also when
+            new sections were added below it. The last section also leaves categories, sort keys and
+            magic words on its last lines on the page.
         """
         text = self.originalText
-        footerStart = len(text)
+        footerStart = end
         while True:
             contentEnd = start + len(text[start:footerStart].rstrip())
-            footer = FOOTER_LINE.search(text, start, contentEnd)
-            if footer is None:
-                templates = list(re.finditer(self.bot.localBot.optionsRegEx, text[start:contentEnd], re.DOTALL))
-                footer = templates[-1] if templates and start + templates[-1].end() == contentEnd else None
-                if footer is not None and not text[start:start + footer.start()].endswith("\n"):
-                    footer = None  # the template is not on a line of its own
-                offset = start
-            else:
-                offset = 0
-            if footer is None:
+            newFooterStart = None
+            if isLast:
+                footer = FOOTER_LINE.search(text, start, contentEnd)
+                if footer is not None:
+                    newFooterStart = footer.start()
+            if newFooterStart is None:
+                newFooterStart = self._archiveTemplateAtEnd(start, contentEnd)
+            if newFooterStart is None:
                 break
-            footerStart = offset + footer.start()
-        if footerStart == len(text):
-            return footerStart
+            footerStart = newFooterStart
+        if footerStart == end:
+            return end
         # keep the line break after the last line of the section
         contentEnd = start + len(text[start:footerStart].rstrip())
         return contentEnd + 1 if text[contentEnd:contentEnd + 1] == "\n" else contentEnd
+
+    def _archiveTemplateAtEnd(self, start: int, end: int):
+        """
+            Where the line with the archive template starts, if only comments are around it up to 'end'
+            and before it on its line; None otherwise.
+        """
+        text = self.originalText
+        for template in reversed(list(re.finditer(self.bot.localBot.optionsRegEx, text[start:end], re.DOTALL))):
+            templateStart, templateEnd = start + template.start(), start + template.end()
+            if not COMMENTS_ONLY.fullmatch(text, templateEnd, end):
+                return None
+            lineStart = text.rfind("\n", start, templateStart) + 1
+            if lineStart == 0 or not COMMENTS_ONLY.fullmatch(text, lineStart, templateStart):
+                return None   # the template is not on a line of its own
+            # comment lines right above it belong to it, e.g. <!-- please do not remove -->
+            while lineStart - 1 > start:
+                previousLineStart = text.rfind("\n", start, lineStart - 1) + 1
+                previousLine = text[previousLineStart:lineStart - 1]
+                if previousLineStart == 0 or "<!--" not in previousLine or not COMMENTS_ONLY.fullmatch(previousLine):
+                    break
+                lineStart = previousLineStart
+            return lineStart
+        return None
 
     def examineDiscussions(self):
         for singleDiscussion in self.listDiscussions:
@@ -482,9 +516,35 @@ class WikiDocument:
             return False
         if origin.endswith(targetPageName[len(origin):]):
             return True
-        # a ((variable)) gives a number (year, month, week, quarter, maybe roman), sometimes with text
-        suffix = r"(?:[^/]*\d[^/]*|[IVXivx]+)".join(re.escape(part) for part in re.split(r"\(\([^()]*\)\)", m.group(1)))
+        valuePatterns = self._variableValuePatterns()
+        suffix = "".join(valuePatterns.get(part, re.escape(part))
+                         for part in re.split(r"(\(\([^()]*\)\))", m.group(1)))
         return re.search(suffix + r"\Z", origin) is not None
+
+    def _variableValuePatterns(self) -> dict:
+        """
+            A regex for every date ((variable)) that matches all values it can have, e.g.
+            ((Jahr)) -> \\d+, ((Monat:Lang)) -> Januar|Februar|…, ((Quartal:I)) -> [IVXivx]+, 03 月 -> \\d+\\ 月.
+        """
+        pageToken = "\x00page\x00"   # variables that give the page name are left out
+        values = {}
+        for month in range(1, 13):
+            stamp = localtime(mktime((2025, month, 15, 12, 0, 0, 0, 0, -1)))
+            for monthNumber in ("%02d" % month, str(month)):
+                for variable, value in self.bot.localBot.getReplacementDict(pageToken, stamp, "2025", monthNumber):
+                    value = str(value)
+                    if pageToken not in value:
+                        values.setdefault(variable, set()).add(value)
+        patterns = {}
+        for variable, variableValues in values.items():
+            alternatives = set()
+            for value in variableValues:
+                if re.fullmatch(r"[IVXivx]+", value):
+                    alternatives.add(r"[IVXivx]+")
+                else:
+                    alternatives.add(re.sub(r"\d+", lambda _: r"\d+", re.escape(value)))
+            patterns[variable] = "(?:" + "|".join(sorted(alternatives)) + ")"
+        return patterns
 
     def _resolveTargets(self) -> bool:
         """
@@ -573,10 +633,6 @@ class WikiDocument:
                 except pywikibot.exceptions.LockedPageError:
                     pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
                     skipThisPage = True
-                except pywikibot.exceptions.InvalidTitleError:
-                    # don't care, some bug in the title
-                    pywikibot.output("<<lightpurple>>Page skipped because of pywikibot.exceptions.InvalidTitleError<<default>>")
-                    skipThisPage = True
                 except:
                     # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
                     pywikibot.output(f"\n<<lightpurple>>Error at {targetPageName}<<default>> skip page\n")
@@ -614,7 +670,7 @@ class WikiDocument:
             numberOfSectionsRemovedFromOriginStr = self.bot.localBot.archiveSumOriginP.format(numberOfSectionsRemovedFromOrigin=numberOfSectionsRemovedFromOrigin)
         
         # add last contributor + time
-        lastEditTime = self.lastEditTime + self.bot.localBot.getUtcDiff()
+        lastEditTime = self.lastEditTime + self.bot.localBot.getUtcDiff(self.lastEditTime)
         lastEditTime = ("%s-%02d-%02d %02d:%02d" % (lastEditTime.year, lastEditTime.month, lastEditTime.day, lastEditTime.hour, lastEditTime.minute))
         lastEditComment = self.bot.localBot.archiveSumLastEdit % (self.lastUser, self.lastUser, lastEditTime)
         firstNewSectionInArchiveSummary = '' # fallback

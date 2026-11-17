@@ -5,6 +5,9 @@ Invented edge cases: comments, <nowiki>, <pre> & co., unusual headings, options 
 Tests marked xfail(strict=True) document known bugs: they fail today. When a bug is
 fixed the test passes, pytest reports XPASS as failure, and the marker must be removed.
 """
+import re
+import time
+
 import pytest
 
 from archive_resolved import core
@@ -202,6 +205,13 @@ SECTION_A = "== A ==\nq %s\n%s\n" % (SIG, RESOLVED)
     "__NOTOC__\n__KEIN_INHALTSVERZEICHNIS__\n",
     "\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
     "\n{{Autoarchiv-Erledigt\n|Alter=1\n|Ziel='((Lemma))/Archiv/((Jahr))'\n}}\n[[Kategorie:Foo]]",
+    "\n[[Kategorie:Foo]] [[Kategorie:Bar]]\n",
+    "\n[[Kat:Foo]]\n{{KLÍČŘAZENÍ:Foo}}\n",
+    "\n{{デフォルトソート：Foo}}\n__目次非表示__\n",
+    "\n{{기본정렬:Foo}}\n__목차숨김__\n",
+    "\n{{XẾP_MẶC_ĐỊNH:Foo}}\n__KHÔNG_MỤC_LỤC__\n",
+    "\n<!-- Archiv -->{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
+    "\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n<!-- Ende -->\n[[Kategorie:Foo]]\n",
 ])
 def test_footer_after_last_section_stays_on_page(footer):
     """Categories, sort keys, magic words and the archive template below the last section
@@ -210,6 +220,27 @@ def test_footer_after_last_section_stays_on_page(footer):
     assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
     assert doc.modifiedText == OPTIONS + footer
     assertNothingLost(doc)
+
+
+@pytest.mark.parametrize("template", [
+    "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
+    "<!-- bitte nicht entfernen -->\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}} <!-- Ende -->\n\n",
+])
+def test_archive_template_between_sections_stays_on_page(template):
+    """New sections were added below the template: the section above it can still be archived."""
+    open_ = "== B ==\nnoch offen %s\n" % SIG
+    doc = prepared(SECTION_A + template + open_, options="")
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
+    assert doc.modifiedText == template + open_
+    assertNothingLost(doc)
+
+
+def test_archive_template_inside_a_section_keeps_it():
+    """In the middle of a section the template is part of it (as on an archive page)."""
+    template = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n"
+    doc = prepared("== A ==\nq %s\n%s%s\n== B ==\nb\n" % (SIG, template, RESOLVED), options="")
+    assert doc.listDiscussions[0].hasArchiveTemplate
+    assert not doc.hasWorkToDo()
 
 
 @pytest.mark.parametrize("notFooter", [
@@ -252,10 +283,38 @@ def test_invalid_archive_target_is_reported(target):
         prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s'}}\n" % target)
 
 
-@pytest.mark.parametrize("pageName", ["{{FULLPAGENAME}}", "{{fullpagename}}", "{{VOLLER_SEITENNAME}}"])
+@pytest.mark.parametrize("pageName", ["{{FULLPAGENAME}}", "{{fullpagename}}", "{{VOLLER_SEITENNAME}}",
+                                      "{{ FULLPAGENAME }}", "{{ fullpagename}}"])
 def test_fullpagename_template_works_like_the_variable(pageName):
     doc = prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s/Archiv/((Jahr))'}}\n" % pageName)
     assert list(doc.archiveJobTextByTarget) == [TARGET]
+
+
+@pytest.mark.parametrize("project", ["dewikipedia", "cswikipedia", "itwikipedia", "jawikipedia", "kowikipedia",
+                                     "viwikipedia", "commons", "incubator"])
+def test_unclosed_archive_template_does_not_hang(project):
+    """The options regex backtracked exponentially when no }} followed (30 characters took > 30 s)."""
+    bot = makeBot(project)
+    name = re.search(r"[^\\ ]+(?:\\ [^\\ (]+)*(?=\(\?P<options>)", bot.localBot.optionsRegEx).group(0)
+    text = "{{" + name.replace("\\", "") + " " + "Text ohne schließende Klammern, " * 20
+    start = time.perf_counter()
+    assert re.search(bot.localBot.optionsRegEx, text, re.DOTALL) is None
+    assert time.perf_counter() - start < 1
+
+
+def test_section_mentioning_the_template_unclosed_is_archived():
+    body = "== A ==\nq {{Autoarchiv-Erledigt sollte man " + "immer einbauen, " * 20 + SIG + "\n" + RESOLVED + "\n"
+    start = time.perf_counter()
+    doc = prepared(body)
+    assert time.perf_counter() - start < 1
+    assert doc.archiveJobCounterByTarget == {TARGET: 1}
+
+
+def test_czech_template_with_namespace_prefix():
+    text = "{{Šablona:Archivace vyřešených sekcí|age=1|archive='((FULLPAGENAME))/Archiv'}}\n"
+    doc = makeDoc(text, bot=makeBot("cswikipedia"))
+    doc.findOptions()
+    assert doc.archivingTargetPattern == "((FULLPAGENAME))/Archiv"
 
 
 def test_variables_with_hash_are_valid():
@@ -279,6 +338,7 @@ def test_heading_inside_markup_is_not_a_section(open_, close):
 @pytest.mark.parametrize("utc, local, month", [
     ("23:30, 31. Okt. 2026 (UTC)", "00:30, 1. Nov. 2026 (CET)", "11"),   # winter time: +1 h
     ("22:30, 31. Jul. 2026 (UTC)", "00:30, 1. Aug. 2026 (CEST)", "08"),  # summer time: +2 h
+    ("23:30, 31. Okt. 2026 (utc)", "00:30, 1. Nov. 2026 (CET)", "11"),   # the timestamp regex ignores the case
 ])
 def test_utc_signature_is_converted_to_local_time(utc, local, month):
     """dewiki signatures with "(UTC)" (users with a UTC preference) are Berlin time + 1/2 h."""
