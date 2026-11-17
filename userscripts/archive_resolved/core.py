@@ -26,10 +26,17 @@ HIDDEN_MARKUP = re.compile(
 # The last line of a page if it belongs to the page and not to the last section: a category,
 # a sort key or a magic word like __NOTOC__. Such lines stay on the page when the last section
 # is archived.
-FOOTER_LINE = re.compile(
-    r"(?:^|\n)[ \t]*(?:\[\[\s*(?:Kategorie|Category|Kategoria|Categoria|Catégorie|Thể\ loại|분류|カテゴリ)\s*:[^\[\]\n]*\]\]"
-    r"|\{\{\s*(?:DEFAULTSORT|SORTIERUNG|DEFAULTSORTKEY|DEFAULTCATEGORYSORT)\s*:[^{}\n]*\}\}"
-    r"|__[A-ZÄÖÜ_]+__)[ \t]*\Z", re.IGNORECASE)
+# Names from the siteinfo of the wikis the bot runs on (namespace 14 with aliases, magic word
+# defaultsort); magic words like __NOTOC__, __目次非表示__ or __목차숨김__ are matched by \w.
+FOOTER_ITEM = (
+    r"(?:\[\[\s*(?:Kategorie|Category|Kat|CAT|Kategoria|Categoria|Catégorie|Thể\ loại|분류|カテゴリ)\s*:[^\[\]\n]*\]\]"
+    r"|\{\{\s*(?:DEFAULTSORT|DEFAULTSORTKEY|DEFAULTCATEGORYSORT|SORTIERUNG|KLÍČŘAZENÍ|デフォルトソート"
+    r"|デフォルトソートキー|デフォルトカテゴリソート|기본정렬|XẾP_MẶC_ĐỊNH|XẾPMẶCĐỊNH)\s*[:：][^{}\n]*\}\}"
+    r"|__\w+__)")
+FOOTER_LINE = re.compile(r"(?:^|\n)[ \t]*" + FOOTER_ITEM + r"(?:[ \t]*" + FOOTER_ITEM + r")*[ \t]*\Z", re.IGNORECASE)
+
+# nothing but comments and whitespace
+COMMENTS_ONLY = re.compile(r"(?:\s*<!--.*?-->)*\s*", re.DOTALL)
 
 # characters that are not allowed in page titles; a ((variable)) never produces them
 INVALID_TITLE_CHARS = re.compile(r"[\[\]{}<>|#]")
@@ -316,12 +323,14 @@ class WikiDocument:
             possibleDiscs[counter].setHeadlineLevel(singleHeadline.group('hls').count("="))
 
             if counter > 0:
-                possibleDiscs[counter - 1].setContentOffsetEnd(possibleDiscs[counter].getTitleOffsetStart())
-                possibleDiscs[counter - 1].retrieveContent(self.originalText)
+                previousDisc = possibleDiscs[counter - 1]
+                previousDisc.setContentOffsetEnd(self._endOfSection(previousDisc.getTitleOffsetStart(),
+                                                                    possibleDiscs[counter].getTitleOffsetStart(), False))
+                previousDisc.retrieveContent(self.originalText)
             counter += 1
         if (len(possibleDiscs) != 0):
             lastDisc = possibleDiscs[counter - 1]
-            lastDisc.setContentOffsetEnd(self._endOfLastSection(lastDisc.getTitleOffsetStart()))
+            lastDisc.setContentOffsetEnd(self._endOfSection(lastDisc.getTitleOffsetStart(), len(self.originalText), True))
             lastDisc.retrieveContent(self.originalText)
 
         for i in possibleDiscs:
@@ -329,32 +338,55 @@ class WikiDocument:
                 self.listDiscussions.append(i)
                 self.numberDiscussions += 1
 
-    def _endOfLastSection(self, start: int) -> int:
+    def _endOfSection(self, start: int, end: int, isLast: bool) -> int:
         """
-            The last section ends with the page, except for categories, sort keys, magic words
-            and the archive template on the last lines: they belong to the page and stay there.
+            A section ends where the next one starts, except for the archive template (with comments
+            around it) on its own lines at the end: it belongs to the page and stays there, also when
+            new sections were added below it. The last section also leaves categories, sort keys and
+            magic words on its last lines on the page.
         """
         text = self.originalText
-        footerStart = len(text)
+        footerStart = end
         while True:
             contentEnd = start + len(text[start:footerStart].rstrip())
-            footer = FOOTER_LINE.search(text, start, contentEnd)
-            if footer is None:
-                templates = list(re.finditer(self.bot.localBot.optionsRegEx, text[start:contentEnd], re.DOTALL))
-                footer = templates[-1] if templates and start + templates[-1].end() == contentEnd else None
-                if footer is not None and not text[start:start + footer.start()].endswith("\n"):
-                    footer = None  # the template is not on a line of its own
-                offset = start
-            else:
-                offset = 0
-            if footer is None:
+            newFooterStart = None
+            if isLast:
+                footer = FOOTER_LINE.search(text, start, contentEnd)
+                if footer is not None:
+                    newFooterStart = footer.start()
+            if newFooterStart is None:
+                newFooterStart = self._archiveTemplateAtEnd(start, contentEnd)
+            if newFooterStart is None:
                 break
-            footerStart = offset + footer.start()
-        if footerStart == len(text):
-            return footerStart
+            footerStart = newFooterStart
+        if footerStart == end:
+            return end
         # keep the line break after the last line of the section
         contentEnd = start + len(text[start:footerStart].rstrip())
         return contentEnd + 1 if text[contentEnd:contentEnd + 1] == "\n" else contentEnd
+
+    def _archiveTemplateAtEnd(self, start: int, end: int):
+        """
+            Where the line with the archive template starts, if only comments are around it up to 'end'
+            and before it on its line; None otherwise.
+        """
+        text = self.originalText
+        for template in reversed(list(re.finditer(self.bot.localBot.optionsRegEx, text[start:end], re.DOTALL))):
+            templateStart, templateEnd = start + template.start(), start + template.end()
+            if not COMMENTS_ONLY.fullmatch(text, templateEnd, end):
+                return None
+            lineStart = text.rfind("\n", start, templateStart) + 1
+            if lineStart == 0 or not COMMENTS_ONLY.fullmatch(text, lineStart, templateStart):
+                return None   # the template is not on a line of its own
+            # comment lines right above it belong to it, e.g. <!-- please do not remove -->
+            while lineStart - 1 > start:
+                previousLineStart = text.rfind("\n", start, lineStart - 1) + 1
+                previousLine = text[previousLineStart:lineStart - 1]
+                if previousLineStart == 0 or "<!--" not in previousLine or not COMMENTS_ONLY.fullmatch(previousLine):
+                    break
+                lineStart = previousLineStart
+            return lineStart
+        return None
 
     def examineDiscussions(self):
         for singleDiscussion in self.listDiscussions:

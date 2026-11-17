@@ -205,6 +205,13 @@ SECTION_A = "== A ==\nq %s\n%s\n" % (SIG, RESOLVED)
     "__NOTOC__\n__KEIN_INHALTSVERZEICHNIS__\n",
     "\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
     "\n{{Autoarchiv-Erledigt\n|Alter=1\n|Ziel='((Lemma))/Archiv/((Jahr))'\n}}\n[[Kategorie:Foo]]",
+    "\n[[Kategorie:Foo]] [[Kategorie:Bar]]\n",
+    "\n[[Kat:Foo]]\n{{KLÍČŘAZENÍ:Foo}}\n",
+    "\n{{デフォルトソート：Foo}}\n__目次非表示__\n",
+    "\n{{기본정렬:Foo}}\n__목차숨김__\n",
+    "\n{{XẾP_MẶC_ĐỊNH:Foo}}\n__KHÔNG_MỤC_LỤC__\n",
+    "\n<!-- Archiv -->{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
+    "\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n<!-- Ende -->\n[[Kategorie:Foo]]\n",
 ])
 def test_footer_after_last_section_stays_on_page(footer):
     """Categories, sort keys, magic words and the archive template below the last section
@@ -213,6 +220,27 @@ def test_footer_after_last_section_stays_on_page(footer):
     assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
     assert doc.modifiedText == OPTIONS + footer
     assertNothingLost(doc)
+
+
+@pytest.mark.parametrize("template", [
+    "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
+    "<!-- bitte nicht entfernen -->\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}} <!-- Ende -->\n\n",
+])
+def test_archive_template_between_sections_stays_on_page(template):
+    """New sections were added below the template: the section above it can still be archived."""
+    open_ = "== B ==\nnoch offen %s\n" % SIG
+    doc = prepared(SECTION_A + template + open_, options="")
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
+    assert doc.modifiedText == template + open_
+    assertNothingLost(doc)
+
+
+def test_archive_template_inside_a_section_keeps_it():
+    """In the middle of a section the template is part of it (as on an archive page)."""
+    template = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n"
+    doc = prepared("== A ==\nq %s\n%s%s\n== B ==\nb\n" % (SIG, template, RESOLVED), options="")
+    assert doc.listDiscussions[0].hasArchiveTemplate
+    assert not doc.hasWorkToDo()
 
 
 @pytest.mark.parametrize("notFooter", [
