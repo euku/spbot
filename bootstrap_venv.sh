@@ -1,7 +1,7 @@
 #!/bin/bash
 # Create the venv for the SpBot scripts. Must run inside the job image, e.g.:
 #   toolforge jobs run bootstrap-venv-standalone --image python3.11 --wait \
-#     --command "cd ~/src && ./bootstrap_venv.sh"
+#     --command "cd ~/bot && ./bootstrap_venv.sh"
 # Refuses to touch an existing venv; remove or rename it yourself first.
 set -euo pipefail
 

@@ -8,5 +8,5 @@ On the Toolforge bastion (pytest is not in the tool venv, install it into a scra
 
 ```sh
 pyvenv/bin/python -m pip install --target /tmp/$USER-pylib pytest
-cd src && PYTHONPATH=/tmp/$USER-pylib ../pyvenv/bin/python -m pytest -q tests
+cd bot && PYTHONPATH=/tmp/$USER-pylib ../pyvenv/bin/python -m pytest -q tests
 ```
