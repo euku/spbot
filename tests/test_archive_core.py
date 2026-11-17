@@ -161,6 +161,28 @@ def test_examine_ignores_signatures_in_comments_and_nowiki():
     assert disc.getAgeByResolvedTemplate() == 0
 
 
+KO_OPTIONS = "{{완료된 토론 자동 보존|날짜=1|보존='((FULLPAGENAME))/보존'}}\n"
+KO_SECTION = ("== A ==\nq --A 2026년 11월 1일 (일) 10:00 (KST)\n%s"
+              "{{완료된 토론|1=--A 2026년 11월 2일 (월) 10:00 (KST)}}\n")
+
+
+@pytest.mark.parametrize("keep", [
+    # what {{subst:보존 방지}} leaves on the page
+    "<!-- [[User:DoNotArchiveUntil]] 2036년 11월 17일 (월) 12:00 (KST) -->\n",
+    "{{보존 방지}}\n",
+    "{{틀:보존 방지|30}}\n",
+])
+def test_korean_do_not_archive(keep):
+    doc = prepared(KO_OPTIONS + KO_SECTION % keep, bot=makeBot("kowikipedia"), title="사용자토론:Test")
+    assert doc.listDiscussions[0].hasDoNotArchiveTmpl
+    assert not doc.hasWorkToDo()
+
+
+def test_korean_section_is_archived_without_marker():
+    doc = prepared(KO_OPTIONS + KO_SECTION % "", bot=makeBot("kowikipedia"), title="사용자토론:Test")
+    assert doc.archiveJobCounterByTarget == {"사용자토론:Test/보존": 1}
+
+
 def test_english_do_not_archive_until_comment():
     text = ("{{Autoarchive resolved section|age=1|archive=((FULLPAGENAME))/Archive}}\n"
             "== A ==\nq --A 10:00, 1 November 2026 (UTC)\n"

@@ -140,6 +140,9 @@ def test_resolved_in_the_future_is_not_archived():
     "{{Nicht archivieren}}",
     "{{nicht archivieren|bis=2030}}",
     "{{Nicht archivieren }}",
+    "{{Vorlage:Nicht archivieren}}",
+    "{{ vorlage : Nicht archivieren|bis=2030}}",
+    "{{Template:Nicht archivieren}}",
     # also inside a comment (needed for the <!-- [[User:DoNotArchiveUntil]] --> variant on other wikis)
     "<!-- {{Nicht archivieren}} -->",
 ])
@@ -188,13 +191,76 @@ def test_level_1_heading_ends_section_but_is_not_archived():
     assert doc.modifiedText == OPTIONS + "= Neu =\ntext\n"
 
 
-def test_text_after_last_section_is_archived_with_it():
-    """Known limitation: there is no end marker for the last section, so categories,
-    navigation templates etc. below it go to the archive."""
-    body = "== A ==\nq %s\n%s\n\n[[Kategorie:Foo]]\n" % (SIG, RESOLVED)
-    doc = prepared(body)
-    assert doc.archiveJobTextByTarget[TARGET] == body
+SECTION_A = "== A ==\nq %s\n%s\n" % (SIG, RESOLVED)
+
+
+@pytest.mark.parametrize("footer", [
+    "\n[[Kategorie:Foo]]\n",
+    "[[Kategorie:Foo]]",
+    "\n[[Kategorie:Foo|Sortierung]]\n[[ category : Bar ]]\n\n",
+    "\n{{SORTIERUNG:Foo}}\n[[Kategorie:Foo]]\n",
+    "__NOTOC__\n__KEIN_INHALTSVERZEICHNIS__\n",
+    "\n{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}\n",
+    "\n{{Autoarchiv-Erledigt\n|Alter=1\n|Ziel='((Lemma))/Archiv/((Jahr))'\n}}\n[[Kategorie:Foo]]",
+])
+def test_footer_after_last_section_stays_on_page(footer):
+    """Categories, sort keys, magic words and the archive template below the last section
+    belong to the page, not to the section."""
+    doc = prepared(SECTION_A + footer)
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
+    assert doc.modifiedText == OPTIONS + footer
+    assertNothingLost(doc)
+
+
+@pytest.mark.parametrize("notFooter", [
+    "\n[[:Kategorie:Foo]] ist ein Link\n",
+    "\nWeitere Fragen? [[Kategorie:Foo]]\n",
+    "\n{{Navigationsleiste}}\n",
+])
+def test_other_text_after_last_section_is_archived_with_it(notFooter):
+    """There is no end marker for the last section: anything else below it is part of it."""
+    doc = prepared(SECTION_A + notFooter)
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A + notFooter
     assert doc.modifiedText == OPTIONS
+
+
+def test_footer_after_last_section_that_stays():
+    doc = prepared(SECTION_A + "== B ==\noffen\n\n[[Kategorie:Foo]]\n")
+    assert doc.archiveJobTextByTarget[TARGET] == SECTION_A
+    assert doc.modifiedText == OPTIONS + "== B ==\noffen\n\n[[Kategorie:Foo]]\n"
+
+
+def test_section_with_archive_template_is_not_archived():
+    """On the archive page, the template would archive again and again (Lars2019, 2024)."""
+    template = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))'}}"
+    doc = prepared("== A ==\nq %s\n%s\n%s\nmehr Text\n" % (SIG, template, RESOLVED), options="")
+    assert not doc.hasWorkToDo()
+    # but in a comment it does not count
+    doc = prepared("== A ==\nq %s\n<!-- %s -->\n%s\nmehr Text\n" % (SIG, template, RESOLVED))
+    assert doc.hasWorkToDo()
+
+
+@pytest.mark.parametrize("target", [
+    "{{Lemma}}/Archives/((Jahr))",
+    "((Lemma))/Archiv/{{CURRENTYEAR}}",
+    "[[((Lemma))/Archiv]]",
+    "((Lemma))/Archiv <((Jahr))>",
+    "   ",
+])
+def test_invalid_archive_target_is_reported(target):
+    with pytest.raises(core.WrongOptions):
+        prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s'}}\n" % target)
+
+
+@pytest.mark.parametrize("pageName", ["{{FULLPAGENAME}}", "{{fullpagename}}", "{{VOLLER_SEITENNAME}}"])
+def test_fullpagename_template_works_like_the_variable(pageName):
+    doc = prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s/Archiv/((Jahr))'}}\n" % pageName)
+    assert list(doc.archiveJobTextByTarget) == [TARGET]
+
+
+def test_variables_with_hash_are_valid():
+    doc = prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'}}\n")
+    assert list(doc.archiveJobTextByTarget) == [TARGET + "/11"]
 
 
 @pytest.mark.parametrize("open_, close", [("<!--", "-->"), ("<nowiki>", "</nowiki>"), ("<pre>", "</pre>"),
@@ -209,6 +275,25 @@ def test_heading_inside_markup_is_not_a_section(open_, close):
 
 
 # ---------------------------------------------------------------- signatures
+
+@pytest.mark.parametrize("utc, local, month", [
+    ("23:30, 31. Okt. 2026 (UTC)", "00:30, 1. Nov. 2026 (CET)", "11"),   # winter time: +1 h
+    ("22:30, 31. Jul. 2026 (UTC)", "00:30, 1. Aug. 2026 (CEST)", "08"),  # summer time: +2 h
+])
+def test_utc_signature_is_converted_to_local_time(utc, local, month):
+    """dewiki signatures with "(UTC)" (users with a UTC preference) are Berlin time + 1/2 h."""
+    options = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'}}\n"
+    docs = [prepared("== A ==\nq --A %s\n%s\n" % (sig, RESOLVED), options) for sig in (utc, local)]
+    discs = [doc.listDiscussions[0] for doc in docs]
+    assert discs[0].getFirstContributionAge() == pytest.approx(discs[1].getFirstContributionAge())
+    assert list(docs[0].archiveJobTextByTarget) == list(docs[1].archiveJobTextByTarget) == [TARGET + "/" + month]
+
+
+def test_utc_resolved_template_is_converted_to_local_time():
+    options = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'|Zeitvergleich=erledigt}}\n"
+    doc = prepared("== A ==\nq %s\n{{Erledigt|1=--A 23:30, 31. Okt. 2026 (UTC)}}\n" % SIG, options)
+    assert list(doc.archiveJobTextByTarget) == [TARGET + "/11"]
+
 
 def test_signature_with_unknown_month_is_ignored():
     doc = prepared("== A ==\nq --A 10:00, 1. Foo 2026 (CET)\n%s\n" % RESOLVED)

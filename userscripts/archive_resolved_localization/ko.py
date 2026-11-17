@@ -21,7 +21,10 @@ class LocalBotKo(LocalBot):
         # template parameters / 틀 변수
         # should be able to handle {{CURRENTYEAR}} in the parameter value
         self.optionsRegEx = r"\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = r'\{\{\ *보존i\ 중단\}\}'
+        # {{subst:보존 방지}} leaves <!-- [[User:DoNotArchiveUntil]] 2036년 11월 17일 (월) 12:00 (KST) -->
+        # (like on enwiki); {{보존 방지}} without subst is recognized as well
+        self.templDoNotArchive = (r'<!--\s*\[\[User:DoNotArchiveUntil\]\]\s+' + self.timeStampRegEx
+                                  + r'|\{\{\s*(?:틀\s*:\s*)?보존\ 방지\s*[|}]')
         self.paramAge = '날짜'
         self.paramArchive = '보존'
         self.paramLevel = '단위'
