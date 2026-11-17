@@ -4,7 +4,7 @@
 	Tests for pers-bek-to-db-bot.py (check of the version history for irregular confirmations).
 	pywikibot, pymysql and the database are replaced by stubs: nothing is written to a wiki or a DB.
 
-	Run: pyvenv/bin/python -m unittest discover -s src/userscripts -p 'test_pers_bek*'
+	Run: pytest tests/test_pers_bek_to_db_bot.py
 """
 import os
 import re
@@ -12,7 +12,7 @@ import sys
 import types
 import unittest
 
-SCRIPT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pers-bek-to-db-bot.py")
+SCRIPT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "userscripts", "pers-bek-to-db-bot.py")
 BOT = "SpBot"
 
 
@@ -67,6 +67,7 @@ def makePywikibotStub():
 	pwb.exceptions = types.SimpleNamespace(Error=PywikibotError)
 	textlib = types.ModuleType("pywikibot.textlib")
 	textlib.replaceExcept = lambda text, old, new, exceptions: re.sub(old, new, text)
+	textlib.removeDisabledParts = lambda text, tags: re.sub(r"(?s)<!--.*?-->|<nowiki>.*?</nowiki>", "", text)
 	pwb.textlib = textlib
 	return pwb, textlib
 
@@ -98,9 +99,16 @@ def loadScript():
 class FakeDB:
 	def __init__(self):
 		self.confirmations = []
+		self.users = []
+		self.conn = types.SimpleNamespace(rollback=lambda: None)
 
 	def get_user_by_name(self, name):
-		return (name, "id-" + name)
+		# (name, id, participant since, hidden, banned)
+		return (name, "id-" + name, None, 0, 0)
+
+	def add_user(self, name, timestamp):
+		self.users.append(name)
+		return True
 
 	def get_cf_count_by_confirmed(self, userID):
 		return 5
@@ -126,6 +134,10 @@ def ack(certifier, certified):
 	return "{{Wikipedia:Persönliche Bekanntschaften/neue Bestätigung|Bestätiger=%s|Bestätigter=%s|Kommentar=kenne ich|Zeit=20:40, 26. Okt. 2026 (CET)}}\n" % (certifier, certified)
 
 
+def newUser(name):
+	return "{{Wikipedia:Persönliche Bekanntschaften/neuer Benutzer|Name=%s|Zeit=20:40, 26. Okt. 2026 (CET)}}\n" % name
+
+
 def rev(user, revid, text, userhidden=False):
 	return types.SimpleNamespace(user=user, revid=revid, text=text, userhidden=userhidden)
 
@@ -141,7 +153,7 @@ class TestNormalizeUser(unittest.TestCase):
 		self.assertEqual(self.m.normalizeUser("A  B"), "A B")
 
 
-class TestFindACKAuthors(unittest.TestCase):
+class TestFindAuthors(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		cls.m = loadScript()
@@ -152,8 +164,9 @@ class TestFindACKAuthors(unittest.TestCase):
 
 	def authors(self, revs):
 		self.page.revs = revs
-		acks = self.m.divideIntoTasks(revs[0].text)[1]
-		return self.m.findACKAuthors(self.page, acks)
+		authors = self.m.findAuthors(self.page, self.m.taskKeys(revs[0].text))
+		# ('ack', certifier, certified) -> (certifier, certified)
+		return {key[1:]: author for key, author in authors.items() if key[0] == 'ack'}
 
 	def test_own_entry(self):
 		a = self.authors([rev("Amrei-Marie", 2, ack("Amrei-Marie", "Slashpub")), rev(BOT, 1, "")])
@@ -246,7 +259,7 @@ class TestRun(unittest.TestCase):
 		# both entries are removed, the summary names the irregular one explicitly
 		text, summary = self.workPage.puts[0]
 		self.assertEqual(text, "")
-		self.assertTrue(summary.startswith("In Datenbank übertragen: IRREGULÄRE Bestätigungen: "))
+		self.assertTrue(summary.startswith("In Datenbank übertragen: IRREGULÄRE Einträge: "))
 		self.assertIn("[[:User:Amrei-Marie|Amrei-Marie]] → [[:User:Fake|Fake]] (eingetragen von Mallory, abgelehnt", summary)
 		# report on the talk page, appended to the old content
 		self.assertEqual(len(self.reportPage.puts), 1)
@@ -276,6 +289,24 @@ class TestRun(unittest.TestCase):
 		self.run_bot([rev("", 2, ack("A", "B"), userhidden=True), rev(BOT, 1, "")])
 		self.assertEqual(self.db.confirmations, [])
 		self.assertIn("(versteckter Benutzer)", self.reportPage.puts[0][0])
+
+	def test_new_user_entered_by_himself(self):
+		self.run_bot([rev("Neuling", 2, newUser("Neuling")), rev(BOT, 1, "")])
+		self.assertEqual(self.db.users, ["Neuling"])
+		self.assertEqual(self.reportPage.puts, [])
+
+	def test_new_user_entered_by_other_is_refused(self):
+		self.run_bot([rev("Mallory", 2, newUser("Neuling")), rev(BOT, 1, "")])
+		self.assertEqual(self.db.users, [])
+		self.assertIn("neuer Benutzer [[:User:Neuling|Neuling]] (eingetragen von Mallory, abgelehnt", self.workPage.puts[0][1])
+		self.assertEqual(len(self.reportPage.puts), 1)
+
+	def test_banned_user_may_not_confirm(self):
+		self.db.get_user_by_name = lambda name: (name, "id-" + name, None, 0, 1 if name == "Gesperrt" else 0)
+		self.run_bot([rev("Gesperrt", 2, ack("Gesperrt", "B")), rev(BOT, 1, "")])
+		self.assertEqual(self.db.confirmations, [])
+		# the public summary does not tell why
+		self.assertIn("Bestätigungen abgelehnt: [[:User:Gesperrt|Gesperrt]] → [[:User:B|B]] (Gesperrt ist kein Teilnehmer)", self.workPage.puts[0][1])
 
 	def test_dry_run_saves_nothing(self):
 		self.m.DONOTSAVE = True
