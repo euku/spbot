@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{% block title %}{{ _('nav.archive') }}{% endblock %}
+{% block heading %}{{ _('archive.heading') }}{% endblock %}
+{% block content %}
+  <p>{{ _('archive.intro') }}</p>
+  {{ m.page_form(wikis, 'dewikipedia') }}
+
+  <table class="full-width">
+    <tr><th>{{ _('col.wiki') }}</th><th>{{ _('col.state') }}</th><th>{{ _('col.last_run') }}</th><th>{{ _('col.pages') }}</th><th>{{ _('col.archived_sections') }}</th><th>{{ _('col.notes') }}</th><th>{{ _('col.history') }}</th></tr>
+{%- for row in rows %}
+    <tr>
+      <td><a href="{{ tool_url('archive', project=row.project) }}">{{ row.project }}</a></td>
+      <td>{{ m.state(row.state) }}</td>
+      <td class="nowrap">{% if row.run %}{{ row.run.run.started | dt }}{% if row.minutes is not none %}<div class="hint">{{ _('archive.took', minutes=row.minutes) }}</div>{% endif %}{% else %}–{% endif %}</td>
+      <td class="number">{{ row.pages }}</td>
+      <td class="number">{{ row.archived }}</td>
+      <td>{{ m.counts(row.counts) }}</td>
+      <td>{% set hist = row.history | reverse | list %}{{ m.bars(hist | map(attribute='archivedSections') | list, hist | map(attribute='archivedSections') | max if hist else 0, hist | map(attribute='started') | list) }}</td>
+    </tr>
+{%- endfor %}
+  </table>
+  <p class="hint">{{ _('archive.hint') }}</p>
+
+  <h2>{{ _('archive.template_link') }}</h2>
+  <p>{{ _('archive.template_link_text') }}</p>
+  <pre class="code">https://spbot.toolforge.org/archive?project=dewikipedia&amp;page={{ '{{' }}FULLPAGENAMEE{{ '}}' }}</pre>
+{% endblock %}

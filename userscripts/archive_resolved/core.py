@@ -285,6 +285,14 @@ class WikiDocument:
         self.lastUser            = lastUser           # last editor
         self.bot                 = bot
         self.now                 = now
+        self.options             = {}                 # the parameters of the archive template (names in upper case)
+        self.outcome             = None               # result of executeArchiving: 'archived', 'dryrun', 'skipped' (see summary.py)
+        self.outcomeMessage      = None               # why it was skipped
+
+    def _skipped(self, message: str):
+        """Remembers why the page was not archived (for the run summary)."""
+        self.outcome = 'skipped'
+        self.outcomeMessage = message
 
     @classmethod
     def fromPage(cls, page, bot, now: datetime = None):
@@ -557,15 +565,18 @@ class WikiDocument:
             if self._isArchiveOfItself(targetPageName):
                 pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it would archive into '
                                  f'[[{targetPageName}]], it seems to be an archive page itself.<<default>>')
+                self._skipped(f'It would archive into [[{targetPageName}]]; the page seems to be an archive page itself.')
                 return False
             try:
                 targetPage = self._resolveTargetPage(targetPageName)
             except pywikibot.exceptions.InvalidTitleError as e:
                 raise WrongOptions(f"The archive page '{targetPageName}' is not a valid page title ({e}).")
             if targetPage is None:
+                self._skipped(f'The archive page [[{targetPageName}]] redirects to a page that is not a subpage of this page.')
                 return False
             if not targetPage.botMayEdit():
                 pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
+                self._skipped(f'The archive page [[{targetPageName}]] is protected.')
                 return False
             title = targetPage.title()
             if title in textByTarget:
@@ -584,6 +595,7 @@ class WikiDocument:
         # first, check if we can edit all the pages
         if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
             pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it is protected.<<default>>')
+            self._skipped('The page is protected, the bot may not edit it.')
             return
         if not self._resolveTargets():
             return
@@ -613,6 +625,7 @@ class WikiDocument:
                     targetPage = pywikibot.Page(self.bot.site, targetPageName)  # redirects are resolved already
                     if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
                         pywikibot.output("Archiving into the (Main) namespace 0!")
+                        self._skipped(f'The archive page [[{targetPageName}]] is in the main namespace.')
                         skipThisPage = True
                     else:
                         if targetPage.exists():
@@ -629,9 +642,11 @@ class WikiDocument:
                         pywikibot.output(f'edit comment: {targetEditComment}')
                 except pywikibot.exceptions.EditConflictError:
                     pywikibot.output("<<lightpurple>>Edit conflict!<<default>>")
+                    self._skipped(f'Edit conflict on the archive page [[{targetPageName}]].')
                     skipThisPage = True
                 except pywikibot.exceptions.LockedPageError:
                     pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
+                    self._skipped(f'The archive page [[{targetPageName}]] is locked.')
                     skipThisPage = True
                 except:
                     # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
@@ -692,13 +707,16 @@ class WikiDocument:
                 originPage.text = self.modifiedText
                 originPage.save(archiveOverallSummary, minor=True)
                 pywikibot.output(f'edit comment: {archiveOverallSummary}')
+            self.outcome = 'dryrun' if self.bot.dryRun else 'archived'
         except pywikibot.exceptions.NoPageError:
             if not self.bot.dryRun:
                 originPage.text = self.modifiedText
                 originPage.save(archiveOverallSummary, minor=True)
             pywikibot.output(f'edit comment: {archiveOverallSummary}')
+            self.outcome = 'dryrun' if self.bot.dryRun else 'archived'
         except pywikibot.exceptions.EditConflictError:
             pywikibot.output(f'Skipping {self.originPageName} because of edit conflict')
+            self._skipped('Edit conflict on this page; the sections were already copied to the archive.')
 
     def _prepareDiscussionForArchiving(self, disc: Discussion):
         sliceStart = disc.getTitleOffsetStart() - self.sliceOffset
@@ -752,7 +770,8 @@ class WikiDocument:
                     optionsDict[y[0].strip().upper()] = y[1].strip()
 
             for nam, num in optionsDict.items():
-                pywikibot.output("%s = %s" % (nam, num))              
+                pywikibot.output("%s = %s" % (nam, num))
+            self.options = optionsDict
             
             lb = self.bot.localBot
 

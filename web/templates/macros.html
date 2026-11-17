@@ -1,0 +1,30 @@
+{% macro state(value) -%}
+<span class="state state-{{ value }}">{{ _('state.' + value) }}</span>
+{%- endmacro %}
+
+{% macro page_status(value) -%}
+<span class="pstatus pstatus-{{ value }}">{{ _('pstatus.' + value) }}</span>
+{%- endmacro %}
+
+{% macro counts(c) -%}
+{%- for key in ('archived', 'dryrun', 'skipped', 'optionserror', 'error') if c.get(key) %}{% if not loop.first %}, {% endif %}<span class="pstatus-{{ key }}">{{ c[key] }} {{ _('pstatus.' + key) }}</span>{% endfor %}
+{%- endmacro %}
+
+{% macro bars(values, max_value, labels=None) -%}
+<span class="bars" title="{{ values | sum }}">{% for v in values %}<span style="height: {{ (100 * v / max_value) | round(0, 'ceil') if max_value else 0 }}%"{% if labels %} title="{{ labels[loop.index0] }}: {{ v }}"{% endif %}></span>{% endfor %}</span>
+{%- endmacro %}
+
+{% macro page_form(wikis, project, value='') -%}
+<form class="page-form" method="get" action="{{ url_for('archive') }}">
+  <select name="project">
+{%- for w in wikis %}
+    <option value="{{ w.project }}"{% if w.project == project %} selected{% endif %}>{{ w.project }}</option>
+{%- endfor %}
+  </select>
+  <input type="text" name="page" value="{{ value }}" placeholder="{{ _('archive.page_placeholder') }}" size="40" required />
+{%- if request.args.get('uselang') %}
+  <input type="hidden" name="uselang" value="{{ request.args.get('uselang') }}" />
+{%- endif %}
+  <button type="submit">{{ _('archive.show') }}</button>
+</form>
+{%- endmacro %}

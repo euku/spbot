@@ -11,6 +11,9 @@ These command line parameters can be used to specify how to work:
 -page             Works on a specified page. Otherwise it runs
                   over all pages that use 'archiveTemplateName' (Vorlage:Autoarchiv-Erledigt)
 
+-nosummary        Do not write logs/archive-resolved-<project>.jsonl (the run summary
+                  for the status web page; only written for runs without -page)
+
 -project        'nothing': de.wikipedia
                 commons, wikidata, species, dewikisource, {de,en}wiktionary: and other projects...
 

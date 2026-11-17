@@ -1,0 +1,54 @@
+/* layout like pb.toolforge.org */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { background-color: white; color: black; margin: 20px auto; max-width: 1000px; padding: 0 16px;
+       font-family: 'Helvetica', sans-serif; }
+h1, h2, h3 { font-family: 'Linux Libertine O', Georgia, serif; }
+h1 { border-bottom: 1px solid black; text-align: center; margin-top: 0; overflow-wrap: anywhere; }
+h1 span.h1-prefix { color: grey; }
+h2 { border-bottom: 1px solid black; }
+h3 { margin-bottom: 0.3em; }
+@media (max-width: 600px) { h1 { font-size: 1.5em; } }
+div#navi { color: grey; margin-bottom: 16px; }
+#lang-switch { float: right; }
+div#footer { border-top: 1px solid grey; font-size: 0.8em; color: grey; margin-top: 2em; }
+div#footer a { color: grey; text-decoration: underline; }
+a { color: #666; }
+
+table { border-collapse: collapse; margin-bottom: 0.5em; }
+table.full-width { width: 100%; }
+td, th { border: 1px solid #aaa; padding: 0.25em 1ex; vertical-align: top; }
+th { background-color: #ddd; text-align: left; }
+td.number { text-align: right; white-space: nowrap; }
+td.center { text-align: center; }
+.nowrap { white-space: nowrap; }
+.hint { color: #777; font-size: 0.85em; }
+.error { color: #b00; }
+.message { overflow-wrap: anywhere; }
+tr.bad td { background-color: #fee; }
+@media (max-width: 700px) { table.full-width { display: block; overflow-x: auto; } }
+
+.state { border-radius: 3px; padding: 0 0.6ex; white-space: nowrap; }
+.state-ok { background-color: #cfc; }
+.state-running { background-color: #cdf; }
+.state-problems { background-color: #fcc; }
+.state-stale { background-color: #fd9; }
+.state-missing { background-color: #ddd; }
+
+.pstatus-archived, .pstatus-dryrun { color: #070; }
+.pstatus-skipped { color: #a60; }
+.pstatus-optionserror, .pstatus-error { color: #b00; }
+.pstatus-nothing, .pstatus-excluded { color: #666; }
+span.pstatus { font-weight: bold; }
+
+table.sections tr.archive td { background-color: #ffcbcb; }
+table.sections tr.resolved td { background-color: #b9ffc5; }
+
+.bars { display: inline-flex; align-items: flex-end; height: 1.2em; gap: 1px; vertical-align: middle; }
+.bars span { display: inline-block; width: 4px; min-height: 1px; background-color: #69c; }
+
+pre.log, pre.code { background-color: #f6f6f6; border: 1px solid #ddd; padding: 0.5em; overflow-x: auto;
+                    font-size: 0.85em; white-space: pre-wrap; overflow-wrap: anywhere; }
+pre.problems { background-color: #fee; }
+form.page-form { margin: 1em 0; }
+form.page-form input[type=text] { max-width: 100%; }
+details { margin: 0.3em 0; }

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% import "macros.html" as m with context %}
+{% block title %}{{ wiki.project }} – {{ _('nav.archive') }}{% endblock %}
+{% block heading %}{{ _('archive.heading') }}: {{ wiki.project }}{% endblock %}
+{% block content %}
+  <p><a href="{{ tool_url('archive') }}">← {{ _('archive.all_wikis') }}</a> ·
+    <a href="https://{{ wiki.domain }}/wiki/Special:WhatLinksHere/{{ wiki.template | replace(' ', '_') }}">{{ _('archive.template_uses', template=wiki.template) }}</a></p>
+
+{%- if not row or not run %}
+  <p>{{ _('archive.no_run') }}</p>
+{%- else %}
+  <table>
+    <tr><th>{{ _('col.state') }}</th><td>{{ m.state(row.state) }}{% if run.run.dryRun %} ({{ _('pstatus.dryrun') }}){% endif %}</td></tr>
+    <tr><th>{{ _('archive.started') }}</th><td>{{ run.run.started | dt }} ({{ run.run.started | ago }})</td></tr>
+    <tr><th>{{ _('archive.finished') }}</th><td>{% if run.end and run.end.finished %}{{ run.end.finished | dt }}{% elif run.end %}{{ _('archive.aborted') }}{% else %}{{ _('archive.not_finished') }}{% endif %}</td></tr>
+    <tr><th>{{ _('col.next_run') }}</th><td>{{ row.next | dt }} ({{ row.next | ago }})</td></tr>
+    <tr><th>{{ _('col.pages') }}</th><td>{{ row.pages }}</td></tr>
+    <tr><th>{{ _('col.archived_sections') }}</th><td>{{ row.archived }}</td></tr>
+    <tr><th>{{ _('col.notes') }}</th><td>{{ m.counts(row.counts) or '–' }}</td></tr>
+  </table>
+{%- endif %}
+
+  <h2>{{ _('archive.find_page') }}</h2>
+  {{ m.page_form(wikis, wiki.project, query) }}
+{%- if matches is not none %}
+  <ul>{% for t in matches %}<li><a href="{{ tool_url('archive', project=wiki.project, page=t) }}">{{ t }}</a></li>{% else %}<li>{{ _('archive.no_match') }}</li>{% endfor %}</ul>
+{%- endif %}
+
+{%- if run %}
+  <h2>{{ _('archive.problems') }} ({{ problems | length }})</h2>
+{%- if problems %}
+  <table class="full-width">
+    <tr><th>{{ _('col.page') }}</th><th>{{ _('col.state') }}</th><th>{{ _('col.message') }}</th></tr>
+{%- for p in problems %}
+    <tr><td><a href="{{ tool_url('archive', project=wiki.project, page=p.title) }}">{{ p.title }}</a></td><td>{{ m.page_status(p.status) }}</td><td class="message">{{ p.message | wikilinks(wiki) }}</td></tr>
+{%- endfor %}
+  </table>
+{%- else %}
+  <p>{{ _('archive.no_problems') }}</p>
+{%- endif %}
+
+  <h2>{{ _('archive.archived_pages') }} ({{ archived | length }})</h2>
+{%- if archived %}
+  <table class="full-width">
+    <tr><th>{{ _('col.page') }}</th><th>{{ _('col.sections') }}</th><th>{{ _('col.targets') }}</th></tr>
+{%- for p in archived %}
+    <tr><td><a href="{{ tool_url('archive', project=wiki.project, page=p.title) }}">{{ p.title }}</a></td><td class="number">{{ p.toArchive }}</td>
+      <td>{% for t, n in p.targets.items() %}{% if not loop.first %}, {% endif %}<a href="{{ wiki_url(wiki, t) }}">{{ t }}</a> ({{ n }}){% endfor %}</td></tr>
+{%- endfor %}
+  </table>
+{%- else %}
+  <p>–</p>
+{%- endif %}
+
+{%- if row.history %}
+  <h2>{{ _('archive.recent_runs') }}</h2>
+  <table>
+    <tr><th>{{ _('archive.started') }}</th><th>{{ _('archive.finished') }}</th><th>{{ _('col.pages') }}</th><th>{{ _('col.archived_sections') }}</th><th>{{ _('col.notes') }}</th></tr>
+{%- for h in row.history %}
+    <tr><td class="nowrap">{{ h.started | dt }}</td><td class="nowrap">{{ h.finished | dt if h.finished else _('archive.aborted') }}</td><td class="number">{{ h.pages }}</td><td class="number">{{ h.archivedSections }}</td><td>{{ m.counts(h.byStatus) }}</td></tr>
+{%- endfor %}
+  </table>
+{%- endif %}
+{%- endif %}
+{% endblock %}
