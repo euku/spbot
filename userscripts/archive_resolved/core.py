@@ -485,9 +485,35 @@ class WikiDocument:
             return False
         if origin.endswith(targetPageName[len(origin):]):
             return True
-        # a ((variable)) gives a number (year, month, week, quarter, maybe roman), sometimes with text
-        suffix = r"(?:[^/]*\d[^/]*|[IVXivx]+)".join(re.escape(part) for part in re.split(r"\(\([^()]*\)\)", m.group(1)))
+        valuePatterns = self._variableValuePatterns()
+        suffix = "".join(valuePatterns.get(part, re.escape(part))
+                         for part in re.split(r"(\(\([^()]*\)\))", m.group(1)))
         return re.search(suffix + r"\Z", origin) is not None
+
+    def _variableValuePatterns(self) -> dict:
+        """
+            A regex for every date ((variable)) that matches all values it can have, e.g.
+            ((Jahr)) -> \\d+, ((Monat:Lang)) -> Januar|Februar|…, ((Quartal:I)) -> [IVXivx]+, 03 月 -> \\d+\\ 月.
+        """
+        pageToken = "\x00page\x00"   # variables that give the page name are left out
+        values = {}
+        for month in range(1, 13):
+            stamp = localtime(mktime((2025, month, 15, 12, 0, 0, 0, 0, -1)))
+            for monthNumber in ("%02d" % month, str(month)):
+                for variable, value in self.bot.localBot.getReplacementDict(pageToken, stamp, "2025", monthNumber):
+                    value = str(value)
+                    if pageToken not in value:
+                        values.setdefault(variable, set()).add(value)
+        patterns = {}
+        for variable, variableValues in values.items():
+            alternatives = set()
+            for value in variableValues:
+                if re.fullmatch(r"[IVXivx]+", value):
+                    alternatives.add(r"[IVXivx]+")
+                else:
+                    alternatives.add(re.sub(r"\d+", lambda _: r"\d+", re.escape(value)))
+            patterns[variable] = "(?:" + "|".join(sorted(alternatives)) + ")"
+        return patterns
 
     def _resolveTargets(self) -> bool:
         """
