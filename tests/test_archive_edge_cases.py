@@ -140,6 +140,9 @@ def test_resolved_in_the_future_is_not_archived():
     "{{Nicht archivieren}}",
     "{{nicht archivieren|bis=2030}}",
     "{{Nicht archivieren }}",
+    "{{Vorlage:Nicht archivieren}}",
+    "{{ vorlage : Nicht archivieren|bis=2030}}",
+    "{{Template:Nicht archivieren}}",
     # also inside a comment (needed for the <!-- [[User:DoNotArchiveUntil]] --> variant on other wikis)
     "<!-- {{Nicht archivieren}} -->",
 ])
@@ -209,6 +212,25 @@ def test_heading_inside_markup_is_not_a_section(open_, close):
 
 
 # ---------------------------------------------------------------- signatures
+
+@pytest.mark.parametrize("utc, local, month", [
+    ("23:30, 31. Okt. 2026 (UTC)", "00:30, 1. Nov. 2026 (CET)", "11"),   # winter time: +1 h
+    ("22:30, 31. Jul. 2026 (UTC)", "00:30, 1. Aug. 2026 (CEST)", "08"),  # summer time: +2 h
+])
+def test_utc_signature_is_converted_to_local_time(utc, local, month):
+    """dewiki signatures with "(UTC)" (users with a UTC preference) are Berlin time + 1/2 h."""
+    options = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'}}\n"
+    docs = [prepared("== A ==\nq --A %s\n%s\n" % (sig, RESOLVED), options) for sig in (utc, local)]
+    discs = [doc.listDiscussions[0] for doc in docs]
+    assert discs[0].getFirstContributionAge() == pytest.approx(discs[1].getFirstContributionAge())
+    assert list(docs[0].archiveJobTextByTarget) == list(docs[1].archiveJobTextByTarget) == [TARGET + "/" + month]
+
+
+def test_utc_resolved_template_is_converted_to_local_time():
+    options = "{{Autoarchiv-Erledigt|Alter=1|Ziel='((Lemma))/Archiv/((Jahr))/((Monat:##))'|Zeitvergleich=erledigt}}\n"
+    doc = prepared("== A ==\nq %s\n{{Erledigt|1=--A 23:30, 31. Okt. 2026 (UTC)}}\n" % SIG, options)
+    assert list(doc.archiveJobTextByTarget) == [TARGET + "/11"]
+
 
 def test_signature_with_unknown_month_is_ignored():
     doc = prepared("== A ==\nq --A 10:00, 1. Foo 2026 (CET)\n%s\n" % RESOLVED)

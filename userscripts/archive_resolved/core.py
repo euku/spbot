@@ -11,6 +11,7 @@ import pywikibot        # Wikipedia-pybot-framework
 from pywikibot import textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
 from datetime import datetime
+from pytz import timezone, utc
 
 # Markup whose content MediaWiki does not parse: comments (an unclosed one hides the
 # rest of the page) and <nowiki>, <pre>, <code>, <syntaxhighlight>, <source> with any
@@ -142,12 +143,18 @@ class Discussion:
         agesList = []
         timestampList = []
         today = mktime((now + bot.localBot.getUtcDiff()).timetuple())
+        localTz = timezone(bot.localBot._getTimezone())
+        timestampPattern = re.compile(bot.localBot.timeStampRegEx, re.IGNORECASE | re.DOTALL)
         matches = re.compile(regex, re.IGNORECASE | re.DOTALL).finditer(clearedContent)
         for m in matches:
             hh, mm, dd, MM, YY = m.group('hh'), m.group('mm'), m.group('dd'), m.group('MM'), m.group('yyyy')
             try:
-               dateToCheck = mktime((int(YY), int(bot.localBot.convertMonthNameToNumber(MM)), int(dd),\
-                                     int(hh), int(mm), 0, 0, 0, 0))  # microsec. since 1970
+               signatureTime = datetime(int(YY), int(bot.localBot.convertMonthNameToNumber(MM)), int(dd), int(hh), int(mm))
+               # all times are local time of the wiki; a signature in UTC (e.g. "(UTC)" on dewiki) is converted
+               timestamp = timestampPattern.search(m.group(0))
+               if localTz.zone != "UTC" and timestamp and timestamp.group(0).rstrip().endswith("(UTC)"):
+                   signatureTime = utc.localize(signatureTime).astimezone(localTz).replace(tzinfo=None)
+               dateToCheck = mktime(signatureTime.timetuple()[:8] + (0,))  # seconds since 1970
                actualAgeInDays = (today - dateToCheck)/60/60/24
                agesList.append(actualAgeInDays)
                timestampList.append(dateToCheck)

@@ -29,7 +29,7 @@ class LocalBotDe(LocalBot):
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
         self.optionsRegEx = r"\{\{\ *(?:[Vv]orlage\:|[Tt]emplate\:)?\ *[Aa]utoarchiv-[Ee]rledigt(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
-        self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren\s*[\|\}]'
+        self.templDoNotArchive = r'\{\{\s*(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?[Nn]icht\ *archivieren\s*[\|\}]'
         self.paramAge = 'ALTER'
         self.paramArchive = 'ZIEL'
         self.paramLevel = 'EBENE'
