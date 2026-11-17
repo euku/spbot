@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from archive_resolved_localization.local_bot import LocalBot
+from archive_resolved_localization.local_bot import LocalBot, OPTIONS_BODY
 from time import strftime
 from datetime import datetime
 
@@ -20,7 +20,7 @@ class LocalBotKo(LocalBot):
         self.errorTextSummary = "문제 보고"
         # template parameters / 틀 변수
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = r"\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.optionsRegEx = r"\{\{\ *(?:틀\:)?\ *완료된\ 토론\ 자동\ 보존" + OPTIONS_BODY
         # {{subst:보존 방지}} leaves <!-- [[User:DoNotArchiveUntil]] 2036년 11월 17일 (월) 12:00 (KST) -->
         # (like on enwiki); {{보존 방지}} without subst is recognized as well
         self.templDoNotArchive = (r'<!--\s*\[\[User:DoNotArchiveUntil\]\]\s+' + self.timeStampRegEx

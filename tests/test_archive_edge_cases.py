@@ -5,6 +5,9 @@ Invented edge cases: comments, <nowiki>, <pre> & co., unusual headings, options 
 Tests marked xfail(strict=True) document known bugs: they fail today. When a bug is
 fixed the test passes, pytest reports XPASS as failure, and the marker must be removed.
 """
+import re
+import time
+
 import pytest
 
 from archive_resolved import core
@@ -252,10 +255,38 @@ def test_invalid_archive_target_is_reported(target):
         prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s'}}\n" % target)
 
 
-@pytest.mark.parametrize("pageName", ["{{FULLPAGENAME}}", "{{fullpagename}}", "{{VOLLER_SEITENNAME}}"])
+@pytest.mark.parametrize("pageName", ["{{FULLPAGENAME}}", "{{fullpagename}}", "{{VOLLER_SEITENNAME}}",
+                                      "{{ FULLPAGENAME }}", "{{ fullpagename}}"])
 def test_fullpagename_template_works_like_the_variable(pageName):
     doc = prepared(SECTION_A, options="{{Autoarchiv-Erledigt|Alter=1|Ziel='%s/Archiv/((Jahr))'}}\n" % pageName)
     assert list(doc.archiveJobTextByTarget) == [TARGET]
+
+
+@pytest.mark.parametrize("project", ["dewikipedia", "cswikipedia", "itwikipedia", "jawikipedia", "kowikipedia",
+                                     "viwikipedia", "commons", "incubator"])
+def test_unclosed_archive_template_does_not_hang(project):
+    """The options regex backtracked exponentially when no }} followed (30 characters took > 30 s)."""
+    bot = makeBot(project)
+    name = re.search(r"[^\\ ]+(?:\\ [^\\ (]+)*(?=\(\?P<options>)", bot.localBot.optionsRegEx).group(0)
+    text = "{{" + name.replace("\\", "") + " " + "Text ohne schließende Klammern, " * 20
+    start = time.perf_counter()
+    assert re.search(bot.localBot.optionsRegEx, text, re.DOTALL) is None
+    assert time.perf_counter() - start < 1
+
+
+def test_section_mentioning_the_template_unclosed_is_archived():
+    body = "== A ==\nq {{Autoarchiv-Erledigt sollte man " + "immer einbauen, " * 20 + SIG + "\n" + RESOLVED + "\n"
+    start = time.perf_counter()
+    doc = prepared(body)
+    assert time.perf_counter() - start < 1
+    assert doc.archiveJobCounterByTarget == {TARGET: 1}
+
+
+def test_czech_template_with_namespace_prefix():
+    text = "{{Šablona:Archivace vyřešených sekcí|age=1|archive='((FULLPAGENAME))/Archiv'}}\n"
+    doc = makeDoc(text, bot=makeBot("cswikipedia"))
+    doc.findOptions()
+    assert doc.archivingTargetPattern == "((FULLPAGENAME))/Archiv"
 
 
 def test_variables_with_hash_are_valid():

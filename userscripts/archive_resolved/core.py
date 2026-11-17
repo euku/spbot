@@ -147,7 +147,10 @@ class Discussion:
         # <!-- [[User:DoNotArchiveUntil]] 19:24, 13 March 2035 (UTC) -->
         self.hasDoNotArchiveTmpl = doNotArchivePattern.search(self.content) != None
         # never archive the archive template: on the archive page it would archive again (recursively)
-        self.hasArchiveTemplate = re.search(bot.localBot.optionsRegEx, clearedContent, re.DOTALL) is not None
+        # (only a real one with a target, not a mention like "{{Autoarchiv-Erledigt einbauen" followed by any }})
+        template = re.search(bot.localBot.optionsRegEx, clearedContent, re.DOTALL)
+        self.hasArchiveTemplate = template is not None and re.search(
+            r"\|\s*" + re.escape(bot.localBot.paramArchive) + r"\s*=", template.group('options'), re.IGNORECASE) is not None
 
     def _extractTimeStampsAndAges(self, bot, regex: str, clearedContent: str, now: datetime):
         """

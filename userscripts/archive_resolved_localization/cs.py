@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from archive_resolved_localization.local_bot import LocalBot
+from archive_resolved_localization.local_bot import LocalBot, OPTIONS_BODY
 from archive_resolved_localization.en import LocalBotEn
 from time import strftime
 from datetime import datetime
@@ -21,7 +21,7 @@ class LocalBotCs(LocalBot):
         self.errorTextSummary = "Archivaci nelze dokončit"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
-        self.optionsRegEx = r"\{\{\ *(?:[Šš]ablona|[Tt]emplate\:)?\ *[Aa]rchivace\ vyřešených\ sekcí(?P<options>(?:\{\{[\w]*\}\}|.*?)*?)\}\}"
+        self.optionsRegEx = r"\{\{\ *(?:(?:[Šš]ablona|[Tt]emplate)\:)?\ *[Aa]rchivace\ vyřešených\ sekcí" + OPTIONS_BODY
         self.templDoNotArchive = r'\{\{\ *[Nn]icht\ *archivieren[|}]' # not used
         self.paramAge = 'AGE'
         self.paramArchive = 'ARCHIVE'
