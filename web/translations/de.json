@@ -3,19 +3,16 @@
   "nav.archive": "Archivbot",
   "footer.times": "Alle Zeiten in UTC, Stand {now}",
   "footer.source": "Quellcode",
-
   "time.minutes": "{n} min",
   "time.hours": "{n} h",
   "time.days": "{n} Tagen",
   "time.ago": "vor {t}",
   "time.in": "in {t}",
-
   "state.ok": "ok",
   "state.running": "läuft",
   "state.problems": "Fehler",
   "state.stale": "überfällig",
   "state.missing": "keine Daten",
-
   "pstatus.nothing": "nichts zu tun",
   "pstatus.archived": "archiviert",
   "pstatus.dryrun": "Testlauf",
@@ -23,7 +20,6 @@
   "pstatus.optionserror": "Vorlagenfehler",
   "pstatus.error": "Fehler",
   "pstatus.excluded": "ausgeschlossen",
-
   "service.archive": "Archivbot (erledigte Abschnitte)",
   "service.sych": "Übersicht für Sycholdbot",
   "service.pb": "Persönliche Bekanntschaften (Abgleich mit pb.toolforge.org)",
@@ -31,7 +27,6 @@
   "service.botstats": "Botstatistik",
   "service.login": "Bot-Login",
   "service.cleanup": "Log-Aufräumen",
-
   "col.service": "Dienst",
   "col.state": "Status",
   "col.last_run": "letzter Lauf",
@@ -59,11 +54,10 @@
   "col.signatures": "Signaturen",
   "col.resolved": "erledigt seit (Tagen)",
   "col.decision": "Entscheidung",
-
   "index.intro": "Status der Dienste von <a href=\"https://de.wikipedia.org/wiki/Benutzer:SpBot\">SpBot</a> auf Wikimedia Toolforge.",
   "index.services": "Dienste",
   "index.archive_wikis": "{n} Wikis",
-  "index.services_hint": "„Überfällig“: Das Log wurde länger nicht geschrieben, als der Zeitplan erwarten lässt. „Fehler“: Im Log stehen Fehlermeldungen (Details unten).",
+  "index.services_hint": "„Überfällig“: Das Log wurde länger nicht geschrieben, als der Zeitplan erwarten lässt. „Fehler“: Im Log stehen Fehlermeldungen.",
   "index.account": "Bot-Konto in den Wikis",
   "index.no_bot_flag": "fehlt",
   "index.blocked_until": "bis {expiry}",
@@ -73,8 +67,6 @@
   "index.software": "Software",
   "index.commit": "Bot-Code",
   "index.log_days": "Logs von {n} Tagen",
-  "index.jobs": "Jobs und Logs",
-
   "archive.heading": "Archivbot",
   "archive.intro": "Der Archivbot verschiebt erledigte Abschnitte von Seiten mit der Archivvorlage in ihre Archive. Hier steht, was er beim letzten Lauf je Wiki und je Seite gesehen und entschieden hat.",
   "archive.page_placeholder": "Seitentitel, z. B. Benutzer Diskussion:Beispiel",
@@ -109,7 +101,6 @@
   "archive.no_sections": "Keine Abschnitte auf der eingestellten Überschriftenebene.",
   "archive.sections_hint": "Alter in Tagen zum Zeitpunkt des Botlaufs. Rot hinterlegt: wird archiviert; grün: als erledigt markiert, aber noch nicht alt genug.",
   "archive.page_history": "Diese Seite in den letzten Läufen",
-
   "opt.age": "Alter",
   "opt.days": "{days} Tage",
   "opt.timeout": "Archivierung ohne Erledigt-Vermerk nach",
@@ -118,12 +109,19 @@
   "opt.timecompare": "Einsortieren nach",
   "opt.timecompare_resolved": "Datum des Erledigt-Vermerks",
   "opt.timecompare_first": "ältester Signatur",
-
   "reason.archive_template": "bleibt: enthält die Archivvorlage",
   "reason.do_not_archive": "bleibt: Nicht-archivieren-Vorlage",
   "reason.resolved_old": "wird archiviert: erledigt seit {days} Tagen (Alter {limit})",
   "reason.timeout": "wird archiviert: seit {days} Tagen kein Beitrag (Grenze {limit})",
   "reason.resolved_young": "bleibt: erledigt erst seit {days} Tagen, archiviert wird nach {limit}",
   "reason.not_resolved_timeout": "bleibt: nicht erledigt, letzter Beitrag vor {days} Tagen (Grenze {limit})",
-  "reason.not_resolved": "bleibt: nicht als erledigt markiert"
+  "reason.not_resolved": "bleibt: nicht als erledigt markiert",
+  "nav.language": "Sprache",
+  "index.heading": "Bot-Status",
+  "tile.services": "Dienste in Ordnung",
+  "tile.services_sub": "Archivbot (alle Wikis) und weitere Dienste",
+  "tile.archived": "Archivierte Abschnitte",
+  "tile.archived_sub": "im letzten Lauf, {pages} Seiten geprüft",
+  "tile.edits_sub": "Bearbeitungen in {n} Wikis",
+  "tile.flag_sub": "Wikis mit Bot-Flag"
 }

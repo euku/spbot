@@ -1,36 +1,72 @@
 {% extends "base.html" %}
 {% import "macros.html" as m with context %}
 {% block content %}
-  <p>{{ _('index.intro') }}</p>
+  <p class="lead">{{ _('index.intro') }}</p>
+
+{%- set all_states = [archive_state] + (services | map(attribute=2) | list) %}
+{%- set ok_count = all_states | select('in', ['ok', 'running']) | list | length %}
+  <div class="tiles">
+    <div class="tile">
+      <div class="label">{{ _('tile.services') }}</div>
+      <div class="value">{{ ok_count }} / {{ all_states | length }}</div>
+      <div class="sub">{{ _('tile.services_sub') }}</div>
+    </div>
+    <div class="tile">
+      <div class="label">{{ _('tile.archived') }}</div>
+      <div class="value">{{ archive | sum(attribute='archived') }}</div>
+      <div class="sub">{{ _('tile.archived_sub', pages=archive | sum(attribute='pages')) }}</div>
+    </div>
+{%- if accounts is not none %}
+    <div class="tile">
+      <div class="label">{{ _('col.edits_7') }}</div>
+      <div class="value">{{ accounts.rows | sum(attribute='edits_7') }}</div>
+      <div class="sub">{{ _('tile.edits_sub', n=accounts.rows | length) }}</div>
+    </div>
+{%- set flagged = accounts.rows | rejectattr('error') | selectattr('bot_flag') | list | length %}
+    <div class="tile">
+      <div class="label">{{ _('col.bot_flag') }}</div>
+      <div class="value">{{ flagged }} / {{ accounts.rows | length }}</div>
+      <div class="sub">{{ _('tile.flag_sub') }}</div>
+    </div>
+{%- endif %}
+  </div>
 
   <h2>{{ _('index.services') }}</h2>
-  <table class="full-width">
-    <tr><th>{{ _('col.service') }}</th><th>{{ _('col.state') }}</th><th>{{ _('col.last_run') }}</th><th>{{ _('col.next_run') }}</th></tr>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>{{ _('col.service') }}</th><th>{{ _('col.state') }}</th><th>{{ _('col.last_run') }}</th><th>{{ _('col.next_run') }}</th></tr></thead>
+    <tbody>
     <tr>
       <td><a href="{{ tool_url('archive') }}">{{ _('service.archive') }}</a><div class="hint">{{ _('index.archive_wikis', n=archive | length) }}</div></td>
       <td>{{ m.state(archive_state) }}{% set bad = archive | selectattr('state', 'in', ['problems', 'stale', 'missing']) | list %}{% if bad %}<div class="hint">{% for row in bad %}{% if not loop.first %}, {% endif %}<a href="{{ tool_url('archive', project=row.project) }}">{{ row.project }}</a>{% endfor %}</div>{% endif %}</td>
-      {% set started = archive | map(attribute='run') | select | map(attribute='run') | map(attribute='started') | list %}
+      {%- set started = archive | map(attribute='run') | select | map(attribute='run') | map(attribute='started') | list %}
       <td class="nowrap">{{ (started | max) | dt if started else '–' }}</td>
-      {% set nexts = archive | map(attribute='next') | select | list %}
+      {%- set nexts = archive | map(attribute='next') | select | list %}
       <td class="nowrap">{{ (nexts | min) | dt if nexts else '–' }}</td>
     </tr>
 {%- for key, jobs, worst in services %}
+    {%- set newest = jobs | map(attribute='newest') | select | list %}
+    {%- set nexts = jobs | map(attribute='next') | select | list %}
     <tr>
-      <td>{{ _('service.' + key) }}<div class="hint">{% for job in jobs %}{% if not loop.first %}, {% endif %}<a href="#job-{{ job.name }}">{{ job.name }}</a>{% endfor %}</div></td>
+      <td>{{ _('service.' + key) }}<div class="hint">{{ jobs | map(attribute='name') | join(', ') }}</div></td>
       <td>{{ m.state(worst) }}</td>
-      <td class="nowrap">{{ jobs | map(attribute='newest') | select | max | dt if jobs | map(attribute='newest') | select | list else '–' }}</td>
-      <td class="nowrap">{{ jobs | map(attribute='next') | select | min | dt if jobs | map(attribute='next') | select | list else '–' }}</td>
+      <td class="nowrap">{{ (newest | max) | dt if newest else '–' }}</td>
+      <td class="nowrap">{{ (nexts | min) | dt if nexts else '–' }}</td>
     </tr>
 {%- endfor %}
+    </tbody>
   </table>
+  </div>
   <p class="hint">{{ _('index.services_hint') }}</p>
 
   <h2>{{ _('index.account') }}</h2>
 {%- if accounts is none %}
   <p class="hint">{{ _('index.no_replicas') }}</p>
 {%- else %}
-  <table class="full-width">
-    <tr><th>{{ _('col.wiki') }}</th><th>{{ _('col.bot_flag') }}</th><th>{{ _('col.blocked') }}</th><th>{{ _('col.last_edit') }}</th><th>{{ _('col.edits_7') }}</th><th>{{ _('col.edits_30') }}</th><th>{{ _('col.edits_total') }}</th></tr>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>{{ _('col.wiki') }}</th><th>{{ _('col.bot_flag') }}</th><th>{{ _('col.blocked') }}</th><th>{{ _('col.last_edit') }}</th><th>{{ _('col.edits_7') }}</th><th>{{ _('col.edits_30') }}</th><th>{{ _('col.edits_total') }}</th></tr></thead>
+    <tbody>
 {%- for a in accounts.rows %}
     <tr{% if a.error or a.blocks or 'bot' not in (a.groups or []) %} class="bad"{% endif %}>
       <td><a href="https://{{ a.wiki.domain }}/wiki/Special:Contributions/SpBot">{{ a.wiki.dbname }}</a></td>
@@ -39,36 +75,23 @@
 {%- else %}
       <td class="center">{{ '✓' if 'bot' in a.groups else _('index.no_bot_flag') }}</td>
       <td class="center">{% if a.blocks %}<span class="error">{% for b in a.blocks %}{{ _('index.blocked_until', expiry=b.expiry) }}{% if not b.sitewide %} ({{ _('index.partial') }}){% endif %} {% endfor %}</span>{% else %}–{% endif %}</td>
-      <td class="nowrap">{{ a.last_edit | dt }} <span class="hint">{{ a.last_edit | ago }}</span></td>
+      <td class="nowrap">{{ a.last_edit | dt }}<div class="hint">{{ a.last_edit | ago }}</div></td>
       <td class="number">{{ a.edits_7 }}</td>
-      <td class="number">{{ m.bars(a.days, a.max_day, accounts.day_keys) }} {{ a.edits_30 }}</td>
+      <td class="number">{{ m.bars(a.days, a.max_day, accounts.day_keys) }}{{ a.edits_30 }}</td>
       <td class="number">{{ a.editcount }}</td>
 {%- endif %}
     </tr>
 {%- endfor %}
+    </tbody>
   </table>
+  </div>
   <p class="hint">{{ _('index.account_hint', time=accounts.time | dt) }}</p>
 {%- endif %}
 
   <h2>{{ _('index.software') }}</h2>
-  <ul>
-    <li>{{ _('index.commit') }}: {% if software.commit %}<a href="{{ github_url }}/commit/{{ software.commit }}"><code>{{ software.commit[:8] }}</code></a> ({{ software.branch }}){% else %}–{% endif %}</li>
-    <li>Pywikibot {{ software.pywikibot or '?' }}, Python {{ software.python or '?' }}</li>
-    <li>{{ _('index.log_days', n=software.log_days) }}</li>
-  </ul>
-
-  <h2>{{ _('index.jobs') }}</h2>
-{%- for key, jobs, worst in services %}{% for job in jobs %}
-  <h3 id="job-{{ job.name }}">{{ job.name }} {{ m.state(job.state) }}</h3>
-  <p><code>{{ job.command }}</code><br/>{{ _('col.schedule') }}: <code>{{ job.schedule }}</code>, {{ _('col.next_run') }}: {{ job.next | dt }}</p>
-{%- for label, log in (('stdout', job.stdout), ('stderr', job.stderr)) if log %}
-  <details{% if log.problems %} open{% endif %}>
-    <summary><b>{{ label }}</b> {{ log.path | replace(config_log_dir, 'logs') if config_log_dir else log.path }} – {{ log.modified | dt }} ({{ log.modified | ago }}), {{ log.size }} B</summary>
-{%- if log.problems %}
-    <pre class="log problems">{{ log.problems | join('\n') }}</pre>
-{%- endif %}
-    <pre class="log">{{ log.tail | join('\n') }}</pre>
-  </details>
-{%- endfor %}
-{%- endfor %}{% endfor %}
+  <div class="card">
+    {{ _('index.commit') }}: {% if software.commit %}<a href="{{ github_url }}/commit/{{ software.commit }}"><code>{{ software.commit[:8] }}</code></a> ({{ software.branch }}){% else %}–{% endif %} ·
+    Pywikibot {{ software.pywikibot or '?' }} · Python {{ software.python or '?' }} ·
+    {{ _('index.log_days', n=software.log_days) }}
+  </div>
 {% endblock %}

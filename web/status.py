@@ -498,6 +498,7 @@ def bot_accounts(days=30):
         row['edits_7'] = sum(row['days'][-7:])
         row['edits_30'] = sum(row['days'])
         row['max_day'] = max(row['days'] or [0])
+        row['bot_flag'] = 'bot' in (row.get('groups') or [])
     data = {'rows': rows, 'time': now(), 'day_keys': day_keys}
     with _cache_lock:
         _replica_cache.update(time=time.time(), data=data)

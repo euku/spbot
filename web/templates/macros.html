@@ -22,9 +22,9 @@
 {%- endfor %}
   </select>
   <input type="text" name="page" value="{{ value }}" placeholder="{{ _('archive.page_placeholder') }}" size="40" required />
-{%- if request.args.get('uselang') %}
-  <input type="hidden" name="uselang" value="{{ request.args.get('uselang') }}" />
-{%- endif %}
+{%- for param in ('uselang', 'forcedlang') if request.args.get(param) %}
+  <input type="hidden" name="{{ param }}" value="{{ request.args.get(param) }}" />
+{%- endfor %}
   <button type="submit">{{ _('archive.show') }}</button>
 </form>
 {%- endmacro %}

@@ -1,10 +1,12 @@
 """
-Translations of the status page (like pb.toolforge.org).
+Translations of the status page: the languages of the wikis the archive bot runs on.
 
 The language of a page is, in this order of precedence:
-  1. the URL parameter ``uselang=<code>``,
-  2. the browser's ``Accept-Language`` header,
-  3. English.
+  1. the URL parameter ``uselang=<code>`` (only for this request, nothing is stored;
+     ``forcedlang`` as on pb.toolforge.org works, too),
+  2. the cookie ``spbot_lang``, set by a manual choice in the language menu,
+  3. the browser's ``Accept-Language`` header,
+  4. English.
 
 The messages live in ``translations/<code>.json`` (key -> text). The texts are
 trusted HTML with ``{name}`` placeholders; the values filled in are escaped
@@ -16,9 +18,21 @@ import os.path
 import flask
 from markupsafe import Markup
 
-LANGUAGES = {'de': 'Deutsch', 'en': 'English'}
+# code -> (flag, name in the language itself)
+LANGUAGES = {
+    'cs': ('🇨🇿', 'Čeština'),
+    'de': ('🇩🇪', 'Deutsch'),
+    'en': ('🇬🇧', 'English'),
+    'it': ('🇮🇹', 'Italiano'),
+    'ja': ('🇯🇵', '日本語'),
+    'ko': ('🇰🇷', '한국어'),
+    'vi': ('🇻🇳', 'Tiếng Việt'),
+}
 DEFAULT_LANGUAGE = 'en'
-PARAM = 'uselang'
+PARAMS = ('uselang', 'forcedlang')
+PARAM = PARAMS[0]
+COOKIE_NAME = 'spbot_lang'
+COOKIE_MAX_AGE = 365 * 24 * 3600
 TRANSLATIONS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'translations')
 
 
@@ -34,6 +48,7 @@ CATALOGS = _load_catalogs()
 
 
 def browser_language(request):
+    """The supported language the browser prefers most (``de-AT`` counts as ``de``), else English."""
     best, best_quality = None, 0
     for value, quality in request.accept_languages:
         code = value.split('-')[0].split('_')[0].lower()
@@ -42,12 +57,29 @@ def browser_language(request):
     return best or DEFAULT_LANGUAGE
 
 
+def forced_language(request):
+    """The language given in the URL, or None."""
+    for param in PARAMS:
+        if request.args.get(param) in LANGUAGES:
+            return request.args[param]
+    return None
+
+
+def chosen_language(request):
+    """The language of this request: URL parameter, then cookie, then browser."""
+    forced = forced_language(request)
+    if forced:
+        return forced
+    if request.cookies.get(COOKIE_NAME) in LANGUAGES:
+        return request.cookies[COOKIE_NAME]
+    return browser_language(request)
+
+
 def current_language():
     if not flask.has_request_context():
         return DEFAULT_LANGUAGE
     if 'lang' not in flask.g:
-        chosen = flask.request.args.get(PARAM)
-        flask.g.lang = chosen if chosen in LANGUAGES else browser_language(flask.request)
+        flask.g.lang = chosen_language(flask.request)
     return flask.g.lang
 
 
@@ -57,3 +89,10 @@ def gettext(key, **values):
     if text is None:
         text = CATALOGS[DEFAULT_LANGUAGE].get(key, key)
     return Markup(text).format(**values) if values else Markup(text)
+
+
+def local_url(url):
+    """*url* if it is a path on this site, otherwise ``/`` (no open redirects)."""
+    if not url or not url.startswith('/') or url.startswith('//') or url.startswith('/\\'):
+        return '/'
+    return url

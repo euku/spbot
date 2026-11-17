@@ -35,19 +35,55 @@ def compress_response(response):
     response.set_data(gzip.compress(data, compresslevel=6))
     response.headers['Content-Encoding'] = 'gzip'
     response.vary.add('Accept-Encoding')
+    return response
+
+
+@app.after_request
+def vary_by_language(response):
+    """The pages depend on the browser language and the language cookie."""
     if response.mimetype == 'text/html':
         response.vary.add('Accept-Language')
+        response.vary.add('Cookie')
     return response
+
+
+def _url_without_forced_language():
+    """The current path and query string, without the language parameters."""
+    args = [(k, v) for k, v in flask.request.args.items(multi=True) if k not in i18n.PARAMS]
+    return flask.request.path + ('?' + urlencode(args) if args else '')
 
 
 @app.context_processor
 def inject_globals():
     lang = i18n.current_language()
-    args = [(k, v) for k, v in flask.request.args.items(multi=True) if k != i18n.PARAM]
-    languages = [(code, name, flask.request.path + '?' + urlencode(args + [(i18n.PARAM, code)]))
-                 for code, name in i18n.LANGUAGES.items()]
-    return {'_': _, 'lang': lang, 'languages': languages, 'now': status.now(), 'github_url': config.github_url,
-            'wiki_url': wiki_url, 'tool_url': tool_url, 'config_log_dir': config.log_dir}
+    here = _url_without_forced_language()
+    languages = [(code, flag, name, flask.url_for('set_language', code=code, next=here))
+                 for code, (flag, name) in i18n.LANGUAGES.items()]
+    return {'_': _, 'lang': lang, 'lang_flag': i18n.LANGUAGES[lang][0], 'lang_name': i18n.LANGUAGES[lang][1],
+            'languages': languages, 'now': status.now(), 'github_url': config.github_url,
+            'wiki_url': wiki_url, 'tool_url': tool_url}
+
+
+@app.route('/lang/<code>')
+def set_language(code):
+    """
+    Manual choice in the language menu, then back to the page it came from. The cookie is only
+    stored if the choice differs from the browser language (otherwise an old cookie is removed).
+    """
+    if code not in i18n.LANGUAGES:
+        flask.abort(404)
+    response = flask.redirect(i18n.local_url(flask.request.args.get('next')))
+    if code == i18n.browser_language(flask.request):
+        if i18n.COOKIE_NAME in flask.request.cookies:
+            response.delete_cookie(i18n.COOKIE_NAME)
+    else:
+        response.set_cookie(i18n.COOKIE_NAME, code, max_age=i18n.COOKIE_MAX_AGE, httponly=True, samesite='Lax')
+    return response
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return flask.redirect(flask.url_for('static', filename='favicon.svg'), code=301)
 
 
 def wiki_url(wiki, title):
@@ -55,9 +91,10 @@ def wiki_url(wiki, title):
 
 
 def tool_url(endpoint, **values):
-    """url_for that keeps the uselang parameter of the current request."""
-    if flask.request.args.get(i18n.PARAM) in i18n.LANGUAGES:
-        values.setdefault(i18n.PARAM, flask.request.args[i18n.PARAM])
+    """url_for that keeps a language given in the URL (uselang/forcedlang)."""
+    forced = i18n.forced_language(flask.request)
+    if forced:
+        values.setdefault(i18n.PARAM, forced)
     return flask.url_for(endpoint, **values)
 
 

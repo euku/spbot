@@ -3,21 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}{{ _('nav.home') }}{% endblock %} | SpBot | Wikimedia Toolforge</title>
+    <meta name="color-scheme" content="light dark" />
+    <title>{% block title %}{{ _('nav.home') }}{% endblock %} · SpBot</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" />
     <meta name="robots" content="noindex,nofollow" />
   </head>
   <body>
-    <div id="navi">
-      <span id="lang-switch">{% for code, name, url in languages %}{% if not loop.first %} · {% endif %}{% if code == lang %}<b>{{ name }}</b>{% else %}<a href="{{ url }}" lang="{{ code }}" rel="nofollow">{{ name }}</a>{% endif %}{% endfor %}</span>
-      <a href="{{ tool_url('index') }}">{{ _('nav.home') }}</a> | <a href="{{ tool_url('archive') }}">{{ _('nav.archive') }}</a>
-    </div>
-    <h1>{% block heading %}SpBot{% endblock %}</h1>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="{{ tool_url('index') }}"><img src="{{ url_for('static', filename='favicon.svg') }}" alt="" width="28" height="28" /><span>SpBot</span></a>
+        <nav>
+          <a href="{{ tool_url('index') }}"{% if request.endpoint == 'index' %} aria-current="page"{% endif %}>{{ _('nav.home') }}</a>
+          <a href="{{ tool_url('archive') }}"{% if request.endpoint == 'archive' %} aria-current="page"{% endif %}>{{ _('nav.archive') }}</a>
+        </nav>
+        <details class="lang-switch" title="{{ _('nav.language') }}">
+          <summary><span class="flag">{{ lang_flag }}</span> <span class="lang-name">{{ lang_name }}</span></summary>
+          <ul>
+{%- for code, flag, name, url in languages %}
+            <li><a href="{{ url }}" lang="{{ code }}" hreflang="{{ code }}" rel="nofollow"{% if code == lang %} class="selected"{% endif %}><span class="flag">{{ flag }}</span> {{ name }}</a></li>
+{%- endfor %}
+          </ul>
+        </details>
+      </div>
+    </header>
+    <main>
+      <h1>{% block heading %}{{ _('index.heading') }}{% endblock %}</h1>
 {%- block content %}{% endblock %}
-    <div id="footer">
-      <p>{{ _('footer.times', now=now | dt) }} |
-        <a href="https://de.wikipedia.org/wiki/Benutzer:SpBot">Benutzer:SpBot</a> |
-        <a href="{{ github_url }}">{{ _('footer.source') }}</a> | Wikimedia Toolforge</p>
-    </div>
+    </main>
+    <footer>
+      {{ _('footer.times', now=now | dt) }} ·
+      <a href="https://de.wikipedia.org/wiki/Benutzer:SpBot">User:SpBot</a> ·
+      <a href="{{ github_url }}">{{ _('footer.source') }}</a> ·
+      <a href="https://toolforge.org/">Wikimedia Toolforge</a>
+    </footer>
   </body>
 </html>

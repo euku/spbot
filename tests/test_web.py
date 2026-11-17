@@ -13,6 +13,7 @@ if WEB not in sys.path:
 flask = pytest.importorskip('flask')
 
 import config  # noqa: E402
+import i18n  # noqa: E402
 import status  # noqa: E402
 from app import app  # noqa: E402
 from archive_resolved.summary import RunSummary  # noqa: E402
@@ -131,7 +132,9 @@ def test_pages_render(home, client):
     write_run(logs)
     (logs / 'mp-helper.err').write_text('Traceback (most recent call last):\nKeyError: x\n', encoding='utf-8')
     html = client.get('/?uselang=de').get_data(as_text=True)
-    assert 'Archivbot' in html and 'mp-helper' in html and 'KeyError' in html
+    assert 'Archivbot' in html and 'mp-helper' in html
+    assert 'KeyError' not in html   # no job logs on the start page
+    assert 'class="state state-problems"' in html
     assert 'Replikat-Abfragen sind abgeschaltet' in html
     html = client.get('/archive').get_data(as_text=True)
     assert 'dewikipedia' in html and 'FULLPAGENAMEE' in html
@@ -175,3 +178,49 @@ def test_software_from_files(home):
     (home / 'venv' / 'lib' / 'python3.13' / 'site-packages' / 'pywikibot-11.9.0.dist-info').mkdir(parents=True)
     assert status.software() == {'commit': 'abc123', 'branch': 'main', 'pywikibot': '11.9.0', 'python': '3.13',
                                  'log_days': 0}
+
+
+def test_translations_complete():
+    import re
+    en = i18n.CATALOGS['en']
+    for code, catalog in i18n.CATALOGS.items():
+        assert set(catalog) == set(en), code
+        for key, text in catalog.items():
+            assert set(re.findall(r'{(\w+)}', text)) == set(re.findall(r'{(\w+)}', en[key])), (code, key)
+
+
+@pytest.mark.parametrize('code', sorted(i18n.LANGUAGES))
+def test_all_languages_render(home, client, code):
+    write_run(home / 'logs')
+    for url in ('/', '/archive', '/archive?project=dewikipedia', '/archive?project=dewikipedia&page=' + ORIGIN):
+        response = client.get(url + ('&' if '?' in url else '?') + 'uselang=' + code)
+        assert response.status_code == 200, url
+        assert f'<html lang="{code}">' in response.get_data(as_text=True)
+
+
+def test_language_choice(home, client):
+    assert '<html lang="de">' in client.get('/', headers={'Accept-Language': 'de-AT,de;q=0.9'}).get_data(as_text=True)
+    assert '<html lang="en">' in client.get('/', headers={'Accept-Language': 'fr'}).get_data(as_text=True)
+    # manual choice: cookie, back to the page
+    response = client.get('/lang/ko?next=/archive')
+    assert response.status_code == 302 and response.headers['Location'] == '/archive'
+    assert 'spbot_lang=ko' in response.headers['Set-Cookie']
+    assert '<html lang="ko">' in client.get('/archive').get_data(as_text=True)
+    # the URL parameter wins over the cookie, forcedlang works like uselang
+    assert '<html lang="it">' in client.get('/archive?uselang=it').get_data(as_text=True)
+    assert '<html lang="vi">' in client.get('/archive?forcedlang=vi').get_data(as_text=True)
+    # choosing the browser language removes the cookie; no open redirect
+    response = client.get('/lang/en?next=//evil.example/', headers={'Accept-Language': 'en'})
+    assert response.headers['Location'] == '/' and 'spbot_lang=;' in response.headers['Set-Cookie']
+    assert client.get('/lang/xx').status_code == 404
+
+
+def test_language_menu_keeps_page(home, client):
+    html = client.get('/archive?project=dewikipedia&uselang=de').get_data(as_text=True)
+    assert 'href="/lang/ja?next=/archive?project%3Ddewikipedia"' in html
+
+
+def test_favicon(client):
+    response = client.get('/favicon.ico')
+    assert response.status_code == 301 and response.headers['Location'].endswith('/static/favicon.svg')
+    assert client.get('/static/favicon.svg').status_code == 200
