@@ -16,17 +16,24 @@
 {%- else %}
   <div class="table-wrap"><table class="kv">
     <tr><th>{{ _('archive.checked') }}</th><td>{{ record.time | dt }} ({{ record.time | ago }}){% if run.run.dryRun %} – {{ _('pstatus.dryrun') }}{% endif %}</td></tr>
-    <tr><th>{{ _('col.state') }}</th><td>{{ m.page_status(record.status) }}{% if record.message %}<div class="message">{{ record.message | wikilinks(wiki) }}</div>{% endif %}</td></tr>
+    <tr><th>{{ _('col.state') }}</th><td>{{ m.page_status(record.status) }}{% if record.message or record.messageKey %}<div class="message">{{ record | pmessage | wikilinks(wiki) }}</div>{% endif %}</td></tr>
 {%- if record.lastEdit %}
     <tr><th>{{ _('archive.last_edit') }}</th><td>{{ record.lastEdit | dt }} – {{ record.lastUser }}</td></tr>
 {%- endif %}
 {%- if record.targets %}
-    <tr><th>{{ _('col.targets') }}</th><td>{% for t, n in record.targets.items() %}{% if not loop.first %}<br/>{% endif %}<a href="{{ wiki_url(wiki, t) }}">{{ t }}</a> ({{ n }}){% endfor %}</td></tr>
+    <tr><th>{{ _('col.targets') if record.status in ('archived', 'dryrun') else _('archive.planned_targets') }}</th><td>{% for t, n in record.targets.items() %}{% if not loop.first %}<br/>{% endif %}<a href="{{ wiki_url(wiki, t) }}">{{ t }}</a> ({{ n }}){% endfor %}</td></tr>
 {%- endif %}
   </table></div>
   <p class="hint">{{ _('archive.page_hint') }}</p>
 
-{%- if record.targetPattern is defined %}
+{%- if record.status == 'optionserror' %}
+{%- if record.options %}
+  <h2>{{ _('archive.options') }}</h2>
+  <pre class="code">{% for k, v in record.options.items() %}{{ k }} = {{ v }}
+{% endfor %}</pre>
+{%- endif %}
+  <p class="hint">{{ _('archive.not_evaluated') }}</p>
+{%- elif record.targetPattern is defined %}
   <h2>{{ _('archive.options') }}</h2>
   <div class="table-wrap"><table class="kv">
     <tr><th>{{ _('opt.age') }}</th><td>{{ _('opt.days', days=record.age | days) }}</td></tr>
@@ -65,7 +72,7 @@
   <div class="table-wrap"><table>
     <tr><th>{{ _('archive.checked') }}</th><th>{{ _('col.state') }}</th><th>{{ _('col.sections') }}</th><th>{{ _('col.message') }}</th></tr>
 {%- for h in history %}
-    <tr><td class="nowrap">{{ h.time | dt }}</td><td>{{ m.page_status(h.status) }}</td><td class="number">{{ h.toArchive if h.status in ('archived', 'dryrun') else '' }}</td><td class="message">{{ h.message | wikilinks(wiki) if h.message }}</td></tr>
+    <tr><td class="nowrap">{{ h.time | dt }}</td><td>{{ m.page_status(h.status) }}</td><td class="number">{{ h.toArchive if h.status in ('archived', 'dryrun') else '' }}</td><td class="message">{{ h | pmessage | wikilinks(wiki) }}</td></tr>
 {%- endfor %}
   </table></div>
 {%- endif %}

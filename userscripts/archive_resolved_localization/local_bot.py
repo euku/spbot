@@ -6,6 +6,7 @@
 from datetime import datetime, timedelta, timezone as dt_timezone
 import time
 from pytz import timezone
+from archive_resolved_localization.messages import languageFor
 
 # optional namespace prefix of a template: {{Vorlage:Erledigt|..}}, {{Template:Section resolved|..}}
 TEMPLATE_PREFIX = r"(?:(?:[Vv]orlage|[Tt]emplate)\s*:\s*)?"
@@ -25,6 +26,7 @@ class LocalBot():
         """
         self.projectId = projectId
         self.projectCode, self.projectFamily = LocalBot.splitInCodeAndFamily(projectId)
+        self.language = languageFor(self.projectCode)  # of the bot's messages (messages.json)
     
     def splitInCodeAndFamily(projectId: str) -> tuple:
         if projectId in LocalBot.multi_lang_projects:

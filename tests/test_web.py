@@ -152,6 +152,47 @@ def test_page_view_by_url_parameter(home, client):
     assert 'href="https://de.wikipedia.org/wiki/Benutzer_Diskussion:Test"' in html
 
 
+def test_page_messages_follow_chosen_language(home, client):
+    """The bot records messages in the language of the wiki; the page shows them in the chosen one."""
+    from test_archive_execute import ARCHIVE
+    import pywikibot
+    logs = home / 'logs'
+    bot = makeBot()
+    r = robot(bot, str(logs / 'archive-resolved-dewikipedia.jsonl'))
+    bot.site.page(ARCHIVE).saveError = pywikibot.exceptions.Error("contenttoobig")
+    r._runOnPage(bot.site.page(ORIGIN, PAGE))
+    r._runOnPage(bot.site.page('Diskussion:Fehler', '{{Autoarchiv-Erledigt|Alter=3|Ziel=X/{{PAGENAME}}}}\n== A ==\n'))
+    r.summary.end(True)
+    url = '/archive?project=dewikipedia&page='
+    html = client.get(url + ORIGIN + '&uselang=en').get_data(as_text=True)
+    assert 'would exceed the maximum page size' in html
+    assert f'<a href="https://de.wikipedia.org/wiki/{ARCHIVE.replace(" ", "_")}">{ARCHIVE}</a>' in html
+    assert 'Planned archive pages (not saved)' in html   # error: the targets were not written
+    html = client.get(url + ORIGIN + '&uselang=it').get_data(as_text=True)
+    assert 'supererebbe la dimensione massima' in html
+    html = client.get(url + 'Diskussion:Fehler&uselang=en').get_data(as_text=True)
+    assert "must be a page title with ((variables))" in html and 'X/{{PAGENAME}}' in html
+    assert 'the sections were not evaluated' in html
+    assert 'No sections on the configured headline level' not in html
+    html = client.get(url + 'Diskussion:Fehler&uselang=de').get_data(as_text=True)
+    assert 'muss ein Seitentitel' in html and 'Wegen des Vorlagenfehlers' in html
+
+
+def test_page_message_without_key(home, client):
+    """Records written before the message keys show the recorded text."""
+    import json
+    logs = home / 'logs'
+    lines = [{'type': 'run', 'project': 'dewikipedia', 'started': '2026-11-18T03:04:02Z', 'dryRun': False},
+             {'type': 'page', 'title': 'Diskussion:Alt', 'time': '2026-11-18T03:05:00Z', 'status': 'optionserror',
+              'message': "'ZIEL' is missing."},
+             {'type': 'end', 'finished': '2026-11-18T03:06:00Z', 'complete': True, 'pages': 1,
+              'archivedSections': 0, 'byStatus': {'optionserror': 1}}]
+    (logs / 'archive-resolved-dewikipedia.jsonl').write_text(
+        ''.join(json.dumps(line) + '\n' for line in lines), encoding='utf-8')
+    html = client.get('/archive?project=dewikipedia&page=Diskussion:Alt&uselang=de').get_data(as_text=True)
+    assert '&#39;ZIEL&#39; is missing.' in html
+
+
 def test_page_view_unknown_page(home, client):
     write_run(home / 'logs')
     response = client.get('/archive?project=dewikipedia&page=Gibt es nicht')

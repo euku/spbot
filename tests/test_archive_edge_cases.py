@@ -432,6 +432,17 @@ def test_wrong_options_message(options, message):
     assert e.value.getMsg() == message
 
 
+def test_options_message_in_language_of_wiki():
+    with pytest.raises(core.WrongOptions) as e:
+        prepared("== A ==\n", "{{Autoarchiv-Erledigt|Alter=1|Ziel=Diskussion:{{PAGENAME}}/Archiv}}\n")
+    assert e.value.key == 'opt.invalid_target'
+    assert e.value.getMsg('de').startswith("'ZIEL' muss ein Seitentitel mit ((Variablen)) sein")
+    assert e.value.getMsg('ja').startswith("'ZIEL' は ((変数)) を含むページ名")
+    # on the wiki the value must not expand
+    assert "'<nowiki>Diskussion:{{PAGENAME}}/Archiv</nowiki>'" in e.value.getMsg('de', wiki=True)
+    assert e.value.getMsg('xx') == e.value.getMsg('en')
+
+
 @pytest.mark.parametrize("options", ["Ebene=1", "Ebene=6", "Zeitbeschränkung=0", "Ebene=", "Zeitbeschränkung="])
 def test_valid_border_values(options):
     prepared("== A ==\n", "{{Autoarchiv-Erledigt|Alter=1|Ziel=X/Y|%s}}\n" % options)

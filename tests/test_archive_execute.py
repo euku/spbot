@@ -241,7 +241,8 @@ def test_robot_reports_wrong_options_on_page():
     robot(bot)._runOnPage(page)
     [(text, summary)] = page.saves
     assert text.startswith("{{Autoarchiv-Erledigt|Alter=3}}\n== A ==\n\n\n== Archivierung konnte nicht durchgeführt werden ==")
-    assert "'ZIEL' is missing." in text
+    # the reason in the language of the wiki, followed by a space before the next sentence
+    assert "festgestellt. Der Parameter 'ZIEL' fehlt. Beachte bitte" in text
     assert "<<" not in text   # no pywikibot color codes on the wiki
     assert summary == "Berichte Fehler"
     # no second report while the error category is still on the page
@@ -254,7 +255,7 @@ def test_robot_reports_invalid_option_value_on_page():
     page = bot.site.page(ORIGIN, "{{Autoarchiv-Erledigt|Alter=7d|Ziel=X/Y}}\n== A ==\n")
     robot(bot)._runOnPage(page)
     [(text, summary)] = page.saves
-    assert "'ALTER' must be a number, not '7d'." in text
+    assert "'ALTER' muss eine Zahl sein, nicht '<nowiki>7d</nowiki>'." in text
     assert "[[" + bot.localBot.errorCategory + "]]" in text
 
 

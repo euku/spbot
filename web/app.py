@@ -140,6 +140,18 @@ def format_reason(section, page):
     return _(key, **values)
 
 
+@app.template_filter('pmessage')
+def page_message(record):
+    """The bot's message about a page: in the chosen language if it has a key, else as recorded."""
+    key = record.get('messageKey')
+    if key and i18n.has_key('msg.' + key):
+        try:
+            return _('msg.' + key, **(record.get('messageArgs') or {}))
+        except (KeyError, IndexError, ValueError):
+            pass
+    return record.get('message') or ''
+
+
 @app.template_filter('wikilinks')
 def wikilinks(text, wiki):
     """[[Title]] in messages -> links to the wiki."""

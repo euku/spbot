@@ -11,6 +11,29 @@ from time import localtime, strftime
 from archive_resolved_localization.local_bot_factory import LocalBotFactory
 from archive_resolved.core import ArchivingError, OptionsError, WikiDocument
 from archive_resolved.summary import RunSummary, summaryPath
+from archive_resolved_localization.messages import formatMessage
+
+
+def _isTooBig(exc) -> bool:
+    """Whether the exception (or one it wraps) is MediaWiki's 'contenttoobig' (page larger than allowed)."""
+    seen = set()
+    while exc is not None and id(exc) not in seen:
+        seen.add(id(exc))
+        if getattr(exc, 'code', None) == 'contenttoobig' or 'contenttoobig' in str(exc) \
+                or ('kilobytes long' in str(exc) and 'maximum' in str(exc)):
+            return True
+        exc = getattr(exc, 'reason', None) or exc.__cause__ or exc.__context__
+    return False
+
+
+def errorMessage(exc, wdoc, detail: str):
+    """Message key + arguments for an unexpected error while working on a page."""
+    target = getattr(wdoc, 'failedTarget', None)
+    if target and _isTooBig(exc):
+        return 'error.too_big', {'target': target}
+    if target:
+        return 'error.not_saved', {'target': target, 'detail': detail}
+    return 'error.unexpected', {'detail': detail}
 
 
 def parseArgs(args) -> dict:
@@ -73,12 +96,14 @@ class ArchiveRobot:
         
         self.localLogFile = os.getcwd() + strftime(f"/logs/archiv-{currentProject}-%Y-%m-%d.log", localtime())
 
-    def _record(self, title, status, message=None, wdoc=None):
+    def _record(self, title, status, wdoc=None, key=None, args=None):
+        """key/args: message (messages.json); recorded in the language of the wiki and as key"""
         summary = getattr(self, 'summary', None)
         if summary is None:
             return
         try:
-            summary.page(title, status, message, wdoc)
+            message = formatMessage(self.localBot.language, key, args) if key else None
+            summary.page(title, status, message, wdoc, key, args)
         except Exception:
             pywikibot.output("Could not write the run summary: " + traceback.format_exc())
 
@@ -99,31 +124,32 @@ class ArchiveRobot:
             wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
             if wdoc.hasWorkToDo():
                 wdoc.executeArchiving()
-                self._record(page.title(), wdoc.outcome or 'skipped', wdoc.outcomeMessage, wdoc)
+                self._record(page.title(), wdoc.outcome or 'skipped', wdoc, wdoc.outcomeKey, wdoc.outcomeArgs)
             else:
-                self._record(page.title(), 'nothing', None, wdoc)
+                self._record(page.title(), 'nothing', wdoc)
 
         except OptionsError as no:
             # Write error report to the same page
                 pywikibot.output("\t<<lightpurple>>Report error for %s<<default>>\n" % page.title())
-                hintMsg = no.getMsg() or ''
-                pywikibot.output("Reason was: " + hintMsg)
+                pywikibot.output("Reason was: " + no.getMsg())
                 page = pywikibot.Page(self.site, page.title())
                 if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
-                    # paste only, if there is no such message
+                    # paste only, if there is no such message; in the language of the wiki
+                    hintMsg = no.getMsg(self.localBot.language, wiki=True) + ' '
                     page.put(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), summary=self.localBot.errorTextSummary, bot=False, minor=False, force=False)
                 if wdoc is not None:
                     wdoc.generateErrorReport()
                     wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
-                self._record(page.title(), 'optionserror', hintMsg, wdoc)
-        except:
+                self._record(page.title(), 'optionserror', wdoc, no.key, no.msgArgs)
+        except BaseException as exc:  # like the former bare except: record everything
             pywikibot.output("\n<<lightpurple>>Error at %s<<default>> skip page\n" % page.title())
             pywikibot.output("Unexpected error: " + str(traceback.format_exc()))
             if wdoc is not None:
                 wdoc.generateErrorReport()
                 wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
-            lastLine = traceback.format_exc().strip().splitlines()[-1:] or ['']
-            self._record(page.title(), 'error', lastLine[0][:500], wdoc)
+            lastLine = (traceback.format_exc().strip().splitlines()[-1:] or [''])[0][:500]
+            key, args = errorMessage(exc, wdoc, lastLine)
+            self._record(page.title(), 'error', wdoc, key, args)
 
     def run(self):
         """

@@ -63,7 +63,8 @@ def test_skipped_protected_page(tmp_path):
     page.protected = True
     robot(bot, path)._runOnPage(page)
     rec = records(path)[1]
-    assert rec['status'] == 'skipped' and 'protected' in rec['message']
+    assert rec['status'] == 'skipped' and rec['messageKey'] == 'skip.protected' and rec['messageArgs'] == {}
+    assert rec['message'] == 'Die Seite ist geschützt, der Bot darf sie nicht bearbeiten.'   # language of the wiki
     assert bot.site.saved() == {}
 
 
@@ -83,8 +84,10 @@ def test_options_error_and_excluded(tmp_path):
     r._runOnPage(bot.site.page(ORIGIN, "{{Autoarchiv-Erledigt|Alter=3}}\n== A ==\n"))
     r._runOnPage(bot.site.page("Vorlage:Erledigt", PAGE))
     opt, excl = records(path)[1:]
-    assert opt['status'] == 'optionserror' and opt['message'] == "'ZIEL' is missing."
+    assert opt['status'] == 'optionserror' and opt['message'] == "Der Parameter 'ZIEL' fehlt."
+    assert opt['messageKey'] == 'opt.missing' and opt['messageArgs'] == {'param': 'ZIEL'}
     assert 'sections' not in opt   # no target pattern, nothing to show
+    assert opt['options'] == {'ALTER': '3'}   # but what was given
     assert excl == {'type': 'page', 'title': 'Vorlage:Erledigt', 'time': excl['time'], 'status': 'excluded'}
 
 
@@ -95,8 +98,42 @@ def test_error_message_is_last_traceback_line(tmp_path):
     archive.saveError = pywikibot.exceptions.Error("contenttoobig")
     robot(bot, path)._runOnPage(bot.site.page(ORIGIN, PAGE))
     rec = records(path)[1]
-    assert rec['status'] == 'error' and 'contenttoobig' in rec['message']
+    assert rec['status'] == 'error' and rec['messageKey'] == 'error.too_big'
+    assert rec['messageArgs'] == {'target': ARCHIVE} and ARCHIVE in rec['message']
     assert rec['toArchive'] == 1
+
+
+def test_error_saving_archive_page(tmp_path):
+    path = tmp_path / 's.jsonl'
+    bot = makeBot()
+    bot.site.page(ARCHIVE).saveError = pywikibot.exceptions.Error("readonly")
+    robot(bot, path)._runOnPage(bot.site.page(ORIGIN, PAGE))
+    rec = records(path)[1]
+    assert rec['messageKey'] == 'error.not_saved' and rec['messageArgs']['target'] == ARCHIVE
+    assert 'readonly' in rec['messageArgs']['detail'] and rec['message'].startswith('Die Archivseite')
+
+
+def test_unexpected_error(tmp_path, monkeypatch):
+    path = tmp_path / 's.jsonl'
+    bot = makeBot()
+    def boom(self):
+        raise RuntimeError("kaputt")
+    monkeypatch.setattr(botModule.WikiDocument, 'divideIntoSlices', boom)
+    robot(bot, path)._runOnPage(bot.site.page(ORIGIN, PAGE))
+    rec = records(path)[1]
+    assert rec['status'] == 'error' and rec['messageKey'] == 'error.unexpected'
+    assert rec['message'] == 'Unerwarteter Fehler: RuntimeError: kaputt'
+
+
+def test_too_big_detection():
+    class Api(Exception):
+        code = 'contenttoobig'
+    wrapped = pywikibot.exceptions.Error("Edit to page [[X]] failed")
+    wrapped.__cause__ = Api("x")
+    assert botModule._isTooBig(wrapped)
+    assert botModule._isTooBig(pywikibot.exceptions.Error(
+        "The text you have submitted is 2,075.263 kilobytes long, which is more than the maximum of 2,048 kilobytes."))
+    assert not botModule._isTooBig(pywikibot.exceptions.Error("readonly"))
 
 
 def test_unreadable_page_is_an_error(tmp_path):

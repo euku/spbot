@@ -19,8 +19,12 @@ Page status values:
     dryrun        would have archived (dry run)
     skipped       not archived for a reason given in "message" (protection, redirect, edit conflict, ...)
     optionserror  the template options are wrong or missing ("message")
-    error         unexpected error ("message" = last line of the traceback)
+    error         error while archiving ("message"; the details are in the .err log)
     excluded      on the exclude list of the project
+
+"message" is in the language of the wiki; "messageKey" and "messageArgs" are the same
+message as key + arguments of archive_resolved_localization/messages.json, so the status
+page can show it in the language chosen there.
 """
 import json
 import os
@@ -96,15 +100,21 @@ class RunSummary:
         with open(path or self.path, 'a', encoding='utf-8') as f:
             f.write(json.dumps(record, ensure_ascii=False, separators=(',', ':')) + '\n')
 
-    def page(self, title: str, status: str, message: str = None, wdoc=None):
+    def page(self, title: str, status: str, message: str = None, wdoc=None,
+             messageKey: str = None, messageArgs: dict = None):
         record = {'type': 'page', 'title': title, 'time': utcnow(), 'status': status}
         if message:
             record['message'] = message
+        if messageKey:
+            record['messageKey'] = messageKey
+            record['messageArgs'] = messageArgs or {}
         if wdoc is not None and wdoc.archivingTargetPattern is not None:
             try:
                 record.update(documentRecord(wdoc))
             except Exception as e:  # never let the summary break the bot
                 record['summaryError'] = repr(e)
+        elif wdoc is not None and getattr(wdoc, 'options', None):
+            record['options'] = wdoc.options   # e.g. a template error: show what was given
         self.pages += 1
         self.counts[status] += 1
         if status == 'archived':

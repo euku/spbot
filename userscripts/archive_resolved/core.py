@@ -13,6 +13,7 @@ from time import localtime, sleep, strftime, mktime    # strftime-Function and r
 from datetime import datetime
 from pytz import timezone, utc
 from archive_resolved_localization.local_bot import TEMPLATE_PREFIX
+from archive_resolved_localization.messages import DEFAULT_LANGUAGE, formatMessage
 
 # Markup whose content MediaWiki does not parse: comments (an unclosed one hides the
 # rest of the page) and <nowiki>, <pre>, <code>, <syntaxhighlight>, <source> with any
@@ -49,23 +50,25 @@ class ArchivingError(Exception):
     """Archiving error"""
 
 class OptionsError(ArchivingError):
-    """The archive template is missing or has wrong parameters; msg is shown on the talk page."""
-    def __init__(self, msg=None):
-        super().__init__(msg)
-        self.msg = msg
+    """The archive template is missing or has wrong parameters; the message is shown on the talk page.
+    key/msgArgs: message in archive_resolved_localization/messages.json"""
+    def __init__(self, key, **msgArgs):
+        self.key = key
+        self.msgArgs = msgArgs
+        super().__init__(formatMessage(DEFAULT_LANGUAGE, key, msgArgs))
 
-    def getMsg(self):
-        return self.msg
+    def getMsg(self, language: str = DEFAULT_LANGUAGE, wiki: bool = False):
+        return formatMessage(language, self.key, self.msgArgs, wiki)
 
 class NoOptions(OptionsError):
-    def __init__(self, msg=None):
+    def __init__(self, key, **msgArgs):
         pywikibot.output("\t *** No archive template found or wrong format ***\n")
-        super().__init__(msg)
+        super().__init__(key, **msgArgs)
 
 class WrongOptions(OptionsError):
-    def __init__(self, msg=None):
+    def __init__(self, key, **msgArgs):
         pywikibot.output("\t *** Parameters have a wrong format ***\n")
-        super().__init__(msg)
+        super().__init__(key, **msgArgs)
 
 #
 # *** DECLARATIONS ***
@@ -287,12 +290,17 @@ class WikiDocument:
         self.now                 = now
         self.options             = {}                 # the parameters of the archive template (names in upper case)
         self.outcome             = None               # result of executeArchiving: 'archived', 'dryrun', 'skipped' (see summary.py)
-        self.outcomeMessage      = None               # why it was skipped
+        self.outcomeMessage      = None               # why it was skipped (in the language of the wiki)
+        self.outcomeKey          = None               # ... as message key + arguments (messages.json)
+        self.outcomeArgs         = None
+        self.failedTarget        = None               # archive page whose save failed with an unexpected error
 
-    def _skipped(self, message: str):
-        """Remembers why the page was not archived (for the run summary)."""
+    def _skipped(self, key: str, **msgArgs):
+        """Remembers why the page was not archived (for the run summary); key: see messages.json."""
         self.outcome = 'skipped'
-        self.outcomeMessage = message
+        self.outcomeKey = key
+        self.outcomeArgs = msgArgs
+        self.outcomeMessage = formatMessage(self.bot.localBot.language, key, msgArgs)
 
     @classmethod
     def fromPage(cls, page, bot, now: datetime = None):
@@ -565,18 +573,18 @@ class WikiDocument:
             if self._isArchiveOfItself(targetPageName):
                 pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it would archive into '
                                  f'[[{targetPageName}]], it seems to be an archive page itself.<<default>>')
-                self._skipped(f'It would archive into [[{targetPageName}]]; the page seems to be an archive page itself.')
+                self._skipped('skip.self_archive', target=targetPageName)
                 return False
             try:
                 targetPage = self._resolveTargetPage(targetPageName)
             except pywikibot.exceptions.InvalidTitleError as e:
-                raise WrongOptions(f"The archive page '{targetPageName}' is not a valid page title ({e}).")
+                raise WrongOptions('opt.invalid_title', target=targetPageName)
             if targetPage is None:
-                self._skipped(f'The archive page [[{targetPageName}]] redirects to a page that is not a subpage of this page.')
+                self._skipped('skip.redirect', target=targetPageName)
                 return False
             if not targetPage.botMayEdit():
                 pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
-                self._skipped(f'The archive page [[{targetPageName}]] is protected.')
+                self._skipped('skip.target_protected', target=targetPageName)
                 return False
             title = targetPage.title()
             if title in textByTarget:
@@ -595,7 +603,7 @@ class WikiDocument:
         # first, check if we can edit all the pages
         if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
             pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it is protected.<<default>>')
-            self._skipped('The page is protected, the bot may not edit it.')
+            self._skipped('skip.protected')
             return
         if not self._resolveTargets():
             return
@@ -625,7 +633,7 @@ class WikiDocument:
                     targetPage = pywikibot.Page(self.bot.site, targetPageName)  # redirects are resolved already
                     if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
                         pywikibot.output("Archiving into the (Main) namespace 0!")
-                        self._skipped(f'The archive page [[{targetPageName}]] is in the main namespace.')
+                        self._skipped('skip.main_namespace', target=targetPageName)
                         skipThisPage = True
                     else:
                         if targetPage.exists():
@@ -642,11 +650,11 @@ class WikiDocument:
                         pywikibot.output(f'edit comment: {targetEditComment}')
                 except pywikibot.exceptions.EditConflictError:
                     pywikibot.output("<<lightpurple>>Edit conflict!<<default>>")
-                    self._skipped(f'Edit conflict on the archive page [[{targetPageName}]].')
+                    self._skipped('skip.target_conflict', target=targetPageName)
                     skipThisPage = True
                 except pywikibot.exceptions.LockedPageError:
                     pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
-                    self._skipped(f'The archive page [[{targetPageName}]] is locked.')
+                    self._skipped('skip.target_locked', target=targetPageName)
                     skipThisPage = True
                 except:
                     # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
@@ -659,6 +667,7 @@ class WikiDocument:
                     # so no discussions get lost.
                     if newText is None or self.bot.dryRun or not self._targetWasSaved(targetPageName, newText):
                         pywikibot.output(f"<<lightpurple>>[[{targetPageName}]] was NOT saved, origin page stays untouched<<default>>")
+                        self.failedTarget = targetPageName
                         raise
                     pywikibot.output(f"[[{targetPageName}]] was saved after all")
             
@@ -716,7 +725,7 @@ class WikiDocument:
             self.outcome = 'dryrun' if self.bot.dryRun else 'archived'
         except pywikibot.exceptions.EditConflictError:
             pywikibot.output(f'Skipping {self.originPageName} because of edit conflict')
-            self._skipped('Edit conflict on this page; the sections were already copied to the archive.')
+            self._skipped('skip.origin_conflict')
 
     def _prepareDiscussionForArchiving(self, disc: Discussion):
         sliceStart = disc.getTitleOffsetStart() - self.sliceOffset
@@ -780,30 +789,29 @@ class WikiDocument:
                 try:
                     return convert(value)
                 except ValueError:
-                    raise WrongOptions(f"'{param}' must be a number, not '{value}'.")
+                    raise WrongOptions('opt.not_a_number', param=param, value=value)
 
             if lb.paramAge not in optionsDict:
-                raise NoOptions(f"'{lb.paramAge}' is missing.")
+                raise NoOptions('opt.missing', param=lb.paramAge)
             if lb.paramArchive not in optionsDict:
-                raise NoOptions(f"'{lb.paramArchive}' is missing.")
+                raise NoOptions('opt.missing', param=lb.paramArchive)
 
             self.thresholdAgeResolvedTemplate = number(lb.paramAge, float)
             if self.thresholdAgeResolvedTemplate < 0:
-                raise WrongOptions(f"'{lb.paramAge}' must not be negative.")
+                raise WrongOptions('opt.negative', param=lb.paramAge)
             self.archivingTargetPattern = optionsDict[lb.paramArchive].replace("'", "") # remove '
             # {{FULLPAGENAME}} instead of ((FULLPAGENAME)) is a common mistake; it even looks right on the page
             self.archivingTargetPattern = re.sub(r"\{\{\s*(?:FULLPAGENAME|VOLLER_SEITENNAME)\s*\}\}", "((FULLPAGENAME))",
                                                  self.archivingTargetPattern, flags=re.IGNORECASE)
             if not self.archivingTargetPattern.strip():
-                raise WrongOptions(f"'{lb.paramArchive}' is empty.")
+                raise WrongOptions('opt.empty', param=lb.paramArchive)
             if INVALID_TITLE_CHARS.search(re.sub(r"\(\([^()]*\)\)", "", self.archivingTargetPattern)):
-                raise WrongOptions(f"'{lb.paramArchive}' must be a page title with ((variables)), "
-                                   f"without templates, links or the characters [ ] {{ }} < > # |: "
-                                   f"'{self.archivingTargetPattern}'.")
+                raise WrongOptions('opt.invalid_target', param=lb.paramArchive, chars='[ ] { } < > # |',
+                                   value=self.archivingTargetPattern)
             if optionsDict.get(lb.paramLevel, '') != '':
                 self.headlineLevel = number(lb.paramLevel, int)
                 if not 1 <= self.headlineLevel <= 6:
-                    raise WrongOptions(f"'{lb.paramLevel}' must be between 1 and 6.")
+                    raise WrongOptions('opt.level_range', param=lb.paramLevel)
             else:
                 self.headlineLevel = 2
 
@@ -814,10 +822,10 @@ class WikiDocument:
             if optionsDict.get(lb.paramTimeout, '') != '':
                 self.thresholdAgeByTimeout = number(lb.paramTimeout, float)
                 if self.thresholdAgeByTimeout < 0:
-                    raise WrongOptions(f"'{lb.paramTimeout}' must not be negative.")
+                    raise WrongOptions('opt.negative', param=lb.paramTimeout)
 
         else:
-            raise NoOptions("Main template not found.")
+            raise NoOptions('opt.no_template', template=self.bot.localBot.archiveTemplateName)
     
     def hasWorkToDo(self):
         """

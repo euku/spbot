@@ -118,3 +118,24 @@ def test_time_comparator_and_timeout_are_different_parameters(projectId):
     lb = LocalBotFactory().createLocalBot(projectId)
     assert lb.paramTimeComparator != lb.paramTimeout
     assert "COMAPARE" not in lb.paramTimeComparator   # old typo
+
+
+@pytest.mark.parametrize("projectId, language", [
+    ("dewikipedia", "de"), ("dewiktionary", "de"), ("cswikipedia", "cs"), ("itwikipedia", "it"),
+    ("jawikipedia", "ja"), ("kowikipedia", "ko"), ("viwikipedia", "vi"), ("enwikisource", "en"),
+    ("simplewikipedia", "en"), ("commons", "en"), ("meta", "en"), ("incubator", "en"),
+])
+def test_message_language_of_wiki(projectId, language):
+    assert LocalBotFactory().createLocalBot(projectId).language == language
+
+
+def test_messages_complete():
+    """Every language has every message with the same placeholders (the status page uses them, too)."""
+    from archive_resolved_localization.messages import MESSAGES
+    en = MESSAGES["en"]
+    assert set(MESSAGES) == {"cs", "de", "en", "it", "ja", "ko", "vi"}
+    for code, texts in MESSAGES.items():
+        assert set(texts) == set(en), code
+        for key, text in texts.items():
+            assert sorted(re.findall(r"{(\w+)}", text)) == sorted(re.findall(r"{(\w+)}", en[key])), (code, key)
+            assert "<" not in text and ">" not in text, (code, key)   # plain text, also shown as HTML
