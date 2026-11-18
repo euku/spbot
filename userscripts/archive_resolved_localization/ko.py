@@ -11,7 +11,7 @@ class LocalBotKo(LocalBot):
         self.timeStampRegEx = r"(?P<yyyy>\d{4})년\ (?P<MM>\d{1,2})월\ (?P<dd>\d{1,2})일\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(KST\)"
         self.archiveTemplateName = "틀:완료된 토론 자동 보존"
         self.headTemplate = "{{보존}}"
-        self.excludeList = ( self.archiveTemplateName )
+        self.excludeList = ( self.archiveTemplateName, f"{self.archiveTemplateName}/설명문서" )
         self.errorCategory = "분류:잘못된 자동 보존 설정이 있는 문서"
         self.errorText = "== 보존을 처리하지 못했습니다 ==\n"
         self.errorText += f"봇이 ~~~~~ 에 토론을 보존하려 했으나, 성공적이지 못했습니다. 틀 {self.archiveTemplateName} 이 부정확한 변수를 포함했기 때문입니다. %s"

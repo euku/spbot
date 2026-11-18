@@ -57,7 +57,11 @@ def test_local_bot_is_complete(projectId):
                  "archiveSumOriginMulti", "firstNewSectionInArchiveSummary", "archiveSumLastEdit",
                  "archiveOverallSummary", "sectResolved1P", "sectResolved2P"):
         assert isinstance(getattr(lb, attr), str), attr
+    # a tuple of exact titles: a plain string would make "in" a substring check
+    assert isinstance(lb.excludeList, tuple)
     assert lb.archiveTemplateName in lb.excludeList
+    for title in lb.excludeList:
+        assert "{" not in title and "}" not in title, title
     assert "%s" in lb.errorText
     # replacement list works and contains the week variables
     stamp = time.strptime("2026-03-15 12:00", "%Y-%m-%d %H:%M")
@@ -139,3 +143,18 @@ def test_messages_complete():
         for key, text in texts.items():
             assert sorted(re.findall(r"{(\w+)}", text)) == sorted(re.findall(r"{(\w+)}", en[key])), (code, key)
             assert "<" not in text and ">" not in text, (code, key)   # plain text, also shown as HTML
+
+
+@pytest.mark.parametrize("projectId, docPage", [
+    ("cswikipedia", "Šablona:Archivace vyřešených sekcí/doc"),
+    ("jawikipedia", "Template:Autoarchive resolved section/doc"),
+    ("kowikipedia", "틀:완료된 토론 자동 보존/설명문서"),
+    ("viwikipedia", "Bản mẫu:Autoarchive resolved section/doc"),
+])
+def test_doc_page_is_excluded(projectId, docPage):
+    assert docPage in LocalBotFactory().createLocalBot(projectId).excludeList
+
+
+def test_cs_first_new_section_summary_is_czech():
+    lb = LocalBotFactory().createLocalBot("cswikipedia")
+    assert lb.firstNewSectionInArchiveSummary == " (od sekce [[{firstNewSectionInArchiveLink}]])"

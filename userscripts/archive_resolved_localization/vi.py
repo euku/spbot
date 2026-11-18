@@ -13,13 +13,13 @@ class LocalBotVi(LocalBot):
         self.timeStampRegEx = r"(?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2}),\ ngày\ (?P<dd>[0-9]{1,2})\ [Tt]háng\ (?P<MM>\d{1,2})\ năm\ (?P<yyyy>[0-9]{4})\ \(UTC\)"
         self.archiveTemplateName = "Bản mẫu:Autoarchive resolved section"
         self.headTemplate   = "{{Talkarchive}}"
-        self.excludeList = ( self.archiveTemplateName, f"{{self.archiveTemplateName}}/doc" )
+        self.excludeList = ( self.archiveTemplateName, f"{self.archiveTemplateName}/doc" )
         self.errorCategory = "Thể loại:Bản mẫu lưu trữ thảo luận sử dụng tham số sai"
         self.errorText = "== Lưu trữ không thành công ==\n"
         self.errorText += f"Lưu trữ tại ~~~~~ không thành công vì bản mẫu {self.archiveTemplateName} chứa tham số sai. %s"
-        self.errorText += f"Xin hãy xem lại [[{self.archiveTemplateName}|documentation]] và sửa các lỗi có trong bản mẫu. Trân trọng! --~~~~"
+        self.errorText += f"Xin hãy xem lại [[{self.archiveTemplateName}|tài liệu]] và sửa các lỗi có trong bản mẫu. Trân trọng! --~~~~"
         self.errorText += f"\n\n[[{self.errorCategory}]]<!-- xin hãy xóa dòng này nếu vấn đề đã được giải quyết -->"
-        self.errorTextSummary = "reporting an error"
+        self.errorTextSummary = "báo lỗi"
         # template parameters
         # should be able to handle {{CURRENTYEAR}} in the parameter value
         self.optionsRegEx = r"\{\{\ *(?:[Tt]emplate\:)?\ *[Aa]utoarchive\ resolved\ section" + OPTIONS_BODY

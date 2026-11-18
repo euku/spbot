@@ -12,7 +12,7 @@ class LocalBotCs(LocalBot):
         self.timeStampRegEx = r"(?P<dd>[0-9]{1,2})\.\ (?P<MM>\d{1,2})\.\ (?P<yyyy>[0-9]{4}),\ (?P<hh>[0-9]{2})\:(?P<mm>[0-9]{2})\ \((?:CE[S]?T)\)"
         self.archiveTemplateName = "Šablona:Archivace vyřešených sekcí"
         self.headTemplate   = "{{Archiv diskuse}}"
-        self.excludeList = ( self.archiveTemplateName )
+        self.excludeList = ( self.archiveTemplateName, f"{self.archiveTemplateName}/doc" )
         self.errorCategory = "Category:{{ns:Project}}:Incorrect Autoarchive parameter/SpBot"
         self.errorText = "== Archivaci nelze dokončit ==\n"
         self.errorText += f"Běh bota ~~~~~ nebyl úspěšný, protože šablona {self.archiveTemplateName} obsahuje nesprávné parametry. %s"
@@ -35,7 +35,7 @@ class LocalBotCs(LocalBot):
         self.archiveSumOriginS = "1 vlákno"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin} vláken"
         self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} do [[{targetPageName}]]"
-        self.firstNewSectionInArchiveSummary  = " ([[{firstNewSectionInArchiveLink}]]以下の節)"
+        self.firstNewSectionInArchiveSummary  = " (od sekce [[{firstNewSectionInArchiveLink}]])"
         self.archiveSumLastEdit= " - předchozí editace: [[User:%s|%s]], %s"
         self.archiveOverallSummary = "archivuji {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 

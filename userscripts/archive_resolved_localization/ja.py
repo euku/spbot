@@ -11,7 +11,7 @@ class LocalBotJa(LocalBot):
         self.timeStampRegEx = r"(?P<yyyy>\d{4})年(?P<MM>\d{1,2})月(?P<dd>\d{1,2})日\ \(.\)\ (?P<hh>\d{2})\:(?P<mm>\d{2})\ \(UTC\)"
         self.archiveTemplateName = "Template:Autoarchive resolved section"
         self.headTemplate   = "{{Talkarchive}}"
-        self.excludeList = ( self.archiveTemplateName )
+        self.excludeList = ( self.archiveTemplateName, f"{self.archiveTemplateName}/doc" )
         self.errorCategory = "Category:Autoarchive に誤った引数が渡されているページ/SpBot"
         self.errorText = "== 過去ログ化が正常終了しませんでした ==\n"
         self.errorText += f"~~~~~ のボット作業は失敗しました。原因はテンプレート {self.archiveTemplateName} に誤った引数が渡されていたためです： %s"
