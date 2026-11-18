@@ -292,6 +292,14 @@ def target_for(pattern, firstContribution, project="dewikipedia", title="Diskuss
     ("((Lemma))/((Jahr))/KW ((Woche))", "2024-12-30", "Diskussion:Foo/2025/KW 1"),
     ("((Lemma))/((Jahr))/KW ((Woche))", "2027-01-01", "Diskussion:Foo/2026/KW 53"),
     ("((Lemma))/((Jahr))/((Monat:Kurz))/KW ((Woche))", "2024-12-30", "Diskussion:Foo/2025/Jan/KW 1"),
+    ("((Lemma))/((Jahr))/((Monat:##))/KW ((Woche))", "2024-12-30", "Diskussion:Foo/2025/01/KW 1"),
+    ("((Lemma))/((Jahr))/((Monat:Kurz))/KW ((Woche))", "2027-01-01", "Diskussion:Foo/2026/Dez/KW 53"),
+    ("((Lemma))/((Jahr))/((Monat:##))/KW ((Woche:##))", "2021-01-03", "Diskussion:Foo/2020/12/KW 53"),
+    ("((Lemma))/((Jahr))/((Monat:Lang))/KW ((Woche))", "2023-01-01", "Diskussion:Foo/2022/Dezember/KW 52"),
+    # ... and quarter and half-year follow that month
+    ("((Lemma))/((Jahr))/Q((Quartal)) H((Halbjahr))/KW ((Woche))", "2024-12-30", "Diskussion:Foo/2025/Q1 H1/KW 1"),
+    ("((Lemma))/((Jahr))/Q((Quartal:I)) H((Halbjahr:##))/KW ((Woche))", "2027-01-01", "Diskussion:Foo/2026/QIV H02/KW 53"),
+    ("((Lemma))/((Jahr))/Q((Quartal))/KW ((Woche))", "2026-12-28", "Diskussion:Foo/2026/Q4/KW 53"),
     # ... but not without a week variable
     ("((Lemma))/((Jahr))", "2024-12-30", "Diskussion:Foo/2024"),
 ])
@@ -302,6 +310,20 @@ def test_determine_archiving_target_de(pattern, date, expected):
 def test_determine_archiving_target_en():
     assert target_for("((FULLPAGENAME))/Archive ((year)) ((month:long))", "2026-02-02", "commons",
                       "User talk:Foo") == "User talk:Foo/Archive 2026 February"
+
+
+@pytest.mark.parametrize("project, pattern, date, expected", [
+    # 1 Jan 2027 is in week 53 of 2026, 30 Dec 2024 in week 1 of 2025 (all languages share the logic)
+    ("commons", "((FULLPAGENAME))/((year))/((month:##))/((week))", "2027-01-01", "Foo/2026/12/53"),
+    ("commons", "((FULLPAGENAME))/((year)) ((month:long)) W((week:##))", "2024-12-30", "Foo/2025 January W01"),
+    ("jawikipedia", "((FULLPAGENAME))/((year))/((month:#))/((week))", "2027-01-01", "Foo/2026/12/53"),
+    ("jawikipedia", "((FULLPAGENAME))/((month:short))/((week))", "2024-12-30", "Foo/01 月/1"),
+    ("kowikipedia", "((FULLPAGENAME))/((년))/((월))/((주))", "2027-01-01", "Foo/2026/12/53"),
+    ("commons", "((FULLPAGENAME))/((year)) Q((quarter)) H((half-year:i)) W((week))", "2027-01-01", "Foo/2026 Q4 Hii W53"),
+    ("kowikipedia", "((FULLPAGENAME))/((년))/((분기))/((주))", "2024-12-30", "Foo/2025/1/1"),
+])
+def test_determine_archiving_target_turn_of_year(project, pattern, date, expected):
+    assert target_for(pattern, date, project, "Foo") == expected
 
 
 # ---------------------------------------------------------------- substSectionResolvedTempl

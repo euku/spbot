@@ -245,13 +245,14 @@ class Discussion:
                 break
 
         exchangeMonthAndYear = isCalendarWeekException and usingWeekVar
-        # If we use ((week)) which month does it belong to? 1 or 12?
+        # If we use ((week)) which month does it belong to? 01 or 12?
+        # Only the turn of the year is affected: 29-31 Dec in week 1 -> January of the next year,
+        # 1-3 Jan in week 52/53 -> December of the previous year. strftime gives "01".."12", and
+        # the month stays zero-padded like on every other day (ja/vi use it as is in ((month:short))).
         monthNumberToUse = strftime("%m", timestampToUse)
-        if exchangeMonthAndYear and monthNumberToUse == "12":
-            monthNumberToUse = "1"
-        elif exchangeMonthAndYear and monthNumberToUse == "1":
-            monthNumberToUse = "12"
-        
+        if exchangeMonthAndYear:
+            monthNumberToUse = "01" if monthNumberToUse == "12" else "12"
+
         yearToUse = strftime("%G" if exchangeMonthAndYear else "%Y", timestampToUse)
         for old, new in bot.localBot.getReplacementDict(self.pageOrigin, timestampToUse, yearToUse, monthNumberToUse):
             targetPath = targetPath.replace(old, str(new))

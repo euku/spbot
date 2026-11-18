@@ -92,6 +92,10 @@ def test_quarter_and_halfyear(month, quarter, halfyear):
     assert lb.getQuarterName(stamp, True, False) == ["i", "ii", "iii", "iv"][int(quarter) - 1]
     assert lb.getHalfyearName(stamp, False, False) == halfyear
     assert lb.getHalfyearName(stamp, True, False) == ["i", "ii"][int(halfyear) - 1]
+    # the month number from getReplacementDict works the same (string with or without zero, int)
+    for value in (f"{month:02d}", str(month), month):
+        assert lb.getQuarterName(value, False, False) == quarter
+        assert lb.getHalfyearName(value, False, True) == "0" + halfyear
 
 
 @pytest.mark.parametrize("signature", [

@@ -70,11 +70,11 @@ class LocalBotKo(LocalBot):
                 ( "((fullpagename))"      , fullpagename),
                 ( "((Fullpagename))"      , fullpagename),
                 ( "((FULLPAGENAME))"      , fullpagename),
-                ( "((분기))"               , self.getQuarterName(timestampToUse, False, False) ),	# quarter
-                ( "((분기:##))"            , self.getQuarterName(timestampToUse, False, True) ),	# quarter
-                ( "((분기:i))"             , self.getQuarterName(timestampToUse, True, False) ),	# quarter
-                ( "((분기:I))"             , self.getQuarterName(timestampToUse, True, False).upper() ),	# quarter
-                ( "((반년))"               , self.getHalfyearName(timestampToUse, False, False) ),	#half-year
-                ( "((반년:##))"            , self.getHalfyearName(timestampToUse, False, True) ),	#half-year
-                ( "((반년:i))"             , self.getHalfyearName(timestampToUse, True, False) ),	#half-year
-                ( "((반년:I))"             , self.getHalfyearName(timestampToUse, True, False).upper() )]	#half-year
+                ( "((분기))"               , self.getQuarterName(monthNumberToUse, False, False) ),	# quarter
+                ( "((분기:##))"            , self.getQuarterName(monthNumberToUse, False, True) ),	# quarter
+                ( "((분기:i))"             , self.getQuarterName(monthNumberToUse, True, False) ),	# quarter
+                ( "((분기:I))"             , self.getQuarterName(monthNumberToUse, True, False).upper() ),	# quarter
+                ( "((반년))"               , self.getHalfyearName(monthNumberToUse, False, False) ),	#half-year
+                ( "((반년:##))"            , self.getHalfyearName(monthNumberToUse, False, True) ),	#half-year
+                ( "((반년:i))"             , self.getHalfyearName(monthNumberToUse, True, False) ),	#half-year
+                ( "((반년:I))"             , self.getHalfyearName(monthNumberToUse, True, False).upper() )]	#half-year

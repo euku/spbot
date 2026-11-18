@@ -99,14 +99,14 @@ class LocalBotDe(LocalBot):
                 ( "((FULLPAGENAME))"      , fullpagename),
                 ( "((VOLLER_SEITENNAME))" , fullpagename),
                 ( "((Lemma))"             , fullpagename),
-                ( "((Quartal))"           , self.getQuarterName(timestampToUse, False, False) ),
-                ( "((Quartal:##))"        , self.getQuarterName(timestampToUse, False, True) ),
-                ( "((Quartal:i))"         , self.getQuarterName(timestampToUse, True, False) ),
-                ( "((Quartal:I))"         , self.getQuarterName(timestampToUse, True, False).upper() ),
-                ( "((Halbjahr))"          , self.getHalfyearName(timestampToUse, False, False) ),
-                ( "((Halbjahr:##))"       , self.getHalfyearName(timestampToUse, False, True) ),
-                ( "((Halbjahr:i))"        , self.getHalfyearName(timestampToUse, True, False) ),
-                ( "((Halbjahr:I))"        , self.getHalfyearName(timestampToUse, True, False).upper() )]
+                ( "((Quartal))"           , self.getQuarterName(monthNumberToUse, False, False) ),
+                ( "((Quartal:##))"        , self.getQuarterName(monthNumberToUse, False, True) ),
+                ( "((Quartal:i))"         , self.getQuarterName(monthNumberToUse, True, False) ),
+                ( "((Quartal:I))"         , self.getQuarterName(monthNumberToUse, True, False).upper() ),
+                ( "((Halbjahr))"          , self.getHalfyearName(monthNumberToUse, False, False) ),
+                ( "((Halbjahr:##))"       , self.getHalfyearName(monthNumberToUse, False, True) ),
+                ( "((Halbjahr:i))"        , self.getHalfyearName(monthNumberToUse, True, False) ),
+                ( "((Halbjahr:I))"        , self.getHalfyearName(monthNumberToUse, True, False).upper() )]
     
     def _getAllWeekVariablesForTargetPath(self) -> list:
         return ["((Woche:##))", "((Woche))"]

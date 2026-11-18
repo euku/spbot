@@ -73,24 +73,32 @@ class LocalBot():
         # default: just the number
         return str(monthNumber)
 
-    def getHalfyearName(self, stamp: datetime, roman : bool, fill : bool):
+    @staticmethod
+    def _monthOf(month) -> int:
+        """month: a time.struct_time or a month number (string or int)"""
+        if isinstance(month, (str, int)):
+            return int(month)
+        return int(time.strftime("%m", month))
+
+    def getHalfyearName(self, month, roman : bool, fill : bool):
         """
+            month: the month number to use (string or int; see getReplacementDict) or a time.struct_time
             roman: instead use I, II, III, IV
             fill: zero fill the number to 2 digits length
         """
-        halfyearI = '1' if int(time.strftime("%m", stamp)) <= 6 else '2'
+        halfyearI = '1' if self._monthOf(month) <= 6 else '2'
         halfyearI = ('0' if fill else '') + halfyearI
         if halfyearI == '1' or halfyearI == '01':
             return 'i' if roman else halfyearI
         return 'ii' if roman else halfyearI
     
-    def getQuarterName(self, stamp: datetime, roman : bool, fill : bool):
+    def getQuarterName(self, month, roman : bool, fill : bool):
         """
+            month: the month number to use (string or int; see getReplacementDict) or a time.struct_time
             roman: instead use I, II, III, IV
             fill: zero fill the number to 2 digits length
         """
-        month: int = int(time.strftime("%m", stamp))
-        quater = ('0' if fill else '') + str(int((month -1) / 3) +1)
+        quater = ('0' if fill else '') + str(int((self._monthOf(month) -1) / 3) +1)
         if quater == '1' or quater == '01':
             return 'i' if roman else quater
         elif quater == '2' or quater == '02':
