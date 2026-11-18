@@ -158,3 +158,9 @@ def test_doc_page_is_excluded(projectId, docPage):
 def test_cs_first_new_section_summary_is_czech():
     lb = LocalBotFactory().createLocalBot("cswikipedia")
     assert lb.firstNewSectionInArchiveSummary == " (od sekce [[{firstNewSectionInArchiveLink}]])"
+
+
+@pytest.mark.parametrize("projectId", sorted(PROJECTS))
+def test_first_new_section_summary_is_translated(projectId):
+    lb = LocalBotFactory().createLocalBot(projectId)
+    assert "{firstNewSectionInArchiveLink}" in lb.firstNewSectionInArchiveSummary

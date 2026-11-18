@@ -37,7 +37,7 @@ class LocalBotKo(LocalBot):
         self.archiveSumOriginS = "1개의 문단"
         self.archiveSumOriginP = "{numberOfSectionsRemovedFromOrigin}개의 문단"
         self.archiveSumOriginMulti  = "{noOfDisuccionsToThisTarget} 을(를) [[{targetPageName}]]"
-        self.firstNewSectionInArchiveSummary  = ""
+        self.firstNewSectionInArchiveSummary  = " ([[{firstNewSectionInArchiveLink}]] 문단부터)"
         self.archiveSumLastEdit = "-이전 편집: [[:User:%s|%s]],%s"
         self.archiveOverallSummary = "보존 {numberOfSectionsRemovedFromOriginStr}: {distributionComment}{firstNewSectionInArchiveSummary}{lastEditComment}"
 
