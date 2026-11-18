@@ -265,3 +265,10 @@ def test_favicon(client):
     response = client.get('/favicon.ico')
     assert response.status_code == 301 and response.headers['Location'].endswith('/static/favicon.svg')
     assert client.get('/static/favicon.svg').status_code == 200
+
+
+def test_robots_txt(client):
+    response = client.get('/robots.txt')
+    assert response.status_code == 200
+    assert response.mimetype == 'text/plain'
+    assert 'Disallow: /logs/' in response.get_data(as_text=True)

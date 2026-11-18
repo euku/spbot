@@ -16,6 +16,7 @@ class LocalBotDe(LocalBot):
         self.headTemplate   = "{{Archiv}}"      # Headtemplate to insert into new archivpages
         self.excludeList = (
                 self.archiveTemplateName,
+                f"{self.archiveTemplateName}/Test",
                 "Vorlage:Erledigt",
                 "Portal:Philosophie/Qualitätssicherung",
                 "Wikipedia Diskussion:Hauptseite/Artikel des Tages/Chronologie der Artikel des Tages"

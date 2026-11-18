@@ -81,6 +81,18 @@ def set_language(code):
     return response
 
 
+ROBOTS_TXT = (
+    'User-agent: *\n'
+    'Disallow: /logs/\n'   # log URLs of the old PHP page, no longer served
+    'Disallow: /lang/\n'   # sets a cookie and redirects
+)
+
+
+@app.route('/robots.txt')
+def robots():
+    return flask.Response(ROBOTS_TXT, mimetype='text/plain')
+
+
 @app.route('/favicon.ico')
 def favicon():
     return flask.redirect(flask.url_for('static', filename='favicon.svg'), code=301)

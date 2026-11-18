@@ -150,6 +150,7 @@ def test_messages_complete():
     ("jawikipedia", "Template:Autoarchive resolved section/doc"),
     ("kowikipedia", "틀:완료된 토론 자동 보존/설명문서"),
     ("viwikipedia", "Bản mẫu:Autoarchive resolved section/doc"),
+    ("dewikipedia", "Vorlage:Autoarchiv-Erledigt/Test"),
 ])
 def test_doc_page_is_excluded(projectId, docPage):
     assert docPage in LocalBotFactory().createLocalBot(projectId).excludeList
