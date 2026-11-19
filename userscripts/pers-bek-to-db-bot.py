@@ -144,7 +144,7 @@ def writeUserListToWikipedia(db, editSummary):
 	newRawText = toc
 	for u, confirmationCount, cfDate in newUserList:
 		if confirmationCount < 3:
-			userStatus = "unbestätigt"
+			userStatus = "< 3 Best."
 		else:
 			userStatus = ""
 		date = "%s.%s" % (cfDate.day, cfDate.month) # convert to DD.MM.
