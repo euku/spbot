@@ -5,12 +5,13 @@ to archive and writing them to their archive pages.
 All site access goes through ``bot.site`` (and pywikibot.Page on it), so the
 classes can be tested with a fake site.
 """
+import math
 import re               # Used for regular expressions
 import traceback
 import pywikibot        # Wikipedia-pybot-framework
 from pywikibot import textlib
 from time import localtime, sleep, strftime, mktime    # strftime-Function and related
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone, utc
 from archive_resolved_localization.local_bot import TEMPLATE_PREFIX
 from archive_resolved_localization.messages import DEFAULT_LANGUAGE, formatMessage
@@ -215,6 +216,20 @@ class Discussion:
                     or (thresholdAgeByTimeout > 0 and self.lastContributionAge >= thresholdAgeByTimeout) \
                 )
 
+    def daysUntilDue(self, thresholdAgeResolvedTemplate: float, thresholdAgeByTimeout: float):
+        """
+            In how many days (from the time of examine()) shouldBeArchived() gets true if nobody edits
+            the section. None = never.
+        """
+        if self.hasDoNotArchiveTmpl or self.hasArchiveTemplate:
+            return None
+        days = []
+        if self.timestampClearedFlag is not None:
+            days.append(thresholdAgeResolvedTemplate - self.ageByResolvedTemplate)
+        if thresholdAgeByTimeout > 0 and self.numberOfContributions > 0:
+            days.append(thresholdAgeByTimeout - self.lastContributionAge)
+        return min(days, default=None)
+
     def getAgeByResolvedTemplate(self) -> float:
         return self.ageByResolvedTemplate
 
@@ -259,12 +274,13 @@ class Discussion:
         return targetPath
 
 class WikiDocument:
-    def __init__(self, text: str, title: str, lastEditTime, lastUser: str, bot, now: datetime = None):
+    def __init__(self, text: str, title: str, lastEditTime, lastUser: str, bot, now: datetime = None, revid: int = None):
         """
             text, title: wikitext and title of the talk page
             lastEditTime, lastUser: timestamp (datetime, UTC) and user of the latest revision
             bot: the ArchiveRobot (needs .site, .localBot, .dryRun)
             now: current time (naive, UTC) for the age calculation; None = datetime.now()
+            revid: ID of the latest revision
         """
         self.numberDiscussions   = 0                  # Number of Discussions on page
         self.originalText        = text               # The original Text of the wikipage
@@ -289,6 +305,8 @@ class WikiDocument:
         self.lastUser            = lastUser           # last editor
         self.bot                 = bot
         self.now                 = now
+        self.revid               = revid
+        self.examinedAt          = None               # time of examineDiscussions() (aware, UTC)
         self.options             = {}                 # the parameters of the archive template (names in upper case)
         self.outcome             = None               # result of executeArchiving: 'archived', 'dryrun', 'skipped' (see summary.py)
         self.outcomeMessage      = None               # why it was skipped (in the language of the wiki)
@@ -306,7 +324,7 @@ class WikiDocument:
     @classmethod
     def fromPage(cls, page, bot, now: datetime = None):
         return cls(page.get(), page.title(), page.latest_revision.timestamp,
-                   page.latest_revision.user, bot, now)
+                   page.latest_revision.user, bot, now, page.latest_revision.revid)
 
     def divideIntoSlices(self):
         """
@@ -406,8 +424,20 @@ class WikiDocument:
         return None
 
     def examineDiscussions(self):
+        self.examinedAt = datetime.now(utc) if self.now is None else utc.localize(self.now)
         for singleDiscussion in self.listDiscussions:
             singleDiscussion.examine(self.bot, self.now)
+
+    def nextDue(self):
+        """
+            When the first section gets due if nobody edits the page (aware datetime, UTC); None = never
+        """
+        days = [disc.daysUntilDue(self.thresholdAgeResolvedTemplate, self.thresholdAgeByTimeout)
+                for disc in self.listDiscussions]
+        days = [d for d in days if d is not None and math.isfinite(d)]
+        if not days or min(days) > 36500:   # e.g. Alter=999999999: out of range for a date
+            return None
+        return self.examinedAt + timedelta(days=min(days))
 
     def generateErrorReport(self):
         logText = (f"== [[{self.originPageName}]] ==\n")

@@ -30,7 +30,11 @@ NOW = datetime(2026, 11, 16, 12, 0)
 
 
 class FakeRevision:
+    lastId = 0
+
     def __init__(self, user, timestamp):
+        FakeRevision.lastId += 1
+        self.revid = FakeRevision.lastId
         self.user = user
         self.timestamp = timestamp
 
@@ -50,6 +54,11 @@ class FakePage:
         self.saveErrorAfterWrite = False  # save() stores the text and raises anyway (e.g. timeout)
         self.saves = []              # (text, summary)
         self.latest_revision = FakeRevision("Somebody", datetime(2026, 11, 15, 8, 30))
+
+    @property
+    def _revid(self):
+        """Like pywikibot: the latest revision ID from prop=info"""
+        return self.latest_revision.revid
 
     def title(self):
         return self._title

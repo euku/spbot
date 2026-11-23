@@ -218,10 +218,11 @@ def test_two_targets_summaries():
 
 def test_parse_args():
     assert botModule.parseArgs([]) == {'dryRun': False, 'project': 'dewikipedia', 'page': None,
-                                       'saveLocalLogFile': False, 'summary': True}
+                                       'saveLocalLogFile': False, 'summary': True, 'full': False}
     assert botModule.parseArgs(['-dryrun', '-project:commons', '-page:User talk:Foo bar', '-xyz']) == \
         {'dryRun': True, 'project': 'commons', 'page': 'User talk:Foo bar', 'saveLocalLogFile': False,
-         'summary': True}
+         'summary': True, 'full': False}
+    assert botModule.parseArgs(['-full'])['full'] is True
     assert botModule.parseArgs(['-nosummary'])['summary'] is False
     assert botModule.parseArgs(['-project'])['project'] is None
     with pytest.raises(core.ArchivingError):

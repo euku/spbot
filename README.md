@@ -45,7 +45,9 @@ pyvenv/bin/python -m unittest discover -s bot/userscripts -p 'test_pers_bek*'
 - the run summaries of the archive bot: `logs/archive-resolved-<project>.jsonl`, one JSON line
   per page with the options, the sections and the decision (written by
   `userscripts/archive_resolved/summary.py` in every full run, not for `-page` runs; `-nosummary`
-  switches it off), and `logs/archive-runs.jsonl` (one line per run),
+  switches it off), and `logs/archive-runs.jsonl` (one line per run). Pages that were not edited and
+  where no section is due are not read again for up to a week (`unchanged`, see
+  `userscripts/archive_resolved/state.py`; `-full` reads all pages),
 - the wiki replicas (bot flag, blocks, edits of SpBot), cached for 15 minutes.
 
 `/archive?project=<project>&page=<title>` shows the last bot run of one page. The archive templates

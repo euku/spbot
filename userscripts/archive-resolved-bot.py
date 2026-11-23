@@ -14,6 +14,9 @@ These command line parameters can be used to specify how to work:
 -nosummary        Do not write logs/archive-resolved-<project>.jsonl (the run summary
                   for the status web page; only written for runs without -page)
 
+-full             Read all pages. Otherwise a run without -page skips the pages that were not edited
+                  since the last run and where no section is due yet (see archive_resolved/state.py)
+
 -project        'nothing': de.wikipedia
                 commons, wikidata, species, dewikisource, {de,en}wiktionary: and other projects...
 

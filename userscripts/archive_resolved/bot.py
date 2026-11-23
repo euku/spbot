@@ -10,6 +10,7 @@ from pywikibot import pagegenerators
 from time import localtime, strftime
 from archive_resolved_localization.local_bot_factory import LocalBotFactory
 from archive_resolved.core import ArchivingError, OptionsError, WikiDocument
+from archive_resolved.state import RunState, codeVersion
 from archive_resolved.summary import RunSummary, summaryPath
 from archive_resolved_localization.messages import formatMessage
 
@@ -39,10 +40,11 @@ def errorMessage(exc, wdoc, detail: str):
 def parseArgs(args) -> dict:
     """
         Parses the bot specific arguments (the ones left over by pywikibot.handle_args()).
-        Returns a dict with the keys dryRun, project, page, saveLocalLogFile, summary.
+        Returns a dict with the keys dryRun, project, page, saveLocalLogFile, summary, full.
         project is None if '-project' was given without a value.
     """
-    options = {'dryRun': False, 'project': 'dewikipedia', 'page': None, 'saveLocalLogFile': False, 'summary': True}
+    options = {'dryRun': False, 'project': 'dewikipedia', 'page': None, 'saveLocalLogFile': False, 'summary': True,
+               'full': False}
     for arg in args:
         if arg == '-dryrun':
             options['dryRun'] = True
@@ -56,6 +58,8 @@ def parseArgs(args) -> dict:
             options['saveLocalLogFile'] = False
         elif arg == '-nosummary':
             options['summary'] = False
+        elif arg == '-full':
+            options['full'] = True
         else:
             pywikibot.output(arg + " was ignored")
     return options
@@ -75,6 +79,7 @@ class ArchiveRobot:
         self.generator = None
         self.localBot = None
         self.summary = None
+        self.state = RunState()
         currentProject = options['project']
         pageToWorkOn = options['page']
         if currentProject is None: # '-project' without value
@@ -89,12 +94,43 @@ class ArchiveRobot:
         else:
             mainTemplatePage = pywikibot.Page(self.site, self.localBot.archiveTemplateName)
             self.generator = mainTemplatePage.getReferences(False, True, True, False)
+            logDir = os.path.join(os.getcwd(), 'logs')
+            code = codeVersion()
+            if not options['full']:
+                self.state = self._loadState(logDir, currentProject, code)
             # summary for the status web page, only for full runs (a single -page run would replace it)
             if options['summary']:
-                self.summary = RunSummary(summaryPath(os.path.join(os.getcwd(), 'logs'), currentProject),
-                                          currentProject, self.dryRun)
+                self.summary = RunSummary(summaryPath(logDir, currentProject), currentProject, self.dryRun, code=code)
         
         self.localLogFile = os.getcwd() + strftime(f"/logs/archiv-{currentProject}-%Y-%m-%d.log", localtime())
+
+    @staticmethod
+    def _loadState(logDir, project, code):
+        """The state of the last run; empty (= read all pages) if it cannot be read."""
+        try:
+            state = RunState.load(logDir, project, code)
+        except Exception:
+            pywikibot.output("Could not read the state of the last run: " + traceback.format_exc())
+            state = RunState()
+        pywikibot.output(f"State of the last run: {len(state.pages)} pages")
+        return state
+
+    def _changedPages(self, pages):
+        """
+            Only the pages that must be read. The latest revision ID comes with the page list
+            (pywikibot's PageGenerator asks for prop=info), so this needs no further requests.
+        """
+        for page in pages:
+            try:
+                # not latest_revision_id: this would load the revision if it were missing
+                record = self.state.unchanged(page.title(), getattr(page, '_revid', None))
+                if record is not None and self.summary is not None:
+                    self.summary.unchanged(record)
+            except Exception:
+                pywikibot.output("Could not use the state of the last run: " + traceback.format_exc())
+                record = None
+            if record is None:
+                yield page
 
     def _record(self, title, status, wdoc=None, key=None, args=None):
         """key/args: message (messages.json); recorded in the language of the wiki and as key"""
@@ -155,7 +191,7 @@ class ArchiveRobot:
         """
              Begin archiving
         """
-        self.generator = pagegenerators.PreloadingGenerator(self.generator, groupsize = 5)
+        self.generator = pagegenerators.PreloadingGenerator(self._changedPages(self.generator), groupsize = 5)
         finished = False
         try:
             for page in self.generator:
