@@ -289,6 +289,17 @@ def test_favicon(client):
     assert client.get('/static/favicon.svg').status_code == 200
 
 
+@pytest.mark.parametrize('url', ['//evil.example', '/\\evil.example', '/\t/evil.example', '/\r\n/evil.example',
+                                 '\t//evil.example', 'https://evil.example', 'x', '', None])
+def test_local_url_refuses_other_sites(url):
+    assert i18n.local_url(url) == '/'
+
+
+@pytest.mark.parametrize('url', ['/', '/archive?project=dewikipedia&page=Ä b%2Fc', '/archive?next=//x'])
+def test_local_url(url):
+    assert i18n.local_url(url) == url
+
+
 def test_robots_txt(client):
     response = client.get('/robots.txt')
     assert response.status_code == 200

@@ -18,6 +18,7 @@ the bot and this page) and are available here as ``msg.<key>``.
 """
 import json
 import os.path
+import re
 
 import flask
 from markupsafe import Markup, escape
@@ -108,8 +109,14 @@ def has_key(key):
     return key in CATALOGS[DEFAULT_LANGUAGE]
 
 
+LOCAL_URL_RE = re.compile(r'/(?!/)[^\x00-\x1f\x7f\\]*')
+
+
 def local_url(url):
-    """*url* if it is a path on this site, otherwise ``/`` (no open redirects)."""
-    if not url or not url.startswith('/') or url.startswith('//') or url.startswith('/\\'):
+    """
+    *url* if it is a path on this site, otherwise ``/`` (no open redirects). Control characters are
+    refused: some are dropped on the way to the browser, which turns ``/<tab>/host`` into ``//host``.
+    """
+    if not url or not LOCAL_URL_RE.fullmatch(url):
         return '/'
     return url
