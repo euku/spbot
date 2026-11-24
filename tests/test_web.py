@@ -50,6 +50,7 @@ def home(tmp_path, monkeypatch):
     monkeypatch.setattr(config, 'repo_dir', str(tmp_path / 'repo'))
     monkeypatch.setattr(config, 'replica_host', '')
     status._run_cache.clear()
+    status._index_cache.clear()
     return tmp_path
 
 
@@ -219,6 +220,55 @@ def test_software_from_files(home):
     (home / 'venv' / 'lib' / 'python3.13' / 'site-packages' / 'pywikibot-11.9.0.dist-info').mkdir(parents=True)
     assert status.software() == {'commit': 'abc123', 'branch': 'main', 'pywikibot': '11.9.0', 'python': '3.13',
                                  'log_days': 0}
+
+
+def test_page_index_is_read_only_once(home, monkeypatch):
+    logs = home / 'logs'
+    write_run(logs)
+    path = str(logs / 'archive-resolved-dewikipedia.jsonl')
+    index = status._page_index(path)
+    assert status._page_index(path) is index
+    write_run(logs)   # the file has changed
+    assert len(status._page_index(path)[ORIGIN]) == 2
+
+
+@pytest.mark.parametrize('compressed', [False, True])
+def test_full_record_by_offset(home, compressed):
+    logs = home / 'logs'
+    titles = ['Diskussion:"Ä\\\\', 'Diskussion:日本', ORIGIN]
+    write_run(logs, pages=[(title, PAGE) for title in titles])
+    write_run(logs, pages=[(title, PAGE) for title in titles])
+    path = str(logs / 'archive-resolved-dewikipedia.jsonl')
+    if compressed:
+        with open(path, 'rb') as f, gzip.open(path + '.gz', 'wb') as g:
+            g.write(f.read())
+        path += '.gz'
+    for title in titles:
+        assert len(status._page_index(path)[title]) == 2
+        record = status._full_record(path, title)
+        assert record['title'] == title and record['sections']
+    assert status._full_record(path, titles[0], after='2999-01-01T00:00:00Z') is None
+    assert status._full_record(path, 'Nicht da') is None
+
+
+def test_page_history_forgets_old_files(home):
+    logs = home / 'logs'
+    write_run(logs)
+    path = logs / 'archive-resolved-dewikipedia.jsonl'
+    assert len(status.page_history('dewikipedia', ORIGIN)) == 1
+    (logs / '2026-11-23').mkdir()
+    path.rename(logs / '2026-11-23' / path.name)
+    assert len(status.page_history('dewikipedia', ORIGIN)) == 1
+    assert list(status._index_cache) == [str(logs / '2026-11-23' / path.name)]
+
+
+def test_cut_off_line_is_left_out(home):
+    logs = home / 'logs'
+    write_run(logs)
+    path = str(logs / 'archive-resolved-dewikipedia.jsonl')
+    with open(path, 'a', encoding='utf-8') as f:
+        f.write('{"type":"page","title":"Neu","time":"2026-11-24T03:00:00Z","status":"nothing","se')
+    assert 'Neu' not in status._page_index(path)
 
 
 def test_last_run_is_read_only_once(home):

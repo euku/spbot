@@ -9,6 +9,7 @@ import gzip
 import json
 import os
 import re
+import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -134,6 +135,10 @@ def _open_text(path):
     if path.endswith('.gz'):
         return gzip.open(path, 'rt', encoding='utf-8', errors='replace')
     return open(path, encoding='utf-8', errors='replace')
+
+
+def _open_binary(path):
+    return gzip.open(path, 'rb') if path.endswith('.gz') else open(path, 'rb')
 
 
 def log_info(name):
@@ -359,24 +364,61 @@ def normalize_title(title):
     return title
 
 
-def _page_prefix(title):
-    """How the line of a page starts in a summary file (see RunSummary.page)."""
-    return '{"type":"page","title":' + json.dumps(title, ensure_ascii=False) + ','
+# how the line of a page starts in a summary file (see RunSummary.page)
+_PAGE_LINE = re.compile(rb'\{"type":"page","title":("(?:[^"\\]|\\.)*"),"time":"([^"]*)","status":"(\w+)"')
+# what a page history shows of a record
+HISTORY_KEYS = ('toArchive', 'message', 'messageKey', 'messageArgs')
+_index_cache = {}
+
+
+def _page_index(path):
+    """
+    {title: [(offset of the line, time, status, HISTORY_KEYS of the record or None), ...]} of a summary
+    file. Cached, so a page view does not read the whole files (20 MB a day for dewiki) again.
+    Only lines of pages where something happened are parsed (a few of some thousand).
+    """
+    stat = os.stat(path)
+    version = (stat.st_mtime, stat.st_size)
+    with _cache_lock:
+        cached = _index_cache.get(path)
+        if cached and cached[0] == version:
+            return cached[1]
+    index = {}
+    offset = 0
+    with _open_binary(path) as f:
+        for line in f:
+            match = _PAGE_LINE.match(line)
+            # a line without its end is still being written or was cut off by a crash
+            if match and line.endswith(b'\n'):
+                try:
+                    title = json.loads(match.group(1))
+                    details = None
+                    if match.group(3) != b'nothing':
+                        record = json.loads(line)
+                        details = {key: record[key] for key in HISTORY_KEYS if key in record}
+                except ValueError:
+                    title = None
+                if title is not None:
+                    index.setdefault(sys.intern(title), []).append(
+                        (offset, match.group(2).decode(), sys.intern(match.group(3).decode()), details))
+            offset += len(line)
+    with _cache_lock:
+        _index_cache[path] = (version, index)
+    return index
 
 
 def _full_record(path, title, after=None):
     """The last full record of a page in a summary file (lines from the run started at *after*)."""
-    prefix, found = _page_prefix(title), None
-    with _open_text(path) as f:
-        for line in f:
-            if line.startswith(prefix):
-                try:
-                    record = json.loads(line)
-                except ValueError:
-                    continue
-                if after is None or record.get('time', '') >= after:
-                    found = record
-    return found
+    entries = _page_index(path).get(title)
+    if not entries or (after is not None and entries[-1][1] < after):
+        return None
+    with _open_binary(path) as f:
+        f.seek(entries[-1][0])
+        try:
+            record = json.loads(f.readline())
+        except ValueError:
+            return None   # replaced since the index was made
+    return record if record.get('title') == title else None
 
 
 def page_record(project, title):
@@ -400,23 +442,21 @@ def page_record(project, title):
 
 
 def page_history(project, title, days=None):
-    """The records of a page in the summary files of the last days, newest first."""
+    """What happened to a page (time, status, HISTORY_KEYS) in the summary files of the last days, newest first."""
     days = days or config.page_history_days
-    prefix = _page_prefix(title)
+    files = summary_files(project, days=days)
     result = []
-    for path in summary_files(project, days=days):
-        found = []
+    for path in files:
         try:
-            with _open_text(path) as f:
-                for line in f:
-                    if line.startswith(prefix):
-                        try:
-                            found.append(json.loads(line))
-                        except ValueError:
-                            pass
-        except OSError:
+            entries = _page_index(path).get(title, ())
+        except (OSError, EOFError):
             continue
-        result.extend(reversed(found))
+        result.extend(dict(details or {}, time=time, status=status) for _, time, status, details in reversed(entries))
+    with _cache_lock:
+        # forget the files of this project that are too old or were moved or compressed
+        name = _summary_name(files[0]) if files else None
+        for old in [p for p in _index_cache if _summary_name(p) == name and p not in files]:
+            del _index_cache[old]
     result.sort(key=lambda r: r.get('time', ''), reverse=True)
     return result
 

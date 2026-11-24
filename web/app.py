@@ -85,6 +85,7 @@ ROBOTS_TXT = (
     'User-agent: *\n'
     'Disallow: /logs/\n'   # log URLs of the old PHP page, no longer served
     'Disallow: /lang/\n'   # sets a cookie and redirects
+    'Disallow: /archive\n'   # many thousand pages, linked from talk pages
 )
 
 
