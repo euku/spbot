@@ -221,6 +221,28 @@ def test_software_from_files(home):
                                  'log_days': 0}
 
 
+def test_last_run_is_read_only_once(home):
+    logs = home / 'logs'
+    write_run(logs)
+    path = str(logs / 'archive-resolved-dewikipedia.jsonl')
+    run = status._last_run(path)
+    assert status._last_run(path) is run
+    write_run(logs)   # the file has changed
+    assert status._last_run(path) is not run
+
+
+def test_run_cache_keeps_one_file_per_project(home):
+    logs = home / 'logs'
+    write_run(logs)
+    path = str(logs / 'archive-resolved-dewikipedia.jsonl')
+    status._last_run(path)
+    (logs / '2026-11-23').mkdir()
+    moved = str(logs / '2026-11-23' / 'archive-resolved-dewikipedia.jsonl')
+    os.rename(path, moved)
+    status._last_run(moved)
+    assert list(status._run_cache) == [moved]
+
+
 def test_translations_complete():
     import re
     en = i18n.CATALOGS['en']

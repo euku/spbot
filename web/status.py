@@ -230,6 +230,10 @@ _run_cache = {}
 DETAIL_KEYS = ('sections', 'options')
 
 
+def _summary_name(path):
+    return os.path.basename(path).removesuffix('.gz')
+
+
 def _last_run(path):
     """The last run in a summary file: {'run': header, 'end': end or None, 'path': path,
     'pages': {title: record without DETAIL_KEYS}}."""
@@ -254,12 +258,15 @@ def _last_run(path):
             elif run is None:
                 continue
             elif kind == 'page':
-                for key in DETAIL_KEYS:
-                    record.pop(key, None)
+                for detail in DETAIL_KEYS:
+                    record.pop(detail, None)
                 run['pages'][record['title']] = record
             elif kind == 'end':
                 run['end'] = record
     with _cache_lock:
+        # only one file per project: the path changes every night (daily-log-cleanup.sh)
+        for old in [p for p in _run_cache if p != path and _summary_name(p) == _summary_name(path)]:
+            del _run_cache[old]
         _run_cache[path] = (key, run)
     return run
 
