@@ -59,76 +59,48 @@ def search(text, regex):
           return ""
 
 """
-  MAIN
+	the talk page to write to and its text; a redirect (e.g. after a rename) to another user talk page is followed
 """
-for arg in pywikibot.handle_args():
-	if arg in ('--dry-run', '-dryrun'):
-		DONOTSAVE = True
-output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
-if DONOTSAVE:
-	output("Dry run: nothing will be saved")
-db = BotDatabase()
-
-# request list of all users that are opt-in
-usersToCheck = usersToCheck()
-output("%s users found in opt-in list" % len(usersToCheck))
-
-todaysVerifications = db.get_yesterdays_confirmations_sorted_by_confirmed(day=1,delta=diffDays) # yesterday only
-output("today %s confirmations were commited at all:" % len(todaysVerifications))
-#print todaysVerifications
-
-# who are the people the bot must write a message?
-usersWaitingForMsg = []
-for (was_confirmed_name, has_confirmed_name, cf_time) in todaysVerifications:
-	if (not (was_confirmed_name in usersWaitingForMsg)) and was_confirmed_name in usersToCheck:
-		usersWaitingForMsg.append(was_confirmed_name)
-
-# send them a message
-for userWaitingForMsg in usersWaitingForMsg:
-	usersVeriedThisUser = []
-	for (was_confirmed_name, has_confirmed_name, cf_time) in todaysVerifications:
-		if was_confirmed_name == userWaitingForMsg:
-			usersVeriedThisUser.append(has_confirmed_name)
-
-	# write a message
-	userTalkPage = pywikibot.Page(pywikibot.Site(), "Benutzer_Diskussion:" + userWaitingForMsg)
+def talkPage(userName):
+	page = pywikibot.Page(pywikibot.Site(), "Benutzer_Diskussion:" + userName)
 	try:
-		userTalkPageRaw = userTalkPage.get()
+		return page, page.get()
 	except pywikibot.exceptions.NoPageError:
-		userTalkPageRaw = ""
-	usersVeriedThisUserText = ""
-	# concat a string with 'user1, user2, ... and userN'
-	if len(usersVeriedThisUser) == 1:
-		u = usersVeriedThisUser[0]
-		usersVeriedThisUserText = "{{noping|%s|%s}}" % (u, u)
-	else:
-		for u in usersVeriedThisUser[:len(usersVeriedThisUser)-1]:
-			usersVeriedThisUserText += ", {{noping|%s|%s}}" % (u, u)
-		lastU = usersVeriedThisUser[len(usersVeriedThisUser)-1]
-		usersVeriedThisUserText += " und {{noping|%s|%s}}" % (lastU, lastU)
-		# remove ', ' at the beginning
-		usersVeriedThisUserText = usersVeriedThisUserText[2:]
+		return page, ""
+	except pywikibot.exceptions.IsRedirectPageError:
+		target = page.getRedirectTarget()
+		if target.site != page.site or target.namespace() != 3:
+			raise ValueError("%s ist eine Weiterleitung auf %s" % (page.title(), target.title()))
+		return target, target.get()
 
-	msgToUser = userTalkSummary = ""
-	forThisDayText = ''
-	if diffDays==0:
-		forThisDayText = "heute"
-	elif diffDays == 1:
-		forThisDayText = "gestern"
-	elif diffDays == 2:
-		forThisDayText = "vorgestern"
-	else:
-		forThisDayText = "vor %s Tagen" % diffDays
-	prevDate = datetime.now() - timedelta(diffDays)
+"""
+	'user1, user2, ... und userN'
+"""
+def joinNames(names):
+	links = ["{{noping|%s|%s}}" % (u, u) for u in names]
+	if len(links) == 1:
+		return links[0]
+	return ", ".join(links[:-1]) + " und " + links[-1]
 
-	if len(usersVeriedThisUser) == 1:
-		msgToUser = "\n== neue Bestätigung am %s.%s.%s ==\nHallo! Du hast %s eine neue Bestätigung von %s bei [[WP:Persönliche Bekanntschaften|]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --~~~~" % (prevDate.day, prevDate.month, prevDate.year, forThisDayText, usersVeriedThisUserText)
-		userTalkSummary = "Neuer Abschnitt /* neue Bestätigung am %s.%s.%s */" % (prevDate.day, prevDate.month, prevDate.year)
+"""
+	informs one user about the confirmations by the given users
+"""
+def informUser(userName, confirmers, prevDate):
+	forThisDayText = {0: "heute", 1: "gestern", 2: "vorgestern"}.get(diffDays, "vor %s Tagen" % diffDays)
+	date = "%s.%s.%s" % (prevDate.day, prevDate.month, prevDate.year)
+	if len(confirmers) == 1:
+		headline, what = "neue Bestätigung am " + date, "eine neue Bestätigung"
 	else:
-		msgToUser = "\n== neue Bestätigungen am %s.%s.%s ==\nHallo! Du hast %s neue Bestätigungen von %s bei [[WP:Persönliche Bekanntschaften|]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --~~~~" % (prevDate.day, prevDate.month, prevDate.year, forThisDayText, usersVeriedThisUserText)
-		userTalkSummary = "Neuer Abschnitt /* neue Bestätigungen am %s.%s.%s */" % (prevDate.day, prevDate.month, prevDate.year)
+		headline, what = "neue Bestätigungen am " + date, "neue Bestätigungen"
+	userTalkPage, userTalkPageRaw = talkPage(userName)
+	if "== %s ==" % headline in userTalkPageRaw:
+		output("%s wurde schon benachrichtigt" % userName)
+		return
 
-	output("Writing message to " + userWaitingForMsg + "...")
+	msgToUser = "\n== %s ==\nHallo! Du hast %s %s von %s bei [[WP:Persönliche Bekanntschaften|]] erhalten. [[Wikipedia:Persönliche Bekanntschaften/neue Anfragen|Hier]] kannst du selber bestätigen. Du bekommst diese Nachricht, weil du in [[Wikipedia:Persönliche Bekanntschaften/Opt-in: Benachrichtigungen|dieser Liste]] stehst. Gruß --~~~~" % (headline, forThisDayText, what, joinNames(confirmers))
+	userTalkSummary = "Neuer Abschnitt /* %s */" % headline
+
+	output("Writing message to " + userName + "...")
 	output("message: " + msgToUser)
 	archiveHelp = ""
 	if (isIn(userTalkPageRaw, r"\{\{\ *[Aa]utoarchiv\-Erledigt")):
@@ -136,10 +108,56 @@ for userWaitingForMsg in usersWaitingForMsg:
 	elif (isIn(userTalkPageRaw, r"\{\{\ *[Aa]utoarchiv")):
 		archiveHelp = " <!{{subst:ns:0}}-- Hilfe für den Auto-Archiv-Bot: ~~~~~ -->"
 	if not DONOTSAVE:
-		try:
-			# appendtext: the server appends, so there are no edit conflicts and nothing written in the meantime is lost
-			pywikibot.Site().editpage(userTalkPage, summary=userTalkSummary, minor=False, bot=True, watch='unwatch', appendtext=msgToUser + archiveHelp)
-		except Exception as e:
-			pywikibot.error("Fehler beim Speichern von %s: %r, mache weiter..." % (userTalkPage.title(), e))
+		# appendtext: the server appends, so there are no edit conflicts and nothing written in the meantime is lost
+		pywikibot.Site().editpage(userTalkPage, summary=userTalkSummary, minor=False, bot=True, watch='unwatch', appendtext=msgToUser + archiveHelp)
 	else:
 		output("Dry run: %s not saved (summary: %s, archiveHelp: %r)" % (userTalkPage.title(), userTalkSummary, archiveHelp))
+
+"""
+	informs all users on the opt-in list; returns the number of users that could not be informed
+"""
+def run(db):
+	# request list of all users that are opt-in
+	optInUsers = usersToCheck()
+	output("%s users found in opt-in list" % len(optInUsers))
+
+	todaysVerifications = db.get_yesterdays_confirmations_sorted_by_confirmed(day=1,delta=diffDays) # yesterday only
+	output("today %s confirmations were commited at all:" % len(todaysVerifications))
+
+	# who are the people the bot must write a message?
+	confirmersByUser = {}
+	for (was_confirmed_name, has_confirmed_name, cf_time) in todaysVerifications:
+		if was_confirmed_name in optInUsers:
+			confirmersByUser.setdefault(was_confirmed_name, []).append(has_confirmed_name)
+
+	# send them a message
+	prevDate = datetime.now() - timedelta(diffDays)
+	failed = 0
+	for userName, confirmers in confirmersByUser.items():
+		try:
+			informUser(userName, confirmers, prevDate)
+		except Exception as e:
+			# the others must get their message anyway, there is no second run for this day
+			failed += 1
+			pywikibot.error("%s nicht benachrichtigt: %r, mache weiter..." % (userName, e))
+	return failed
+
+"""
+  MAIN
+"""
+def main():
+	global DONOTSAVE
+	for arg in pywikibot.handle_args():
+		if arg in ('--dry-run', '-dryrun'):
+			DONOTSAVE = True
+	output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
+	if DONOTSAVE:
+		output("Dry run: nothing will be saved")
+	db = BotDatabase()
+	try:
+		return 1 if run(db) else 0 # 1 => Toolforge sends a mail
+	finally:
+		db.close_connections()
+
+if __name__ == "__main__":
+	sys.exit(main())
