@@ -6,6 +6,7 @@
 
 	Run: pytest tests/test_pers_bek_to_db_bot.py
 """
+import datetime
 import os
 import re
 import sys
@@ -232,6 +233,7 @@ class TestRun(unittest.TestCase):
 		self.m = loadScript()
 		self.db = FakeDB()
 		self.m.BotDatabase = lambda: self.db
+		self.m.localNow = lambda: datetime.datetime(2026, 10, 26, 20, 45)
 		FakeSite.pages = {}
 		self.workPage = FakePage(FakeSite(), self.m.workList)
 		self.reportPage = FakePage(FakeSite(), self.m.reportPage)
@@ -301,6 +303,50 @@ class TestRun(unittest.TestCase):
 		self.assertEqual(self.db.users, [])
 		self.assertIn("neuer Benutzer [[:User:Neuling|Neuling]] (eingetragen von Mallory, abgelehnt", self.workPage.puts[0][1])
 		self.assertEqual(len(self.reportPage.puts), 1)
+
+	def refused_because_of_the_time(self, time, author="A"):
+		entry = ack("A", "B").replace("20:40, 26. Okt. 2026", time)
+		self.assertIn(time, entry)
+		self.run_bot([rev(author, 2, entry), rev(BOT, 1, "")])
+		self.assertEqual(self.workPage.text, "")   # never tried again
+		return self.db.confirmations == [], self.workPage.puts[0][1]
+
+	def test_time_in_the_future(self):
+		# 2099 is beyond the range of the database
+		for time in ("23:40, 26. Okt. 2026", "12:00, 1. Jan. 2099"):
+			self.setUp()
+			refused, summary = self.refused_because_of_the_time(time)
+			self.assertTrue(refused)
+			self.assertIn("Datum liegt in der Zukunft", summary)
+
+	def test_future_is_refused_for_exempt_users_too(self):
+		self.assertTrue(self.refused_because_of_the_time("12:00, 1. Jan. 2099", "Euku")[0])
+
+	def test_old_time(self):
+		refused, summary = self.refused_because_of_the_time("20:40, 25. Sep. 2026")
+		self.assertTrue(refused)
+		self.assertIn("Datum ist älter als 30 Tage", summary)
+
+	def test_old_time_by_exempt_user(self):
+		self.assertFalse(self.refused_because_of_the_time("20:40, 25. Sep. 2016", "Euku")[0])
+
+	def test_accepted_times(self):
+		for time in ("20:40, 27. Sep. 2026", "22:30, 26. Okt. 2026"):
+			self.setUp()
+			self.assertFalse(self.refused_because_of_the_time(time)[0])
+
+	def test_old_time_of_a_new_user(self):
+		self.run_bot([rev("Neu", 2, newUser("Neu").replace("2026", "2016")), rev(BOT, 1, "")])
+		self.assertEqual(self.db.users, [])
+
+	def test_local_now_is_german_time(self):
+		hours = (loadScript().localNow() - datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)).total_seconds() / 3600
+		self.assertIn(round(hours), (1, 2))
+
+	def test_self_confirmation(self):
+		self.run_bot([rev("A", 2, ack("A", "A")), rev(BOT, 1, "")])
+		self.assertEqual(self.db.confirmations, [])
+		self.assertIn("Selbstbestätigung", self.workPage.puts[0][1])
 
 	def test_similar_name_is_another_user(self):
 		# a database that does not care about case and accents

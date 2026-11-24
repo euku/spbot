@@ -13,7 +13,8 @@ import re               # Used for regular expressions
 import pywikibot        # pywikibot framework
 from pywikibot import textlib
 from time import localtime, strftime    # strftime-Function and related
-from datetime import datetime
+from datetime import datetime, timedelta
+from pytz import timezone
 import time
 import pymysql
 import traceback
@@ -38,6 +39,9 @@ newUserListPage = "Wikipedia:Persönliche Bekanntschaften/Neu dazugekommen"
 reportPage = "Benutzer Diskussion:Euku"  # irregular entries are reported here
 ackCheckExemptUsers = ["Euku"]  # these users may enter confirmations and new users for others
 refuseIrregularEntries = True  # True => irregular entries are not stored; False => stored, but reported
+# the time of an entry is typed by the user (usually ~~~~~); older entries only by ackCheckExemptUsers
+maxEntryAge = timedelta(days=30)
+maxEntryFuture = timedelta(hours=2)
 maxRevisionsToCheck = 50  # how far back the version history is searched at most
 
 # debugging
@@ -199,6 +203,28 @@ def makeTimestamp(year, month, day, hours, minutes):
 
 
 """
+   current time on dewiki like in the signatures (naive)
+"""
+def localNow():
+	return datetime.now(timezone("Europe/Berlin")).replace(tzinfo=None)
+
+
+"""
+   why the timestamp of an entry (see makeTimestamp) is not accepted, or None
+   isExempt: entered by one of the ackCheckExemptUsers, who may add old entries
+"""
+def timestampProblem(timestamp, isExempt=False):
+	if timestamp is None:
+		return "ungültiges Datum"
+	age = localNow() - datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+	if age < -maxEntryFuture:
+		return "Datum liegt in der Zukunft"
+	if age > maxEntryAge and not isExempt:
+		return "Datum ist älter als %s Tage" % maxEntryAge.days
+	return None
+
+
+"""
    sends information to the DB API skript
    returns (ADDED|ALREADY|REFUSED, reason); raises pymysql.DatabaseError or
    ConfirmationNotStored if it is unclear whether the confirmation was stored
@@ -216,6 +242,8 @@ def addConfirmation(db, bestaetigerName, bestaetigterName, comment, timestamp):
 			return REFUSED, "%s ist kein Teilnehmer" % name
 	bestaetigerID = bestaetiger[1]
 	bestaetigterID = bestaetigter[1]
+	if bestaetigerID == bestaetigterID:
+		return REFUSED, "Selbstbestätigung"
 
 	if db.get_cf_count_by_confirmed(bestaetigerID) < 3:
 		output("Darf noch nicht bestätigen")
@@ -415,12 +443,13 @@ class PBBot:
 			timestamp = makeTimestamp(year, month, day, hours, minutes)
 			author, revid = authors.get(userKey(currentName), (None, None))
 			irregular = author is None or normalizeUser(author) not in exemptUsers | {currentName}
+			isExempt = author is not None and normalizeUser(author) in exemptUsers
 			if irregular:
 				output("irregulär: %s eingetragen von %s" % (currentName, author))
 			if irregular and refuseIrregularEntries:
 				status, reason = REFUSED, "nicht vom Benutzer selbst eingetragen"
-			elif timestamp is None:
-				status, reason = REFUSED, "ungültiges Datum"
+			elif timestampProblem(timestamp, isExempt):
+				status, reason = REFUSED, timestampProblem(timestamp, isExempt)
 			else:
 				try:
 					status, reason = addUser(self.db, currentName, timestamp)
@@ -453,12 +482,13 @@ class PBBot:
 			timestamp = makeTimestamp(year, month, day, hours, minutes)
 			author, revid = authors.get(ackKey(certifier, certified), (None, None))
 			irregular = author is None or normalizeUser(author) not in exemptUsers | {certifier}
+			isExempt = author is not None and normalizeUser(author) in exemptUsers
 			if irregular:
 				output("irregulär: %s -> %s eingetragen von %s" % (certifier, certified, author))
 			if irregular and refuseIrregularEntries:
 				status, reason = REFUSED, "nicht vom Bestätiger eingetragen"
-			elif timestamp is None:
-				status, reason = REFUSED, "ungültiges Datum"
+			elif timestampProblem(timestamp, isExempt):
+				status, reason = REFUSED, timestampProblem(timestamp, isExempt)
 			else:
 				try:
 					status, reason = addConfirmation(self.db, certifier, certified, comment, timestamp)
