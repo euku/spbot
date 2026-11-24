@@ -207,7 +207,8 @@ def addConfirmation(db, bestaetigerName, bestaetigterName, comment, timestamp):
 	bestaetiger = db.get_user_by_name(bestaetigerName)
 	bestaetigter = db.get_user_by_name(bestaetigterName)
 	for user, name in ((bestaetiger, bestaetigerName), (bestaetigter, bestaetigterName)):
-		if user is None:
+		# the exact name: accounts that differ only in case or accents are different users
+		if user is None or user[0] != name:
 			return REFUSED, "%s ist kein Teilnehmer" % name
 		# hidden (former) and banned users: the edit summary is public, so do not tell the exact reason
 		if user[3] or user[4]:
@@ -260,6 +261,10 @@ def addUser(db, userName, timestamp):
 		if not db.add_user(userName, timestamp):
 			return REFUSED, "Benutzer existiert nicht"
 	except pymysql.IntegrityError:
+		# the name in the database is unique without regard to case and accents, so this can also be another user
+		if db.get_user_by_name(userName) is None and db.get_user_by_id(db.get_mw_user_id(userName)) is None:
+			output("Name zu ähnlich zu einem vorhandenen Teilnehmer: " + userName)
+			return REFUSED, "Name ist dem eines anderen Teilnehmers zu ähnlich, bitte auf der Diskussionsseite melden"
 		output("user " + userName + " already in")
 		return ALREADY, ""
 	return ADDED, ""

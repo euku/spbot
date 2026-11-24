@@ -302,6 +302,36 @@ class TestRun(unittest.TestCase):
 		self.assertIn("neuer Benutzer [[:User:Neuling|Neuling]] (eingetragen von Mallory, abgelehnt", self.workPage.puts[0][1])
 		self.assertEqual(len(self.reportPage.puts), 1)
 
+	def test_similar_name_is_another_user(self):
+		# a database that does not care about case and accents
+		self.db.get_user_by_name = lambda name: ("Müller", "id-Müller", None, 0, 0) if name.lower() in ("müller", "muller") else (name, "id-" + name, None, 0, 0)
+		self.run_bot([rev("MULLER", 3, ack("MULLER", "B") + ack("A", "Muller")), rev("A", 2, ack("A", "Muller")), rev(BOT, 1, "")])
+		self.assertEqual(self.db.confirmations, [])
+		self.assertIn("MULLER ist kein Teilnehmer", self.workPage.puts[0][1])
+		self.assertIn("Muller ist kein Teilnehmer", self.workPage.puts[0][1])
+
+	def new_user_with_integrity_error(self, byName, byId):
+		def add_user(name, timestamp):
+			raise self.m.pymysql.IntegrityError()
+		self.db.add_user = add_user
+		self.db.get_user_by_name = lambda name: byName
+		self.db.get_mw_user_id = lambda name: 7
+		self.db.get_user_by_id = lambda userID: byId
+		self.run_bot([rev("Muller", 2, newUser("Muller")), rev(BOT, 1, "")])
+		return self.workPage.puts[0][1]
+
+	def test_new_user_already_in(self):
+		row = ("Muller", 7, None, 0, 0)
+		self.assertIn("Benutzer schon hinzugefügt: [[:User:Muller|Muller]]", self.new_user_with_integrity_error(row, row))
+
+	def test_new_user_already_in_under_the_old_name(self):
+		summary = self.new_user_with_integrity_error(None, ("Alter Name", 7, None, 0, 0))
+		self.assertIn("Benutzer schon hinzugefügt: [[:User:Muller|Muller]]", summary)
+
+	def test_new_user_with_a_similar_name_is_not_taken_for_the_other_one(self):
+		summary = self.new_user_with_integrity_error(None, None)
+		self.assertIn("Benutzer abgelehnt: [[:User:Muller|Muller]] (Name ist dem eines anderen Teilnehmers zu ähnlich", summary)
+
 	def test_banned_user_may_not_confirm(self):
 		self.db.get_user_by_name = lambda name: (name, "id-" + name, None, 0, 1 if name == "Gesperrt" else 0)
 		self.run_bot([rev("Gesperrt", 2, ack("Gesperrt", "B")), rev(BOT, 1, "")])
