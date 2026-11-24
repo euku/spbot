@@ -4,7 +4,7 @@ import pywikibot
 
 from archive_resolved import bot as botModule
 from archive_resolved import core
-from conftest import NOW, FakeRevision, makeBot, makeDoc
+from conftest import NOW, FakeRevision, FakeSite, makeBot, makeDoc
 
 ORIGIN = "Benutzer Diskussion:Test"
 ARCHIVE = "Benutzer Diskussion:Test/Archiv/2026"
@@ -305,6 +305,32 @@ def test_too_big_archive_is_found_before_saving():
     doc = run(bot, TWO_TARGETS)
     assert bot.site.saved() == {}
     assert (doc.outcome, doc.outcomeKey, doc.outcomeArgs) == ('skipped', 'error.too_big', {'target': OKT})
+
+
+def test_archive_page_on_another_wiki_is_refused():
+    bot = makeBot()
+    bot.site.page(OKT).site = FakeSite()
+    with pytest.raises(core.WrongOptions):
+        run(bot, TWO_TARGETS)
+    assert bot.site.saved() == {}
+
+
+def test_archive_redirect_to_another_wiki_is_not_followed():
+    bot = makeBot()
+    bot.site.page(ARCHIVE, "#WEITERLEITUNG [[x]]").redirectTo = ARCHIVE + "/neu"
+    bot.site.page(ARCHIVE + "/neu", "{{Archiv}}").site = FakeSite()
+    doc = run(bot)
+    assert bot.site.saved() == {}
+    assert doc.outcomeKey == 'skip.redirect'
+
+
+@pytest.mark.parametrize("namespace", [8, 10, 828])
+def test_forbidden_namespaces(namespace):
+    bot = makeBot()
+    bot.site.page(OKT)._namespace = namespace
+    doc = run(bot, TWO_TARGETS)
+    assert bot.site.saved() == {}
+    assert (doc.outcome, doc.outcomeKey) == ('skipped', 'skip.namespace')
 
 
 def test_main_namespace_is_found_before_saving():

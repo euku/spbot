@@ -42,6 +42,8 @@ COMMENTS_ONLY = re.compile(r"(?:\s*<!--.*?-->)*\s*", re.DOTALL)
 
 # characters that are not allowed in page titles; a ((variable)) never produces them
 INVALID_TITLE_CHARS = re.compile(r"[\[\]{}<>|#]")
+# never archive into these namespaces: MediaWiki, Template, Module (pages there have an effect on other pages)
+FORBIDDEN_TARGET_NAMESPACES = (8, 10, 828)
 UTC_TIMESTAMP_END = re.compile(r"\(UTC\)\s*\Z", re.IGNORECASE)
 
 #
@@ -540,7 +542,8 @@ class WikiDocument:
         if not targetPage.isRedirectPage():
             return targetPage
         redirectTarget = targetPage.getRedirectTarget()
-        if redirectTarget.title().startswith(self.originPageName + '/') and not redirectTarget.isRedirectPage():
+        if redirectTarget.site == self.bot.site and redirectTarget.title().startswith(self.originPageName + '/') \
+                and not redirectTarget.isRedirectPage():
             pywikibot.output(f'[[{targetPageName}]] is a redirect, archiving into [[{redirectTarget.title()}]] instead')
             return redirectTarget
         pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because archive [[{targetPageName}]] '
@@ -613,6 +616,13 @@ class WikiDocument:
                 raise WrongOptions('opt.invalid_title', target=targetPageName)
             if targetPage is None:
                 self._skipped('skip.redirect', target=targetPageName)
+                return False
+            # e.g. "en:User:X" is a page of another wiki; its title() without the prefix would be a local page
+            if targetPage.site != self.bot.site:
+                raise WrongOptions('opt.invalid_title', target=targetPageName)
+            if targetPage.namespace() in FORBIDDEN_TARGET_NAMESPACES:
+                pywikibot.output(f"Archiving into the namespace of [[{targetPageName}]] is not allowed")
+                self._skipped('skip.namespace', target=targetPageName)
                 return False
             if not targetPage.botMayEdit():
                 pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
