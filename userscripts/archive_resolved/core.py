@@ -630,11 +630,26 @@ class WikiDocument:
         self.archiveJobFirstTitleByTarget = firstTitleByTarget
         return True
 
+    def _originUnchanged(self, originPage) -> bool:
+        """
+            Whether the page (freshly loaded) still is at the revision the sections were taken from.
+            modifiedText was made from that revision; saving it over a newer one would remove
+            everything written in the meantime.
+        """
+        if not originPage.exists():
+            return False
+        return self.revid is None or originPage.latest_revision.revid == self.revid
+
     def executeArchiving(self):
         # first, check if we can edit all the pages
-        if not pywikibot.Page(self.bot.site, self.originPageName).botMayEdit():
+        originPage = pywikibot.Page(self.bot.site, self.originPageName)
+        if not originPage.botMayEdit():
             pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it is protected.<<default>>')
             self._skipped('skip.protected')
+            return
+        if not self._originUnchanged(originPage):
+            pywikibot.output(f'Skipping {self.originPageName} because it was changed since it was read')
+            self._skipped('skip.origin_changed')
             return
         if not self._resolveTargets():
             return
@@ -738,23 +753,25 @@ class WikiDocument:
         self.modifiedText = self.bot.localBot.applyLocalModifications(self.modifiedText)
         try:
             originPage = pywikibot.Page(self.bot.site, self.originPageName)
-            self._showDiffs(self.originPageName, originPage.text, self.modifiedText)
+            # .text loads the current revision, which then is the base revision for the edit conflict
+            # detection of the API. So it has to be the revision that was examined.
+            currentText = originPage.text
+            if not self._originUnchanged(originPage):
+                pywikibot.output(f'Skipping {self.originPageName} because it was changed since it was read')
+                self._skipped('skip.origin_conflict')
+                return
+            self._showDiffs(self.originPageName, currentText, self.modifiedText)
 
             if self.bot.dryRun:
                 pywikibot.output(f'Skipping {self.originPageName} because of "dry run"')
                 pywikibot.output(f'edit comment: {archiveOverallSummary}')
             else:
                 originPage.text = self.modifiedText
-                originPage.save(archiveOverallSummary, minor=True)
+                # nocreate: never recreate a page that was deleted or moved in the meantime
+                originPage.save(archiveOverallSummary, minor=True, nocreate=True)
                 pywikibot.output(f'edit comment: {archiveOverallSummary}')
             self.outcome = 'dryrun' if self.bot.dryRun else 'archived'
-        except pywikibot.exceptions.NoPageError:
-            if not self.bot.dryRun:
-                originPage.text = self.modifiedText
-                originPage.save(archiveOverallSummary, minor=True)
-            pywikibot.output(f'edit comment: {archiveOverallSummary}')
-            self.outcome = 'dryrun' if self.bot.dryRun else 'archived'
-        except pywikibot.exceptions.EditConflictError:
+        except (pywikibot.exceptions.EditConflictError, pywikibot.exceptions.NoCreateError):
             pywikibot.output(f'Skipping {self.originPageName} because of edit conflict')
             self._skipped('skip.origin_conflict')
 

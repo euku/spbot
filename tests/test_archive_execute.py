@@ -4,7 +4,7 @@ import pywikibot
 
 from archive_resolved import bot as botModule
 from archive_resolved import core
-from conftest import makeBot, makeDoc
+from conftest import NOW, FakeRevision, makeBot, makeDoc
 
 ORIGIN = "Benutzer Diskussion:Test"
 ARCHIVE = "Benutzer Diskussion:Test/Archiv/2026"
@@ -20,14 +20,26 @@ PAGE = OPTIONS + OLD + OPEN
 def run(bot, text=PAGE, title=ORIGIN):
     """Like ArchiveRobot._runOnPage for one page, returns the WikiDocument."""
     bot.site.page(title, text)
+    doc = prepare(bot, text, title)
+    if doc.hasWorkToDo():
+        doc.executeArchiving()
+    return doc
+
+
+def prepare(bot, text, title=ORIGIN):
+    """The document of the current revision of the page, up to executeArchiving()."""
     doc = makeDoc(text, bot=bot, title=title)
+    doc.revid = bot.site.page(title).latest_revision.revid
     doc.findOptions()
     doc.divideIntoSlices()
     doc.examineDiscussions()
     doc.prepareArchiving()
-    if doc.hasWorkToDo():
-        doc.executeArchiving()
     return doc
+
+
+def editByOther(page, text):
+    page.text = text
+    page.latest_revision = FakeRevision("Other", NOW)
 
 
 def test_archive_new_page():
@@ -199,6 +211,54 @@ def test_unexpected_archive_error_but_saved_after_all():
     run(bot)
     assert bot.site.page(ARCHIVE).text == "{{Archiv}}\n\n" + OLD_ARCHIVED
     assert bot.site.page(ORIGIN).text == OPTIONS + OPEN
+
+
+def test_edit_since_reading_is_not_overwritten():
+    bot = makeBot()
+    page = bot.site.page(ORIGIN, PAGE)
+    doc = prepare(bot, PAGE)
+    editByOther(page, PAGE + "neuer Beitrag\n")
+    doc.executeArchiving()
+    assert bot.site.saved() == {}   # neither the archive nor the page itself
+    assert page.text == PAGE + "neuer Beitrag\n"
+    assert (doc.outcome, doc.outcomeKey) == ('skipped', 'skip.origin_changed')
+
+
+def test_edit_while_saving_the_archive_is_not_overwritten():
+    bot = makeBot()
+    page = bot.site.page(ORIGIN, PAGE)
+    doc = prepare(bot, PAGE)
+    archive = bot.site.page(ARCHIVE)
+    store = archive._store
+
+    def storeAndEdit(text, summary):
+        store(text, summary)
+        editByOther(page, PAGE + "neuer Beitrag\n")
+    archive._store = storeAndEdit
+    doc.executeArchiving()
+    assert set(bot.site.saved()) == {ARCHIVE}
+    assert page.text == PAGE + "neuer Beitrag\n"
+    assert (doc.outcome, doc.outcomeKey) == ('skipped', 'skip.origin_conflict')
+
+
+def test_deleted_page_is_not_recreated():
+    bot = makeBot()
+    page = bot.site.page(ORIGIN, PAGE)
+    doc = prepare(bot, PAGE)
+    page._exists = False
+    doc.executeArchiving()
+    assert bot.site.saved() == {}
+    assert doc.outcomeKey == 'skip.origin_changed'
+
+
+@pytest.mark.parametrize("error", [pywikibot.exceptions.EditConflictError, pywikibot.exceptions.NoCreateError])
+def test_conflict_reported_by_the_server(error):
+    bot = makeBot()
+    page = bot.site.page(ORIGIN, PAGE)
+    doc = prepare(bot, PAGE)
+    page.saveError = error(page)
+    doc.executeArchiving()
+    assert (doc.outcome, doc.outcomeKey) == ('skipped', 'skip.origin_conflict')
 
 
 def test_two_targets_summaries():
