@@ -297,6 +297,7 @@ class WikiDocument:
         self.headlineLevel       = 2                  # level of headline to work on (no. of "=")
         self.numberOfDiscussionsToArchive = 0         # Number of discussions that will be archived
         self.archiveJobTextByTarget    = {}           # Dict in which archive text will be stored in
+        self.archiveJobSectionsByTarget = {}          # The same text as list of the single sections
         self.archiveJobCounterByTarget  = {}          # Number of archived discs per container
         self.archiveJobFirstTitleByTarget = {}        # The first section title that is going to this page
 
@@ -599,7 +600,7 @@ class WikiDocument:
             of the origin page by their target, so the edit summaries name the page really written.
             Returns False if the origin page must be skipped.
         """
-        textByTarget, counterByTarget, firstTitleByTarget = {}, {}, {}
+        textByTarget, sectionsByTarget, counterByTarget, firstTitleByTarget = {}, {}, {}, {}
         for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
             if self._isArchiveOfItself(targetPageName):
                 pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because it would archive into '
@@ -617,15 +618,22 @@ class WikiDocument:
                 pywikibot.output(f'<<lightpurple>>Skipping {targetPageName} because it is protected.<<default>>')
                 self._skipped('skip.target_protected', target=targetPageName)
                 return False
+            if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
+                pywikibot.output("Archiving into the (Main) namespace 0!")
+                self._skipped('skip.main_namespace', target=targetPageName)
+                return False
             title = targetPage.title()
             if title in textByTarget:
                 textByTarget[title] += discussionsAsText
+                sectionsByTarget[title] += self.archiveJobSectionsByTarget[targetPageName]
                 counterByTarget[title] += self.archiveJobCounterByTarget[targetPageName]
             else:
                 textByTarget[title] = discussionsAsText
+                sectionsByTarget[title] = list(self.archiveJobSectionsByTarget[targetPageName])
                 counterByTarget[title] = self.archiveJobCounterByTarget[targetPageName]
                 firstTitleByTarget[title] = self.archiveJobFirstTitleByTarget[targetPageName]
         self.archiveJobTextByTarget = textByTarget
+        self.archiveJobSectionsByTarget = sectionsByTarget
         self.archiveJobCounterByTarget = counterByTarget
         self.archiveJobFirstTitleByTarget = firstTitleByTarget
         return True
@@ -654,74 +662,114 @@ class WikiDocument:
         if not self._resolveTargets():
             return
 
-        if len(self.archiveJobTextByTarget) >= 1:
-            skipThisPage = False
-            firstRemovedSectionFromSourceLink = ''
-            for targetPageName, discussionsAsText in self.archiveJobTextByTarget.items():
-                targetEditComment = ""
-                firstNewSectionInArchive = self.archiveJobFirstTitleByTarget[targetPageName]
-                firstNewSectionInArchiveLink = f'{targetPageName}#{firstNewSectionInArchive}|{firstNewSectionInArchive}'
-                if firstRemovedSectionFromSourceLink == '':
-                    firstRemovedSectionFromSourceLink = firstNewSectionInArchiveLink
+        if not self.archiveJobTextByTarget:
+            return
+        # Build and check all archive pages before the first one is saved: if one of them cannot be
+        # saved, the sections stay on the origin page and none of the other archives may get a copy.
+        edits = []
+        maxSize = self._maxPageSize()
+        for targetPageName, sections in self.archiveJobSectionsByTarget.items():
+            try:
+                pywikibot.output(f"Opening page [[{targetPageName}]]")
+                targetPage = pywikibot.Page(self.bot.site, targetPageName)  # redirects are resolved already
+                newText, newSections = self._buildArchiveText(targetPage, sections)
+            except Exception:
+                self.failedTarget = targetPageName
+                raise
+            if newText is None:
+                pywikibot.output(f"All sections are in [[{targetPageName}]] already (from an earlier run)")
+                continue
+            if maxSize is not None and len(newText.encode('utf-8')) > maxSize:
+                pywikibot.output(f'<<lightpurple>>Skipping {self.originPageName} because [[{targetPageName}]] '
+                                 f'would get too big.<<default>>')
+                self._skipped('error.too_big', target=targetPageName)
+                return
+            edits.append((targetPageName, targetPage, newText, newSections))
 
-                if self.archiveJobCounterByTarget[targetPageName] == 1:
-                    targetEditComment = self.bot.localBot.archiveSumTargetS.format(sourcePage=self.originPageName)
-                else:
-                    targetEditComment = self.bot.localBot.archiveSumTargetP.format(
-                                    numOfSections=self.archiveJobCounterByTarget[targetPageName],
-                                    sourcePage=self.originPageName)
-                if self.bot.localBot.firstNewSectionInArchiveSummary != '': # for projects without translation
-                    targetEditComment += self.bot.localBot.firstNewSectionInArchiveSummary.format(firstNewSectionInArchiveLink=firstNewSectionInArchiveLink)
-                
-                newText = None
-                try:
-                    pywikibot.output(f"Opening page [[{targetPageName}]]")
-                    targetPage = pywikibot.Page(self.bot.site, targetPageName)  # redirects are resolved already
-                    if self.bot.localBot.mustNotArchiveToMainNamespace() and targetPage.namespace() == 0:
-                        pywikibot.output("Archiving into the (Main) namespace 0!")
-                        self._skipped('skip.main_namespace', target=targetPageName)
-                        skipThisPage = True
-                    else:
-                        if targetPage.exists():
-                            newText = self.substSectionResolvedTempl(targetPage.get() + "\n\n" + discussionsAsText)
-                        else:
-                            newText = self.substSectionResolvedTempl(self.bot.localBot.headTemplate + "\n\n" + discussionsAsText)
-                        
-                        self._showDiffs(targetPageName, targetPage.text, newText)
-                        if self.bot.dryRun:
-                            pywikibot.output(f'Skipping {targetPageName} because of "dry run"')
-                        else:
-                            targetPage.text = newText
-                            targetPage.save(targetEditComment, minor=True, force=True)
-                        pywikibot.output(f'edit comment: {targetEditComment}')
-                except pywikibot.exceptions.EditConflictError:
-                    pywikibot.output("<<lightpurple>>Edit conflict!<<default>>")
-                    self._skipped('skip.target_conflict', target=targetPageName)
-                    skipThisPage = True
-                except pywikibot.exceptions.LockedPageError:
-                    pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
-                    self._skipped('skip.target_locked', target=targetPageName)
-                    skipThisPage = True
-                except:
-                    # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
-                    pywikibot.output(f"\n<<lightpurple>>Error at {targetPageName}<<default>> skip page\n")
-                    pywikibot.output(f"Unexpected error: {str(traceback.format_exc())}")
-                    pywikibot.output(f"check if [[{targetPageName}]] was already saved")
-                    # The save may have succeeded server-side despite the error (e.g. timeout).
-                    # Only continue (and later remove the sections from the origin page) if the
-                    # archive page now really contains our new text; otherwise abort this page
-                    # so no discussions get lost.
-                    if newText is None or self.bot.dryRun or not self._targetWasSaved(targetPageName, newText):
-                        pywikibot.output(f"<<lightpurple>>[[{targetPageName}]] was NOT saved, origin page stays untouched<<default>>")
-                        self.failedTarget = targetPageName
-                        raise
-                    pywikibot.output(f"[[{targetPageName}]] was saved after all")
-            
-            if skipThisPage:
-                pywikibot.output(f'Skipping {self.originPageName} because "skipThisPage" is True')
+        for targetPageName, targetPage, newText, newSections in edits:
+            # stop at the first archive that was not saved; the ones saved before are not
+            # written again by the next run (see _buildArchiveText)
+            if not self._saveArchivePage(targetPageName, targetPage, newText, newSections):
+                pywikibot.output(f'Skipping {self.originPageName} because [[{targetPageName}]] was not saved')
+                return
+
+        firstTarget = next(iter(self.archiveJobTextByTarget))
+        self._performArchivingOnOriginPage(self._firstSectionLink(firstTarget))
+        sleep(2)
+
+    def _firstSectionLink(self, targetPageName: str) -> str:
+        firstSection = self.archiveJobFirstTitleByTarget[targetPageName]
+        return f'{targetPageName}#{firstSection}|{firstSection}'
+
+    def _maxPageSize(self):
+        """The maximum page size of the wiki in bytes, None if it is unknown."""
+        try:
+            return int(self.bot.site.siteinfo['maxarticlesize'])
+        except Exception:
+            return None
+
+    def _buildArchiveText(self, targetPage, sections: list) -> tuple:
+        """
+            (new text of the archive page, number of sections added to it). Sections that are in the
+            archive already are left out: they come from an earlier run that could not save the origin
+            page or another archive. The text is None if nothing is left.
+        """
+        if not targetPage.exists():
+            text = self.bot.localBot.headTemplate + "\n\n" + "".join(sections)
+            return self.substSectionResolvedTempl(text), len(sections)
+        oldText = targetPage.get()
+        missing = [section for section in sections if not self._containsSection(oldText, section)]
+        if not missing:
+            return None, 0
+        return self.substSectionResolvedTempl(oldText + "\n\n" + "".join(missing)), len(missing)
+
+    def _containsSection(self, archiveText: str, section: str) -> bool:
+        """Whether the section (as it is written to archives) is in the text as a whole, on lines of its own."""
+        section = self.substSectionResolvedTempl(section).strip()
+        # up to the next headline or the end: an archived section that goes on is another one
+        return re.search(r"(?:\A|\n)" + re.escape(section) + r"\s*(?:\Z|\n=)", archiveText) is not None
+
+    def _saveArchivePage(self, targetPageName: str, targetPage, newText: str, numberOfSections: int) -> bool:
+        """Returns False if the archive page was not saved for an expected reason."""
+        if numberOfSections == 1:
+            targetEditComment = self.bot.localBot.archiveSumTargetS.format(sourcePage=self.originPageName)
+        else:
+            targetEditComment = self.bot.localBot.archiveSumTargetP.format(
+                            numOfSections=numberOfSections, sourcePage=self.originPageName)
+        if self.bot.localBot.firstNewSectionInArchiveSummary != '': # for projects without translation
+            targetEditComment += self.bot.localBot.firstNewSectionInArchiveSummary.format(
+                            firstNewSectionInArchiveLink=self._firstSectionLink(targetPageName))
+        try:
+            self._showDiffs(targetPageName, targetPage.text, newText)
+            if self.bot.dryRun:
+                pywikibot.output(f'Skipping {targetPageName} because of "dry run"')
             else:
-                self._performArchivingOnOriginPage(firstRemovedSectionFromSourceLink)
-                sleep(2)
+                targetPage.text = newText
+                targetPage.save(targetEditComment, minor=True, force=True)
+            pywikibot.output(f'edit comment: {targetEditComment}')
+        except pywikibot.exceptions.EditConflictError:
+            pywikibot.output("<<lightpurple>>Edit conflict!<<default>>")
+            self._skipped('skip.target_conflict', target=targetPageName)
+            return False
+        except pywikibot.exceptions.LockedPageError:
+            pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
+            self._skipped('skip.target_locked', target=targetPageName)
+            return False
+        except:
+            # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
+            pywikibot.output(f"\n<<lightpurple>>Error at {targetPageName}<<default>> skip page\n")
+            pywikibot.output(f"Unexpected error: {str(traceback.format_exc())}")
+            pywikibot.output(f"check if [[{targetPageName}]] was already saved")
+            # The save may have succeeded server-side despite the error (e.g. timeout).
+            # Only continue (and later remove the sections from the origin page) if the
+            # archive page now really contains our new text; otherwise abort this page
+            # so no discussions get lost.
+            if self.bot.dryRun or not self._targetWasSaved(targetPageName, newText):
+                pywikibot.output(f"<<lightpurple>>[[{targetPageName}]] was NOT saved, origin page stays untouched<<default>>")
+                self.failedTarget = targetPageName
+                raise
+            pywikibot.output(f"[[{targetPageName}]] was saved after all")
+        return True
 
     def _performArchivingOnOriginPage(self, firstRemovedSectionFromSourceLink: str):
         distributionComment = ''
@@ -787,9 +835,11 @@ class WikiDocument:
 
         if target in self.archiveJobTextByTarget:
             self.archiveJobTextByTarget[target] += sliceText
+            self.archiveJobSectionsByTarget[target].append(sliceText)
             self.archiveJobCounterByTarget[target] += 1
         else:
             self.archiveJobTextByTarget[target] = sliceText
+            self.archiveJobSectionsByTarget[target] = [sliceText]
             self.archiveJobCounterByTarget[target] = 1
         
         if target not in self.archiveJobFirstTitleByTarget:

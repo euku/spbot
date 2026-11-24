@@ -261,6 +261,82 @@ def test_conflict_reported_by_the_server(error):
     assert (doc.outcome, doc.outcomeKey) == ('skipped', 'skip.origin_conflict')
 
 
+# two old sections that go to two archive pages (the first one to ARCHIVE/Nov)
+TWO_TARGETS = OPTIONS.replace("((Jahr))", "((Jahr))/((Monat:Kurz))") + OLD + (
+    "== Okt ==\nq --A 10:00, 1. Okt. 2026 (CEST)\n{{Erledigt|1=--A 10:00, 2. Okt. 2026 (CEST)}}\n") + OPEN
+NOV, OKT = ARCHIVE + "/Nov", ARCHIVE + "/Okt"
+
+
+@pytest.mark.parametrize("error", [TimeoutError("x"), "conflict", "locked"])
+def test_failing_second_archive_makes_no_copies(error):
+    bot = makeBot()
+    okt = bot.site.page(OKT)
+    okt.saveError = {"conflict": pywikibot.exceptions.EditConflictError(okt),
+                     "locked": pywikibot.exceptions.LockedPageError(okt)}.get(error, error)
+    for _ in range(3):
+        try:
+            run(bot, TWO_TARGETS)
+        except TimeoutError:
+            pass
+        assert bot.site.page(ORIGIN).text == TWO_TARGETS
+    assert len(bot.site.page(NOV).saves) == 1
+    assert bot.site.page(NOV).text.count("== Alt ==") == 1
+    # the next run without the error finishes the job
+    okt.saveError = None
+    doc = run(bot, TWO_TARGETS)
+    assert doc.outcome == 'archived'
+    assert len(bot.site.page(NOV).saves) == 1
+    assert bot.site.page(OKT).text.count("== Okt ==") == 1
+    assert bot.site.page(ORIGIN).text.endswith(OPEN) and "== Alt ==" not in bot.site.page(ORIGIN).text
+
+
+def test_failing_first_archive_leaves_the_second_alone():
+    bot = makeBot()
+    nov = bot.site.page(NOV)
+    nov.saveError = pywikibot.exceptions.LockedPageError(nov)
+    run(bot, TWO_TARGETS)
+    assert bot.site.saved() == {}
+
+
+def test_too_big_archive_is_found_before_saving():
+    bot = makeBot()
+    bot.site.siteinfo = {'maxarticlesize': 1000}
+    bot.site.page(OKT, "ä" * 450)   # 900 bytes
+    doc = run(bot, TWO_TARGETS)
+    assert bot.site.saved() == {}
+    assert (doc.outcome, doc.outcomeKey, doc.outcomeArgs) == ('skipped', 'error.too_big', {'target': OKT})
+
+
+def test_main_namespace_is_found_before_saving():
+    bot = makeBot()
+    bot.site.page(OKT)._namespace = 0
+    doc = run(bot, TWO_TARGETS)
+    assert bot.site.saved() == {}
+    assert doc.outcomeKey == 'skip.main_namespace'
+
+
+def test_new_section_next_to_one_already_archived():
+    """Only the missing section is added; the summary counts only this one."""
+    bot = makeBot()
+    bot.site.page(ARCHIVE, "{{Archiv}}\n\n" + OLD_ARCHIVED.rstrip())
+    new = OLD.replace("== Alt ==", "== Neu ==")
+    run(bot, OPTIONS + OLD + new + OPEN)
+    [(text, summary)] = bot.site.saved()[ARCHIVE]
+    assert text.count("== Alt ==") == 1 and text.count("== Neu ==") == 1
+    assert summary.startswith("Archiviere 1 Abschnitt von")
+
+
+@pytest.mark.parametrize("archived", [
+    OLD_ARCHIVED + "noch eine Antwort --B 10:00, 7. Nov. 2026 (CET)\n",   # goes on
+    "x" + OLD_ARCHIVED,                                                    # not at the start of a line
+])
+def test_similar_section_in_the_archive_is_no_copy(archived):
+    bot = makeBot()
+    bot.site.page(ARCHIVE, "{{Archiv}}\n\n" + archived)
+    run(bot)
+    assert bot.site.page(ARCHIVE).text.count("== Alt ==") == 2
+
+
 def test_two_targets_summaries():
     text = OPTIONS.replace("((Jahr))", "((Jahr))/((Monat:Kurz))") + OLD + (
         "== Okt ==\nq --A 10:00, 1. Okt. 2026 (CEST)\n{{Erledigt|1=--A 10:00, 2. Okt. 2026 (CEST)}}\n") + OPEN
