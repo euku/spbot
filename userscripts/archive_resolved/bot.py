@@ -144,6 +144,13 @@ class ArchiveRobot:
         except Exception:
             pywikibot.output("Could not write the run summary: " + traceback.format_exc())
 
+    def _reportError(self, title, error: OptionsError):
+        """Writes the error on the talk page (in the language of the wiki), unless there is a report already."""
+        page = pywikibot.Page(self.site, title)
+        if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
+            hintMsg = error.getMsg(self.localBot.language, wiki=True) + ' '
+            page.put(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), summary=self.localBot.errorTextSummary, bot=False, minor=False, force=False)
+
     def _runOnPage(self, page):
         wdoc = None
         try:
@@ -169,11 +176,11 @@ class ArchiveRobot:
             # Write error report to the same page
                 pywikibot.output("\t<<lightpurple>>Report error for %s<<default>>\n" % page.title())
                 pywikibot.output("Reason was: " + no.getMsg())
-                page = pywikibot.Page(self.site, page.title())
-                if not self.dryRun and (page.get().find(self.localBot.errorCategory) == -1):
-                    # paste only, if there is no such message; in the language of the wiki
-                    hintMsg = no.getMsg(self.localBot.language, wiki=True) + ' '
-                    page.put(page.get() + "\n\n" + (self.localBot.errorText % hintMsg), summary=self.localBot.errorTextSummary, bot=False, minor=False, force=False)
+                try:
+                    self._reportError(page.title(), no)
+                except Exception:
+                    # e.g. the page is protected; the error is in the run summary anyway
+                    pywikibot.output("Could not report the error on the page: " + traceback.format_exc())
                 if wdoc is not None:
                     wdoc.generateErrorReport()
                     wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)

@@ -153,3 +153,16 @@ def test_incomplete_run(tmp_path):
     assert end['complete'] is False and end['finished'] is None and end['byStatus'] == {'nothing': 1}
     [history] = records(tmp_path / 'archive-runs.jsonl')
     assert history == dict(end, project='commons', started=records(path)[0]['started'], dryRun=False)
+
+
+def test_template_error_is_recorded_if_it_cannot_be_reported(tmp_path):
+    path = tmp_path / 's.jsonl'
+    bot = makeBot()
+    page = bot.site.page(ORIGIN, "{{Autoarchiv-Erledigt|Alter=3}}\n== A ==\n")
+    page.saveError = pywikibot.exceptions.LockedPageError(page)
+    r = robot(bot, path)
+    r._runOnPage(page)
+    r.summary.end(True)
+    run, record, end = records(path)
+    assert record['status'] == 'optionserror' and record['messageKey'] == 'opt.missing'
+    assert end['byStatus'] == {'optionserror': 1}
