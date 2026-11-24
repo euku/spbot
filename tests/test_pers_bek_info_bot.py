@@ -125,3 +125,10 @@ def test_dry_run(m, site):
     m.DONOTSAVE = True
     m.informUser("A", ["X"], DATE)
     assert site.edits == []
+
+
+@pytest.mark.parametrize("arg", ["--dryrun", "-dry-run", "-x"])
+def test_unknown_argument(m, monkeypatch, arg):
+    monkeypatch.setattr(pywikibot, "handle_args", lambda: [arg])
+    m.BotDatabase = None   # would fail
+    assert m.main() == 2

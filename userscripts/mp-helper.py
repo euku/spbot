@@ -320,7 +320,8 @@ def main():
         elif arg.startswith("-api:"):
             base = arg[len("-api:"):].rstrip("/")
         else:
-            pywikibot.warning(arg + " wurde ignoriert")
+            pywikibot.error(f"unbekannter Parameter {arg}, nichts gemacht")
+            return 2
 
     now = utcnow()
     pywikibot.info(now.strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############"))

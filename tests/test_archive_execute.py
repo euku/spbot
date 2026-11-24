@@ -355,7 +355,7 @@ def test_two_targets_summaries():
 def test_parse_args():
     assert botModule.parseArgs([]) == {'dryRun': False, 'project': 'dewikipedia', 'page': None,
                                        'saveLocalLogFile': False, 'summary': True, 'full': False}
-    assert botModule.parseArgs(['-dryrun', '-project:commons', '-page:User talk:Foo bar', '-xyz']) == \
+    assert botModule.parseArgs(['-dryrun', '-project:commons', '-page:User talk:Foo bar']) == \
         {'dryRun': True, 'project': 'commons', 'page': 'User talk:Foo bar', 'saveLocalLogFile': False,
          'summary': True, 'full': False}
     assert botModule.parseArgs(['-full'])['full'] is True
@@ -363,6 +363,12 @@ def test_parse_args():
     assert botModule.parseArgs(['-project'])['project'] is None
     with pytest.raises(core.ArchivingError):
         botModule.parseArgs(['-page'])
+
+
+@pytest.mark.parametrize("arg", ['-xyz', '--dryrun', '-dry-run', '--dry-run', '-dry', 'dryrun', '-projects:x', '-pages:x'])
+def test_unknown_argument_stops_the_bot(arg):
+    with pytest.raises(core.ArchivingError):
+        botModule.parseArgs(['-project:commons', arg])
 
 
 def robot(bot):

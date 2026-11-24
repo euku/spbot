@@ -42,15 +42,16 @@ def parseArgs(args) -> dict:
         Parses the bot specific arguments (the ones left over by pywikibot.handle_args()).
         Returns a dict with the keys dryRun, project, page, saveLocalLogFile, summary, full.
         project is None if '-project' was given without a value.
+        An unknown argument stops the bot: it may be a misspelled '-dryrun'.
     """
     options = {'dryRun': False, 'project': 'dewikipedia', 'page': None, 'saveLocalLogFile': False, 'summary': True,
                'full': False}
     for arg in args:
         if arg == '-dryrun':
             options['dryRun'] = True
-        elif arg.startswith('-project'):
+        elif arg == '-project' or arg.startswith('-project:'):
             options['project'] = arg[9:] if len(arg) > 8 else None
-        elif arg.startswith('-page'):
+        elif arg == '-page' or arg.startswith('-page:'):
             if len(arg) == 5:
                 raise ArchivingError("'-page' used but no page given")
             options['page'] = arg[6:]
@@ -61,7 +62,7 @@ def parseArgs(args) -> dict:
         elif arg == '-full':
             options['full'] = True
         else:
-            pywikibot.output(arg + " was ignored")
+            raise ArchivingError(f"unknown argument '{arg}'")
     return options
 
 

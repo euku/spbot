@@ -251,3 +251,10 @@ def test_failure_counter(tmp_path):
     assert not os.path.exists(path)
     assert mp.recordRun(False, path) == 0
     assert mp.readFailures(path) == 1
+
+
+@pytest.mark.parametrize("arg", ["-dryrun", "--dry-run", "-x"])
+def test_unknown_argument_does_nothing(monkeypatch, arg):
+    monkeypatch.setattr(pywikibot, "handle_args", lambda: [arg])
+    monkeypatch.setattr(pywikibot, "Site", None)   # would fail
+    assert mp.main() == 2

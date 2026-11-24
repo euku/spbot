@@ -64,6 +64,7 @@ def makePywikibotStub():
 	pwb.error = lambda text: None
 	pwb.showDiff = lambda a, b: None
 	pwb.handle_args = lambda: []
+	pwb.config = types.SimpleNamespace(simulate=False)
 	pwb.exceptions = types.SimpleNamespace(Error=PywikibotError)
 	textlib = types.ModuleType("pywikibot.textlib")
 	textlib.replaceExcept = lambda text, old, new, exceptions: re.sub(old, new, text)
@@ -315,6 +316,37 @@ class TestRun(unittest.TestCase):
 		self.assertEqual(self.workPage.puts, [])
 		self.assertEqual(self.reportPage.puts, [])
 		self.assertEqual(self.db.confirmations, [])
+
+
+class TestParseArgs(unittest.TestCase):
+	def setUp(self):
+		self.m = loadScript()
+
+	def saves(self):
+		return not self.m.DONOTSAVE, not self.m.DONOTSAVEDB
+
+	def test_normal_run(self):
+		self.assertFalse(self.m.parseArgs([]))
+		self.assertEqual(self.saves(), (True, True))
+
+	def test_force(self):
+		self.assertTrue(self.m.parseArgs(["-force"]))
+		self.assertEqual(self.saves(), (True, True))
+
+	def test_dry_run(self):
+		self.m.parseArgs(["--dry-run"])
+		self.assertEqual(self.saves(), (False, False))
+
+	def test_simulate_does_not_change_the_database(self):
+		self.m.pywikibot.config.simulate = True
+		self.m.parseArgs([])
+		self.assertEqual(self.saves(), (False, False))
+
+	def test_unknown_argument(self):
+		for arg in ("--dryrun", "-dry-run", "-simulated"):
+			with self.assertRaises(SystemExit) as cm:
+				self.m.parseArgs([arg])
+			self.assertNotIn(cm.exception.code, (0, None))
 
 
 if __name__ == "__main__":

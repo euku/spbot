@@ -6,6 +6,7 @@
 	Options:
 	  -force      write the user lists even if there is nothing to do
 	  --dry-run   only show what would be done, change neither the database nor Wikipedia
+	  -simulate   (pywikibot) the same
 """
 import sys              # To not have wikipedia and this in one dir we'll import sys
 import re               # Used for regular expressions
@@ -522,14 +523,29 @@ class PBBot:
 	def shutdown(self):
 		self.db.close_connections()
 
-# start here
-isForceMode = False
-for arg in pywikibot.handle_args():
-	if arg in ('-force', '--force'):
-		isForceMode = True
-	elif arg in ('--dry-run', '-dryrun'):
+"""
+   reads the command line; returns isForceMode and sets DONOTSAVE and DONOTSAVEDB
+"""
+def parseArgs(args):
+	global DONOTSAVE, DONOTSAVEDB
+	isForceMode = False
+	for arg in args:
+		if arg in ('-force', '--force'):
+			isForceMode = True
+		elif arg in ('--dry-run', '-dryrun'):
+			DONOTSAVE = True
+			DONOTSAVEDB = True
+		else:
+			# may be a misspelled --dry-run
+			sys.exit("unbekannter Parameter %s, nichts gemacht" % arg)
+	# pywikibot's -simulate only stops the edits, the database must not be changed either
+	if pywikibot.config.simulate:
 		DONOTSAVE = True
 		DONOTSAVEDB = True
+	return isForceMode
+
+# start here
+isForceMode = parseArgs(pywikibot.handle_args())
 bot = PBBot(isForceMode)
 bot.run()
 bot.shutdown()

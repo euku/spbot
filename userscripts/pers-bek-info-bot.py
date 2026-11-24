@@ -150,6 +150,10 @@ def main():
 	for arg in pywikibot.handle_args():
 		if arg in ('--dry-run', '-dryrun'):
 			DONOTSAVE = True
+		else:
+			# may be a misspelled --dry-run
+			pywikibot.error("unbekannter Parameter %s, nichts gemacht" % arg)
+			return 2
 	output(strftime("########## timestamp: %Y-%m-%d %H:%M:%S ############",localtime()))
 	if DONOTSAVE:
 		output("Dry run: nothing will be saved")
