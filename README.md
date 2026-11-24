@@ -47,7 +47,9 @@ pyvenv/bin/python -m unittest discover -s bot/userscripts -p 'test_pers_bek*'
   `userscripts/archive_resolved/summary.py` in every full run, not for `-page` runs; `-nosummary`
   switches it off), and `logs/archive-runs.jsonl` (one line per run). Pages that were not edited and
   where no section is due are not read again for up to a week (`unchanged`, see
-  `userscripts/archive_resolved/state.py`; `-full` reads all pages),
+  `userscripts/archive_resolved/state.py`; `-full` reads all pages). The weekly reading is spread
+  over the days. A change of the bot code reads all pages of the projects it concerns (a language
+  module only its own projects, `messages.json` none),
 - the wiki replicas (bot flag, blocks, edits of SpBot), cached for 15 minutes.
 
 `/archive?project=<project>&page=<title>` shows the last bot run of one page. The archive templates

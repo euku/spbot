@@ -95,7 +95,7 @@ class ArchiveRobot:
             mainTemplatePage = pywikibot.Page(self.site, self.localBot.archiveTemplateName)
             self.generator = mainTemplatePage.getReferences(False, True, True, False)
             logDir = os.path.join(os.getcwd(), 'logs')
-            code = codeVersion()
+            code = codeVersion(self.localBot)
             if not options['full']:
                 self.state = self._loadState(logDir, currentProject, code)
             # summary for the status web page, only for full runs (a single -page run would replace it)

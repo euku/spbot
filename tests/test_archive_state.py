@@ -1,6 +1,9 @@
 """Tests for skipping unchanged pages where nothing is due (archive_resolved/state.py)."""
 import gzip
 import json
+import os
+import shutil
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 
 import pytest
@@ -9,9 +12,10 @@ from archive_resolved import bot as botModule
 from archive_resolved import core
 from archive_resolved import state as stateModule
 from archive_resolved import summary as summaryModule
-from archive_resolved.state import DUE_BUFFER, MAX_AGE, RunState, codeVersion
+from archive_resolved.state import DUE_BUFFER, REREAD_DAYS, RunState, codeFiles, codeVersion, rereadWeek
 from archive_resolved.summary import RunSummary, formatTime
-from conftest import NOW, FakeRevision, makeBot, makeDoc
+from archive_resolved_localization.local_bot_factory import LocalBotFactory
+from conftest import NOW, USERSCRIPTS, FakeRevision, makeBot, makeDoc
 from test_archive_execute import OPEN, PAGE
 from test_archive_fixtures import CASES, parseTime, setUp
 
@@ -205,6 +209,14 @@ class Wiki:
 
 @pytest.fixture
 def wiki(tmp_path, monkeypatch, clock):
+    """The weeks of all pages begin on the day of NOW, so the weekly reading does not interfere for 7 days."""
+    monkeypatch.setattr(stateModule, "rereadWeek", lambda title, time: (time.date() - NOW.date()).days // REREAD_DAYS)
+    return Wiki(tmp_path, monkeypatch)
+
+
+@pytest.fixture
+def spreadWiki(tmp_path, monkeypatch, clock):
+    """With the real rereadWeek()."""
     return Wiki(tmp_path, monkeypatch)
 
 
@@ -277,17 +289,60 @@ def test_full_run_and_other_code_read_everything(wiki):
     assert wiki.read == []
 
 
-def test_every_page_is_read_once_a_week(wiki, clock):
-    wiki.page(TITLE, NOTHING)
-    wiki.run()
-    reads = 0
-    for day in range(1, 8):
+def test_every_page_is_read_once_a_week(spreadWiki, clock):
+    """Each day a part of the pages, each page every 7 days (after the first time)."""
+    titles = [f"Diskussion:Seite {i}" for i in range(70)]
+    for title in titles:
+        spreadWiki.page(title, NOTHING)
+    spreadWiki.run()
+    assert spreadWiki.read == titles
+    days = {title: [] for title in titles}
+    perDay = []
+    for day in range(1, 22):
         clock.time += timedelta(days=1)
-        wiki.run()
-        if wiki.read:
-            reads += 1
-            assert day == 7
-    assert reads == 1
+        _, pages, end = spreadWiki.run()
+        assert set(pages) == set(titles) and end["unchanged"] == len(titles) - len(spreadWiki.read)
+        perDay.append(len(spreadWiki.read))
+        for title in spreadWiki.read:
+            days[title].append(day)
+    assert all(1 <= d[0] <= 7 and d == [d[0], d[0] + 7, d[0] + 14] for d in days.values())
+    assert all(0 < n < 25 for n in perDay)
+
+
+def test_reread_time_of_day_and_missed_runs(spreadWiki, clock):
+    """A run that starts a bit earlier or later than the last one does not shift the day; missed runs are made up."""
+    spreadWiki.page(TITLE, NOTHING)
+    spreadWiki.run()
+    first = next(d for d in range(1, 8) if rereadWeek(TITLE, NOW_UTC + timedelta(days=d)) != rereadWeek(TITLE, NOW_UTC))
+    for day in range(1, first):
+        clock.time = NOW_UTC + timedelta(days=day, minutes=7 * (-1) ** day)
+        spreadWiki.run()
+        assert spreadWiki.read == []
+    clock.time = NOW_UTC + timedelta(days=first, minutes=-9)
+    spreadWiki.run()
+    assert spreadWiki.read == [TITLE]
+    clock.time = NOW_UTC + timedelta(days=first, hours=3)      # same day
+    spreadWiki.run()
+    assert spreadWiki.read == []
+    clock.time = NOW_UTC + timedelta(days=first + 8)           # the day of the week was missed
+    spreadWiki.run()
+    assert spreadWiki.read == [TITLE]
+
+
+def test_reread_week_spreads_the_pages_evenly():
+    days = Counter()
+    for i in range(7000):
+        title = f"Diskussion:Seite {i}"
+        changes = [d for d in range(1, REREAD_DAYS + 1)
+                   if rereadWeek(title, NOW_UTC + timedelta(days=d)) != rereadWeek(title, NOW_UTC + timedelta(days=d - 1))]
+        assert len(changes) == 1
+        days[changes[0]] += 1
+    assert set(days) == set(range(1, REREAD_DAYS + 1))
+    assert all(850 < n < 1150 for n in days.values())
+
+
+def test_reread_week_is_the_same_in_every_process():
+    assert [rereadWeek(t, datetime(2026, 11, 16, 12, tzinfo=UTC)) for t in (TITLE, OTHER, "토론:가")] == [105705, 105705, 105705]
 
 
 def test_state_from_the_day_directories(wiki, clock):
@@ -325,9 +380,85 @@ def test_page_without_known_revision_is_read():
     assert state.unchanged(TITLE, None, NOW_UTC) is None
     assert state.unchanged(TITLE, 6, NOW_UTC) is None
     assert state.unchanged(OTHER, 5, NOW_UTC) is None
-    assert state.unchanged(TITLE, 5, NOW_UTC + MAX_AGE) is None
+    assert state.unchanged(TITLE, 5, NOW_UTC + timedelta(days=REREAD_DAYS)) is None
     assert state.unchanged(TITLE, 5, NOW_UTC - timedelta(minutes=1)) is None   # clock went back
 
 
-def test_code_version_is_stable():
-    assert codeVersion() == codeVersion() and len(codeVersion()) == 16
+# ---------------------------------------------------------------- code version
+
+PROJECTS = ["dewikipedia", "cswikipedia", "enwikisource", "itwikipedia", "jawikipedia", "kowikipedia", "viwikipedia",
+            "simplewikipedia", "commons", "meta", "incubator"]
+
+
+def localBot(project):
+    return LocalBotFactory().createLocalBot(project)
+
+
+@pytest.fixture
+def sources(tmp_path):
+    """A copy of the bot code that can be changed."""
+    for directory in ("archive_resolved", "archive_resolved_localization"):
+        shutil.copytree(os.path.join(USERSCRIPTS, directory), tmp_path / directory,
+                        ignore=shutil.ignore_patterns("__pycache__"))
+    return tmp_path
+
+
+def changedProjects(sources, path):
+    """The projects whose code version changes with the file."""
+    before = {p: codeVersion(localBot(p), str(sources)) for p in PROJECTS}
+    with open(sources / path, "a", encoding="utf-8") as f:
+        f.write("\n")
+    return [p for p in PROJECTS if codeVersion(localBot(p), str(sources)) != before[p]]
+
+
+def test_code_version_is_stable(sources):
+    for project in PROJECTS:
+        version = codeVersion(localBot(project))
+        assert version == codeVersion(localBot(project)) == codeVersion(localBot(project), str(sources))
+        assert len(version) == 16
+
+
+@pytest.mark.parametrize("name", ["core", "bot", "state", "summary"])
+def test_code_version_of_all_projects_depends_on_the_bot(sources, name):
+    assert changedProjects(sources, f"archive_resolved/{name}.py") == PROJECTS
+
+
+def test_code_version_of_all_projects_depends_on_the_common_localization(sources):
+    assert changedProjects(sources, "archive_resolved_localization/local_bot.py") == PROJECTS
+
+
+@pytest.mark.parametrize("name, projects", [
+    ("de", ["dewikipedia"]),
+    ("ko", ["kowikipedia"]),
+    ("vi", ["viwikipedia"]),
+    ("meta", ["meta"]),
+    ("incubator", ["incubator"]),
+])
+def test_code_version_depends_on_the_own_language_only(sources, name, projects):
+    assert changedProjects(sources, f"archive_resolved_localization/{name}.py") == projects
+
+
+def test_code_version_depends_on_the_inherited_language(sources):
+    changed = changedProjects(sources, "archive_resolved_localization/en.py")
+    assert {"enwikisource", "simplewikipedia", "commons", "meta", "incubator"} <= set(changed)
+    assert not {"dewikipedia", "jawikipedia", "kowikipedia", "viwikipedia", "itwikipedia"} & set(changed)
+
+
+@pytest.mark.parametrize("name", ["messages.json", "messages.py", "local_bot_factory.py"])
+def test_code_version_does_not_depend_on_texts(sources, name):
+    assert changedProjects(sources, f"archive_resolved_localization/{name}") == []
+
+
+def test_code_version_depends_on_the_class():
+    """The factory is not part of the version, but the class it chooses."""
+    versions = {p: codeVersion(localBot(p)) for p in PROJECTS}
+    assert versions["commons"] == versions["enwikisource"] == versions["simplewikipedia"]
+    assert len({versions[p] for p in ("commons", "meta", "incubator", "dewikipedia", "kowikipedia")}) == 5
+
+
+@pytest.mark.parametrize("project", PROJECTS)
+def test_code_files_contain_the_whole_class(project):
+    """Every class the LocalBot inherits from is in a file of the version."""
+    names = {os.path.basename(p) for p in codeFiles(localBot(project))}
+    for cls in type(localBot(project)).__mro__[:-1]:
+        assert cls.__module__.split(".")[-1] + ".py" in names

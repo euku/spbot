@@ -25,7 +25,7 @@ Page status values:
 Pages with status "nothing" also have "revid", "nextDue" and "checked": the state for the next
 run (see state.py). A page that was skipped because of this state keeps its record, with the
 current time, the ages moved on and "unchanged": true; "checked" is when it was really read.
-"code" in the "run" line is the version of the bot code (state.codeVersion).
+"code" in the "run" line is the version of the bot code for the project (state.codeVersion).
 
 "message" is in the language of the wiki; "messageKey" and "messageArgs" are the same
 message as key + arguments of archive_resolved_localization/messages.json, so the status
