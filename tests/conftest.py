@@ -51,6 +51,7 @@ class FakePage:
         self.redirectTo = None       # title of the redirect target
         self.protected = False
         self.saveError = None        # exception raised by save()
+        self.getError = None         # exception raised by get(), e.g. IsRedirectPageError
         self.saveErrorAfterWrite = False  # save() stores the text and raises anyway (e.g. timeout)
         self.saves = []              # (text, summary)
         self.latest_revision = FakeRevision("Somebody", datetime(2026, 11, 15, 8, 30))
@@ -67,6 +68,8 @@ class FakePage:
         return self._exists
 
     def get(self, force=False):
+        if self.getError is not None:
+            raise self.getError
         if not self._exists:
             raise pywikibot.exceptions.NoPageError(self)
         return self.text

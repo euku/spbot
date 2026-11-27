@@ -113,17 +113,4 @@ class LocalBotDe(LocalBot):
     
 
     def applyLocalModifications(self, originalText: str) -> str:
-        # diese Ersetzungen sind erst mal deaktiviert, weil sie zu haeufig Schaden anrichten
-        if False:
-            excludeTags = ["comment", "nowiki", "code"]
-            # won't work for but also won't harm:
-            # {{Autoarchiv-Erledigt|Alter=1|Ziel=((FULLPAGENAME))/Archiv|aktuelles Archiv={{FULLPAGENAME}}/Archiv|Zeigen=Ja}}
-            rmParamRegEx = "(\\{\\{\\s*?[Aa]utoarchiv\\-[Ee]rledigt[^}]*)\\|[^}]*%s\\s*=\\s*%s[\n\r\\s]*([^}]*?\\}\\})"
-            modifiedText = textlib.replaceExcept(originalText, rmParamRegEx % ("Mindestabschnitte", r"\d+?"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Mindestbeiträge", r"\d+?"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Frequenz",r"[a-zäöü\:]*"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Klein", "[JjAaNnEeIiNn]*"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Modus", "[Eerledigt]*"), "\\1\\2", excludeTags)
-            modifiedText = textlib.replaceExcept(modifiedText, rmParamRegEx % ("Zeigen", "[JjAa]+"), "\\1\\2", excludeTags)
-            
         return originalText

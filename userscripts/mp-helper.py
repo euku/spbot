@@ -240,6 +240,13 @@ def writeMenteeArchive(site, session, base, today, deadline=None):
         text = renderArchiveMonth(archive)
         page = pywikibot.Page(site, f"{mentorenProgrammMenteeArchiv}{year} {MONTHS[month - 1]}")
         oldText = pageText(page)
+        if not archive["mentorings"] and "<li>" in oldText:
+            # finished mentorings are never removed: no entries for a page that has some is an API problem
+            # (an empty page at the start of a month is fine)
+            pywikibot.error(f"Die API liefert keine Betreuungen für {year} {MONTHS[month - 1]}, "
+                            "Archiv wird nicht geschrieben")
+            ok = False
+            continue
         if oldText == text:
             pywikibot.info(f"keine Änderung im WP-Archiv nötig: {year} {MONTHS[month - 1]}")
             continue
@@ -301,13 +308,17 @@ def run(site, session, base, force, now):
         ok = writeActiveMenteeList(site, mentees)
         ok &= writeMenteeArchive(site, session, base, now.date(), deadline)
         counts = api_get(session, base, "counts", deadline)
+        ok &= writeCount(site, anzahlAllerBetreutenMentees, counts["mentees_total"],
+                         "Anzahl bisheriger Mentees: %s", force, now)
+        ok &= writeCount(site, anzahlAllerZurzeitBetreuendenMentoren, counts["active_mentors"],
+                         "Anzahl zurzeit betreuenden Mentoren: %s", force, now)
     except ApiError as exc:
         pywikibot.error(f"Mentorendatenbank nicht erreichbar, nichts (weiter) geschrieben: {exc}")
         return False
-    ok &= writeCount(site, anzahlAllerBetreutenMentees, counts["mentees_total"],
-                     "Anzahl bisheriger Mentees: %s", force, now)
-    ok &= writeCount(site, anzahlAllerZurzeitBetreuendenMentoren, counts["active_mentors"],
-                     "Anzahl zurzeit betreuenden Mentoren: %s", force, now)
+    except pywikibot.exceptions.Error as exc:   # page.get(): redirect, server error, timeout ...
+        # counted as a failed run: the failure counter decides about the mail
+        pywikibot.error(f"Wikipedia-Seite nicht lesbar, nichts (weiter) geschrieben: {exc}")
+        return False
     return ok
 
 

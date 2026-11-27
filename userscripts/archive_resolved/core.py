@@ -191,9 +191,6 @@ class Discussion:
                 pywikibot.output("<<lightpurple>>Error in _extractTimeStampsAndAges():")
                 pywikibot.output(e)
                 pywikibot.output("<<default>>")
-            except:
-               # date was invalid, we don't care
-               raise
         return agesList, timestampList
 
     def _examineAllResolvedTemplate(self, bot, clearedContent: str, now: datetime):
@@ -765,7 +762,7 @@ class WikiDocument:
             pywikibot.output("<<lightpurple>>Page is locked!<<default>>")
             self._skipped('skip.target_locked', target=targetPageName)
             return False
-        except:
+        except Exception:
             # workaround for https://sourceforge.net/tracker/?func=detail&aid=3588463&group_id=93107&atid=603138
             pywikibot.output(f"\n<<lightpurple>>Error at {targetPageName}<<default>> skip page\n")
             pywikibot.output(f"Unexpected error: {str(traceback.format_exc())}")

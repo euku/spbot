@@ -233,6 +233,30 @@ def test_api_error_fails_the_run():
     assert site.saveLog == []
 
 
+@pytest.mark.parametrize("error", [pywikibot.exceptions.IsRedirectPageError, pywikibot.exceptions.ServerError])
+def test_unreadable_page_fails_the_run_without_exception(error):
+    site = FakeSite()
+    listPage = site.page(mp.mentorenProgrammMenteeliste, "alt")
+    listPage.getError = error(listPage) if error is pywikibot.exceptions.IsRedirectPageError else error("503")
+    assert not mp.run(site, okSession([mentee("A")]), BASE, False, NOW)
+    assert site.saveLog == []
+
+
+def test_unreadable_count_page_fails_the_run():
+    site = FakeSite()
+    countPage = site.page(mp.anzahlAllerBetreutenMentees, "1000")
+    countPage.getError = pywikibot.exceptions.ServerError("503")
+    assert not mp.run(site, okSession([mentee("A")]), BASE, False, NOW)
+
+
+def test_empty_archive_does_not_overwrite_the_page():
+    site = FakeSite()
+    archivePage = site.page(mp.mentorenProgrammMenteeArchiv + "2026 November", "<ol>\n<li>01.11.2026 / ...</li>\n</ol>")
+    assert not mp.run(site, okSession([mentee("A")], {(2026, 11): archive(mentorings=())}), BASE, False, NOW)
+    assert archivePage.saves == []
+    assert mp.mentorenProgrammMenteeliste in site.saved()      # the rest is still written
+
+
 def test_empty_mentee_list_is_not_written():
     site = FakeSite()
     assert not mp.run(site, okSession([]), BASE, False, NOW)

@@ -185,7 +185,7 @@ class ArchiveRobot:
                     wdoc.generateErrorReport()
                     wdoc.saveReport(self.saveLocalLogFile, self.localLogFile)
                 self._record(page.title(), 'optionserror', wdoc, no.key, no.msgArgs)
-        except BaseException as exc:  # like the former bare except: record everything
+        except Exception as exc:  # record everything, but let KeyboardInterrupt/SystemExit stop the job
             pywikibot.output("\n<<lightpurple>>Error at %s<<default>> skip page\n" % page.title())
             pywikibot.output("Unexpected error: " + str(traceback.format_exc()))
             if wdoc is not None:
@@ -205,7 +205,7 @@ class ArchiveRobot:
             for page in self.generator:
                 try:
                     self._runOnPage(page)
-                except:
+                except Exception:
                     # Catch everything and don't let the bot stop.
                     # This can happen when an exception was raised inside the exception handling.
                     pywikibot.output(f"\n<<lightpurple>>Unexpected error: {str(sys.exc_info())}<<default>>\n")
